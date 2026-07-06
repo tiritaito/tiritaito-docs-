@@ -57,8 +57,8 @@ Este repositorio centraliza la documentación de tiritaito bajo una arquitectura
 
 | Documento | Audiencia | Dueño | Propósito | Frecuencia |
 |-----------|-----------|-------|----------|------------|
-| **INFORME_ESTRATEGICO_2026_1.md** | Referencia | Archivo | Informe original 2026 | No se actualiza |
-| **INVESTIGACION_HERRAMIENTAS_2026.md** | Referencia | Archivo | Investigación original | No se actualiza |
+| **INFORME_ESTRATEGICO_2026.md** | Referencia | Archivo | Informe original 2026 | No se actualiza |
+| **INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md** | Referencia | Archivo | Investigación original | No se actualiza |
 
 ---
 
