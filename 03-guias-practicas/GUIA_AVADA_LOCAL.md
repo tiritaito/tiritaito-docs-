@@ -58,7 +58,7 @@ WP_BASE  = https://tiritaito.local/blog/wp-json
 APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 ```
 
-⚠️ **Punto a revisar con Hno A antes de escribir credenciales concretas:** el sistema de autenticación de Tiritaito for Creators cambió en v1-04 (según `CHANGELOG.md` de la app) de Application Password a un token propio (`TT_WRITE_TOKEN`), eliminando por completo `WP_USER`/`WP_PASS`/`AUTH Basic`. Si el patrón de autenticación de este entorno Local todavía asume Application Password, hay que confirmarlo — no lo dov por válido aquí sin verificarlo con Hno A. Esto se resolverá formalmente al reescribir `00_CORE.md`/`04_ENTORNO_LOCAL.md`, queda anotado aquí para que no se pierda.
+✅ **Resuelto y definitivo:** el sistema de autenticación de Tiritaito for Creators es **token propio (`TT_WRITE_TOKEN`)** desde v1-04, no Application Password. Es la decisión definitiva del equipo — `WP_USER`/`WP_PASS`/`AUTH Basic` quedan descartados en cualquier documento nuevo. `00_CORE.md` y `04_ENTORNO_LOCAL.md` siguen describiendo el patrón antiguo (Basic Auth) y necesitan reescribirse para reflejar el token — queda anotado como tarea pendiente de esa fusión, no de este documento.
 
 ### Herramientas exclusivas de Local (aprovecharlas)
 
@@ -457,8 +457,9 @@ if (document.getElementById('mi-modulo-root')) {
 | # | Pregunta | Por qué importa |
 |---|---|---|
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
-| 2 | El sistema de autenticación de Tiritaito for Creators cambió a token propio (`TT_WRITE_TOKEN`) en v1-04 — ¿las constantes de `04_ENTORNO_LOCAL.md` (Application Password) siguen aplicando a algo, o hay que reescribirlas por completo? | Afecta a cualquier snippet nuevo que necesite autenticarse contra el endpoint REST en Local |
-| 3 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica |
+| 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica |
+
+**Resuelta desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo. Application Password queda descartado en toda la documentación nueva.
 
 ---
 
