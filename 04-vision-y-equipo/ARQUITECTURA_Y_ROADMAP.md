@@ -121,7 +121,8 @@ Framework completo en `MIGRACION_CONTENIDO.md`. Resumen de responsabilidad: se d
 
 ### Fase 4 — QA y velocidad
 
-- [ ] Test de velocidad (Google PageSpeed Insights)
+- [ ] Test de velocidad (Google PageSpeed Insights) — correrlo en incógnito, antes de tocar nada, como referencia
+- [ ] **Ejecutar el Avada Performance Wizard aquí, no antes** — ver `GUIA_AVADA_LOCAL.md` Sección 4.5. El propio fabricante advierte que hacerlo antes de que el sitio esté terminado puede desactivar funciones que luego hacen falta
 - [ ] Test en móvil real
 - [ ] Test con Live Link de Local (todo el equipo)
 - [ ] LiteSpeed Cache configurado correctamente
