@@ -32,13 +32,15 @@ Este documento no repite el mapa de qué-va-dónde por sección (eso vive en `ME
 ✅ **Confirmado directamente en avada.com (última actualización: 5 febrero 2026):**
 - Cada licencia de Avada incluye un sitio de staging/desarrollo/local gratuito, sin coste extra — uno por licencia.
 - Ese sitio se reconoce automáticamente como staging si su dominio coincide con una lista cerrada de patrones. La lista de **TLDs completos** (no solo subdominios) incluye explícitamente: `*.dev`, `*.local`, `*.staging`, `*.test`.
-- **`tiritaito.local` encaja directamente en el patrón `*.local`** — que es exactamente el sufijo que usa Local by Flywheel por defecto. Califica sin pasos adicionales.
+- **`tiritaito-real.local` encaja directamente en el patrón `*.local`** — que es exactamente el sufijo que usa Local by Flywheel por defecto. Califica sin pasos adicionales.
+
+⚠️ **Corrección de dominio (7 julio 2026):** el dominio real del sitio en Local **no es `tiritaito.local`, es `tiritaito-real.local`** (con guion, sin mayúscula inicial en código). El nombre correcto no cambia la conclusión de la licencia — sigue terminando en `.local`, sigue calificando — pero cualquier código, constante o URL que use el nombre viejo fallará. Esta versión del documento ya usa el nombre correcto en todas partes.
 
 **Paso práctico:** en el WordPress del Local, ir a Avada → Registro, y pegar el mismo código de compra que se usó en producción. El sistema debería reconocerlo como staging automáticamente.
 
 **Si aun así pide una licencia nueva:** no seguir sin más — contactar con soporte de Avada citando esta política (`avada.com/documentation/avada-registration-and-licensing-faq/`) antes de pagar nada. Es más probable que sea un problema de detección de dominio que una exigencia real.
 
-⚠️ **Matiz importante que no estaba en la investigación anterior:** la lista de patrones válidos es cerrada. Si en algún momento se decide *no* usar el dominio por defecto de Local (`tiritaito.local`) y renombrarlo a otra cosa, hay que comprobar antes que el nuevo dominio sigue encajando en alguno de los patrones — si no, no calificará como staging automáticamente.
+⚠️ **Matiz importante que no estaba en la investigación anterior:** la lista de patrones válidos es cerrada. Si en algún momento se decide *no* usar el dominio actual de Local (`tiritaito-real.local`) y renombrarlo a otra cosa, hay que comprobar antes que el nuevo dominio sigue encajando en alguno de los patrones — si no, no calificará como staging automáticamente.
 
 ---
 
@@ -47,18 +49,20 @@ Este documento no repite el mapa de qué-va-dónde por sección (eso vive en `ME
 | Componente | Detalle |
 |---|---|
 | Entorno | Local by Flywheel |
-| Dominio local | **`tiritaito.local` — oficial, confirmado** |
+| Dominio local | **`tiritaito-real.local`** — corregido el 7 julio 2026, el valor anterior (`tiritaito.local`) era incorrecto |
 | WordPress | mismo `/blog/` subdirectorio que producción, para mantener coherencia de rutas |
-| SSL | Local lo genera automáticamente — comportamiento igual que en producción |
+| SSL | Local lo genera automáticamente — comportamiento igual que en producción. Si el navegador sigue avisando de "no seguro", falta pulsar "Trust" en la pestaña SSL del sitio dentro de Local |
 
 ### Constantes del entorno (usar siempre estas, nunca las de producción de `00_CORE.md`, en código que corra en Local)
 
 ```
-WP_BASE  = https://tiritaito.local/blog/wp-json
+WP_BASE  = https://tiritaito-real.local/blog/wp-json
 APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 ```
 
 ✅ **Resuelto y definitivo:** el sistema de autenticación de Tiritaito for Creators es **token propio (`TT_WRITE_TOKEN`)** desde v1-04, no Application Password. Es la decisión definitiva del equipo — `WP_USER`/`WP_PASS`/`AUTH Basic` quedan descartados en cualquier documento nuevo. `00_CORE.md` y `04_ENTORNO_LOCAL.md` siguen describiendo el patrón antiguo (Basic Auth) y necesitan reescribirse para reflejar el token — queda anotado como tarea pendiente de esa fusión, no de este documento.
+
+⚠️ **Nota aparte, fuera del alcance de este documento:** cualquier snippet que use `wpFetch()` o `guardarOpciones()` contra el WordPress del Local necesita el Application Password real del usuario `makecom` **de ese WordPress local** (nunca el de producción) — sin eso, esas llamadas fallan con 401. Esto es del Proyecto Web Nueva (Backend), no de este documento; queda mencionado aquí solo para que no se pierda de vista.
 
 ### Herramientas exclusivas de Local (aprovecharlas)
 
@@ -71,7 +75,7 @@ APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 
 ### Checklist antes de cada sesión de trabajo en Local
 
-- [ ] Confirmar que `tiritaito.local` sigue siendo el dominio activo (puede cambiar si se recrea el sitio)
+- [ ] Confirmar que `tiritaito-real.local` sigue siendo el dominio activo (puede cambiar si se recrea el sitio)
 - [ ] Confirmar que la Avada está registrada como staging (Avada → Registro no pide licencia nueva)
 - [ ] Si el código incluye una URL o credencial, verificar que viene de este documento o de `04_ENTORNO_LOCAL.md` actualizado — nunca de producción
 
@@ -97,7 +101,53 @@ Existe siempre un **Layout Global** por defecto. Se pueden crear **Layouts Condi
 
 ## 4. Global Options — el sistema de diseño global
 
-Todo lo que se configura aquí se aplica en todo el sitio automáticamente. Es la base que hay que cerrar **antes** de construir ninguna página.
+### 4.0 Punto de partida — Avada Setup Wizard
+
+✅ **Confirmado en documentación oficial (avada.com, verificado julio 2026):** Avada arranca automáticamente el **Setup Wizard** justo después de registrar la licencia. Bifurca en dos caminos:
+
+| Camino | Qué hace | Cuándo tiene sentido |
+|---|---|---|
+| **Prebuilt Website** | Importa un sitio completo — colores, tipografía y páginas ya resueltos de una de las +100 plantillas de Avada Studio | Si se quiere partir de una base visual ya montada y adaptarla |
+| **New Website** | Se eligen paleta de color y tipografía desde cero (Paso 3), y opcionalmente se importa un header/footer de Avada Studio (con opciones de invertir colores o no importar imágenes) | Si se prefiere construir la identidad visual de Tiritaito desde el principio, sin heredar nada de una plantilla |
+
+Termina en menos de 5 minutos y deja enlaces directos a Layouts, Menús, Global Options y la cuenta de soporte.
+
+*Fuente: avada.com/documentation/how-to-use-the-avada-setup-wizard/*
+
+### 4.0.1 Registro de la sesión real — 7 julio 2026
+
+El equipo eligió el camino **New Website** ("Sitio Nuevo"). Esto es lo que salió de cada paso, y lo que queda pendiente de cada uno:
+
+**Paso 3 — Colores.** El Wizard solo admite 8 colores iniciales, no los 13 de la paleta `--tt-*`. Se mapearon los 8 primeros en orden claro→oscuro (recomendación oficial de Avada): `--tt-bg`, `--tt-surf2`, `--tt-sep`, `--tt-txt4`, `--tt-red`, `--tt-red-d`, `--tt-txt2`, `--tt-txt`. 🔲 Pendiente: añadir los 5 restantes (`--tt-red-bg`, `--tt-txt3`, `--tt-green`, `--tt-orange`, `--tt-alert`) después del Wizard, en Global Options → Colors → Add New Color.
+
+**Paso 4 — Tipografía.** Confirmado: este paso **no admite subir fuentes propias** — solo un esquema prediseñado de Avada, tamaño base y proporción de escala. Se usó como placeholder para poder avanzar, no como configuración final. 🔲 Pendiente (clave, bloquea la identidad visual real): registrar "Yeah Papa" en Avada → Options → Typography → Custom Fonts, y aplicarla en la pestaña Heading Typography (H1-H6). Sin confirmar todavía si el `.woff2` ya subido a Media Library se puede enlazar directo desde ahí o si hay que volver a subirlo en ese panel específico — a probar en Local.
+
+**Paso 5 — Diseños (Header).** Se eligió la plantilla **"Studio"** de Avada Studio como punto de partida. Cuatro cambios pedidos no son posibles dentro del Wizard — quedan para después, editando el Header en Avada → Layouts → Layout Section Builder (Sección 5 de este documento):
+
+| Cambio pedido | Dónde se hará | Estado |
+|---|---|---|
+| Quitar la barra negra superior | Sin confirmar si es una fila del Header Builder o el Top Bar legacy de Global Options — hay que abrirlo en Local para saberlo | 🔲 Pendiente |
+| Quitar buscador + iconos de usuario/carrito | Eliminar esos elementos individuales del Header | 🔲 Pendiente |
+| Fondo de acuarela | Background del contenedor del Header → Imagen → Cover | 🔲 Pendiente |
+| Tipografía "Yeah Papa" en el título | Sin confirmar si "Studio" usa el Site Title de WordPress (Global Options → Logo) o un elemento Título suelto | 🔲 Pendiente |
+
+**Paso 6 — Contenido y Características.** Las páginas de arranque (Hogar, Acerca de, Servicios) son plantillas desechables de Avada Studio — no coinciden con las secciones reales de `ALCANCE_WEB_NUEVA.md` (Seminarios, Ejército de Intercesores, Hombres de Dios...) y se sustituirán al construir de verdad. Sugerencia pendiente de aplicar: cambiar "Servicios" por "Contacto".
+
+Las Características (Features) se revisaron una por una, no en bloque:
+
+| Función | Estado | Nota |
+|---|---|---|
+| Eventos | ✅ Activada | Candidata a evaluar para "Seminarios — próximos" |
+| Formas (Forms) | ✅ Activada | Para formularios de contacto/oración |
+| Off Canvas | ✅ Activada | Coincide con el método de menú móvil recomendado en Sección 9.1 |
+| Portafolio | ✅ Activada | ⚠️ Marcada para reconsiderar — no hay contenido de portafolio planeado; activa CPT + plantillas Single/Archive innecesarias, exactamente el Patrón B de deuda técnica que `METODOLOGIA_CONSTRUCCION.md` ya advierte evitar |
+| Herramientas de desarrollo (ACF) | ✅ Activada | Relevante para la pregunta abierta "Posts vs CPT+ACF" de "Hombres de Dios" (`METODOLOGIA_CONSTRUCCION.md` Sección 4) — no la resuelve, solo deja la herramienta lista si se opta por CPT |
+| Modo de mantenimiento, Gestión de medios | ✅ Activadas | Sin objeción |
+| Comprar, Foro, Marca personalizada, Chat en vivo | ☐ Sin activar | Correcto — sin caso de uso documentado en Tiritaito |
+
+### 4.0.2 Sistema de diseño — configuración manual (independiente del Wizard)
+
+Todo lo que se configura aquí se aplica en todo el sitio automáticamente. Es la base que hay que cerrar **antes** de construir ninguna página. Si el Setup Wizard ya dejó una base (Sección 4.0.1), esto es la verificación/ajuste fino sobre esa base — en concreto, añadir los 5 colores que el Wizard no permitió y registrar la tipografía real, no un punto de partida alternativo.
 
 ### 4.1 Colores (Avada → Global Options → Colors)
 
@@ -146,6 +196,22 @@ Activar en la web nueva desde el primer día:
 | Google Fonts Loading | `swap` | Evita texto invisible mientras carga |
 | Critical CSS | Evaluar | Probar en Local — puede interferir con LiteSpeed Cache en producción |
 | Preload Resources | Evaluar | Útil para la fuente "Yeah Papa" |
+
+### 4.5 ⚠️ Avada Performance Wizard — existe, pero NO ahora
+
+Además de configurar la tabla de arriba a mano, Avada tiene un asistente guiado en **Avada → Performance**. Antes de usarlo, un aviso importante:
+
+✅ **Confirmado en documentación oficial (avada.com, verificado julio 2026):** el propio fabricante advierte que el Performance Wizard **debe ejecutarse solo cuando el sitio está prácticamente terminado**, nunca durante la configuración inicial. El Wizard escanea el sitio y desactiva funciones/elementos que no detecta en uso — si se ejecuta ahora, con la web nueva recién empezada, puede desactivar cosas que hagan falta dentro de dos semanas, y hay que acordarse de reactivarlas a mano.
+
+Lo que hace, para cuando llegue el momento:
+- Escanea y sugiere desactivar Features/Elements de Avada no usados (con botón "Find Recommendations")
+- Optimiza qué subconjuntos de Font Awesome cargar
+- Configura compilación/carga asíncrona de CSS y JS, y generación de Critical CSS
+- Recomienda antes de empezar: correr PageSpeed Insights/Lighthouse en incógnito para tener una foto de referencia
+
+**Dónde vive esto en el Roadmap:** no es Fase 1 (Sección 15) — es **Fase 4, "QA y velocidad"**, en `ARQUITECTURA_Y_ROADMAP.md`, justo antes del lanzamiento. Lo que sí se puede — y se debe — hacer ya es la tabla manual de arriba (4.4), que son ajustes seguros de activar desde el principio y no dependen de que el sitio esté terminado.
+
+*Fuente: avada.com/documentation/how-to-use-the-performance-wizard/*
 
 ---
 
@@ -414,17 +480,24 @@ if (document.getElementById('mi-modulo-root')) {
 ## 17. Qué queda confirmado vs qué sigue pendiente de probar en Local
 
 **✅ Confirmado en documentación oficial (esta versión, julio 2026):**
-- Licencia de staging: `tiritaito.local` califica sin coste extra (Sección 1).
+- Licencia de staging: `tiritaito-real.local` califica sin coste extra (Sección 1).
 - Toggles, Image Carousel, Avada Slider, Lightbox, Modal existen como elementos nativos.
 - Global Elements sincronizan el 100% del contenido — no admiten campos variables por instancia (Sección 8).
 - El Flyout Menu clásico es un método legacy; el método actual es el Off Canvas Builder (Sección 9.1).
 - Ni Flyout ni Off Canvas resuelven de forma nativa menús con submenús.
 
+**✅ Confirmado en la sesión real del 7 julio 2026 (Sección 4.0.1):**
+- El dominio correcto del Local es `tiritaito-real.local`, no `tiritaito.local`.
+- El Setup Wizard solo admite 8 de los 13 colores de la paleta, y no admite fuentes propias — ambas cosas requieren configuración manual posterior.
+- Off Canvas y Eventos ya están activados como Features de Avada; Portafolio también, pero sin caso de uso — candidato a desactivar.
+
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
 - Si Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" sin shortcode propio.
 - Código fuente completo de la home — "Grupo de alabanza" y "Próximos eventos" a nivel CSS/JS.
-- Comportamiento real del registro de staging la primera vez que se pruebe en el panel de Avada del Local.
+- Si "Yeah Papa" se registra correctamente en Avada → Typography → Custom Fonts, o si hace falta volver a subir el `.woff2` ahí específicamente.
+- Si la barra negra superior del header "Studio" es una fila del Header Builder o el Top Bar legacy de Global Options.
+- Si el título "Studio" del header es el Site Title de WordPress o un elemento de Título suelto.
 
 ---
 
@@ -442,15 +515,19 @@ if (document.getElementById('mi-modulo-root')) {
 - Image Carousel Element: avada.com/documentation/image-carousel-element/
 - Avada Slider Element: avada.com/element/avada-slider/
 - Lightbox Element: avada.com/documentation/lightbox-element/
+- How To Use The Avada Setup Wizard: avada.com/documentation/how-to-use-the-avada-setup-wizard/
+- How To Use The Performance Wizard: avada.com/documentation/how-to-use-the-performance-wizard/
 
 ---
 
 ## 19. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Hno A: registrar Avada en Local y confirmar que califica como staging sin pedir licencia nueva (Sección 1)
-2. Hno A: ejecutar Fase 1 completa (Sección 15) — no depende de las preguntas pendientes de Hna C
-3. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
+1. Hno A: añadir los 5 colores restantes de la paleta `--tt-*` en Global Options → Colors (Sección 4.0.1)
+2. Hno A: registrar "Yeah Papa" en Typography → Custom Fonts y confirmar si el `.woff2` ya subido sirve o hay que resubirlo
+3. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
+4. Hno A + Carlitos: decidir si se desactiva "Portafolio" en Características, ya que no hay contenido planeado
+5. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -458,8 +535,9 @@ if (document.getElementById('mi-modulo-root')) {
 |---|---|---|
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
 | 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica |
+| 3 | ¿Se desactiva "Portafolio"? | Sigue activo sin caso de uso — riesgo de repetir el Patrón B de deuda técnica si se deja así |
 
-**Resuelta desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo. Application Password queda descartado en toda la documentación nueva.
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · primera sesión de Setup Wizard completada y registrada (Sección 4.0.1).
 
 ---
 
