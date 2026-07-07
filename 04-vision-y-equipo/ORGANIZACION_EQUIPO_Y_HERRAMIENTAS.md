@@ -239,6 +239,14 @@ REFERENCIA CONSTANTE:
 - ALCANCE_WEB_NUEVA.md para qué sección se construye y su prioridad.
 - 04_ENTORNO_LOCAL.md para el entorno — nunca datos de producción.
 
+8. AL TERMINAR — SEÑAL DE DOCUMENTACIÓN: si esta sesión confirmó,
+cambió o resolvió algo que no coincide con lo ya escrito en
+GUIA_AVADA_LOCAL.md, METODOLOGIA_CONSTRUCCION.md o ALCANCE_WEB_NUEVA.md
+(p. ej. "esto sí/no funciona como se pensaba", "se descarta tal
+opción"), dilo explícitamente al final en 2-3 líneas: qué cambió y qué
+documento debería reflejarlo. Esa nota se lleva al Proyecto de
+Investigación para aplicarse allí — no la apliques tú mismo aquí.
+
 Si algo no encaja con el sistema, avisa antes de proceder.
 Ad maiorem Dei gloriam.
 ```
@@ -272,6 +280,11 @@ TU PAPEL EN LAS DECISIONES:
 FORMATO: tablas y comparativas para decisiones con varias opciones.
 Diagramas cuando ayude a ver una estructura o flujo. Resúmenes cortos
 al final de cada conversación con la decisión tomada.
+
+AL TERMINAR — SEÑAL DE DOCUMENTACIÓN: si en esta conversación Hna C
+tomó una decisión real de alcance o producto, díselo explícitamente:
+"esto conviene anotarlo en ALCANCE_WEB_NUEVA.md — llévaselo a Hno C en
+el Proyecto de Investigación". No lo des por sobreentendido.
 
 TONO: Cercano, claro, en español, sin tecnicismos sin explicar.
 Directo y veraz — nunca suavices un problema real por quedar bien.
@@ -430,6 +443,38 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 
 ---
 
+## 6.1 Protocolo de sincronización documental — cómo no perder lo que se decide en Local
+
+**El problema que resuelve:** hasta ahora, que un hallazgo de Hno A o una decisión de Hna C llegue a actualizarse en `tiritaito-docs` depende de que alguien se acuerde de traerlo a este Proyecto de Investigación. Sin un paso explícito, se pierde — exactamente el mismo patrón de fragmentación que motivó reconstruir toda esta documentación desde cero.
+
+### Regla de activación
+
+No todo necesita anotarse. La señal es: **¿esto cambia una recomendación ya escrita, cierra una pregunta abierta, o es información nueva que el resto del equipo necesita saber?**
+
+- ✅ Anotar: "Post Cards sí funciona sobre el CPT de santos, probado en Local" · "el menú sí tiene submenús, se descarta Off Canvas simple" · "Hna C decide que Oraciones sí lleva audio desde v1"
+- ❌ No hace falta: probar un color y descartarlo, un intento de layout que no llegó a nada, dudas resueltas dentro de la misma sesión sin cambiar ninguna recomendación
+
+### Mecanismo — un paso añadido a los Proyectos 3 y 4
+
+Las instrucciones de **Proyecto 3 (Web Nueva)** y **Proyecto 4 (Diseño y Avada)** en la Sección 3 incluyen ahora un paso final: si la sesión confirma, cambia o resuelve algo que no coincide con lo escrito en `tiritaito-docs`, Claude lo señala explícitamente al terminar — qué cambió y qué documento debería reflejarlo. Esa nota (un resumen de 2-3 líneas, no hace falta más) se trae a este Proyecto de Investigación para aplicarse.
+
+### Tabla de mapeo — tipo de cambio → documento → quién lo aplica
+
+| Tipo de cambio | Documento a actualizar | Quién lo aplica |
+|---|---|---|
+| Configuración de Avada ya probada y estable (Global Options, Header/Footer Builder, Layouts) | `GUIA_AVADA_LOCAL.md` | Hno C (aquí), a partir del resumen de Hno A |
+| Confirmación sobre un elemento nativo (p. ej. si Post Cards funciona sobre X contenido) | `GUIA_AVADA_LOCAL.md` Sección 17 / `METODOLOGIA_CONSTRUCCION.md` | Hno C |
+| Decisión de producto o alcance (qué sección se construye, con qué formato) | `ALCANCE_WEB_NUEVA.md` | Hna C decide, Hno C redacta el cambio |
+| Nueva pieza de contenido ya construida — dónde vive y con qué patrón | `METODOLOGIA_CONSTRUCCION.md` Sección 3 | Hno C |
+| Cambio en `wp_options`, endpoint REST o autenticación | `00_CORE.md` / `04_ENTORNO_LOCAL.md` | Hno A directamente (son documentos de su propiedad) — avisar igualmente a Hno C si afecta a algo cruzado con otro documento |
+| Cambio de organización del equipo o cuentas | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | Hno C, con confirmación de Carlitos |
+
+### Qué no cambia
+
+Esto no sustituye la Sección 6 de arriba — las decisiones que requieren coordinación previa se siguen hablando en la reunión semanal *antes* de tocarlas. Este protocolo es para lo que ya se decidió o confirmó y hay que dejar constancia *después*.
+
+---
+
 ## 7. WPMobile.app — qué prever ahora, sin construir todavía
 
 ### 7.1 Cómo funciona
@@ -485,7 +530,7 @@ Ya está activo, pero "activo" no es lo mismo que "bien aprovechado". Sin un Pro
 | Proyecto 7 (WPMobile.app) | 🔵 Sin definir todavía, no urgente |
 | ~~Datos y Métricas~~ | ❌ Cancelado — no se va a crear |
 | Repositorio de GitHub `tiritaito-docs` | ✅ Creado, con la estructura de carpetas de la Sección 5.4 |
-| `04_ENTORNO_LOCAL.md` | ⚠️ Necesita reescritura — dominio `tiritaito.local` ya confirmado como oficial, pero el patrón de autenticación (Application Password) quedó obsoleto, ver `GUIA_AVADA_LOCAL.md` Sección 2 |
+| `04_ENTORNO_LOCAL.md` | ⚠️ Necesita reescritura por dos motivos: el dominio documentado (`tiritaito.local`) era incorrecto — el real es **`tiritaito-real.local`**, corregido el 7 julio 2026 en `GUIA_AVADA_LOCAL.md` — y el patrón de autenticación (Application Password) quedó obsoleto. Ver `GUIA_AVADA_LOCAL.md` Sección 2 |
 
 ---
 
