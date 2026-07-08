@@ -112,7 +112,7 @@ Cruce entre el árbol de decisión de `GUIA_AVADA_LOCAL.md` y `ALCANCE_WEB_NUEVA
 
 | Pendiente | Nota |
 |---|---|
-| ¿Posts normales con categoría, o Custom Post Type con ACF? | Determina la complejidad de mantenimiento — ver `MIGRACION_CONTENIDO.md` Sección 4 |
+| ¿Posts normales con categoría, o Custom Post Type con ACF? | Determina la complejidad de mantenimiento — ver `MIGRACION_CONTENIDO.md` Sección 4. La herramienta ya está lista: Hno A activó "Herramientas de desarrollo (ACF)" en el Setup Wizard del 7 julio 2026 (`GUIA_AVADA_LOCAL.md` Sección 4.0.1) — no resuelve la decisión, pero quita un paso técnico si se opta por CPT |
 | Campos de la "ficha de santo" (nombre, biografía, oración, fecha de fiesta, podcast asociado...) | Se define al revisar `ALCANCE_WEB_NUEVA.md` con Hna C |
 | Confirmar en Local que el Layout Content Section + Dynamic Content + Post Cards funcionan juntos como se espera | Sigue siendo 🔲 pendiente de prueba práctica, no de documentación |
 
