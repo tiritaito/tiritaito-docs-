@@ -1,7 +1,6 @@
 # TIRITAITO.COM — Migración de Contenido
-**Qué contenido de la web vieja migrar, qué recrear limpio, y cómo — framework de decisión sección por sección**
-*Fusiona: INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Parte 2) + cruce con METODOLOGIA_CONSTRUCCION.md*
-*Audiencia: Hna C (decide qué migrar) · Hno A (ejecuta) · Carlitos (coordina)*
+**Qué se migra de la web vieja a la nueva, y qué no — decisión cerrada tras la sesión de alcance, julio 2026**
+*Reemplaza el enfoque anterior (framework sección por sección) tras decisión directa de Carlitos*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -9,50 +8,47 @@
 
 ## 0. Qué es este documento
 
-Responde: **de todo lo que existe en la web vieja, ¿qué pasa a la web nueva, y con qué método?** No es "migramos todo" ni "recreamos todo" — es una decisión sección por sección, con un criterio claro para cada caso.
+Responde: **de todo lo que existe en la web vieja, ¿qué pasa a la web nueva, y con qué
+método?**
 
 | Si necesitas... | Ve a este documento en su lugar |
 |---|---|
 | Qué secciones tiene la web nueva y con qué prioridad | `ALCANCE_WEB_NUEVA.md` |
 | Dónde y cómo construir una pieza ya decidida (Global/Guardado/Snippet) | `METODOLOGIA_CONSTRUCCION.md` |
-| **Qué contenido de la web vieja migrar, cuál recrear, y el plan de SEO** | **Este documento** |
-
-**Regla de uso:** este documento decide *qué* pasa de la web vieja a la nueva. Una vez decidido, `METODOLOGIA_CONSTRUCCION.md` decide *dónde* construirlo en Avada.
+| **Qué contenido de la web vieja migrar, y el plan de SEO** | **Este documento** |
 
 ---
 
-## 1. Marco de decisión — la pregunta no es "¿migramos?", es "¿migramos esto en concreto?"
+## 1. Decisión de alcance — simplificada
 
-### 1.1 Contenido que NO conviene migrar — recrear limpio en la web nueva
+✅ **Decisión directa de Carlitos (julio 2026):** solo se migran dos cosas. **Todo lo
+demás se recrea limpio en la web nueva** — ninguna entrada, página o contenido textual se
+exporta/importa de la web vieja.
 
-| Contenido | Por qué recrear en vez de migrar |
-|---|---|
-| Entradas de "Charlas de la Biblia" y "Rincón de Nico" | El contenido único de cada entrada es mínimo — solo cambia el shortcode `[tt_podcast feed="..."]`. Recrear a mano en el nuevo sistema de Layouts lleva minutos por canal |
-| Páginas construidas como Code Block con shortcodes de `wp_options` (Conecta cada día) | No hay contenido que migrar — los datos viven en `wp_options`, no en `post_content`. Solo hay que volver a montar la página con el shortcode en Avada nuevo |
-| Cualquier página con CSS de experimentos abandonados | Ya identificado como deuda técnica (`METODOLOGIA_CONSTRUCCION.md` Sección 1) — no tiene sentido migrar el problema |
-
-**Riesgo técnico a evitar en cualquier migración:** el `post_content` de Avada serializa los Code Blocks en Base64. Un export/import XML de WordPress entre dos instalaciones de Avada puede romper esa serialización si los IDs de plugin o de builder no coinciden exactamente. Es una razón técnica adicional para recrear en vez de migrar páginas con Code Blocks complejos.
-
-### 1.2 Contenido que SÍ conviene migrar
-
-| Contenido | Método recomendado |
-|---|---|
-| Entradas de "Hombres de Dios" con contenido sustancial (biografía, oración, texto largo) | Vía Layouts de Avada — ver Sección 4 |
-| Archivos de medios (imágenes, portadas de podcast, audios de homilías) | Migrar siempre, migre o no el contenido textual. Opciones: plugin de migración (All-in-One WP Migration, Duplicator) para mover `/wp-content/uploads/` completa, o copia manual vía gestor de archivos de Raiola para lo que realmente se usa |
-| Datos de `wp_options` (las claves del sistema Creators) | No es "migración" clásica — es volver a ejecutar el snippet del endpoint en el WordPress nuevo y apuntar la PWA Creators al nuevo endpoint (usando el token `TT_WRITE_TOKEN`, ya definitivo — no Application Password) |
+Esto sustituye por completo el enfoque anterior de este documento (que evaluaba
+migración sección por sección, con exportación XML para Hombres de Dios según volumen,
+migración de archivos de medios, etc.). Es coherente con el principio ya recogido en
+`ARQUITECTURA_Y_ROADMAP.md` (Fortaleza F5): empezar de cero, sin heredar deuda, incluida
+la deuda de contenido.
 
 ---
 
-## 2. El problema del SEO — plan de redirecciones
+## 2. Lo que SÍ se migra
 
-Si la web nueva cambia las URLs de páginas que ya posicionan en Google (con Search Console activo), perder esas URLs sin redirección significa perder ese posicionamiento de golpe.
+### A. SEO — redirecciones 301
 
-**Plan recomendado antes del lanzamiento:**
+Si la web nueva cambia las URLs de páginas que ya posicionan en Google (con Search
+Console activo), perder esas URLs sin redirección significa perder ese posicionamiento
+de golpe.
 
-1. Desde Google Search Console, exportar el listado de páginas con más clics/impresiones de los últimos 12 meses
+**Plan:**
+1. Desde Google Search Console, exportar el listado de páginas con más clics/impresiones
+   de los últimos 12 meses
 2. Para cada una, decidir la URL equivalente en la web nueva
-3. Configurar redirecciones 301 (snippet PHP sencillo, o plugin de redirecciones si se prefiere gestión visual)
-4. Verificar en Search Console, semanas después del lanzamiento, que no aparecen errores 404 masivos
+3. Configurar redirecciones 301 (snippet PHP sencillo, o plugin de redirecciones si se
+   prefiere gestión visual)
+4. Verificar en Search Console, semanas después del lanzamiento, que no aparecen errores
+   404 masivos
 
 ```
 FLUJO DE MIGRACIÓN SEO
@@ -75,70 +71,75 @@ Lanzamiento
 Semanas después: revisar Search Console → errores 404 masivos ⇒ alerta
 ```
 
----
+### B. La lógica de Tiritaito for Creators
 
-## 3. Migración de archivos de medios — sin condiciones, siempre se hace
+No es "migración" en el sentido clásico — es reconectar la app al WordPress nuevo:
 
-A diferencia del contenido textual (que se decide caso por caso), los archivos de medios se migran siempre, se recree o no la página que los usa:
-
-- **Opción A:** plugin de migración (All-in-One WP Migration, Duplicator) para mover `/wp-content/uploads/` completa
-- **Opción B:** copia manual vía gestor de archivos de Raiola, solo de lo que realmente se usa
-
-**Recomendación:** si el volumen de medios es grande y no se sabe con certeza qué se usa y qué no, Opción A es más segura (todo o nada, sin dejarse nada por el camino). Si ya se sabe exactamente qué archivos importan, Opción B es más rápida y limpia.
-
----
-
-## 4. Hombres de Dios — decisión de formato actualizada
-
-**Actualización directa de Carlitos:** "Hombres de Dios" se va a construir de nuevo mediante **Layouts de Avada** — no páginas individuales sueltas, ni el debate Posts-con-categoría-vs-Post-Cards que se planteaba en la versión anterior de este documento. Esto reemplaza esa discusión.
-
-### 4.1 Lo que esto implica técnicamente
-
-Un Layout Content Section con Dynamic Content necesita, igualmente, un tipo de contenido de WordPress del que tirar (Posts o un Custom Post Type) — el Layout define el diseño una sola vez, y Avada lo aplica automáticamente a cada entrada de ese tipo. Es, en la práctica, la ruta "v2" que ya estaba anotada como posible evolución futura en `METODOLOGIA_WEB_NUEVA_v2` — el equipo salta directamente a ella en vez de pasar primero por páginas sueltas.
-
-**Buena noticia para la migración:** con esta ruta, el hallazgo de Post Cards (Sección 4 de la versión anterior de este documento) deja de ser un obstáculo — Post Cards sí funciona sobre Posts/CPT, que es exactamente lo que este enfoque usa. Ya no depende de si se convierten páginas sueltas en Posts.
-
-### 4.2 Lo que sigue pendiente de definir en Local
-
-- [ ] ¿Posts normales con categoría, o Custom Post Type con campos propios (ACF)? — determina la estructura de datos de cada santo
-- [ ] Qué campos tiene la "ficha de santo" (nombre, biografía, oración, fecha de fiesta, podcast asociado...) — ver `ALCANCE_WEB_NUEVA.md` Sección D cuando se revise con Hna C
-- [ ] Con la estructura de campos ya decidida, el método de migración se vuelve más simple: exportar/importar por categoría deja de depender del volumen, porque el contenido ya nace en el formato correcto
-
-**Este documento se actualizará** en cuanto Hna C y Carlitos cierren esta decisión — es probable que estudiar el Alcance juntos saque más contenido migrable a la luz, como ya se ha anotado.
+1. Volver a ejecutar en el WordPress nuevo el snippet del endpoint central
+   (`TT Creators + Biblioteca — Endpoint central`)
+2. Apuntar la PWA Tiritaito for Creators al nuevo endpoint
+3. Autenticación: token propio (`TT_WRITE_TOKEN`), ya definitivo — **nunca** Application
+   Password (confirmado en `GUIA_AVADA_LOCAL.md` Sección 2)
+4. Las claves de `wp_options` (`tt_virgen`, `tt_brisa`, `tt_homilia_audio`,
+   `tt_homilia_texto`, `tt_lenguas_url`, `tt_tip_1`, `tt_tip_2`, `tt_docx_lectura_url`,
+   `tt_youtube_json_url`, `tt_seminarios_json_url`) no se migran con datos históricos —
+   simplemente vuelven a poblarse desde la app apuntando al sitio nuevo
 
 ---
 
-## 5. Checklist de migración por sección
+## 3. Lo que NO se migra — se recrea limpio
 
-| Sección (Alcance) | ¿Migrar o recrear? | Método |
-|---|---|---|
-| Charlas de la Biblia | Recrear | Shortcode nuevo, minutos por canal |
-| Rincón de Nico | Recrear | Shortcode nuevo + accordion consolidado |
-| Conecta cada día | Recrear | Montar shortcode en Avada nuevo, sin migrar contenido (vive en `wp_options`) |
-| Seminarios — próximos | Recrear | Página estática nueva |
-| Seminarios — pasados | Migrar (parcial) | Entradas WP — candidato a export/import si el volumen lo justifica |
-| Hombres de Dios | Migrar (probable) | Vía Layouts de Avada — ver Sección 4. Método definitivo pendiente de estructura de campos |
-| Oraciones | Recrear | Contenido nuevo, v1 solo texto |
-| Archivos de medios (todas las secciones) | Migrar siempre | Plugin de migración o copia manual (Sección 3) |
-| Datos `wp_options` | No es migración clásica | Reejecutar snippet + apuntar app al nuevo endpoint con token |
+Todo el contenido textual y las entradas se escriben de nuevo, directamente en el formato
+y la estructura de la web nueva:
+
+- Entradas de Hombres de Dios (biografía, oración, historia de cada santo) — coherente
+  además con el método ya confirmado en `ALCANCE_WEB_NUEVA.md` Sección 4.H: cada ficha se
+  construye a mano sobre el Layout compartido con elementos Guardados, no hay automatización
+  posible que un export/import pudiera aprovechar
+- Charlas de la Biblia, Rincón de Nico, Conecta cada día — igual que en el enfoque
+  anterior, el contenido único de cada entrada es mínimo (cambia solo el shortcode o el
+  dato de `wp_options`); recrear a mano lleva minutos
+- Oraciones, Biblioteca (Libros, Películas) — contenido nuevo, sin intentar reutilizar el
+  de la web vieja
+- Cualquier página con CSS de experimentos abandonados — directamente fuera, sin
+  discusión
+
+🔲 **Asunción a confirmar, no decisión cerrada:** entiendo que "lo demás no" incluye
+también los **archivos multimedia** (imágenes, portadas de podcast, audios de homilías) —
+es decir, que también se suben nuevos en vez de migrar la carpeta `/wp-content/uploads/`
+completa, que era la recomendación de la versión anterior de este documento. Si algún
+archivo concreto sí conviene reaprovecharlo (por ejemplo, audios de homilías ya grabados
+que no se van a regrabar), dímelo y lo dejo como excepción explícita aquí — pero por
+defecto, con "lo demás no", lo entiendo incluido.
 
 ---
 
-## 6. Próximos pasos y preguntas abiertas
+## 4. Riesgo técnico que deja de aplicar
+
+La versión anterior de este documento advertía sobre el riesgo de que un export/import
+XML de WordPress rompiera la serialización en Base64 del `post_content` de Avada entre
+dos instalaciones distintas. **Ese riesgo deja de ser relevante** — al no hacerse ningún
+export/import de contenido, no hay `post_content` serializado que mover de un sitio a
+otro.
+
+---
+
+## 5. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Hna C + Carlitos: revisar `ALCANCE_WEB_NUEVA.md` completo y definir los campos de la "ficha de santo" para el Layout de Hombres de Dios
-2. Hno A: prototipar en Local el Layout Content Section con Dynamic Content para confirmar que Post Cards y el diseño funcionan como se espera
-3. Antes del lanzamiento: ejecutar el plan de redirecciones 301 de la Sección 2 con datos reales de Search Console
-4. Mantener este documento abierto a revisión — es probable que la revisión del Alcance con Hna C saque más contenido migrable a la luz
+1. Confirmar si los archivos multimedia quedan fuera de la migración (Sección 3) o si
+   hay excepciones puntuales
+2. Cuando se acerque el lanzamiento: ejecutar el plan de redirecciones 301 (Sección 2.A)
+   con datos reales de Search Console
+3. Reconectar Tiritaito for Creators al WordPress nuevo (Sección 2.B) cuando el entorno
+   Local esté listo para recibir tráfico real de la app
 
 **Preguntas abiertas:**
 
 | # | Pregunta | Bloquea a |
 |---|---|---|
-| 1 | ¿Posts normales con categoría o Custom Post Type con ACF para "Hombres de Dios"? | Estructura de datos del Layout (Sección 4) |
-| 2 | ¿Qué campos tiene la ficha de cada santo? | Diseño del Layout Content Section y método de migración |
-| 3 | ¿Cuál es el volumen real de archivos de medios a migrar? | Elegir entre plugin de migración completo o copia manual selectiva (Sección 3) |
+| 1 | ¿Los archivos multimedia se recrean/suben nuevos, o hay excepciones que sí se reaprovechan? | Sección 3 |
+| 2 | ¿Cuándo se considera "cerca del lanzamiento" para ejecutar el plan de redirecciones 301? | Sección 2.A |
 
 ---
 
