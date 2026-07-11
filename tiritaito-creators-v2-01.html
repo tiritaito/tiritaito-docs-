@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Tiritaito for Creators</title>
+<meta name="theme-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Tiritaito">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+
+@font-face {
+  font-family: 'Yeah Papa';
+  src: url('https://www.tiritaito.com/blog/wp-content/uploads/2026/04/YeahPapa.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Colores de marca */
+  --tt-red:       #BF4646;
+  --tt-red-d:     #A33B3B;
+  --tt-red-bg:    #FDF2F2;
+
+  /* Escala de grises iOS */
+  --tt-txt:       #1d1d1f;
+  --tt-txt2:      #3a3a3c;
+  --tt-txt3:      #6e6e73;
+  --tt-txt4:      #86868b;
+  --tt-sep:       #c7c7cc;
+
+  /* Superficies — fondo blanco puro, identidad de marca */
+  --tt-bg:        #FFFFFF;
+  --tt-surf:      #FFFFFF;
+  --tt-surf2:     #F5F5F7;
+  --tt-surf3:     #EBEBF0;
+
+  /* Estados */
+  --tt-green:     #34C759;
+  --tt-green-bg:  #F0FAF4;
+  --tt-orange:    #FF9500;
+  --tt-alert:     #FF3B30;
+
+  /* Geometría */
+  --tt-r:         25px;
+  --tt-r-sm:      14px;
+  --tt-r-xs:      8px;
+  --tt-sh:        0 2px 16px rgba(0,0,0,.07);
+  --tt-sh-md:     0 4px 28px rgba(0,0,0,.10);
+
+  /* Layout */
+  --tt-nav:       68px;
+  --tt-sab:       env(safe-area-inset-bottom, 0px);
+  --tt-sat:       env(safe-area-inset-top, 0px);
+}
+
+/* ── Reset ─────────────────────────── */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0;
+  -webkit-tap-highlight-color:transparent }
+html,body { height:100%; overflow:hidden }
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 15px; line-height: 1.5;
+  color: var(--tt-txt); background: var(--tt-bg);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, .tt-title {
+  font-family: 'Yeah Papa', 'Helvetica Neue', sans-serif;
+  font-weight: normal;
+}
+.tt-h1      { font-family:'Yeah Papa',sans-serif; font-size:32px; line-height:1.1 }
+.tt-h2      { font-family:'Yeah Papa',sans-serif; font-size:24px; line-height:1.2 }
+.tt-h3      { font-family:'Yeah Papa',sans-serif; font-size:20px; line-height:1.3 }
+.tt-body    { font-size:15px; color:var(--tt-txt2); line-height:1.6 }
+.tt-caption { font-size:12px; color:var(--tt-txt3); letter-spacing:.2px }
+.tt-label   { font-size:11px; font-weight:600; text-transform:uppercase;
+              letter-spacing:.6px; color:var(--tt-txt4) }
+
+/* ── Layout ─────────────────────────── */
+#app { height:100vh; display:flex; flex-direction:column; overflow:hidden }
+#main { flex:1; overflow-y:auto; overflow-x:hidden;
+  padding-bottom:calc(var(--tt-nav) + var(--tt-sab) + 32px);
+  -webkit-overflow-scrolling:touch }
+.tt-page { display:none; padding:20px 16px }
+.tt-page.active { display:block }
+
+/* ── Topbar ─────────────────────────── */
+.tt-topbar {
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--tt-sep);
+  padding:calc(10px + var(--tt-sat)) 16px 10px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+}
+.tt-topbar-spacer { width:30px; height:30px; flex-shrink:0 }
+
+/* ── Cards ─────────────────────────── */
+.tt-card { background:var(--tt-surf); border-radius:var(--tt-r);
+  box-shadow:var(--tt-sh); overflow:hidden; margin-bottom:14px }
+.tt-card-hdr { padding:14px 18px 12px; border-bottom:1px solid var(--tt-sep);
+  display:flex; align-items:center; gap:10px; justify-content:space-between }
+.tt-card-hdr-left { display:flex; align-items:center; gap:10px; min-width:0 }
+.tt-card-hdr-icon { width:34px; height:34px; border-radius:var(--tt-r-xs);
+  background:var(--tt-red-bg); color:var(--tt-red); display:flex;
+  align-items:center; justify-content:center; flex-shrink:0 }
+.tt-card-hdr-icon svg { width:18px; height:18px }
+.tt-card-body { padding:16px 18px }
+
+/* ── Botones ─────────────────────────── */
+.tt-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  padding:13px 22px; border-radius:var(--tt-r);
+  font-family:'Helvetica Neue',sans-serif; font-size:15px; font-weight:600;
+  border:none; cursor:pointer;
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1), background .15s, box-shadow .15s; }
+.tt-btn:active { transform: scale(.96) }
+.tt-btn-primary { background:var(--tt-red); color:#fff; width:100% }
+.tt-btn-primary:active { background:var(--tt-red-d); box-shadow: 0 0 0 4px rgba(191,70,70,.2) }
+.tt-btn-sec { background:var(--tt-surf2); color:var(--tt-txt) }
+.tt-btn-danger { background:#FFF0F0; color:var(--tt-alert) }
+.tt-btn-sm { padding:8px 14px; font-size:13px; border-radius:var(--tt-r-sm) }
+.tt-btn-full { width:100% }
+.tt-add-btn { width:44px; height:44px; border-radius:50%;
+  background:var(--tt-red); color:#fff; font-size:24px; border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 3px 10px rgba(191,70,70,.35); flex-shrink:0;
+  transition: transform .12s cubic-bezier(.34,1.56,.64,1); }
+.tt-add-btn:active { transform: scale(.9) }
+
+/* ── Formularios ─────────────────────── */
+.tt-fg { margin-bottom:18px }
+.tt-fg:last-child { margin-bottom:0 }
+.tt-flabel { display:block; font-size:11px; font-weight:600;
+  text-transform:uppercase; letter-spacing:.6px; color:var(--tt-txt4); margin-bottom:7px }
+.tt-finput { width:100%; padding:13px 16px; border:1.5px solid var(--tt-sep);
+  border-radius:var(--tt-r-sm); background:var(--tt-surf); color:var(--tt-txt);
+  font-family:'Helvetica Neue',sans-serif; font-size:15px; outline:none;
+  transition:border-color .15s; -webkit-appearance:none }
+.tt-finput:focus { border-color:var(--tt-red) }
+.tt-ftextarea { resize:vertical; min-height:90px }
+
+/* ── Stabs (chips de filtro) ─────────── */
+.tt-stabs { display:flex; gap:8px; overflow-x:auto; padding-bottom:4px;
+  margin-bottom:16px; scrollbar-width:none }
+.tt-stabs::-webkit-scrollbar { display:none }
+.tt-stab { flex-shrink:0; padding:8px 18px; border-radius:20px;
+  font-size:13px; font-weight:600; background:var(--tt-surf2);
+  color:var(--tt-txt3); cursor:pointer; border:none;
+  transition: all .18s cubic-bezier(.4,0,.2,1); }
+.tt-stab.on { background:var(--tt-red); color:#fff }
+
+/* ── Búsqueda ─────────────────────── */
+.tt-srch-wrap { position:relative; margin-bottom:14px }
+.tt-srch-icon { position:absolute; left:13px; top:50%;
+  transform:translateY(-50%); color:var(--tt-txt4); display:flex }
+.tt-srch-input { width:100%; padding:11px 16px 11px 40px;
+  border-radius:var(--tt-r-sm); background:var(--tt-surf2); border:none; outline:none;
+  font-family:'Helvetica Neue',sans-serif; font-size:15px; color:var(--tt-txt) }
+
+/* ── Progreso de subida ─────────────── */
+.tt-progress-wrap { background:var(--tt-surf2); border-radius:6px;
+  height:6px; overflow:hidden; margin-top:10px }
+.tt-progress-fill { height:100%; background:var(--tt-red); border-radius:6px;
+  transition:width .3s ease; width:0% }
+
+/* ── Spinner ─────────────────────── */
+.tt-spinner { width:22px; height:22px; border:2.5px solid var(--tt-sep);
+  border-top-color:var(--tt-red); border-radius:50%;
+  animation:tt-spin .7s linear infinite; display:inline-block }
+
+/* ── Empty state ─────────────────── */
+.tt-empty { text-align:center; padding:48px 20px; color:var(--tt-txt4) }
+.tt-empty-icon { margin-bottom:14px; display:flex; justify-content:center; color:var(--tt-txt4) }
+.tt-empty-icon svg { width:48px; height:48px }
+.tt-empty-title { font-family:'Yeah Papa',sans-serif; font-size:22px;
+  color:var(--tt-txt2); margin-bottom:6px }
+.tt-empty-text { font-size:14px; line-height:1.6 }
+
+/* ── Toast ─────────────────────────── */
+.tt-toast { position:fixed; bottom:calc(var(--tt-nav) + 18px + var(--tt-sab));
+  left:50%; transform:translateX(-50%) translateY(16px);
+  background:var(--tt-txt); color:#fff; padding:11px 22px; border-radius:22px;
+  font-size:14px; font-weight:500; z-index:600; opacity:0;
+  transition:all .28s cubic-bezier(.34,1.2,.64,1);
+  pointer-events:none; max-width:88vw; text-align:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.18) }
+.tt-toast.show { opacity:1; transform:translateX(-50%) translateY(0) }
+.tt-toast.tipo-error  { background:var(--tt-alert) }
+.tt-toast.tipo-warn   { background:var(--tt-orange) }
+.tt-toast.tipo-info   { background:var(--tt-txt3) }
+
+/* ── Bottom Nav ─────────────────────── */
+.tt-bnav { position:fixed; bottom:0; left:0; right:0;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-top:1px solid var(--tt-sep);
+  display:flex; align-items:stretch;
+  height:calc(var(--tt-nav) + var(--tt-sab));
+  padding-bottom:var(--tt-sab); z-index:100;
+  box-shadow:0 -1px 20px rgba(0,0,0,.06) }
+.tt-ni { flex:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:4px; color:var(--tt-txt4);
+  font-size:10px; font-weight:500; letter-spacing:.2px;
+  padding:8px 2px; border:none; background:none; cursor:pointer;
+  transition:color .15s }
+.tt-ni.active { color:var(--tt-red) }
+.tt-ni-icon { width:24px; height:24px; display:block;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1) }
+.tt-ni.active .tt-ni-icon { transform: scale(1.15) }
+
+/* ── Modal / Sheet ─────────────────── */
+.tt-modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.40);
+  z-index:200; display:none; align-items:flex-end }
+.tt-modal-bg.open { display:flex }
+.tt-msheet { background:var(--tt-surf); border-radius:var(--tt-r) var(--tt-r) 0 0;
+  width:100%; max-height:92vh; overflow-y:auto;
+  padding:20px 20px calc(24px + var(--tt-sab)); position:relative;
+  animation: tt-slideup .35s cubic-bezier(.34,1.2,.64,1) }
+.tt-mhandle { width:36px; height:4px; background:var(--tt-sep);
+  border-radius:2px; margin:0 auto 22px }
+.tt-mclose { position:absolute; right:16px; top:16px; width:32px; height:32px;
+  border-radius:50%; background:var(--tt-surf2); border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; color:var(--tt-txt3) }
+.tt-mtitle { font-family:'Yeah Papa',sans-serif; font-size:26px;
+  margin-bottom:22px; color:var(--tt-txt) }
+
+/* ── PIN screen ─────────────────────── */
+.tt-pin-screen { position:fixed; inset:0; background:var(--tt-bg);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:1000; padding:32px }
+.tt-pin-dots { display:flex; gap:16px; margin-bottom:36px }
+.tt-pin-dots.shake { animation: tt-shake .5s cubic-bezier(.36,.07,.19,.97) }
+.tt-pin-dot { width:14px; height:14px; border-radius:50%;
+  border:2px solid var(--tt-sep); background:transparent; transition:all .2s }
+.tt-pin-dot.on { background:var(--tt-red); border-color:var(--tt-red) }
+.tt-pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; width:260px }
+.tt-pp { height:74px; border-radius:50%; background:var(--tt-surf); border:none;
+  cursor:pointer; font-family:'Helvetica Neue',sans-serif;
+  font-size:26px; font-weight:300; color:var(--tt-txt); box-shadow:var(--tt-sh);
+  display:flex; flex-direction:column; align-items:center; justify-content:center }
+.tt-pp:active { transform:scale(.9); background:var(--tt-surf2) }
+.tt-pp small { font-size:9px; color:var(--tt-txt4); letter-spacing:1px; margin-top:2px }
+.tt-pp-empty { background:transparent; box-shadow:none; cursor:default }
+.tt-pin-err { color:var(--tt-alert); font-size:13px; margin-top:18px; min-height:20px }
+
+/* ── Logo ─────────────────────── */
+.tt-logo { width:80px; height:80px; object-fit:contain;
+  border-radius:var(--tt-r); margin-bottom:24px }
+.tt-logo-sm { height:30px; width:auto; object-fit:contain; border-radius:var(--tt-r-xs) }
+
+/* ── Keyframes ────────────────────────────────────── */
+@keyframes tt-pagein { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:translateY(0) } }
+@keyframes tt-scalein { from { opacity:0; transform:scale(.96) } to { opacity:1; transform:scale(1) } }
+@keyframes tt-slideup { from { transform:translateY(100%); opacity:.7 } to { transform:translateY(0); opacity:1 } }
+@keyframes tt-shake { 0%,100% { transform:translateX(0) } 20%,60% { transform:translateX(-8px) } 40%,80% { transform:translateX(8px) } }
+@keyframes tt-spin { to { transform:rotate(360deg) } }
+.tt-page.active { animation: tt-pagein .22s cubic-bezier(.4,0,.2,1) }
+
+/* ── Módulo 1: Devocional ─────────────────── */
+.tt-dev-status { margin-bottom:14px; padding:10px 13px; background:var(--tt-surf2);
+  border-radius:var(--tt-r-xs); font-size:13px; color:var(--tt-txt3); line-height:1.5 }
+.tt-quitar-link { background:none; border:none; color:var(--tt-txt4); font-size:13px;
+  text-decoration:underline; cursor:pointer; margin-top:10px; padding:4px 0 }
+
+/* ── Módulo 2: Biblioteca de Medios ─────────────────── */
+.tt-media-toolbar { display:flex; align-items:center; gap:10px; margin-bottom:16px }
+.tt-media-toolbar .tt-srch-wrap { flex:1; margin-bottom:0 }
+.tt-media-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:18px }
+.tt-media-item { aspect-ratio:1; border-radius:var(--tt-r-sm); overflow:hidden;
+  background:var(--tt-surf2); cursor:pointer; position:relative;
+  transition: transform .1s }
+.tt-media-item:active { transform: scale(.96) }
+.tt-media-item img { width:100%; height:100%; object-fit:cover; display:block }
+.tt-media-icon { width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+  color:var(--tt-txt4) }
+.tt-media-icon svg { width:28px; height:28px }
+.tt-media-name { position:absolute; left:0; right:0; bottom:0; padding:6px 8px 5px;
+  background:linear-gradient(transparent, rgba(0,0,0,.55)); color:#fff;
+  font-size:10px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+
+/* ── Ayuda ─────────────────────── */
+.tt-faq { border-bottom:1px solid var(--tt-sep) }
+.tt-faq:last-child { border-bottom:none }
+.tt-faq summary { padding:15px 0; font-size:15px; font-weight:500; color:var(--tt-txt);
+  cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between }
+.tt-faq summary::-webkit-details-marker { display:none }
+.tt-faq summary::after { content:'+'; font-size:20px; color:var(--tt-txt4); font-weight:300 }
+.tt-faq[open] summary::after { content:'–' }
+.tt-faq p { padding-bottom:16px; font-size:14px; color:var(--tt-txt3); line-height:1.65 }
+.tt-footer-note { text-align:center; padding:28px 0 10px; font-size:12px; color:var(--tt-txt4) }
+
+/* ── Módulo 3 y 4: Recursos ─────────────────── */
+.tt-playlist-item { display:flex; align-items:center; gap:8px;
+  padding:10px 14px; background:var(--tt-surf2); border-radius:var(--tt-r-xs);
+  margin-bottom:8px }
+.tt-playlist-name { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap; font-size:14px; font-weight:500; color:var(--tt-txt) }
+.tt-playlist-id { flex:1.2; min-width:0; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap; font-size:11px; color:var(--tt-txt4); font-family:monospace }
+.tt-playlist-del { width:28px; height:28px; border-radius:50%;
+  background:#FFF0F0; color:var(--tt-alert); border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  font-size:18px; line-height:1;
+  transition:transform .12s cubic-bezier(.34,1.56,.64,1) }
+.tt-playlist-del:active { transform:scale(.9) }
+
+/* ── Módulo Novedades ─────────────────── */
+.tt-novedad-item { display:flex; align-items:center; gap:12px;
+  padding:12px; background:var(--tt-surf2); border-radius:var(--tt-r-sm);
+  margin-bottom:10px }
+.tt-novedad-thumb { width:56px; height:56px; border-radius:var(--tt-r-xs);
+  overflow:hidden; flex-shrink:0; background:var(--tt-surf3);
+  display:flex; align-items:center; justify-content:center; color:var(--tt-txt4) }
+.tt-novedad-thumb img, .tt-novedad-thumb video { width:100%; height:100%; object-fit:cover }
+.tt-novedad-info { flex:1; min-width:0 }
+.tt-novedad-texto { font-size:14px; font-weight:500; color:var(--tt-txt);
+  overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical }
+.tt-novedad-meta { font-size:12px; color:var(--tt-txt4); margin-top:3px;
+  display:flex; align-items:center; gap:6px; flex-wrap:wrap }
+.tt-novedad-badge { display:inline-block; font-size:10px; font-weight:600;
+  padding:2px 8px; border-radius:10px }
+.tt-novedad-badge.on  { background:var(--tt-green-bg); color:var(--tt-green) }
+.tt-novedad-badge.off { background:var(--tt-surf3); color:var(--tt-txt4) }
+.tt-novedad-actions { display:flex; gap:6px; flex-shrink:0 }
+.tt-novedad-actedit, .tt-novedad-actdel { width:32px; height:32px; border-radius:50%;
+  border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:transform .12s cubic-bezier(.34,1.56,.64,1) }
+.tt-novedad-actedit:active, .tt-novedad-actdel:active { transform:scale(.9) }
+.tt-novedad-actedit { background:var(--tt-surf3); color:var(--tt-txt3) }
+.tt-novedad-actdel  { background:#FFF0F0; color:var(--tt-alert) }
+
+/* ── Responsive ─────────────────────── */
+@media (min-width:768px) {
+  .tt-page { max-width:600px; margin:0 auto }
+  .tt-msheet { max-width:560px; margin:auto; border-radius:var(--tt-r) }
+  .tt-modal-bg { align-items:center }
+  .tt-media-grid { grid-template-columns:repeat(4,1fr) }
+}
+</style>
+</head>
+<body>
+
+<!-- PIN SCREEN -->
+<div class="tt-pin-screen" id="pin-screen">
+  <img class="tt-logo" id="pin-logo" src="" alt="Tiritaito for Creators" onerror="this.style.display='none'">
+  <div class="tt-h2" style="margin-bottom:32px;color:var(--tt-txt);text-align:center">Tiritaito for Creators</div>
+  <div class="tt-pin-dots" id="pin-dots">
+    <div class="tt-pin-dot"></div>
+    <div class="tt-pin-dot"></div>
+    <div class="tt-pin-dot"></div>
+    <div class="tt-pin-dot"></div>
+  </div>
+  <div class="tt-pin-pad" id="pin-pad">
+    <button class="tt-pp" data-pin="1">1</button>
+    <button class="tt-pp" data-pin="2">2<small>ABC</small></button>
+    <button class="tt-pp" data-pin="3">3<small>DEF</small></button>
+    <button class="tt-pp" data-pin="4">4<small>GHI</small></button>
+    <button class="tt-pp" data-pin="5">5<small>JKL</small></button>
+    <button class="tt-pp" data-pin="6">6<small>MNO</small></button>
+    <button class="tt-pp" data-pin="7">7<small>PQRS</small></button>
+    <button class="tt-pp" data-pin="8">8<small>TUV</small></button>
+    <button class="tt-pp" data-pin="9">9<small>WXYZ</small></button>
+    <div class="tt-pp tt-pp-empty"></div>
+    <button class="tt-pp" data-pin="0">0</button>
+    <button class="tt-pp" id="pin-del" aria-label="Borrar">⌫</button>
+  </div>
+  <div class="tt-pin-err" id="pin-err"></div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app" style="display:none">
+
+  <div class="tt-topbar">
+    <img class="tt-logo-sm tt-logo" src="" alt="Tiritaito">
+    <div class="tt-h3" id="topbar-title">Hoy</div>
+    <div class="tt-topbar-spacer"></div>
+  </div>
+
+  <div id="main">
+
+    <!-- ───────── PÁGINA: DEVOCIONAL ───────── -->
+    <section class="tt-page active" id="page-devocional">
+
+      <!-- Mensaje de la Virgen -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L8 6v6l4 4 4-4V6L12 2z"/><path d="M8 12c-2 1-3 3-3 5s1 4 3 5M16 12c2 1 3 3 3 5s-1 4-3 5"/></svg>
+            </div>
+            <div class="tt-h3">Mensaje de la Virgen</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="virgen-status">Cargando estado…</div>
+          <div class="tt-fg">
+            <label class="tt-flabel" for="virgen-fecha">Fecha</label>
+            <input type="date" class="tt-finput" id="virgen-fecha">
+          </div>
+          <div class="tt-fg">
+            <label class="tt-flabel" for="virgen-texto">Mensaje</label>
+            <textarea class="tt-finput tt-ftextarea" id="virgen-texto" placeholder="Escribe aquí el mensaje de hoy…"></textarea>
+          </div>
+          <button class="tt-btn tt-btn-primary" onclick="window.guardarVirgen()">Publicar mensaje</button>
+        </div>
+      </div>
+
+      <!-- Hora de la Brisa -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="tt-h3">Hora de la Brisa</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="brisa-status">Cargando estado…</div>
+          <div class="tt-fg">
+            <label class="tt-flabel" for="brisa-texto">Texto</label>
+            <textarea class="tt-finput tt-ftextarea" id="brisa-texto" placeholder="Escribe aquí el texto de hoy…"></textarea>
+          </div>
+          <div class="tt-fg">
+            <label class="tt-flabel" for="brisa-autor">Autor (va después del —)</label>
+            <input type="text" class="tt-finput" id="brisa-autor" placeholder="Ej. San Josemaría Escrivá">
+          </div>
+          <button class="tt-btn tt-btn-primary" onclick="window.guardarBrisa()">Publicar texto</button>
+        </div>
+      </div>
+
+      <!-- Homilía — audio -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </div>
+            <div class="tt-h3">Homilía — audio</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="homilia-audio-status">Cargando estado…</div>
+          <input type="file" id="homilia-audio-input" accept="audio/mpeg,audio/mp3,audio/mp4,audio/x-m4a,audio/wav" style="display:none">
+          <button class="tt-btn tt-btn-primary" onclick="document.getElementById('homilia-audio-input').click()">Subir audio de la homilía</button>
+          <div class="tt-progress-wrap" id="homilia-audio-progress" style="display:none"><div class="tt-progress-fill" id="homilia-audio-progress-fill"></div></div>
+          <button class="tt-quitar-link" onclick="window.quitarCampo('tt_homilia_audio','homilia-audio','Audio de la homilía')">Quitar audio publicado</button>
+        </div>
+      </div>
+
+      <!-- Homilía — texto -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </div>
+            <div class="tt-h3">Homilía — texto</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="homilia-texto-status">Cargando estado…</div>
+          <div class="tt-fg">
+            <label class="tt-flabel" for="homilia-texto-texto">Texto completo</label>
+            <textarea class="tt-finput tt-ftextarea" id="homilia-texto-texto" style="min-height:160px" placeholder="Escribe aquí el texto completo de la homilía…"></textarea>
+          </div>
+          <div class="tt-fg">
+            <label class="tt-flabel" for="homilia-texto-fecha">Fecha (va al final del texto)</label>
+            <input type="date" class="tt-finput" id="homilia-texto-fecha">
+          </div>
+          <button class="tt-btn tt-btn-primary" onclick="window.guardarHomiliaTexto()">Publicar texto</button>
+        </div>
+      </div>
+
+      <!-- Lenguas de Hoy -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96C1 8.14 1 12 1 12s0 3.86.46 5.58a2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96C23 15.86 23 12 23 12s0-3.86-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            </div>
+            <div class="tt-h3">Lenguas de Hoy</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="lenguas-status">Cargando estado…</div>
+          <input type="file" id="lenguas-input" accept="video/*" style="display:none">
+          <button class="tt-btn tt-btn-primary" onclick="document.getElementById('lenguas-input').click()">Subir vídeo de Lenguas de Hoy</button>
+          <div class="tt-progress-wrap" id="lenguas-progress" style="display:none"><div class="tt-progress-fill" id="lenguas-progress-fill"></div></div>
+          <button class="tt-quitar-link" onclick="window.quitarCampo('tt_lenguas_url','lenguas','Vídeo de Lenguas de Hoy')">Quitar vídeo publicado</button>
+        </div>
+      </div>
+
+      <!-- Tip del día -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <div class="tt-h3">Tip del día</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-flabel" style="margin-bottom:7px">Primer tip</div>
+          <div class="tt-dev-status" id="tip1-status">Cargando estado…</div>
+          <input type="file" id="tip1-input" accept="image/*,video/*" style="display:none">
+          <button class="tt-btn tt-btn-primary" onclick="document.getElementById('tip1-input').click()">Subir primer tip</button>
+          <div class="tt-progress-wrap" id="tip1-progress" style="display:none"><div class="tt-progress-fill" id="tip1-progress-fill"></div></div>
+          <button class="tt-quitar-link" onclick="window.quitarCampo('tt_tip_1','tip1','Primer tip')">Quitar primer tip</button>
+
+          <div style="height:22px"></div>
+
+          <div class="tt-flabel" style="margin-bottom:7px">Segundo tip (opcional)</div>
+          <div class="tt-dev-status" id="tip2-status">Cargando estado…</div>
+          <input type="file" id="tip2-input" accept="image/*,video/*" style="display:none">
+          <button class="tt-btn tt-btn-sec tt-btn-full" onclick="document.getElementById('tip2-input').click()">Subir segundo tip</button>
+          <div class="tt-progress-wrap" id="tip2-progress" style="display:none"><div class="tt-progress-fill" id="tip2-progress-fill"></div></div>
+          <button class="tt-quitar-link" onclick="window.quitarCampo('tt_tip_2','tip2','Segundo tip')">Quitar segundo tip</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ───────── PÁGINA: NOVEDADES ───────── -->
+    <section class="tt-page" id="page-novedades">
+
+      <button class="tt-btn tt-btn-primary tt-btn-full" style="margin-bottom:18px" onclick="window.abrirModalNovedad()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Añadir novedad
+      </button>
+
+      <div id="novedades-lista"></div>
+
+      <div class="tt-empty" id="novedades-empty" style="display:none">
+        <div class="tt-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+        </div>
+        <div class="tt-empty-title">Sin novedades</div>
+        <div class="tt-empty-text">Añade la primera novedad para que aparezca<br>destacada al entrar en la web.</div>
+      </div>
+
+    </section>
+
+    <!-- ───────── PÁGINA: MEDIOS ───────── -->
+    <section class="tt-page" id="page-medios">
+      <div class="tt-media-toolbar">
+        <div class="tt-srch-wrap">
+          <span class="tt-srch-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input type="text" class="tt-finput tt-srch-input" placeholder="Buscar por nombre…" oninput="window.buscarMedios(this.value)">
+        </div>
+        <button class="tt-add-btn" onclick="window.abrirSelectorSubida()" aria-label="Subir archivo">+</button>
+      </div>
+
+      <div class="tt-stabs" id="media-filtros">
+        <button class="tt-stab on" data-tipo="all" onclick="window.filtrarMedios('all')">Todos</button>
+        <button class="tt-stab" data-tipo="image" onclick="window.filtrarMedios('image')">Imágenes</button>
+        <button class="tt-stab" data-tipo="video" onclick="window.filtrarMedios('video')">Vídeos</button>
+        <button class="tt-stab" data-tipo="audio" onclick="window.filtrarMedios('audio')">Audios</button>
+        <button class="tt-stab" data-tipo="application" onclick="window.filtrarMedios('application')">Documentos</button>
+      </div>
+
+      <input type="file" id="media-file-input" style="display:none">
+
+      <div class="tt-media-grid" id="media-grid"></div>
+
+      <div class="tt-empty" id="media-empty" style="display:none">
+        <div class="tt-empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="tt-empty-title">Sin archivos</div>
+        <div class="tt-empty-text">No hay archivos que coincidan.<br>Toca el botón rojo para subir uno.</div>
+      </div>
+
+      <button class="tt-btn tt-btn-sec tt-btn-full" id="media-more" style="display:none" onclick="window.cargarMasMedios()">Cargar más</button>
+    </section>
+
+    <!-- ───────── PÁGINA: AYUDA ───────── -->
+    <section class="tt-page" id="page-ayuda">
+      <div class="tt-card">
+        <div class="tt-card-body">
+
+          <details class="tt-faq" open>
+            <summary>¿Cómo publico el mensaje de la Virgen u otro contenido devocional?</summary>
+            <p>Ve a la pestaña "Hoy", rellena el texto (y la fecha o el autor si aplica) en la tarjeta correspondiente y pulsa el botón rojo de "Publicar". En unos segundos aparecerá en la web.</p>
+          </details>
+
+          <details class="tt-faq">
+            <summary>¿Cómo subo una foto, un vídeo o un audio?</summary>
+            <p>En las tarjetas de "Hoy" que llevan archivo (audio de la homilía, vídeo de Lenguas, tips) pulsa el botón de subir y elige el archivo desde tu móvil. Verás una barra de progreso mientras se sube. Cuando termine, ya estará publicado.</p>
+          </details>
+
+          <details class="tt-faq">
+            <summary>¿Cómo elimino un archivo de la Biblioteca de Medios?</summary>
+            <p>Ve a la pestaña "Biblioteca", toca el archivo para abrirlo y pulsa "Eliminar". Te pedirá confirmación porque esta acción no tiene vuelta atrás.</p>
+          </details>
+
+          <details class="tt-faq">
+            <summary>¿Qué hago si la app me da un error?</summary>
+            <p>Comprueba tu conexión a internet e inténtalo de nuevo. Si el error persiste, anota el mensaje exacto que aparece y contacta con el equipo técnico.</p>
+          </details>
+
+          <details class="tt-faq">
+            <summary>¿Cómo sé si el contenido ya aparece en la web?</summary>
+            <p>Cada tarjeta de "Hoy" muestra debajo del título lo último que está publicado. Si ves la marca verde de confirmación al guardar, ya está en la web.</p>
+          </details>
+
+          <details class="tt-faq">
+            <summary>¿Qué pasa si borro algo por error?</summary>
+            <p>Los textos pueden volver a publicarse escribiéndolos de nuevo. Los archivos eliminados de la Biblioteca de Medios no se pueden recuperar — por eso la app siempre pide confirmación antes de borrar.</p>
+          </details>
+
+          <details class="tt-faq">
+            <summary>¿A quién puedo contactar si hay un problema técnico?</summary>
+            <p>Contacta con el equipo técnico de Tiritaito a través de los canales habituales del equipo.</p>
+          </details>
+
+        </div>
+      </div>
+      <div class="tt-footer-note">Tiritaito for Creators · v2-02 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
+    </section>
+
+    <!-- ───────── PÁGINA: RECURSOS ───────── -->
+    <section class="tt-page" id="page-recursos">
+
+      <!-- API Key YouTube -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+            </div>
+            <div class="tt-h3">API Key de YouTube</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="ytkey-status">Comprobando…</div>
+          <div class="tt-fg">
+            <label class="tt-flabel" for="ytkey-input">Clave de API</label>
+            <input type="password" class="tt-finput" id="ytkey-input" placeholder="AIzaSy…">
+          </div>
+          <button class="tt-btn tt-btn-primary" onclick="window.accionGuardarYtKey()">Guardar clave</button>
+        </div>
+      </div>
+
+      <!-- Lecturas DOCX -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div class="tt-h3">Lecturas de la semana</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="lecturas-status">Cargando estado…</div>
+          <input type="file" id="lecturas-input" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+          <button class="tt-btn tt-btn-primary" onclick="document.getElementById('lecturas-input').click()">Subir DOCX de lecturas</button>
+          <div class="tt-progress-wrap" id="lecturas-progress" style="display:none">
+            <div class="tt-progress-fill" id="lecturas-progress-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lectura del santo (fiesta) -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M5 9l7-7 7 7"/><circle cx="12" cy="9" r="3"/></svg>
+            </div>
+            <div class="tt-h3">Lectura del santo</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="fiesta-status">Cargando estado…</div>
+          <div class="tt-body" style="font-size:13px;margin-bottom:12px">
+            Marca los días en los que la web debe mostrar la lectura propia del santo (cuando el DOCX de esa semana la incluya) en vez de la lectura ordinaria.
+          </div>
+          <div class="tt-stabs" id="fiesta-dias" style="flex-wrap:wrap;overflow:visible;padding-bottom:0">
+            <button class="tt-stab" data-dow="1" onclick="window.toggleFiestaDia(1)">Lunes</button>
+            <button class="tt-stab" data-dow="2" onclick="window.toggleFiestaDia(2)">Martes</button>
+            <button class="tt-stab" data-dow="3" onclick="window.toggleFiestaDia(3)">Miércoles</button>
+            <button class="tt-stab" data-dow="4" onclick="window.toggleFiestaDia(4)">Jueves</button>
+            <button class="tt-stab" data-dow="5" onclick="window.toggleFiestaDia(5)">Viernes</button>
+            <button class="tt-stab" data-dow="6" onclick="window.toggleFiestaDia(6)">Sábado</button>
+            <button class="tt-stab" data-dow="0" onclick="window.toggleFiestaDia(0)">Domingo</button>
+          </div>
+          <button class="tt-btn tt-btn-primary" style="margin-top:14px" onclick="window.guardarFiestaDias()">Guardar configuración</button>
+        </div>
+      </div>
+
+      <!-- Generadores YouTube -->
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96C1 8.14 1 12 1 12s0 3.86.46 5.58a2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96C23 15.86 23 12 23 12s0-3.86-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            </div>
+            <div class="tt-h3">Generadores YouTube</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-stabs" id="yt-subtabs">
+            <button class="tt-stab on" data-yt="musica" onclick="window.cambiarSubTabYt('musica')">Música</button>
+            <button class="tt-stab" data-yt="viacrucis" onclick="window.cambiarSubTabYt('viacrucis')">Vía Crucis</button>
+            <button class="tt-stab" data-yt="seminarios" onclick="window.cambiarSubTabYt('seminarios')">Seminarios</button>
+          </div>
+
+          <!-- Panel Música -->
+          <div id="yt-panel-musica">
+            <div class="tt-dev-status" id="yt-musica-status">Cargando estado…</div>
+            <div class="tt-flabel" style="margin:14px 0 8px">Playlists</div>
+            <div id="yt-musica-lista"></div>
+            <div class="tt-fg" style="margin-top:10px">
+              <label class="tt-flabel" for="yt-musica-nombre">Nombre</label>
+              <input type="text" class="tt-finput" id="yt-musica-nombre" placeholder="Ej. Navidad">
+            </div>
+            <div class="tt-fg">
+              <label class="tt-flabel" for="yt-musica-id">ID de la playlist en YouTube</label>
+              <input type="text" class="tt-finput" id="yt-musica-id" placeholder="PLxxxxxxxxxxxxxxxxxx">
+            </div>
+            <button class="tt-btn tt-btn-sec tt-btn-full" style="margin-bottom:14px" onclick="window.agregarPlaylist('musica')">+ Añadir playlist</button>
+            <button class="tt-btn tt-btn-primary" id="yt-musica-btn" onclick="window.generarYPublicar('musica')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Generar y publicar
+            </button>
+          </div>
+
+          <!-- Panel Vía Crucis -->
+          <div id="yt-panel-viacrucis" style="display:none">
+            <div class="tt-dev-status" id="yt-viacrucis-status">Cargando estado…</div>
+            <div class="tt-flabel" style="margin:14px 0 8px">Playlists</div>
+            <div id="yt-viacrucis-lista"></div>
+            <div class="tt-fg" style="margin-top:10px">
+              <label class="tt-flabel" for="yt-viacrucis-nombre">Nombre</label>
+              <input type="text" class="tt-finput" id="yt-viacrucis-nombre" placeholder="Ej. Vía Crucis 2024">
+            </div>
+            <div class="tt-fg">
+              <label class="tt-flabel" for="yt-viacrucis-id">ID de la playlist en YouTube</label>
+              <input type="text" class="tt-finput" id="yt-viacrucis-id" placeholder="PLxxxxxxxxxxxxxxxxxx">
+            </div>
+            <button class="tt-btn tt-btn-sec tt-btn-full" style="margin-bottom:14px" onclick="window.agregarPlaylist('viacrucis')">+ Añadir playlist</button>
+            <button class="tt-btn tt-btn-primary" id="yt-viacrucis-btn" onclick="window.generarYPublicar('viacrucis')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Generar y publicar
+            </button>
+          </div>
+
+          <!-- Panel Seminarios -->
+          <div id="yt-panel-seminarios" style="display:none">
+            <div class="tt-dev-status" id="yt-seminarios-status">Cargando estado…</div>
+            <div class="tt-flabel" style="margin:14px 0 8px">Playlists</div>
+            <div id="yt-seminarios-lista"></div>
+            <div class="tt-fg" style="margin-top:10px">
+              <label class="tt-flabel" for="yt-seminarios-nombre">Nombre</label>
+              <input type="text" class="tt-finput" id="yt-seminarios-nombre" placeholder="Ej. Seminarios Evangelio">
+            </div>
+            <div class="tt-fg">
+              <label class="tt-flabel" for="yt-seminarios-id">ID de la playlist en YouTube</label>
+              <input type="text" class="tt-finput" id="yt-seminarios-id" placeholder="PLxxxxxxxxxxxxxxxxxx">
+            </div>
+            <button class="tt-btn tt-btn-sec tt-btn-full" style="margin-bottom:14px" onclick="window.agregarPlaylist('seminarios')">+ Añadir playlist</button>
+            <button class="tt-btn tt-btn-primary" id="yt-seminarios-btn" onclick="window.generarYPublicar('seminarios')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Generar y publicar
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <nav class="tt-bnav">
+    <button class="tt-ni active" data-page="devocional" onclick="window.cambiarPagina('devocional')">
+      <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L8 6v6l4 4 4-4V6L12 2z"/><path d="M8 12c-2 1-3 3-3 5s1 4 3 5M16 12c2 1 3 3 3 5s-1 4-3 5"/></svg>
+      Hoy
+    </button>
+    <button class="tt-ni" data-page="novedades" onclick="window.cambiarPagina('novedades')">
+      <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+      Novedades
+    </button>
+    <button class="tt-ni" data-page="medios" onclick="window.cambiarPagina('medios')">
+      <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Biblioteca
+    </button>
+    <button class="tt-ni" data-page="recursos" onclick="window.cambiarPagina('recursos')">
+      <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Recursos
+    </button>
+    <button class="tt-ni" data-page="ayuda" onclick="window.cambiarPagina('ayuda')">
+      <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 015 0c0 1.5-2 2-2.5 3.5"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg>
+      Ayuda
+    </button>
+  </nav>
+
+</div>
+
+<div class="tt-toast" id="tt-toast"></div>
+
+<script type="module">
+
+/* ════════════════════════════════════════════════════════
+   1. CONSTANTES
+   ════════════════════════════════════════════════════════ */
+const WP_BASE  = 'http://tiritaito-real.local/wp-json';
+const LOGO_URL = 'http://tiritaito-real.local/wp-content/uploads/2026/07/Sin-titulo-08-de-julio-de-2026-13.01.15.png';
+const APP_PIN  = '1234'; // ⚠️ Cambiar antes de distribuir a producción
+// Token de escritura — debe coincidir EXACTAMENTE con TT_WRITE_TOKEN en el snippet PHP del servidor.
+// Con este token la app puede publicar, subir y eliminar. Trátalo como una contraseña.
+// Si se filtra: cambia el valor en el snippet PHP y en este HTML, y redistribuye el archivo.
+const TT_WRITE_TOKEN = '36374494995SFGJKF453534';
+
+/* ════════════════════════════════════════════════════════
+   2. FUNCIÓN BASE DE PETICIONES A WORDPRESS
+   ════════════════════════════════════════════════════════ */
+async function wpFetch(endpoint, options = {}) {
+  const url     = WP_BASE + endpoint;
+  const headers = { 'X-TT-Token': TT_WRITE_TOKEN, ...(options.headers || {}) };
+  if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
+  const res = await fetch(url, { ...options, headers });
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+  return res.json();
+}
+
+/* ════════════════════════════════════════════════════════
+   3. SUBIDA DE ARCHIVOS — XHR CON PROGRESO
+   ════════════════════════════════════════════════════════ */
+function subirArchivo(file, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr  = new XMLHttpRequest();
+    const form = new FormData();
+    form.append('file', file, file.name);
+
+    xhr.upload.addEventListener('progress', e => {
+      if (e.lengthComputable && onProgress)
+        onProgress(Math.round((e.loaded / e.total) * 100));
+    });
+    xhr.addEventListener('load', () => {
+      if (xhr.status >= 200 && xhr.status < 300) resolve(JSON.parse(xhr.responseText));
+      else reject(new Error(`HTTP ${xhr.status}`));
+    });
+    xhr.addEventListener('error', () => reject(new Error('Error de red')));
+
+    xhr.open('POST', WP_BASE + '/tiritaito/v1/subir');
+    xhr.setRequestHeader('X-TT-Token', TT_WRITE_TOKEN);
+    xhr.send(form);
+  });
+}
+
+/* ════════════════════════════════════════════════════════
+   4. WP_OPTIONS — GUARDAR Y LEER
+   ════════════════════════════════════════════════════════ */
+async function guardarOpciones(datos) {
+  await wpFetch('/tiritaito/v1/datos', { method: 'POST', body: JSON.stringify(datos) });
+}
+async function leerOpciones() {
+  const res = await fetch(WP_BASE + '/tiritaito/v1/datos', {
+    headers: { 'X-TT-Token': TT_WRITE_TOKEN }
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+/* ════════════════════════════════════════════════════════
+   5. ESTADO GLOBAL
+   ════════════════════════════════════════════════════════ */
+const S = {
+  modulo: 'devocional',
+  opciones: {},
+  mediaItems: [], mediaPage: 1, mediaTotal: 1,
+  mediaFiltro: 'all', mediaBusqueda: '',
+  ytSubTab: 'musica',
+  fiestaDias: [],
+  fiestaBackendPendiente: false,
+  novedades: []
+};
+window.S = S;
+
+/* ════════════════════════════════════════════════════════
+   6. AYUDANTES
+   ════════════════════════════════════════════════════════ */
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+function formatFechaLarga(yyyyMMdd) {
+  const [y, m, d] = yyyyMMdd.split('-').map(Number);
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return `${d} de ${meses[m-1]} de ${y}`;
+}
+function iconoPorTipo(tipo) {
+  if (tipo === 'video')
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96C1 8.14 1 12 1 12s0 3.86.46 5.58a2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96C23 15.86 23 12 23 12s0-3.86-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>';
+  if (tipo === 'audio')
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>';
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+}
+
+/* ════════════════════════════════════════════════════════
+   7. TOAST
+   ════════════════════════════════════════════════════════ */
+function toast(msg, tipo = 'ok') {
+  const t = document.getElementById('tt-toast');
+  t.textContent = msg; t.className = `tt-toast show tipo-${tipo}`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+/* ════════════════════════════════════════════════════════
+   8. MKSHEET — MODALES DINÁMICOS
+   ════════════════════════════════════════════════════════ */
+function mkSheet(id, content) {
+  document.getElementById(id)?.remove();
+  const sh = document.createElement('div');
+  sh.className = 'tt-modal-bg open'; sh.id = id;
+  sh.innerHTML = `<div class="tt-msheet">
+    <div class="tt-mhandle"></div>
+    <button class="tt-mclose" onclick="document.getElementById('${id}').remove()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    ${content}
+  </div>`;
+  sh.addEventListener('click', e => { if (e.target === sh) sh.remove(); });
+  return sh;
+}
+
+/* ════════════════════════════════════════════════════════
+   9. CONFIRMACIONES Y ERRORES
+   ════════════════════════════════════════════════════════ */
+window.confirmarEliminar = (nombre, fnConfirm) => {
+  const sh = mkSheet('tt-modal-confirm', `
+    <div style="text-align:center;padding:8px 0 16px">
+      <div style="font-size:44px;margin-bottom:16px">⚠️</div>
+      <div class="tt-mtitle" style="margin-bottom:8px">¿Eliminar "${nombre}"?</div>
+      <p style="font-size:14px;color:var(--tt-txt3);margin-bottom:28px;line-height:1.6">
+        Esta acción no tiene vuelta atrás.</p>
+      <button class="tt-btn tt-btn-sec tt-btn-full"
+        onclick="document.getElementById('tt-modal-confirm').remove()">Cancelar</button>
+      <button class="tt-btn tt-btn-danger tt-btn-full" style="margin-top:10px"
+        onclick="${fnConfirm};document.getElementById('tt-modal-confirm').remove()">
+        Sí, eliminar</button>
+    </div>`);
+  document.body.appendChild(sh);
+};
+
+function mensajeError(e) {
+  const m = e.message || '';
+  if (m.includes('401')) return '❌ No estás autorizada. Contacta con el equipo técnico.';
+  if (m.includes('403')) return '❌ No tienes permiso para hacer esto.';
+  if (m.includes('404')) return '❌ No se encontró el archivo en la web.';
+  if (m.includes('413')) return '❌ El archivo es demasiado grande.';
+  if (m.includes('5'))   return '❌ Error en el servidor. Inténtalo en unos minutos.';
+  return '❌ Sin conexión. Comprueba tu internet e inténtalo de nuevo.';
+}
+
+/* ════════════════════════════════════════════════════════
+   10. SISTEMA DE PIN
+   ════════════════════════════════════════════════════════ */
+let pinActual = '';
+
+function actualizarPuntos() {
+  const dots = document.querySelectorAll('#pin-dots .tt-pin-dot');
+  dots.forEach((d, i) => d.classList.toggle('on', i < pinActual.length));
+}
+function pinPress(d) {
+  if (pinActual.length >= 4) return;
+  pinActual += d; actualizarPuntos();
+  if (pinActual.length === 4) setTimeout(verificarPin, 150);
+}
+function pinDel() { pinActual = pinActual.slice(0, -1); actualizarPuntos(); }
+function verificarPin() {
+  if (pinActual === APP_PIN) {
+    sessionStorage.setItem('tt-creators-auth', '1');
+    iniciarApp();
+  } else {
+    document.getElementById('pin-err').textContent = 'PIN incorrecto';
+    const dots = document.getElementById('pin-dots');
+    dots.classList.add('shake');
+    setTimeout(() => dots.classList.remove('shake'), 500);
+    pinActual = ''; actualizarPuntos();
+  }
+}
+document.getElementById('pin-pad').addEventListener('click', e => {
+  const btn = e.target.closest('button'); if (!btn) return;
+  if (btn.dataset.pin !== undefined) pinPress(btn.dataset.pin);
+});
+document.getElementById('pin-del').addEventListener('click', () => pinDel());
+window.pinPress = pinPress; window.pinDel = pinDel;
+
+/* ════════════════════════════════════════════════════════
+   11. NAVEGACIÓN
+   ════════════════════════════════════════════════════════ */
+window.cambiarPagina = (pagina) => {
+  document.querySelectorAll('.tt-page').forEach(p => p.classList.toggle('active', p.id === 'page-' + pagina));
+  document.querySelectorAll('.tt-ni').forEach(b => b.classList.toggle('active', b.dataset.page === pagina));
+  const titulos = { devocional: 'Hoy', novedades: 'Novedades', medios: 'Biblioteca', recursos: 'Recursos', ayuda: 'Ayuda' };
+  document.getElementById('topbar-title').textContent = titulos[pagina] || '';
+  S.modulo = pagina;
+  if (pagina === 'medios' && S.mediaItems.length === 0) cargarMedios(true);
+  if (pagina === 'recursos') pintarEstadoRecursos();
+  if (pagina === 'novedades') pintarNovedades();
+  document.getElementById('main').scrollTop = 0;
+};
+
+/* ════════════════════════════════════════════════════════
+   12. MÓDULO 1 — DEVOCIONAL
+   ════════════════════════════════════════════════════════ */
+function pintarEstadoDevocional() {
+  const mapa = {
+    'virgen':         'tt_virgen',
+    'brisa':          'tt_brisa',
+    'homilia-audio':  'tt_homilia_audio',
+    'homilia-texto':  'tt_homilia_texto',
+    'lenguas':        'tt_lenguas_url',
+    'tip1':           'tt_tip_1',
+    'tip2':           'tt_tip_2'
+  };
+  for (const [prefix, clave] of Object.entries(mapa)) {
+    const el = document.getElementById(prefix + '-status');
+    if (!el) continue;
+    const val = S.opciones[clave];
+    if (!val) { el.textContent = 'Aún no publicado hoy.'; continue; }
+    if (clave.endsWith('_url') || clave === 'tt_homilia_audio') {
+      el.innerHTML = '✅ Publicado. <a href="' + val + '" target="_blank" rel="noopener" style="color:var(--tt-red)">Ver archivo actual</a>';
+    } else {
+      const preview = val.length > 70 ? val.slice(0, 70) + '…' : val;
+      el.textContent = '📝 ' + preview.replace(/\n/g, ' ');
+    }
+  }
+}
+
+window.guardarVirgen = async () => {
+  const fecha = document.getElementById('virgen-fecha').value;
+  const texto = document.getElementById('virgen-texto').value.trim();
+  if (!texto) { toast('Escribe el mensaje antes de publicar.', 'warn'); return; }
+  const valor = (fecha ? formatFechaLarga(fecha) + '\n' : '') + texto;
+  try {
+    await guardarOpciones({ tt_virgen: valor });
+    S.opciones.tt_virgen = valor;
+    pintarEstadoDevocional();
+    toast('✅ Publicado. Ya aparece en la web.', 'ok');
+  } catch (e) { toast(mensajeError(e), 'error'); }
+};
+
+window.guardarBrisa = async () => {
+  const texto = document.getElementById('brisa-texto').value.trim();
+  const autor = document.getElementById('brisa-autor').value.trim();
+  if (!texto) { toast('Escribe el texto antes de publicar.', 'warn'); return; }
+  const valor = texto + (autor ? '\n— ' + autor : '');
+  try {
+    await guardarOpciones({ tt_brisa: valor });
+    S.opciones.tt_brisa = valor;
+    pintarEstadoDevocional();
+    toast('✅ Publicado. Ya aparece en la web.', 'ok');
+  } catch (e) { toast(mensajeError(e), 'error'); }
+};
+
+window.guardarHomiliaTexto = async () => {
+  const texto = document.getElementById('homilia-texto-texto').value.trim();
+  const fecha = document.getElementById('homilia-texto-fecha').value;
+  if (!texto) { toast('Escribe el texto de la homilía antes de publicar.', 'warn'); return; }
+  const valor = texto + (fecha ? '\n' + formatFechaLarga(fecha) : '');
+  try {
+    await guardarOpciones({ tt_homilia_texto: valor });
+    S.opciones.tt_homilia_texto = valor;
+    pintarEstadoDevocional();
+    toast('✅ Publicado. Ya aparece en la web.', 'ok');
+  } catch (e) { toast(mensajeError(e), 'error'); }
+};
+
+async function subirYGuardarCampo(file, clave, prefix) {
+  const prog = document.getElementById(prefix + '-progress');
+  const fill = document.getElementById(prefix + '-progress-fill');
+  if (prog) prog.style.display = 'block';
+  if (fill) fill.style.width = '0%';
+  try {
+    const media = await subirArchivo(file, pct => { if (fill) fill.style.width = pct + '%'; });
+    await guardarOpciones({ [clave]: media.source_url });
+    S.opciones[clave] = media.source_url;
+    pintarEstadoDevocional();
+    toast('✅ Publicado. Ya aparece en la web.', 'ok');
+  } catch (e) {
+    toast(mensajeError(e), 'error');
+  } finally {
+    if (prog) prog.style.display = 'none';
+  }
+}
+
+window.quitarCampo = async (clave, prefix, etiqueta) => {
+  try {
+    await guardarOpciones({ [clave]: '' });
+    S.opciones[clave] = '';
+    pintarEstadoDevocional();
+    toast(`✅ ${etiqueta} retirado.`, 'ok');
+  } catch (e) { toast(mensajeError(e), 'error'); }
+};
+
+document.getElementById('homilia-audio-input').addEventListener('change', e => {
+  const file = e.target.files[0]; e.target.value = '';
+  if (file) subirYGuardarCampo(file, 'tt_homilia_audio', 'homilia-audio');
+});
+document.getElementById('lenguas-input').addEventListener('change', e => {
+  const file = e.target.files[0]; e.target.value = '';
+  if (file) subirYGuardarCampo(file, 'tt_lenguas_url', 'lenguas');
+});
+document.getElementById('tip1-input').addEventListener('change', e => {
+  const file = e.target.files[0]; e.target.value = '';
+  if (file) subirYGuardarCampo(file, 'tt_tip_1', 'tip1');
+});
+document.getElementById('tip2-input').addEventListener('change', e => {
+  const file = e.target.files[0]; e.target.value = '';
+  if (file) subirYGuardarCampo(file, 'tt_tip_2', 'tip2');
+});
+
+/* ════════════════════════════════════════════════════════
+   13. MÓDULO 2 — BIBLIOTECA DE MEDIOS
+   ════════════════════════════════════════════════════════ */
+async function cargarMedios(reset = true) {
+  if (reset) { S.mediaPage = 1; S.mediaItems = []; }
+  const params = new URLSearchParams({ per_page: 24, page: S.mediaPage });
+  if (S.mediaFiltro !== 'all') params.set('media_type', S.mediaFiltro);
+  if (S.mediaBusqueda) params.set('search', S.mediaBusqueda);
+  try {
+    const res = await fetch(`${WP_BASE}/tiritaito/v1/medios?${params}`, { headers: { 'X-TT-Token': TT_WRITE_TOKEN } });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    S.mediaTotal = parseInt(res.headers.get('X-WP-TotalPages') || '1', 10);
+    S.mediaItems = reset ? data : S.mediaItems.concat(data);
+    renderMedios();
+  } catch (e) {
+    toast(mensajeError(e), 'error');
+  }
+}
+
+function renderMedios() {
+  const grid  = document.getElementById('media-grid');
+  const empty = document.getElementById('media-empty');
+  const more  = document.getElementById('media-more');
+  if (!grid) return;
+  grid.innerHTML = S.mediaItems.map(item => {
+    const thumb = item.media_type === 'image'
+      ? (item.media_details?.sizes?.thumbnail?.source_url || item.source_url)
+      : '';
+    const nombre = item.title?.rendered || '';
+    return `<div class="tt-media-item" onclick="window.verMedio(${item.id})">
+      ${thumb
+        ? `<img src="${thumb}" alt="" loading="lazy">`
+        : `<div class="tt-media-icon">${iconoPorTipo(item.media_type)}</div>`}
+      <div class="tt-media-name">${nombre}</div>
+    </div>`;
+  }).join('');
+  if (empty) empty.style.display = S.mediaItems.length ? 'none' : 'block';
+  if (more)  more.style.display  = S.mediaPage < S.mediaTotal ? 'block' : 'none';
+}
+
+window.filtrarMedios = (tipo) => {
+  S.mediaFiltro = tipo;
+  document.querySelectorAll('#media-filtros .tt-stab').forEach(b => b.classList.toggle('on', b.dataset.tipo === tipo));
+  cargarMedios(true);
+};
+
+let buscarMediosTimeout;
+window.buscarMedios = (valor) => {
+  S.mediaBusqueda = valor;
+  clearTimeout(buscarMediosTimeout);
+  buscarMediosTimeout = setTimeout(() => cargarMedios(true), 400);
+};
+
+window.cargarMasMedios = () => { S.mediaPage++; cargarMedios(false); };
+
+window.verMedio = (id) => {
+  const item = S.mediaItems.find(m => m.id === id);
+  if (!item) return;
+  const fecha = new Date(item.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+  let preview = '';
+  if (item.media_type === 'image') {
+    preview = `<img src="${item.source_url}" style="width:100%;border-radius:var(--tt-r-sm);margin-bottom:16px">`;
+  } else if (item.media_type === 'audio') {
+    preview = `<audio controls src="${item.source_url}" style="width:100%;margin-bottom:16px"></audio>`;
+  } else if (item.media_type === 'video') {
+    preview = `<video controls src="${item.source_url}" style="width:100%;border-radius:var(--tt-r-sm);margin-bottom:16px"></video>`;
+  }
+  const sh = mkSheet('tt-modal-medio', `
+    <div class="tt-mtitle">${item.title?.rendered || 'Sin título'}</div>
+    ${preview}
+    <div class="tt-fg"><div class="tt-flabel">Subido</div><div class="tt-body">${fecha}</div></div>
+    <div class="tt-fg"><div class="tt-flabel">URL permanente</div>
+      <div class="tt-finput" style="word-break:break-all;font-size:13px;background:var(--tt-surf2)">${item.source_url}</div></div>
+    <button class="tt-btn tt-btn-sec tt-btn-full" onclick="window.copiarURL('${item.source_url}')">Copiar URL</button>
+    <button class="tt-btn tt-btn-danger tt-btn-full" style="margin-top:10px" onclick="window.confirmarEliminarMedio(${item.id})">Eliminar</button>
+  `);
+  document.body.appendChild(sh);
+};
+
+window.copiarURL = (url) => {
+  navigator.clipboard.writeText(url)
+    .then(() => toast('✅ URL copiada', 'ok'))
+    .catch(() => toast('❌ No se pudo copiar', 'error'));
+};
+
+window.confirmarEliminarMedio = (id) => {
+  const item = S.mediaItems.find(m => m.id === id);
+  const nombre = item?.title?.rendered || 'este archivo';
+  document.getElementById('tt-modal-medio')?.remove();
+  window.confirmarEliminar(nombre, `window.eliminarMedio(${id})`);
+};
+
+window.eliminarMedio = async (id) => {
+  try {
+    await wpFetch(`/tiritaito/v1/medio/${id}`, { method: 'DELETE' });
+    toast('✅ Archivo eliminado.', 'ok');
+    cargarMedios(true);
+  } catch (e) {
+    toast(mensajeError(e), 'error');
+  }
+};
+
+window.abrirSelectorSubida = () => document.getElementById('media-file-input').click();
+
+document.getElementById('media-file-input').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  const sh = mkSheet('tt-modal-subida', `
+    <div class="tt-mtitle">Subiendo…</div>
+    <div class="tt-body" style="margin-bottom:14px">${file.name}</div>
+    <div class="tt-progress-wrap"><div class="tt-progress-fill" id="subida-fill"></div></div>
+  `);
+  document.body.appendChild(sh);
+  try {
+    await subirArchivo(file, pct => {
+      const fill = document.getElementById('subida-fill');
+      if (fill) fill.style.width = pct + '%';
+    });
+    document.getElementById('tt-modal-subida')?.remove();
+    toast('✅ Archivo subido a la Biblioteca de Medios.', 'ok');
+    cargarMedios(true);
+  } catch (e) {
+    document.getElementById('tt-modal-subida')?.remove();
+    toast(mensajeError(e), 'error');
+  }
+});
+
+/* ════════════════════════════════════════════════════════
+   13b. YOUTUBE DATA API v3 — FUNCIONES BASE
+   ════════════════════════════════════════════════════════ */
+function ytKey() { return localStorage.getItem('tt-creators-yt-key') || ''; }
+
+window.accionGuardarYtKey = () => {
+  const k = document.getElementById('ytkey-input').value.trim();
+  if (!k) { toast('Introduce la clave antes de guardar.', 'warn'); return; }
+  localStorage.setItem('tt-creators-yt-key', k);
+  document.getElementById('ytkey-input').value = '';
+  pintarEstadoYtKey();
+  toast('✅ Clave guardada en este dispositivo.', 'ok');
+};
+
+function pintarEstadoYtKey() {
+  const el = document.getElementById('ytkey-status');
+  if (!el) return;
+  el.textContent = ytKey()
+    ? '✅ API Key configurada (oculta por seguridad).'
+    : '⚠️ Sin configurar — los generadores no funcionarán.';
+}
+
+async function getPlaylistItems(playlistId, soloPublicos = true) {
+  const key = ytKey();
+  if (!key) throw new Error('Sin API Key de YouTube configurada');
+  const items = []; let pageToken = '';
+  do {
+    const url = `https://www.googleapis.com/youtube/v3/playlistItems`
+      + `?part=snippet,status&maxResults=50&playlistId=${playlistId}&key=${key}`
+      + (pageToken ? `&pageToken=${pageToken}` : '');
+    const data = await (await fetch(url)).json();
+    if (data.error) throw new Error(data.error.message);
+    for (const item of data.items || []) {
+      const vis = item.status?.privacyStatus;
+      if (soloPublicos && vis !== 'public') continue;
+      if (!soloPublicos && vis === 'private') continue;
+      items.push({
+        id: item.snippet.resourceId.videoId,
+        title: item.snippet.title,
+        thumb: `https://img.youtube.com/vi/${item.snippet.resourceId.videoId}/mqdefault.jpg`,
+        description: item.snippet.description || ''
+      });
+    }
+    pageToken = data.nextPageToken || '';
+  } while (pageToken);
+  return items;
+}
+
+function ordenMusica(t) {
+  t = t.toLowerCase();
+  if (/introducción|prólogo/i.test(t)) return 0;
+  const n = t.match(/\b(\d+)\b/); if (n) return parseInt(n[1]);
+  const ords = ['primer','segund','tercer','cuart','quint','sext','séptim','octav','noven',
+    'décim','undécim','duodécim','decimotercer','decimocuart','decimoquint'];
+  for (let i = 0; i < ords.length; i++) if (t.includes(ords[i])) return i + 1;
+  const rom = {i:1,ii:2,iii:3,iv:4,v:5,vi:6,vii:7,viii:8,ix:9,x:10,xi:11,xii:12};
+  for (const [r, v] of Object.entries(rom)) if (new RegExp(`\\b${r}\\b`).test(t)) return v;
+  const dias = ['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];
+  for (let i = 0; i < dias.length; i++) if (t.includes(dias[i])) return i + 1;
+  const mes = ['enero','febrero','marzo','abril','mayo','junio',
+    'julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  for (let i = 0; i < mes.length; i++) if (t.includes(mes[i])) return i + 1;
+  if (/conclusión|epílogo/i.test(t)) return 9998;
+  return 9999;
+}
+
+const MESES_YT = {enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,
+  julio:7,agosto:8,septiembre:9,octubre:10,noviembre:11,diciembre:12};
+
+function extraerFecha(desc, titulo = '') {
+  for (const src of [(desc || '').split('\n')[0].toLowerCase(), titulo.toLowerCase()]) {
+    for (const [mes, num] of Object.entries(MESES_YT)) {
+      const m = src.match(new RegExp(`${mes}\\s+(\\d{4})`));
+      if (m) return { month: num, year: parseInt(m[1]) };
+    }
+  }
+  return { month: null, year: null };
+}
+
+/* ════════════════════════════════════════════════════════
+   14. MÓDULO 3 — LECTURAS DOCX
+   ════════════════════════════════════════════════════════ */
+function pintarEstadoLecturas() {
+  const el = document.getElementById('lecturas-status');
+  if (!el) return;
+  const url = S.opciones.tt_docx_lectura_url;
+  if (!url) { el.textContent = 'Aún no hay lecturas publicadas esta semana.'; return; }
+  el.innerHTML = '✅ Publicado. <a href="' + url + '" target="_blank" rel="noopener" style="color:var(--tt-red)">Ver DOCX actual</a>';
+}
+
+document.getElementById('lecturas-input').addEventListener('change', async (e) => {
+  const file = e.target.files[0]; e.target.value = '';
+  if (!file) return;
+  const prog = document.getElementById('lecturas-progress');
+  const fill = document.getElementById('lecturas-progress-fill');
+  if (prog) prog.style.display = 'block';
+  try {
+    const media = await subirArchivo(file, pct => { if (fill) fill.style.width = pct + '%'; });
+    await guardarOpciones({ tt_docx_lectura_url: media.source_url });
+    S.opciones.tt_docx_lectura_url = media.source_url;
+    pintarEstadoLecturas();
+    toast('✅ Lecturas publicadas. Ya aparecen en la web.', 'ok');
+  } catch (err) {
+    toast(mensajeError(err), 'error');
+  } finally {
+    if (prog) prog.style.display = 'none';
+  }
+});
+
+/* ════════════════════════════════════════════════════════
+   14b. MÓDULO 3b — LECTURA DEL SANTO (días con fiesta)
+   ════════════════════════════════════════════════════════ */
+function parseFiestaDias(str) {
+  return (str || '').split(',').map(s => s.trim()).filter(s => s !== '');
+}
+
+function pintarFiestaDias() {
+  document.querySelectorAll('#fiesta-dias .tt-stab').forEach(b => {
+    b.classList.toggle('on', S.fiestaDias.includes(b.dataset.dow));
+  });
+  const el = document.getElementById('fiesta-status');
+  if (!el) return;
+  if (S.fiestaBackendPendiente) {
+    el.textContent = '⚠️ El servidor todavía no guarda esta clave — falta añadir tt_fiesta_dias a la whitelist del snippet PHP. Los cambios no se conservan hasta entonces.';
+    return;
+  }
+  el.textContent = S.fiestaDias.length
+    ? `✅ Activo ${S.fiestaDias.length} día(s) a la semana.`
+    : 'Sin días activados: siempre se usa la lectura ordinaria.';
+}
+
+window.toggleFiestaDia = (dow) => {
+  dow = String(dow);
+  const i = S.fiestaDias.indexOf(dow);
+  if (i === -1) S.fiestaDias.push(dow); else S.fiestaDias.splice(i, 1);
+  pintarFiestaDias();
+};
+
+window.guardarFiestaDias = async () => {
+  try {
+    const valor = S.fiestaDias.join(',');
+    const res = await wpFetch('/tiritaito/v1/datos', {
+      method: 'POST',
+      body: JSON.stringify({ tt_fiesta_dias: valor })
+    });
+    if (res.rechazadas && res.rechazadas.includes('tt_fiesta_dias')) {
+      S.fiestaBackendPendiente = true;
+      pintarFiestaDias();
+      toast('⚠️ Guardado, pero el servidor aún no acepta esta clave: el equipo técnico debe añadirla al snippet PHP.', 'warn');
+      return;
+    }
+    S.fiestaBackendPendiente = false;
+    S.opciones.tt_fiesta_dias = valor;
+    pintarFiestaDias();
+    toast('✅ Configuración guardada. Ya aplica en la web.', 'ok');
+  } catch (e) { toast(mensajeError(e), 'error'); }
+};
+
+/* ════════════════════════════════════════════════════════
+   15. MÓDULO 4 — GENERADORES YOUTUBE
+   ════════════════════════════════════════════════════════ */
+const BTN_GENERAR_INNER = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Generar y publicar';
+
+function cargarPlaylists(tipo) {
+  try { return JSON.parse(localStorage.getItem(`tt-creators-playlists-${tipo}`) || '[]'); }
+  catch { return []; }
+}
+function guardarPlaylists(tipo, lista) {
+  localStorage.setItem(`tt-creators-playlists-${tipo}`, JSON.stringify(lista));
+}
+
+function renderListaPlaylists(tipo) {
+  const el = document.getElementById(`yt-${tipo}-lista`);
+  if (!el) return;
+  const lista = cargarPlaylists(tipo);
+  if (!lista.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--tt-txt4);padding:6px 0 4px">Sin playlists. Añade la primera.</div>';
+    return;
+  }
+  el.innerHTML = lista.map((pl, i) => `
+    <div class="tt-playlist-item">
+      <span class="tt-playlist-name">${escapeHtml(pl.name)}</span>
+      <span class="tt-playlist-id">${escapeHtml(pl.id)}</span>
+      <button class="tt-playlist-del" onclick="window.eliminarPlaylist('${tipo}',${i})" aria-label="Eliminar">&times;</button>
+    </div>`).join('');
+}
+
+window.agregarPlaylist = (tipo) => {
+  const nombre = document.getElementById(`yt-${tipo}-nombre`).value.trim();
+  const id     = document.getElementById(`yt-${tipo}-id`).value.trim();
+  if (!nombre || !id) { toast('Rellena el nombre y el ID de la playlist.', 'warn'); return; }
+  const lista = cargarPlaylists(tipo);
+  lista.push({ name: nombre, id });
+  guardarPlaylists(tipo, lista);
+  document.getElementById(`yt-${tipo}-nombre`).value = '';
+  document.getElementById(`yt-${tipo}-id`).value = '';
+  renderListaPlaylists(tipo);
+  toast(`\u2705 "${nombre}" a\u00f1adida.`, 'ok');
+};
+
+window.eliminarPlaylist = (tipo, idx) => {
+  const lista = cargarPlaylists(tipo);
+  lista.splice(idx, 1);
+  guardarPlaylists(tipo, lista);
+  renderListaPlaylists(tipo);
+};
+
+function pintarEstadoYt(tipo, clave) {
+  const el = document.getElementById(`yt-${tipo}-status`);
+  if (!el) return;
+  const url = S.opciones[clave];
+  if (!url) { el.textContent = 'A\u00fan no hay JSON publicado.'; return; }
+  el.innerHTML = '\u2705 Publicado. <a href="' + url + '" target="_blank" rel="noopener" style="color:var(--tt-red)">Ver JSON actual</a>';
+}
+
+window.cambiarSubTabYt = (tipo) => {
+  ['musica','viacrucis','seminarios'].forEach(t => {
+    const panel = document.getElementById(`yt-panel-${t}`);
+    if (panel) panel.style.display = t === tipo ? 'block' : 'none';
+  });
+  document.querySelectorAll('#yt-subtabs .tt-stab').forEach(b =>
+    b.classList.toggle('on', b.dataset.yt === tipo)
+  );
+  S.ytSubTab = tipo;
+};
+
+function pintarEstadoRecursos() {
+  pintarEstadoYtKey();
+  pintarEstadoLecturas();
+  pintarFiestaDias();
+  pintarEstadoYt('musica',    'tt_youtube_json_url');
+  pintarEstadoYt('viacrucis', 'tt_viacrucis_json_url');
+  pintarEstadoYt('seminarios','tt_seminarios_json_url');
+  renderListaPlaylists('musica');
+  renderListaPlaylists('viacrucis');
+  renderListaPlaylists('seminarios');
+}
+
+window.generarYPublicar = async (tipo) => {
+  if (!ytKey()) { toast('Configura primero la API Key de YouTube.', 'warn'); return; }
+  const playlists = cargarPlaylists(tipo);
+  if (!playlists.length) { toast('A\u00f1ade al menos una playlist antes de generar.', 'warn'); return; }
+
+  const btn = document.getElementById(`yt-${tipo}-btn`);
+  if (btn) { btn.disabled = true; btn.textContent = 'Consultando YouTube\u2026'; }
+
+  try {
+    const isSeminarios = tipo === 'seminarios';
+    const resultado = { playlists: [] };
+
+    for (const pl of playlists) {
+      const items = await getPlaylistItems(pl.id, !isSeminarios);
+      let tracks;
+      if (isSeminarios) {
+        tracks = items
+          .map(i => {
+            const { month, year } = extraerFecha(i.description, i.title);
+            return { id: i.id, title: i.title, thumb: i.thumb, year, month };
+          })
+          .sort((a, b) => {
+            if ((b.year || 0) !== (a.year || 0)) return (b.year || 0) - (a.year || 0);
+            return (a.month || 13) - (b.month || 13);
+          });
+      } else {
+        tracks = items
+          .sort((a, b) => ordenMusica(a.title) - ordenMusica(b.title))
+          .map(i => ({ id: i.id, title: i.title, thumb: i.thumb }));
+      }
+      resultado.playlists.push({ name: pl.name, tracks });
+    }
+
+    const nombreArchivo = tipo === 'musica'    ? 'music-data.json'
+                        : tipo === 'viacrucis' ? 'viacrucis-data.json'
+                        :                        'Seminarios.json';
+    const claveOpcion   = tipo === 'musica'    ? 'tt_youtube_json_url'
+                        : tipo === 'viacrucis' ? 'tt_viacrucis_json_url'
+                        :                        'tt_seminarios_json_url';
+
+    if (btn) btn.textContent = 'Subiendo a WordPress\u2026';
+
+    const blob = new Blob([JSON.stringify(resultado, null, 2)], { type: 'application/json' });
+    const file = new File([blob], nombreArchivo, { type: 'application/json' });
+    const media = await subirArchivo(file, null);
+
+    const saveRes = await wpFetch('/tiritaito/v1/datos', {
+      method: 'POST',
+      body: JSON.stringify({ [claveOpcion]: media.source_url })
+    });
+
+    if (saveRes.rechazadas && saveRes.rechazadas.includes(claveOpcion)) {
+      toast('\u26a0\ufe0f Archivo subido pero sin publicar: el equipo t\u00e9cnico debe actualizar el servidor.', 'warn');
+      return;
+    }
+
+    S.opciones[claveOpcion] = media.source_url;
+    const total = resultado.playlists.reduce((acc, pl) => acc + pl.tracks.length, 0);
+    pintarEstadoYt(tipo, claveOpcion);
+    const nombres = { musica: 'M\u00fasica', viacrucis: 'V\u00eda Crucis', seminarios: 'Seminarios' };
+    toast(`\u2705 ${nombres[tipo]}: ${total} v\u00eddeos publicados.`, 'ok');
+
+  } catch (err) {
+    const m = err.message || '';
+    toast(m.includes('API Key') || m.includes('keyInvalid')
+      ? '\u274c API Key no v\u00e1lida. Compr\u00e9bala en la tarjeta de arriba.'
+      : mensajeError(err), 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = BTN_GENERAR_INNER; }
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+   15b. MÓDULO NOVEDADES — hero + tira de la home
+   ════════════════════════════════════════════════════════
+   Contrato de datos con el servidor (Web Nueva / Local):
+   una sola clave wp_options "tt_novedades", guardada como JSON
+   de un array de objetos { id, tipo, media_url, texto, enlace,
+   fecha, activo }. Se lee y se escribe entera, igual que
+   tt_fiesta_dias — sin rutas REST propias por elemento.
+   ════════════════════════════════════════════════════════ */
+let novedadEditandoId      = null;
+let novedadArchivoPendiente = null;
+let novedadTipoPendiente    = null;
+let novedadMediaUrlActual   = null;
+let novedadActivoActual     = true;
+
+function parseNovedades(json) {
+  try {
+    const arr = JSON.parse(json || '[]');
+    return Array.isArray(arr) ? arr : [];
+  } catch { return []; }
+}
+
+function renderPreviewNovedad(item) {
+  return item.tipo === 'video'
+    ? `<video src="${item.media_url}" controls style="width:100%;border-radius:var(--tt-r-sm)"></video>`
+    : `<img src="${item.media_url}" style="width:100%;border-radius:var(--tt-r-sm)" alt="">`;
+}
+
+function pintarNovedades() {
+  const cont  = document.getElementById('novedades-lista');
+  const empty = document.getElementById('novedades-empty');
+  if (!cont) return;
+
+  if (!S.novedades.length) {
+    cont.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  cont.innerHTML = S.novedades.map(item => {
+    const thumb = item.tipo === 'video'
+      ? `<video src="${item.media_url}" muted></video>`
+      : `<img src="${item.media_url}" alt="">`;
+    const activo = item.activo !== false;
+    const fechaTxt = item.fecha ? formatFechaLarga(item.fecha) : 'Sin fecha';
+    return `<div class="tt-novedad-item">
+      <div class="tt-novedad-thumb">${thumb}</div>
+      <div class="tt-novedad-info">
+        <div class="tt-novedad-texto">${item.texto ? escapeHtml(item.texto) : '<span style="color:var(--tt-txt4)">Sin texto</span>'}</div>
+        <div class="tt-novedad-meta">
+          <span>${fechaTxt}</span>
+          <span class="tt-novedad-badge ${activo ? 'on' : 'off'}">${activo ? 'Visible' : 'Oculta'}</span>
+        </div>
+      </div>
+      <div class="tt-novedad-actions">
+        <button class="tt-novedad-actedit" onclick="window.abrirModalNovedad('${item.id}')" aria-label="Editar">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="tt-novedad-actdel" onclick="window.confirmarEliminarNovedad('${item.id}')" aria-label="Eliminar">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.toggleNovedadActivo = () => {
+  novedadActivoActual = !novedadActivoActual;
+  const btn = document.getElementById('novedad-activo-btn');
+  const txt = document.getElementById('novedad-activo-texto');
+  if (btn) btn.classList.toggle('on', novedadActivoActual);
+  if (txt) txt.textContent = novedadActivoActual ? 'Visible en la web' : 'Oculta';
+};
+
+window.abrirModalNovedad = (id = null) => {
+  novedadEditandoId = id;
+  const item = id ? S.novedades.find(n => n.id === id) : null;
+  const esEdicion = !!item;
+
+  novedadArchivoPendiente = null;
+  novedadTipoPendiente    = item?.tipo || null;
+  novedadMediaUrlActual   = item?.media_url || null;
+  novedadActivoActual     = item ? (item.activo !== false) : true;
+
+  const sh = mkSheet('tt-modal-novedad', `
+    <div class="tt-mtitle">${esEdicion ? 'Editar novedad' : 'Nueva novedad'}</div>
+
+    <div class="tt-fg" id="novedad-preview-wrap" style="${item ? '' : 'display:none'}">
+      <label class="tt-flabel">Archivo</label>
+      <div id="novedad-preview">${item ? renderPreviewNovedad(item) : ''}</div>
+    </div>
+
+    <input type="file" id="novedad-file-input" accept="image/*,video/*" style="display:none">
+    <button class="tt-btn tt-btn-sec tt-btn-full" onclick="document.getElementById('novedad-file-input').click()">
+      ${esEdicion ? 'Cambiar imagen o vídeo' : 'Elegir imagen o vídeo'}
+    </button>
+    <div class="tt-progress-wrap" id="novedad-progress" style="display:none"><div class="tt-progress-fill" id="novedad-progress-fill"></div></div>
+
+    <div class="tt-fg" style="margin-top:18px">
+      <label class="tt-flabel" for="novedad-texto">Texto (opcional)</label>
+      <textarea class="tt-finput tt-ftextarea" id="novedad-texto" placeholder="Ej. Ya está aquí el nuevo Vía Crucis…">${item?.texto ? escapeHtml(item.texto) : ''}</textarea>
+    </div>
+
+    <div class="tt-fg">
+      <label class="tt-flabel" for="novedad-enlace">Enlace al pulsar (opcional)</label>
+      <input type="text" class="tt-finput" id="novedad-enlace" placeholder="https://…" value="${item?.enlace ? escapeHtml(item.enlace) : ''}">
+    </div>
+
+    <div class="tt-fg">
+      <label class="tt-flabel" for="novedad-fecha">Fecha</label>
+      <input type="date" class="tt-finput" id="novedad-fecha" value="${item?.fecha || new Date().toISOString().slice(0,10)}">
+    </div>
+
+    <div class="tt-fg">
+      <label class="tt-flabel">Visibilidad</label>
+      <button class="tt-stab ${novedadActivoActual ? 'on' : ''}" id="novedad-activo-btn" type="button" onclick="window.toggleNovedadActivo()">
+        <span id="novedad-activo-texto">${novedadActivoActual ? 'Visible en la web' : 'Oculta'}</span>
+      </button>
+    </div>
+
+    <button class="tt-btn tt-btn-primary tt-btn-full" style="margin-top:8px" onclick="window.guardarNovedad()">
+      ${esEdicion ? 'Guardar cambios' : 'Publicar novedad'}
+    </button>
+  `);
+  document.body.appendChild(sh);
+
+  document.getElementById('novedad-file-input').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+      toast('Elige una imagen o un vídeo.', 'warn');
+      return;
+    }
+    novedadArchivoPendiente = file;
+    novedadTipoPendiente = file.type.startsWith('video/') ? 'video' : 'imagen';
+    const wrap = document.getElementById('novedad-preview-wrap');
+    const prev = document.getElementById('novedad-preview');
+    const url  = URL.createObjectURL(file);
+    wrap.style.display = 'block';
+    prev.innerHTML = novedadTipoPendiente === 'video'
+      ? `<video src="${url}" controls style="width:100%;border-radius:var(--tt-r-sm)"></video>`
+      : `<img src="${url}" style="width:100%;border-radius:var(--tt-r-sm)" alt="">`;
+  });
+};
+
+window.guardarNovedad = async () => {
+  const texto  = document.getElementById('novedad-texto').value.trim();
+  const enlace = document.getElementById('novedad-enlace').value.trim();
+  const fecha  = document.getElementById('novedad-fecha').value;
+
+  if (!novedadArchivoPendiente && !novedadMediaUrlActual) {
+    toast('Elige una imagen o un vídeo antes de publicar.', 'warn');
+    return;
+  }
+  if (!fecha) { toast('Elige una fecha.', 'warn'); return; }
+
+  const btn = document.querySelector('#tt-modal-novedad .tt-btn-primary');
+  const textoOriginalBtn = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
+
+  try {
+    let mediaUrl = novedadMediaUrlActual;
+    let tipo     = novedadTipoPendiente;
+
+    if (novedadArchivoPendiente) {
+      const prog = document.getElementById('novedad-progress');
+      const fill = document.getElementById('novedad-progress-fill');
+      if (prog) prog.style.display = 'block';
+      const media = await subirArchivo(novedadArchivoPendiente, pct => { if (fill) fill.style.width = pct + '%'; });
+      mediaUrl = media.source_url;
+    }
+
+    if (novedadEditandoId) {
+      const item = S.novedades.find(n => n.id === novedadEditandoId);
+      if (item) {
+        item.tipo = tipo;
+        item.media_url = mediaUrl;
+        item.texto = texto;
+        item.enlace = enlace;
+        item.fecha = fecha;
+        item.activo = novedadActivoActual;
+      }
+    } else {
+      S.novedades.push({
+        id: 'nov_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        tipo, media_url: mediaUrl, texto, enlace, fecha,
+        activo: novedadActivoActual
+      });
+    }
+
+    await guardarOpciones({ tt_novedades: JSON.stringify(S.novedades) });
+    S.opciones.tt_novedades = JSON.stringify(S.novedades);
+    document.getElementById('tt-modal-novedad')?.remove();
+    pintarNovedades();
+    toast(novedadEditandoId ? '✅ Novedad actualizada.' : '✅ Novedad publicada.', 'ok');
+  } catch (e) {
+    toast(mensajeError(e), 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = textoOriginalBtn; }
+    const prog = document.getElementById('novedad-progress');
+    if (prog) prog.style.display = 'none';
+  }
+};
+
+window.confirmarEliminarNovedad = (id) => {
+  const item = S.novedades.find(n => n.id === id);
+  const nombre = item?.texto ? item.texto.slice(0, 40) : 'esta novedad';
+  window.confirmarEliminar(nombre, `window.eliminarNovedad('${id}')`);
+};
+
+window.eliminarNovedad = async (id) => {
+  const anterior = S.novedades.slice();
+  S.novedades = S.novedades.filter(n => n.id !== id);
+  try {
+    await guardarOpciones({ tt_novedades: JSON.stringify(S.novedades) });
+    S.opciones.tt_novedades = JSON.stringify(S.novedades);
+    pintarNovedades();
+    toast('✅ Novedad eliminada.', 'ok');
+  } catch (e) {
+    S.novedades = anterior;
+    pintarNovedades();
+    toast(mensajeError(e), 'error');
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+   16. INICIO DE LA APP
+   ════════════════════════════════════════════════════════ */
+async function iniciarApp() {
+  document.getElementById('pin-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  document.querySelectorAll('.tt-logo').forEach(el => el.src = LOGO_URL);
+  try {
+    S.opciones = await leerOpciones();
+  } catch (e) {
+    toast(mensajeError(e), 'error');
+    S.opciones = {};
+  }
+  S.fiestaDias = parseFiestaDias(S.opciones.tt_fiesta_dias);
+  S.novedades  = parseNovedades(S.opciones.tt_novedades);
+  pintarEstadoDevocional();
+  pintarEstadoRecursos();
+  pintarNovedades();
+  cargarMedios(true);
+}
+window.iniciarApp = iniciarApp;
+
+// Logo visible también en la pantalla de PIN, antes de iniciar sesión
+document.getElementById('pin-logo').src = LOGO_URL;
+
+// Si ya hay sesión de PIN abierta en este dispositivo, entra directamente
+if (sessionStorage.getItem('tt-creators-auth') === '1') iniciarApp();
+
+</script>
+</body>
+</html>
