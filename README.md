@@ -22,7 +22,8 @@ tiritaito-docs/
 │   ├── 00_CORE.md
 │   ├── 01_CREATORS_APP.md
 │   ├── 02_REF_PODCAST.md
-│   └── 04_ENTORNO_LOCAL.md
+│   ├── 04_ENTORNO_LOCAL.md
+│   └── TIRITAITO_FOR_CREATORS_VERSIONS.md
 ├── 01-producto/
 │   └── ALCANCE_WEB_NUEVA.md
 ├── 02-metodologia/
@@ -33,6 +34,13 @@ tiritaito-docs/
 ├── 04-vision-y-equipo/
 │   ├── ARQUITECTURA_Y_ROADMAP.md
 │   └── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md
+├── apps/
+│   ├── v1/
+│   │   ├── tiritaito-creators-v1-07.html
+│   │   └── CHANGELOG-v1-web-vieja.md
+│   └── v2/
+│       ├── tiritaito-creators-v2-01.html
+│       └── CHANGELOG-v2-web-nueva.md
 └── historico/
     ├── INFORME_ESTRATEGICO_2026_1.md
     ├── INVESTIGACION_HERRAMIENTAS_2026.md
@@ -52,6 +60,7 @@ tiritaito-docs/
 | `01_CREATORS_APP.md` | `00-nucleo-tecnico/` | Qué es y cómo funciona la PWA de editores | Hno A | Hno A | Media — cada fase nueva de la app |
 | `02_REF_PODCAST.md` | `00-nucleo-tecnico/` | Arquitectura del sistema de podcast, shortcode `[tt_podcast]` | Hno A | Hno A | Baja |
 | `04_ENTORNO_LOCAL.md` | `00-nucleo-tecnico/` | Constantes y particularidades del entorno Local (distinto de producción) | Hno A | Hno A | Media — ⚠️ pendiente de reescritura (patrón de token) |
+| `TIRITAITO_FOR_CREATORS_VERSIONS.md` | `00-nucleo-tecnico/` | V1 vs V2 de la app, dónde vive cada archivo en GitHub, formato de changelog, alcance confirmado por versión | Hno A | Hno A | Media — cada versión nueva de la app |
 | `ALCANCE_WEB_NUEVA.md` | `01-producto/` | Qué secciones tiene la web nueva y con qué prioridad | Hna C | Hna C | Alta mientras se decide el alcance — ⚠️ pendiente de revisión final con Hna C |
 | `METODOLOGIA_CONSTRUCCION.md` | `02-metodologia/` | Diagnóstico técnico heredado + dónde construir cada pieza de contenido ya decidida | Hno A, Hna C | Hno C (investigación) | Media |
 | `MIGRACION_CONTENIDO.md` | `02-metodologia/` | Qué contenido de la web vieja migrar, cuál recrear, plan de SEO | Hna C, Hno A, Carlitos | Hno C (investigación) | Media — vivo mientras avanza la revisión de contenido |
@@ -60,6 +69,8 @@ tiritaito-docs/
 | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | `04-vision-y-equipo/` | Roles, mapa de Proyectos de Claude, GitHub, WPMobile.app, Search Console | Carlitos | Hno C (investigación) | Media — cambia cuando cambia la organización del equipo |
 
 **`historico/`** — documentos superados, conservados como referencia de cómo evolucionaron las decisiones. No se editan ni se usan como fuente de verdad; si algo de ahí sigue siendo válido, ya está incorporado en la versión activa correspondiente.
+
+**`apps/`** — código fuente de Tiritaito for Creators (HTML autocontenido) y sus changelogs, separado en `v1/` (web vieja, solo mantenimiento) y `v2/` (web nueva, desarrollo activo). Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` para el detalle de cada versión.
 
 ---
 
@@ -70,6 +81,7 @@ tiritaito-docs/
 | Nuevo en el equipo | Este README → `ARQUITECTURA_Y_ROADMAP.md` → `ALCANCE_WEB_NUEVA.md` |
 | Hno A, sesión de código en Local | `00_CORE.md` + `04_ENTORNO_LOCAL.md` + el documento específico de tu tarea |
 | Hno A, sesión de Avada/maquetación | `GUIA_AVADA_LOCAL.md` + `METODOLOGIA_CONSTRUCCION.md` |
+| Hno A, sesión de Tiritaito for Creators (V1 o V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` + `01_CREATORS_APP.md` |
 | Hna C, decisión de producto | `ALCANCE_WEB_NUEVA.md` |
 | Hna C, revisando qué migrar | `MIGRACION_CONTENIDO.md` |
 | Carlitos, coordinación | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` |
@@ -87,6 +99,8 @@ tiritaito-docs/
 | Confirmar en Local: Layout Content Section + Dynamic Content + Post Cards para "Hombres de Dios" | `METODOLOGIA_CONSTRUCCION.md` Sección 4 | Construcción de esa sección |
 | Crear la cuenta de Repuesto y conectar GitHub | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6 | Continuidad si la cuenta principal de Hno A agota su límite |
 | Política de licencia de WPMobile.app en sitio de desarrollo | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 | Cualquier prueba de la app contra el entorno Local |
+| Alcance completo de V2 de Tiritaito for Creators (solo Novedades confirmado por ahora) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Construcción de cualquier módulo nuevo más allá de Novedades |
+| Añadir `tt_novedades` a la whitelist de `tt_opciones_permitidas()` y construir el widget de home | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6 | Que el módulo de Novedades funcione de extremo a extremo |
 
 ---
 
