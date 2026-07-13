@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Guía Avada + Local
 **Referencia técnica completa: licencia, infraestructura, Global Options, Header/Footer Builder, Layouts, elementos nativos y convenciones**
 *Audiencia principal: Hno A · Fusiona y verifica: INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Parte 3-4) + INFORME_ESTRATEGICO_2026_1.md (Parte 2, 5, 8) + METODOLOGIA_WEB_NUEVA_v2.md (Secciones 3-11) + 04_ENTORNO_LOCAL.md*
-*Verificado contra documentación oficial de avada.com — julio 2026*
+*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -21,7 +21,7 @@ Este documento responde una sola pregunta: **¿cómo configuro y construyo con A
 
 Este documento no repite el mapa de qué-va-dónde por sección (eso vive en `METODOLOGIA_CONSTRUCCION.md`) — se centra en la mecánica de Avada y Local en sí.
 
-**Nota honesta:** todo lo marcado ✅ está confirmado contra documentación oficial de ThemeFusion/Avada (con fecha de verificación). Todo lo marcado 🔲 solo se puede confirmar dentro de Local, probando de verdad — no lo des por sentado sin probarlo.
+**Nota honesta:** todo lo marcado ✅ está confirmado contra documentación oficial de ThemeFusion/Avada o contra una sesión real de trabajo en Local (con fecha de verificación). Todo lo marcado 🔲 solo se puede confirmar dentro de Local, probando de verdad — no lo des por sentado sin probarlo.
 
 ---
 
@@ -46,17 +46,25 @@ Este documento no repite el mapa de qué-va-dónde por sección (eso vive en `ME
 
 ## 2. Infraestructura del entorno Local
 
+⚠️ **Corrección crítica (confirmada con WP-CLI, 12 de julio de 2026): el Local NO usa subdirectorio `/blog/`.** WordPress está instalado directamente en la raíz del sitio — a diferencia de producción, que sí vive en `/blog/`. Confirmado con `pwd` y `ls -la blog` en el Site Shell de Local: la carpeta `blog` no existe en el Local. Intentar alinear esto con producción (añadiendo `/blog` en Ajustes → Generales) provocó un bucle infinito de redirecciones en el panel de administración y la pérdida de todos los estilos visuales — WordPress buscaba sus propios archivos en una ruta que no existe. Se corrigió revirtiendo desde WP-CLI (el panel estaba bloqueado por el bucle):
+
+```
+wp option update siteurl 'https://tiritaito-real.local'
+wp option update home 'https://tiritaito-real.local'
+wp rewrite flush --hard
+```
+
 | Componente | Detalle |
 |---|---|
 | Entorno | Local by Flywheel |
-| Dominio local | **`tiritaito-real.local`** — corregido el 7 julio 2026, el valor anterior (`tiritaito.local`) era incorrecto |
-| WordPress | mismo `/blog/` subdirectorio que producción, para mantener coherencia de rutas |
+| Dominio local | **`tiritaito-real.local`** — sin `/blog/`, confirmado 12 julio 2026 |
+| WordPress | Instalado en la **raíz** del sitio — **no** en un subdirectorio `/blog/` como producción. No intentar alinear esto con producción vía Ajustes → Generales; provoca un bucle de redirecciones (ver arriba) |
 | SSL | Local lo genera automáticamente — comportamiento igual que en producción. Si el navegador sigue avisando de "no seguro", falta pulsar "Trust" en la pestaña SSL del sitio dentro de Local |
 
 ### Constantes del entorno (usar siempre estas, nunca las de producción de `00_CORE.md`, en código que corra en Local)
 
 ```
-WP_BASE  = https://tiritaito-real.local/blog/wp-json
+WP_BASE  = https://tiritaito-real.local/wp-json
 APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 ```
 
@@ -64,19 +72,30 @@ APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 
 ⚠️ **Nota aparte, fuera del alcance de este documento:** cualquier snippet que use `wpFetch()` o `guardarOpciones()` contra el WordPress del Local necesita el Application Password real del usuario `makecom` **de ese WordPress local** (nunca el de producción) — sin eso, esas llamadas fallan con 401. Esto es del Proyecto Web Nueva (Backend), no de este documento; queda mencionado aquí solo para que no se pierda de vista.
 
+⚠️ **Discrepancia sin resolver (detectada 11-12 julio 2026):** el snippet "TT Creators + Biblioteca — Endpoint central v3" tiene un comentario de cabecera que afirma que los 3 tokens (`TT_READ_TOKEN`, `TT_WRITE_TOKEN`, `BIBLIOTECA_TOKEN`) ya no están escritos en texto plano — que se leen de `wp-config.php`. **El código real sigue teniendo los 3 valores escritos directamente con `define()`**, como respaldo. No se sabe sin comprobarlo cuál de los dos está realmente activo:
+
+```
+wp eval "echo TT_WRITE_TOKEN;"
+wp eval "echo TT_READ_TOKEN;"
+wp eval "echo BIBLIOTECA_TOKEN;"
+```
+
+Pendiente de decisión de Hno A: migrar los tokens de verdad a `wp-config.php`, o corregir el comentario del snippet para reflejar que siguen en el código. Cualquiera de las dos es válida — lo que no puede quedar así es la discrepancia entre lo que dice el comentario y lo que hace el código.
+
 ### Herramientas exclusivas de Local (aprovecharlas)
 
 | Herramienta | Para qué sirve | Dónde está |
 |---|---|---|
 | Base de datos directa (Adminer) | Inspeccionar `wp_options` sin pasar por el panel de WP — más rápido al depurar | Botón "Database" en Local |
-| WP-CLI | Comandos de WordPress desde terminal — pruebas rápidas de snippets | Botón "Open Site Shell" en Local |
-| Live Link | URL pública temporal del sitio local — para que Hna C o el equipo lo vean sin estar en el mismo ordenador/red | Botón "Live Link" en Local |
+| WP-CLI | Comandos de WordPress desde terminal — pruebas rápidas de snippets, y la única vía para corregir el sitio si el panel de administración queda bloqueado (ver corrección de `/blog/` arriba) | Botón "Open Site Shell" en Local |
+| Live Link | URL pública temporal del sitio local — para que Hna C o el equipo lo vean sin estar en el mismo ordenador/red. ⚠️ **No fiable para verificar diseño/tipografía/CSS** — confirmado que Local reescribe las rutas del dominio local sobre la marcha pero reconoce abiertamente que no las coge todas (fuente: localwp.com/help-docs/local-features/live-links/); afecta a cualquier CSS/JS/fuente con ruta absoluta, no solo a `@font-face`. Sirve solo para enseñar estructura general a Hna C — para QA visual real, usar el modo responsive de Chrome DevTools o Safari directamente sobre `tiritaito-real.local`. El nombre del Live Link (ej. `sneaky-doctor`) es aleatorio y cambia en cada reinicio — no perseguirlo. Desde julio 2026, Local añade usuario/contraseña automáticamente al Live Link; si se comparte con Hna C, pasarle también esas credenciales | Botón "Live Link" en Local |
 | Blueprint | Guarda el estado actual del sitio como plantilla reutilizable | Menú del sitio → "Save as Blueprint" |
 
 ### Checklist antes de cada sesión de trabajo en Local
 
-- [ ] Confirmar que `tiritaito-real.local` sigue siendo el dominio activo (puede cambiar si se recrea el sitio)
+- [ ] Confirmar que `tiritaito-real.local` sigue siendo el dominio activo, **sin** `/blog/` (puede cambiar si se recrea el sitio)
 - [ ] Confirmar que la Avada está registrada como staging (Avada → Registro no pide licencia nueva)
+- [ ] Confirmar que el certificado SSL sigue en estado **"Trusted"** en la pestaña SSL del sitio dentro de Local — puede perderse al recrear el sitio, y si no está confiado puede llegar a romper silenciosamente las respuestas de la API (`/wp-json` devolviendo un carácter suelto en vez del JSON completo)
 - [ ] Si el código incluye una URL o credencial, verificar que viene de este documento o de `04_ENTORNO_LOCAL.md` actualizado — nunca de producción
 
 ---
@@ -141,7 +160,7 @@ Las Características (Features) se revisaron una por una, no en bloque:
 | Formas (Forms) | ✅ Activada | Para formularios de contacto/oración |
 | Off Canvas | ✅ Activada | Coincide con el método de menú móvil recomendado en Sección 9.1 |
 | Portafolio | ✅ Activada | ⚠️ Marcada para reconsiderar — no hay contenido de portafolio planeado; activa CPT + plantillas Single/Archive innecesarias, exactamente el Patrón B de deuda técnica que `METODOLOGIA_CONSTRUCCION.md` ya advierte evitar |
-| Herramientas de desarrollo (ACF) | ✅ Activada | Relevante para la pregunta abierta "Posts vs CPT+ACF" de "Hombres de Dios" (`METODOLOGIA_CONSTRUCCION.md` Sección 4) — no la resuelve, solo deja la herramienta lista si se opta por CPT |
+| Herramientas de desarrollo (ACF) | ✅ Activada | Confirmado: ACF Pro viene incluido gratis con la licencia de Avada, con soporte nativo en Avada Dynamic Content. Relevante para "Hombres de Dios" y "Novenas" (dentro de Oraciones) — ver `METODOLOGIA_CONSTRUCCION.md` |
 | Modo de mantenimiento, Gestión de medios | ✅ Activadas | Sin objeción |
 | Comprar, Foro, Marca personalizada, Chat en vivo | ☐ Sin activar | Correcto — sin caso de uso documentado en Tiritaito |
 
@@ -177,6 +196,8 @@ Una vez configurado así, Hna C puede seleccionar "Color 1" en cualquier botón 
 - Fuente de encabezados: **Yeah Papa** — ya cargada como `.woff2` en Media Library (`uploads/2026/04/YeahPapa.woff2`). Confirmar que está asignada aquí, no solo declarada en CSS.
 - Tamaños/pesos/interlineado configurables por tipo de elemento, con valores responsive distintos en móvil/escritorio, sin CSS.
 - **Ninguna fuente de Google Fonts debería aparecer** — su presencia en el sitio actual (vía `@import` en el CSS del podcast) es deuda técnica a no replicar.
+
+✅ **Confirmado 12 julio 2026:** el desbordamiento de texto visto inicialmente en los botones de "Qué hacemos" (Seminarios / Grupo de alabanza / Día de familias) vía Live Link **no era un fallo de maquetación real** — era "Yeah Papa" fallando al cargar por la limitación de Live Link con fuentes (ver tabla de Live Link en Sección 2). Accediendo directamente a `tiritaito-real.local`, el diseño se ve correcto, con la fuente cargando bien y sin desbordamiento. No requiere ninguna corrección en Avada — queda cerrado, no es un pendiente de diseño abierto.
 
 ### 4.3 Espaciado global
 
@@ -350,7 +371,7 @@ Cada página/entrada tiene un panel "Avada Page Options" que permite, sin códig
 - Desactivar el header solo en esa página (método recomendado para landing pages, Sección 7)
 - Cambiar el ancho del contenido
 - Ocultar la barra de título
-- Definir una clase CSS personalizada para esa página concreta
+- Definir una clase CSS personalizada para esta página concreta
 
 El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código — en la web nueva, se hace desde aquí, sin CSS.
 
@@ -359,7 +380,7 @@ El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código
 ## 11. Avada Studio y Dynamic Content — mención breve
 
 - **Avada Studio:** biblioteca de plantillas preconstruidas (páginas, secciones, elementos). Útil como punto de partida visual que luego se adapta al ADN Tiritaito — nunca como resultado final sin personalizar.
-- **Dynamic Content:** permite conectar elementos del Fusion Builder a datos de WordPress (título del post, imagen destacada, autor, fecha, campos personalizados). Para contenido editorial estándar, puede eliminar la necesidad de shortcodes PHP simples — relevante si en v2 se añade un Custom Post Type para "Hombres de Dios" (ver `METODOLOGIA_CONSTRUCCION.md`).
+- **Dynamic Content:** permite conectar elementos del Fusion Builder a datos de WordPress (título del post, imagen destacada, autor, fecha, campos personalizados). Para contenido editorial estándar, puede eliminar la necesidad de shortcodes PHP simples — confirmado con soporte nativo para campos ACF (texto, imagen, repetidor, relación) — relevante para "Hombres de Dios" y "Novenas" (ver `METODOLOGIA_CONSTRUCCION.md`).
 
 ---
 
@@ -426,7 +447,7 @@ if (document.getElementById('mi-modulo-root')) {
 
 ---
 
-## 14. Errores comunes a evitar (aprendidos de la web vieja)
+## 14. Errores comunes a evitar (aprendidos de la web vieja y de la sesión de Local)
 
 | Error | Cómo evitarlo en la web nueva |
 |---|---|
@@ -436,6 +457,8 @@ if (document.getElementById('mi-modulo-root')) {
 | Construir páginas antes de tener el Layout Global terminado | Terminar Header + Footer + Global Options primero |
 | Marcar un snippet "Run everywhere" porque es más fácil que decidir dónde | Es exactamente el patrón que generó el CSS de Santos/Biblioteca cargándose sin uso — decidir siempre el alcance real |
 | `has_shortcode()` para condicionar CSS con Avada | Falso negativo — Avada codifica en Base64. CSS de módulos → `wp_head` siempre, incondicionalmente |
+| Alinear la URL del Local con producción (añadir `/blog/`) | El Local vive en la raíz, sin `/blog/` — hacerlo provoca un bucle de redirecciones en el admin y rompe los estilos visuales (ver Sección 2) |
+| Confiar en Live Link para revisar tipografía/CSS | No es fiable para eso — usar DevTools responsive directamente sobre `tiritaito-real.local` (ver Sección 2) |
 
 ---
 
@@ -449,7 +472,7 @@ if (document.getElementById('mi-modulo-root')) {
 
 ### Fase 1 — Configurar la base de Avada
 
-- [ ] Crear/confirmar el sitio en Local by Flywheel (WordPress limpio)
+- [ ] Crear/confirmar el sitio en Local by Flywheel (WordPress limpio, en la raíz, sin `/blog/`)
 - [ ] Instalar Avada + registrar licencia como staging
 - [ ] Configurar Global Options: paleta de 13 colores, tipografía (Yeah Papa + Helvetica Neue), spacing (Sección 4)
 - [ ] Diseñar el Header en Header Builder (Sección 5)
@@ -479,17 +502,21 @@ if (document.getElementById('mi-modulo-root')) {
 
 ## 17. Qué queda confirmado vs qué sigue pendiente de probar en Local
 
-**✅ Confirmado en documentación oficial (esta versión, julio 2026):**
+**✅ Confirmado en documentación oficial (julio 2026):**
 - Licencia de staging: `tiritaito-real.local` califica sin coste extra (Sección 1).
 - Toggles, Image Carousel, Avada Slider, Lightbox, Modal existen como elementos nativos.
 - Global Elements sincronizan el 100% del contenido — no admiten campos variables por instancia (Sección 8).
 - El Flyout Menu clásico es un método legacy; el método actual es el Off Canvas Builder (Sección 9.1).
 - Ni Flyout ni Off Canvas resuelven de forma nativa menús con submenús.
+- ACF Pro y FileBird Pro vienen incluidos gratis con la licencia de Avada, instalables desde Avada → Plugins.
+- Avada Dynamic Content tiene soporte nativo para campos ACF.
 
-**✅ Confirmado en la sesión real del 7 julio 2026 (Sección 4.0.1):**
-- El dominio correcto del Local es `tiritaito-real.local`, no `tiritaito.local`.
-- El Setup Wizard solo admite 8 de los 13 colores de la paleta, y no admite fuentes propias — ambas cosas requieren configuración manual posterior.
-- Off Canvas y Eventos ya están activados como Features de Avada; Portafolio también, pero sin caso de uso — candidato a desactivar.
+**✅ Confirmado en sesiones reales en Local:**
+- 7 julio 2026: el dominio correcto del Local es `tiritaito-real.local`; el Setup Wizard solo admite 8 de los 13 colores y no admite fuentes propias; Off Canvas y Eventos ya activados, Portafolio activo sin caso de uso.
+- **12 julio 2026: el Local NO usa subdirectorio `/blog/` — vive en la raíz.** Confirmado con WP-CLI. Intentar alinear con producción rompe el sitio (bucle de redirecciones + pérdida de estilos) — ver Sección 2.
+- 12 julio 2026: el certificado SSL de Local necesita "Trust" manual — puede llegar a romper silenciosamente las respuestas de la API si no está confiado.
+- 12 julio 2026: Live Link no es fiable para revisar tipografía/CSS/diseño — confirmado contra documentación oficial de Local, no solo observación propia.
+- 12 julio 2026: el desbordamiento visto en los botones de "Qué hacemos" era un efecto de la limitación de Live Link con fuentes, no un fallo de maquetación real — cerrado, sin acción pendiente.
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
@@ -498,6 +525,7 @@ if (document.getElementById('mi-modulo-root')) {
 - Si "Yeah Papa" se registra correctamente en Avada → Typography → Custom Fonts, o si hace falta volver a subir el `.woff2` ahí específicamente.
 - Si la barra negra superior del header "Studio" es una fila del Header Builder o el Top Bar legacy de Global Options.
 - Si el título "Studio" del header es el Site Title de WordPress o un elemento de Título suelto.
+- Cuál de los dos valores de los tokens (`wp-config.php` o el `define()` del propio snippet) está realmente activo en el snippet "TT Creators + Biblioteca — Endpoint central v3" (Sección 2).
 
 ---
 
@@ -517,6 +545,8 @@ if (document.getElementById('mi-modulo-root')) {
 - Lightbox Element: avada.com/documentation/lightbox-element/
 - How To Use The Avada Setup Wizard: avada.com/documentation/how-to-use-the-avada-setup-wizard/
 - How To Use The Performance Wizard: avada.com/documentation/how-to-use-the-performance-wizard/
+- Local by Flywheel — Live Links, limitaciones confirmadas: localwp.com/help-docs/local-features/live-links/
+- Sesión de diagnóstico en Local (WP-CLI, SSL, discrepancia de tokens): `CORRECCIONES_DOCUMENTACION_11-12_julio_2026.md`, redactado por Hno A
 
 ---
 
@@ -527,7 +557,10 @@ if (document.getElementById('mi-modulo-root')) {
 2. Hno A: registrar "Yeah Papa" en Typography → Custom Fonts y confirmar si el `.woff2` ya subido sirve o hay que resubirlo
 3. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
 4. Hno A + Carlitos: decidir si se desactiva "Portafolio" en Características, ya que no hay contenido planeado
-5. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
+5. Hno A: actualizar la URL configurada en la app Tiritaito for Creators de `.../blog/wp-json` a `https://tiritaito-real.local/wp-json`
+6. Hno A: confirmar el token realmente activo del snippet "TT Creators + Biblioteca — Endpoint central v3" (comandos en Sección 2) y resolver la discrepancia entre el comentario y el código
+7. Hno A: revisar si la app Biblioteca (token separado) necesita el mismo ajuste de URL que Tiritaito for Creators
+8. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -536,8 +569,9 @@ if (document.getElementById('mi-modulo-root')) {
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
 | 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica |
 | 3 | ¿Se desactiva "Portafolio"? | Sigue activo sin caso de uso — riesgo de repetir el Patrón B de deuda técnica si se deja así |
+| 4 | ¿Se migran los tokens de verdad a `wp-config.php`, o se corrige el comentario del snippet? | La discrepancia actual entre comentario y código no puede quedar así (Sección 2) |
 
-**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · primera sesión de Setup Wizard completada y registrada (Sección 4.0.1).
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · **el Local NO usa `/blog/`, vive en la raíz (12 julio 2026)** · certificado SSL necesita "Trust" manual — añadido a la checklist · Live Link confirmado no fiable para QA visual · desbordamiento en "Qué hacemos" confirmado como efecto de Live Link, no un fallo real · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada.
 
 ---
 
