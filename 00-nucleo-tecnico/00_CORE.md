@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Contexto Maestro
 *Reemplaza: ENTORNO_TÉCNICO · GUÍA_DE_ESTILO_VISUAL · tiritaito-guia-diseno-visual.md · secciones 2,9-14 de protocolo-tiritaito-creators-2.md*
-*Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast)*
+*Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast) · TIRITAITO_FOR_CREATORS_VERSIONS.md (si trabajas en V1/V2 de la app)*
 
 ---
 
@@ -27,27 +27,29 @@ WordPress:        https://www.tiritaito.com/blog/
 REST API:         https://www.tiritaito.com/blog/wp-json/wp/v2/
 Endpoint propio:  https://www.tiritaito.com/blog/wp-json/tiritaito/v1/
 Usuario app:      makecom  (rol: Editor)
-Auth:             Application Password de WordPress
+Auth:             Token propio — TT_WRITE_TOKEN (Application Password descartado
+                   definitivamente, ver TIRITAITO_FOR_CREATORS_VERSIONS.md)
 ```
 
 ### Constantes JS base
 
 ```javascript
-const WP_BASE  = 'https://www.tiritaito.com/blog/wp-json';
-const WP_USER  = 'makecom';
-const WP_PASS  = 'xxxx xxxx xxxx xxxx xxxx xxxx'; // .replace(/\s/g,'') antes del btoa()
-const AUTH     = 'Basic ' + btoa(WP_USER + ':' + WP_PASS.replace(/\s/g, ''));
-const LOGO_URL = 'https://www.tiritaito.com/blog/wp-content/uploads/2026/06/IMAGE-2026-06-19-10-47-20_resultado.webp';
-const APP_PIN  = '1234'; // cambiar antes de producción
+const WP_BASE        = 'https://www.tiritaito.com/blog/wp-json';
+const TT_WRITE_TOKEN  = 'PEGAR AQUÍ EL TOKEN REAL DE PRODUCCIÓN'; // nunca hardcodear en un doc compartido
+const LOGO_URL       = 'https://www.tiritaito.com/blog/wp-content/uploads/2026/06/IMAGE-2026-06-19-10-47-20_resultado.webp';
+const APP_PIN        = '1234'; // cambiar antes de producción
 ```
 
-### Funciones JS base (siempre usar estas, no reinventar)
+⚠️ **Reconstrucción, no código verificado:** no tengo acceso al HTML real de la app para confirmar el nombre exacto del header o parámetro con el que se envía `TT_WRITE_TOKEN` al servidor. Las funciones de abajo (`wpFetch`, `subirArchivo`) siguen escritas con el patrón antiguo de Basic Auth como referencia de estructura — **antes de copiar este bloque, sustituir `AUTH` por el mecanismo real que ya usa `apps/v1/tiritaito-creators-v1-XX.html` o `apps/v2/tiritaito-creators-v2-XX.html` en GitHub.** No copiar el bloque de abajo tal cual sin ese paso.
+
+### Funciones JS base (plantilla — verificar auth real antes de usar)
 
 ```javascript
 // Peticiones REST autenticadas
+// ⚠️ Sustituir la línea de 'headers' por el mecanismo real de TT_WRITE_TOKEN
 async function wpFetch(endpoint, options = {}) {
   const url     = WP_BASE + endpoint;
-  const headers = { 'Authorization': AUTH, ...(options.headers || {}) };
+  const headers = { 'Authorization': 'Bearer ' + TT_WRITE_TOKEN, ...(options.headers || {}) }; // ⚠️ verificar formato real
   if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
   const res = await fetch(url, { ...options, headers });
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
@@ -69,7 +71,7 @@ function subirArchivo(file, onProgress) {
     });
     xhr.addEventListener('error', () => reject(new Error('Error de red')));
     xhr.open('POST', WP_BASE + '/wp/v2/media');
-    xhr.setRequestHeader('Authorization', AUTH);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + TT_WRITE_TOKEN); // ⚠️ verificar formato real
     xhr.setRequestHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(file.name)}"`);
     xhr.send(form); // NO añadir Content-Type — FormData lo pone solo con boundary correcto
   });
@@ -102,10 +104,13 @@ async function guardarOpciones(datos) {
 | `tt_docx_lectura_url` | URL Media Library | Lecturas | Semanal |
 | `tt_youtube_json_url` | URL Media Library (`music-data.json`) | YouTube | Ocasional |
 | `tt_seminarios_json_url` | URL Media Library (`Seminarios.json`) | YouTube | Ocasional |
+| `tt_viacrucis_json_url` | URL Media Library (JSON) — 🔲 tipo inferido por el patrón de nombre (`_json_url`, igual que las dos filas de arriba); confirmar con Hno A | Vía Crucis | Ocasional |
+| `tt_fiesta_dias` | JSON directo, no URL — 🔲 inferido: mismo patrón que `tt_novedades` (la app manda la lista completa en cada cambio); confirmar esquema exacto con Hno A | Fiestas / calendario | Ocasional |
+| `tt_novedades` | JSON directo (lista de objetos, no URL — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6 para el esquema completo) | Novedades (V2) | Ocasional |
 
 **Endpoint tiritaito/v1:**
-- Token GET (público): `ttcr2026sanjoseyvirgenmaria`
-- POST: requiere Application Password de `makecom`
+- Token GET (público): `ttcr2026sanjoseyvirgenmaria` — 🔲 probablemente sea el `TT_READ_TOKEN` mencionado en la investigación de integración Avada+Creators, sin nombre formal asignado en este documento; confirmar y renombrar la constante si es así
+- POST: requiere `TT_WRITE_TOKEN`
 - Header: `Cache-Control: no-store`
 - CORS: priority 15
 
@@ -125,6 +130,8 @@ async function guardarOpciones(datos) {
 | PUT | `/wp/v2/posts/{id}` | Edita entrada |
 | DELETE | `/wp/v2/posts/{id}?force=true` | Elimina entrada |
 | GET | `/wp/v2/categories` | Lista categorías |
+
+🔲 **Sin confirmar:** si `/wp/v2/media` y `/wp/v2/posts` (endpoints nativos de WordPress) también migraron a `TT_WRITE_TOKEN`, o si siguen necesitando autenticación de WordPress porque son rutas del core y no del endpoint propio `tiritaito/v1`. La investigación histórica (`ESTUDIO_INTEGRACION_AVADA_CREATORS`) menciona un endpoint propio `/tiritaito/v1/subir` — si ese sustituyó a `/wp/v2/media`, esta tabla necesita actualizarse para reflejarlo. Verificar con Hno A antes de dar esta tabla por definitiva.
 
 ---
 
@@ -230,7 +237,6 @@ if (document.getElementById('mi-modulo-root')) {
 | Trampa | Descripción |
 |---|---|
 | `has_shortcode()` + Avada | Falso negativo — Avada codifica en Base64. CSS de módulos → `wp_head` siempre, incondicionalmente |
-| Application Password con espacios | `.replace(/\s/g,'')` antes de `btoa()` o da 401 |
 | `fetch` vs XHR en subidas | `fetch` no expone `upload.progress` — usar XHR para barras de progreso |
 | FormData + Content-Type | No añadir `Content-Type: application/json` si el body es FormData — lo rompe |
 | `type=module` race condition | Conectar PIN desde dentro del módulo, no con `onclick` en HTML |
@@ -239,6 +245,9 @@ if (document.getElementById('mi-modulo-root')) {
 | Editar `post_content` Avada | Base64 serializado — sobrescribirlo desde fuera rompe el diseño |
 | `admin-ajax.php` | Bloqueado por Raiola para usuarios públicos — usar REST API |
 | `sessionStorage` vs `localStorage` para PIN | `sessionStorage` — debe expirar al cerrar pestaña |
+| `TT_WRITE_TOKEN` expuesto en el HTML | El token vive hardcodeado en el HTML de la app (riesgo operativo, no de frontend público) — si se compromete, redistribuir el HTML es la mitigación actual, no hay rotación automática |
+
+*Eliminada la fila "Application Password con espacios" — ya no aplica desde que se descartó ese patrón de autenticación.*
 
 ---
 
