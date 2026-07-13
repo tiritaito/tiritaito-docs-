@@ -47,7 +47,7 @@ tiritaito-docs/
     ├── METODOLOGIA_WEB_NUEVA_v2.md
     ├── Diagnóstico original v1.md
     ├── CONFIGURACION_PROYECTOS_CLAUDE_Y_GITHUB.md
-    └── ALCANCE_WEB_NUEVA_v1_1.md
+    └── ALCANCE_WEB_NUEVA_v1.md
 ```
 
 ---
@@ -64,7 +64,7 @@ tiritaito-docs/
 | `ALCANCE_WEB_NUEVA.md` | `01-producto/` | Qué secciones tiene la web nueva y con qué prioridad | Hna C | Hna C | Alta mientras se decide el alcance — ⚠️ pendiente de revisión final con Hna C |
 | `METODOLOGIA_CONSTRUCCION.md` | `02-metodologia/` | Diagnóstico técnico heredado + dónde construir cada pieza de contenido ya decidida | Hno A, Hna C | Hno C (investigación) | Media |
 | `MIGRACION_CONTENIDO.md` | `02-metodologia/` | Qué contenido de la web vieja migrar, cuál recrear, plan de SEO | Hna C, Hno A, Carlitos | Hno C (investigación) | Media — vivo mientras avanza la revisión de contenido |
-| `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos | Hno A | Hno C (investigación) | Baja una vez estabilizada |
+| `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, principio de Responsive | Hno A | Hno C (investigación) | Baja una vez estabilizada |
 | `ARQUITECTURA_Y_ROADMAP.md` | `04-vision-y-equipo/` | FODA, política sobre la web vieja, fases del proyecto, glosario | Carlitos | Hno C (investigación) | Baja |
 | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | `04-vision-y-equipo/` | Roles, mapa de Proyectos de Claude, GitHub, WPMobile.app, Search Console | Carlitos | Hno C (investigación) | Media — cambia cuando cambia la organización del equipo |
 
@@ -96,11 +96,13 @@ tiritaito-docs/
 |---|---|---|
 | Revisión final de `ALCANCE_WEB_NUEVA.md` con Hna C | `ALCANCE_WEB_NUEVA.md` | Fase 2 de `ARQUITECTURA_Y_ROADMAP.md`; método definitivo de `MIGRACION_CONTENIDO.md` |
 | Reescritura de `04_ENTORNO_LOCAL.md` (token en vez de Application Password) | `04_ENTORNO_LOCAL.md` | Cualquier snippet nuevo que se autentique contra el endpoint REST en Local |
-| Confirmar en Local: Layout Content Section + Dynamic Content + Post Cards para "Hombres de Dios" | `METODOLOGIA_CONSTRUCCION.md` Sección 4 | Construcción de esa sección |
+| Confirmar en Local que el método **Layout + Elementos Guardados** funciona visualmente para "Hombres de Dios" (Dynamic Content ya fue descartado explícitamente — ver `ALCANCE_WEB_NUEVA.md` Sección 4.H) | `METODOLOGIA_CONSTRUCCION.md` Sección 4 | Construcción de esa sección |
+| Confirmar en Local si **Post Cards** cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" | `GUIA_AVADA_LOCAL.md` Sección 19, pregunta 2 | Construcción de esas dos piezas |
 | Crear la cuenta de Repuesto y conectar GitHub | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6 | Continuidad si la cuenta principal de Hno A agota su límite |
 | Política de licencia de WPMobile.app en sitio de desarrollo | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 | Cualquier prueba de la app contra el entorno Local |
 | Alcance completo de V2 de Tiritaito for Creators (solo Novedades confirmado por ahora) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Construcción de cualquier módulo nuevo más allá de Novedades |
 | Añadir `tt_novedades` a la whitelist de `tt_opciones_permitidas()` y construir el widget de home | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6 | Que el módulo de Novedades funcione de extremo a extremo |
+| **Instrucciones actualizadas del Proyecto 3 (criterio de Responsive proactivo, añadido 13 julio 2026) pendientes de repegar a mano en claude.ai** | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3 | Que Hno A reciba de verdad el nuevo criterio — subir el documento a GitHub actualiza la base de conocimiento del Proyecto, pero **no** las instrucciones personalizadas, que solo se actualizan si alguien las repega a mano en la configuración del Proyecto en claude.ai |
 
 ---
 
