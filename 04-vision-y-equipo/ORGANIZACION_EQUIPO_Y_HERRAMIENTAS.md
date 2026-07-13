@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Organización del Equipo y Herramientas
 **Roles, mapa de Proyectos de Claude, GitHub, economía de tokens, WPMobile.app y Search Console**
 *Fusiona: CONFIGURACION_PROYECTOS_CLAUDE_Y_GITHUB.md (autoridad sobre el mapa de proyectos) + INFORME_ESTRATEGICO_2026_1.md (Parte 6.1, 6.3) + INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Partes 1, 4, 5)*
-*Verificado contra support.claude.com — julio 2026*
+*Verificado contra support.claude.com — julio 2026 · Instrucciones del Proyecto 3 ampliadas con criterio de Responsive proactivo — 13 julio 2026*
 *Audiencia: Carlitos (coordinación transversal) · cada dueño de cuenta para su propia sección*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -175,7 +175,7 @@ Ad maiorem Dei gloriam.
 
 ---
 
-### Proyecto 3 — Web Nueva (fusionado: Backend+Snippets y Maquetación+Avada) *(configurado)*
+### Proyecto 3 — Web Nueva (fusionado: Backend+Snippets y Maquetación+Avada) *(configurado — instrucciones ampliadas con Responsive proactivo, 13 julio 2026)*
 
 ```
 Eres un Desarrollador Web Senior experto en WordPress, Avada Live/
@@ -201,6 +201,31 @@ PRIMERO, antes de escribir nada):
   Snippets HTML (con <style> + <script> integrados).
 - ¿Es contenido ya decidido y no sabes dónde construirlo? → consulta
   METODOLOGIA_CONSTRUCCION.md antes de decidir tú solo.
+
+0.1 RESPONSIVE — SIEMPRE, SIN QUE HAYA QUE PEDIRLO (ver
+GUIA_AVADA_LOCAL.md Sección 8.4 para el detalle completo):
+- Al proponer o ayudar a construir CUALQUIER sección, Container,
+  Columna o elemento de Avada nuevo, incluye SIEMPRE cómo se
+  comporta en las 3 pantallas — Desktop, Tablet (Medium) y Móvil
+  (Small) — aunque no se haya preguntado explícitamente por móvil.
+  No es un paso opcional ni algo que se añade al final si sobra
+  tiempo.
+- No hay un layout "correcto" fijo que replicar en todas las
+  secciones (no fuerces siempre 3 columnas, o siempre 1+2, etc.) —
+  cada sección puede necesitar una solución distinta. Lo que es fijo
+  es la pregunta, no la respuesta: decide y explica conscientemente
+  qué pasa en cada pantalla, usando el icono Responsive de Avada
+  (Column Width, Column Order, márgenes, padding, fondo — ver
+  GUIA_AVADA_LOCAL.md Sección 8.4).
+- Antes de dar cualquier construcción por terminada, recuerda
+  explícitamente revisar las 3 vistas del editor (Desktop/Medium/
+  Small) — nunca solo Desktop, y nunca fiarse de Live Link para esto
+  (no es fiable para revisar diseño/CSS, ver GUIA_AVADA_LOCAL.md
+  Sección 2).
+- Si el texto se ve desbordado o cortado en una pantalla pequeña,
+  recuerda que también puede deberse a Responsive Typography
+  Sensitivity mal calibrado (Avada → Options → Responsive), no solo
+  al layout de columnas.
 
 1. FILOSOFÍA DE ENTREGA DE CÓDIGO (cuando la tarea es código):
 - Código complejo/largo (+300 líneas): PHP estructurado para Code
@@ -237,7 +262,8 @@ ningún valor. La autenticación de Tiritaito for Creators es token
 propio (TT_WRITE_TOKEN), no Application Password — definitivo.
 
 REFERENCIA CONSTANTE:
-- GUIA_AVADA_LOCAL.md para la mecánica de Avada y Local.
+- GUIA_AVADA_LOCAL.md para la mecánica de Avada y Local, INCLUYENDO
+  el criterio de Responsive de la Sección 8.4.
 - METODOLOGIA_CONSTRUCCION.md para dónde vive cada pieza de contenido.
 - ALCANCE_WEB_NUEVA.md para qué sección se construye y su prioridad.
 - 04_ENTORNO_LOCAL.md para el entorno — nunca datos de producción.
@@ -402,7 +428,7 @@ Sin instrucciones redactadas todavía. Se activa cuando el equipo empiece a conf
 
 ### Proyecto 6 — Web Nueva · Repuesto
 
-Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado), copiadas tal cual. Base de conocimiento **vacía a propósito** — se conecta vía GitHub (Sección 5), no con archivos sueltos, para que nunca se desincronice con la cuenta principal.
+Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado, **incluyendo la Sección 0.1 de Responsive proactivo**), copiadas tal cual. Base de conocimiento **vacía a propósito** — se conecta vía GitHub (Sección 5), no con archivos sueltos, para que nunca se desincronice con la cuenta principal.
 
 ---
 
@@ -446,6 +472,8 @@ El problema que resuelve: evitar que dos sitios (cuenta principal y cuenta de re
 ✅ **Confirmado, textual de la documentación oficial:** *"No recuperamos el historial de commits, PRs, u otros metadatos."* Solo se sincronizan nombres y contenido de archivos de una rama concreta. Hay que pulsar **"Sync now"** para traer los cambios más recientes — no ocurre solo.
 
 ⚠️ **Matiz:** existen reportes documentados de que el conector a veces muestra **"Conectado"** sin que el contenido esté realmente actualizado — no es lo habitual, pero ha ocurrido. Probarlo antes de confiar en él para algo delicado (como `04_ENTORNO_LOCAL.md`).
+
+**Recordatorio directo, a raíz de esta sesión (13 julio 2026):** cualquier actualización hecha aquí a `GUIA_AVADA_LOCAL.md` o a las instrucciones de este documento **no llega sola al Proyecto 3 de Hno A** — necesita: (1) que el archivo actualizado se suba a GitHub, y (2) que Hno A pulse "Sync now" en su Proyecto antes de la próxima sesión donde importe. Sin esos dos pasos, Hno A sigue trabajando con la versión antigua aunque el repositorio ya esté al día.
 
 ### 5.4 Estructura del repositorio (actualizada — con `apps/`)
 
@@ -570,7 +598,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 |---|---|
 | Proyecto 1 (Web Vieja) | ✅ Configurado |
 | Proyecto 2 (Investigación) | ✅ Activo — es este mismo proyecto |
-| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado |
+| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas con Responsive proactivo (13 julio 2026), pendiente de que Hno A las repegue en claude.ai** |
 | Proyecto 4 (Diseño y Avada) | ✅ Configurado |
 | Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2 |
 | Proyecto 6 (Web Nueva — Repuesto) | 🔵 Recomendado, no creado |
@@ -580,6 +608,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | Documento de versiones de Tiritaito for Creators | ✅ `TIRITAITO_FOR_CREATORS_VERSIONS.md` creado (2026-07-11) |
 | `04_ENTORNO_LOCAL.md` | ⚠️ Necesita reescritura — dominio corregido a `tiritaito-real.local`, patrón de autenticación (token) pendiente de reflejar |
 | Módulo Novedades (V2) | ✅ Construido en la app — 🔲 pendiente en Local: whitelist + widget de home |
+| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (principio de Responsive), verificado contra documentación oficial de Avada — 13 julio 2026 |
 
 ---
 
@@ -591,6 +620,9 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 3. Hno A: reescribir `04_ENTORNO_LOCAL.md` con el patrón de token
 4. Hno A: añadir `tt_novedades` a la whitelist de `tt_opciones_permitidas()` y construir el widget de Novedades en Avada
 5. Hno A: verificar con soporte de WPMobile.app la política de sitio de desarrollo
+6. **Carlitos: subir esta versión actualizada de `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` y de `GUIA_AVADA_LOCAL.md` a GitHub**
+7. **Hno A: pegar las instrucciones actualizadas del Proyecto 3 (con la Sección 0.1 de Responsive) en "Instrucciones personalizadas" en claude.ai — esto NO se aplica solo por subir el documento a GitHub, hay que repegarlas a mano una vez**
+8. **Hno A: pulsar "Sync now" en el conector de GitHub del Proyecto 3, para que `GUIA_AVADA_LOCAL.md` actualizado (con la Sección 8.4) se refleje en la base de conocimiento**
 
 **Preguntas abiertas:**
 
