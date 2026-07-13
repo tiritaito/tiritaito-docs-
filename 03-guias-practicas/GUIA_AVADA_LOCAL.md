@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Guía Avada + Local
 **Referencia técnica completa: licencia, infraestructura, Global Options, Header/Footer Builder, Layouts, elementos nativos y convenciones**
 *Audiencia principal: Hno A · Fusiona y verifica: INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Parte 3-4) + INFORME_ESTRATEGICO_2026_1.md (Parte 2, 5, 8) + METODOLOGIA_WEB_NUEVA_v2.md (Secciones 3-11) + 04_ENTORNO_LOCAL.md*
-*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026*
+*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026 · Ampliado con principio de Responsive — 13 julio 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -326,6 +326,8 @@ ANTES DE CONSTRUIR NADA NUEVO
            seminario, el siguiente "Rincón de X" — con parámetros, no contenido fijo.
 ```
 
+**Nota de conexión con la Sección 8.3 (Responsive):** este árbol decide *dónde vive* una pieza. Una vez decidido eso, la Sección 8.3 aplica siempre, sin excepción, sobre cualquiera de las cuatro ramas de salida — Global, Guardado, shortcode o Code Block.
+
 ### 8.3 Tabla resumen de decisión
 
 | Opción | Cuándo usarla | Coste |
@@ -333,6 +335,106 @@ ANTES DE CONSTRUIR NADA NUEVO
 | **Global** (Avada Library) | Contenido idéntico en todas partes (footer, CTA fija) | Ninguno — es su propósito |
 | **Guardado / no-global** (Avada Library) | Estructura repetida, contenido distinto, lo mantiene Hna C/editores sin tocar código | Si cambia el diseño, hay que actualizar cada instancia a mano |
 | **Shortcode parametrizable** (Code Snippets) | Estructura repetida, contenido distinto, lo mantiene Hno A | El diseño se actualiza en un solo sitio y se propaga automáticamente — mismo patrón que `[tt_podcast]` |
+
+---
+
+## 8.4 ⭐ Principio de trabajo — Responsive es parte del diseño, no un paso aparte
+
+**Añadido 13 julio 2026, a partir de un aviso de Hno C y una sesión real de Hno A construyendo la vista previa de "Conecta cada día" en la home.** Investigación completa y hallazgos verificados contra documentación oficial: ver `RESPONSIVE_AVADA.md` (carpeta `historico/` una vez incorporado aquí — o donde Carlitos decida archivarlo).
+
+### Qué es esto y qué NO es
+
+Esto **no es una plantilla de layout que hay que replicar** en todas las secciones. No existe un
+"molde correcto" de cuántas columnas o qué orden usar — eso depende de cada contenido y lo
+decide quien construye la sección, caso por caso. **Lo que sí es fijo es la pregunta que hay
+que hacerse siempre:** *"¿cómo se ve/comporta esto en ordenador, en tablet y en móvil — y es
+la mejor forma para cada uno, no solo una copia reducida del diseño de ordenador?"*
+
+Esa pregunta se hace **desde el principio de cada construcción**, no como revisión final.
+
+### El principio, en una frase
+
+> Antes de dar cualquier sección, Container, Columna o elemento de código por terminado,
+> revisar y decidir conscientemente cómo se comporta en las 3 pantallas — Desktop, Tablet
+> (Medium) y Móvil (Small) — usando las herramientas nativas de Avada para ello. No asumir
+> que el comportamiento automático por defecto es suficiente sin comprobarlo.
+
+### Por qué hace falta decirlo explícitamente
+
+Avada ya es responsive de fábrica en lo básico (apila columnas solo, por ejemplo) — pero ese
+comportamiento automático no es suficiente para diseños algo más elaborados (varias columnas
+con contenido distinto entre sí, texto grande, imágenes de fondo, botones anchos). Ahí hace
+falta un ajuste consciente — y hasta el 13 de julio de 2026, ese ajuste no era un paso
+explícito en ningún checklist del proyecto. El problema nunca fue que Avada no supiera
+hacerlo — fue que faltaba el hábito de comprobarlo antes de cerrar.
+
+### La herramienta — Responsive Option Sets
+
+✅ **Confirmado en documentación oficial de Avada:** dentro del editor (Fusion Builder / Avada
+Live), los elementos principales — **Container, Columna, Botón, Imagen, Bloque de texto,
+Título** — tienen un icono "Responsive" que permite configurar valores **distintos e
+independientes** para las 3 pantallas: Desktop (Large) / Medium (Tablet) / Small (Móvil).
+
+Lo que se puede ajustar de forma distinta por pantalla, sin código, incluye: ancho de
+columna, **orden de columna** (qué se muestra primero), márgenes, espaciado interno, imagen
+de fondo, y alineación de varios elementos. Un valor puesto en la vista Desktop se hereda por
+defecto en Tablet y Móvil — solo hay que tocar la pantalla concreta si de verdad necesita un
+valor distinto ahí.
+
+**Confirmado en la práctica (sesión Hno A, 13 julio 2026):** construyendo la vista previa de
+"Conecta cada día" en la home, se necesitaba que 3 columnas iguales en Desktop/Tablet
+pasaran a un layout distinto en Móvil. Se logró completo con Column Width + Column Order,
+cada uno con su propio ajuste por pantalla — sin ninguna fila duplicada ni código. Confirma
+que la herramienta funciona tal como documenta Avada; lo único que hacía falta era usarla
+con disciplina, no un problema técnico de fondo.
+
+### Tamaño de letra automático — otra pieza a revisar, no solo el layout
+
+Además del layout (columnas), Avada reduce el tamaño de letra automáticamente en pantallas
+pequeñas mediante **Responsive Typography** — con dos ajustes globales en Avada → Options →
+Responsive:
+
+| Ajuste | Qué controla |
+|---|---|
+| Responsive Typography Sensitivity | En 0, el texto nunca se reduce. Cuanto más alto, más se reduce en pantallas pequeñas |
+| Minimum Font Size Factor | El tamaño mínimo al que puede llegar el texto, para que nunca sea ilegible |
+
+Si un texto se ve desbordado o cortado en móvil, esto es lo primero a revisar — puede ser un
+problema de este ajuste global, no del Container o Columna concretos.
+
+### Dónde se decide el punto exacto de cambio de pantalla
+
+Avada → Options → Responsive → **Element Responsive Breakpoints** — aquí se define, en
+píxeles, a partir de qué ancho empieza "Medium" y a partir de cuál "Small".
+
+🔲 **Pendiente de verificar en Local:** que estos breakpoints coincidan con `1024/768/480px`,
+el estándar que ya usa el código de los snippets (`00_CORE.md` Sección 7) — si no coinciden,
+el diseño visual de Avada y el comportamiento del código pueden cambiar de "modo móvil" en
+puntos distintos de la pantalla, generando una zona intermedia inconsistente.
+
+*Nota aparte: el punto de quiebre del Header tiene su propio ajuste independiente (Header
+Responsive Breakpoint, por defecto 800px) — distinto de los otros tres. Revisar también.*
+
+### Cómo se revisa — nunca por Live Link
+
+⚠️ **Ya confirmado en la Sección 2 de este documento:** Live Link no es fiable para revisar
+diseño/tipografía — no reescribe siempre todas las rutas absolutas. La revisión responsive se
+hace con:
+
+1. El icono Responsive dentro del propio editor de Avada (Desktop/Medium/Small) — el método
+   principal, en tiempo real mientras se construye
+2. Modo responsive de Chrome DevTools o Safari, directamente sobre `tiritaito-real.local`
+3. Un móvil real, en la misma red que el Local — la prueba más fiable de todas
+
+### Cómo aplicar esto sin caer en rigidez
+
+Este principio **no dicta la solución** (no dice "usa 3 columnas" o "usa 1 grande + 2
+pequeñas") — dicta que la pregunta se haga siempre, y que la respuesta a esa pregunta sea una
+decisión consciente, visible en el propio Builder (con los iconos Responsive usados de
+verdad), no una casualidad de lo que Avada hace por defecto sin tocar nada.
+
+**Ver también:** Sección 16 (Checklist maestro) y Sección 9.1 (menú móvil, que ya sigue este
+mismo principio con Off Canvas Builder).
 
 ---
 
@@ -414,6 +516,12 @@ El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código
     → Dentro del propio snippet HTML del módulo. Nunca en Custom CSS global.
 ```
 
+**Recordatorio de responsive (Sección 8.4):** esta regla decide *dónde* vive el código. Si la
+respuesta es Code Snippets (PHP o HTML), el módulo resultante sigue necesitando comportarse
+bien en las 3 pantallas — eso se resuelve con los breakpoints `1024/768/480px` ya
+estandarizados en `00_CORE.md` Sección 7 y Sección 13 de este documento, exactamente igual
+que un elemento construido en Avada necesita revisión con Responsive Option Sets.
+
 ---
 
 ## 13. Convenciones de código — sin cambios respecto a `00_CORE.md`
@@ -459,6 +567,7 @@ if (document.getElementById('mi-modulo-root')) {
 | `has_shortcode()` para condicionar CSS con Avada | Falso negativo — Avada codifica en Base64. CSS de módulos → `wp_head` siempre, incondicionalmente |
 | Alinear la URL del Local con producción (añadir `/blog/`) | El Local vive en la raíz, sin `/blog/` — hacerlo provoca un bucle de redirecciones en el admin y rompe los estilos visuales (ver Sección 2) |
 | Confiar en Live Link para revisar tipografía/CSS | No es fiable para eso — usar DevTools responsive directamente sobre `tiritaito-real.local` (ver Sección 2) |
+| Dar una sección por cerrada solo revisándola en Desktop | Confirmado con un caso real (13 julio 2026): un bloque con imagen sin cargar y texto placeholder pasó desapercibido hasta revisar Desktop porque no se había comprobado explícitamente en las 3 vistas — revisar siempre Desktop/Medium/Small antes de cerrar (Sección 8.4) |
 
 ---
 
@@ -497,6 +606,12 @@ if (document.getElementById('mi-modulo-root')) {
 - [ ] ¿Se ha probado en consola del navegador que no hay errores de elementos inexistentes?
 - [ ] ¿El snippet necesita estar en TODAS las páginas, o solo en una plantilla concreta?
 - [ ] ¿Se ha comprobado el peso que añade a páginas que no lo necesitan?
+- [ ] **¿Se ha revisado en las 3 vistas del editor de Avada — Desktop / Medium / Small? (Sección 8.4)**
+- [ ] **¿El texto se lee bien y no se desborda en la vista Small?**
+- [ ] **¿Los botones e iconos son suficientemente grandes para tocar con el dedo en móvil?**
+- [ ] **¿El orden de las columnas tiene sentido en móvil, no solo en ordenador?**
+- [ ] **Si hay imágenes de fondo: ¿se ven bien recortadas en móvil, sin partes importantes cortadas?**
+- [ ] **¿Se ha probado además en un móvil real o DevTools responsive, no solo el editor o Live Link?**
 
 ---
 
@@ -510,6 +625,8 @@ if (document.getElementById('mi-modulo-root')) {
 - Ni Flyout ni Off Canvas resuelven de forma nativa menús con submenús.
 - ACF Pro y FileBird Pro vienen incluidos gratis con la licencia de Avada, instalables desde Avada → Plugins.
 - Avada Dynamic Content tiene soporte nativo para campos ACF.
+- **Responsive Option Sets permite configurar ancho, orden, márgenes, padding y fondo de forma independiente por pantalla en Container/Columna, y alineación en Botón/Imagen/Texto/Título (Sección 8.4).**
+- **Responsive Typography Sensitivity y Minimum Font Size Factor controlan si y cómo se reduce el tamaño de letra en pantallas pequeñas (Sección 8.4).**
 
 **✅ Confirmado en sesiones reales en Local:**
 - 7 julio 2026: el dominio correcto del Local es `tiritaito-real.local`; el Setup Wizard solo admite 8 de los 13 colores y no admite fuentes propias; Off Canvas y Eventos ya activados, Portafolio activo sin caso de uso.
@@ -517,6 +634,8 @@ if (document.getElementById('mi-modulo-root')) {
 - 12 julio 2026: el certificado SSL de Local necesita "Trust" manual — puede llegar a romper silenciosamente las respuestas de la API si no está confiado.
 - 12 julio 2026: Live Link no es fiable para revisar tipografía/CSS/diseño — confirmado contra documentación oficial de Local, no solo observación propia.
 - 12 julio 2026: el desbordamiento visto en los botones de "Qué hacemos" era un efecto de la limitación de Live Link con fuentes, no un fallo de maquetación real — cerrado, sin acción pendiente.
+- **13 julio 2026: Responsive Option Sets confirmado funcionando en un caso real — layout de 3 columnas iguales en Desktop/Tablet que pasa a 1 columna ancha + 2 en pareja en Móvil, usando solo Column Width + Column Order por pantalla, sin código (Sección 8.4).**
+- **13 julio 2026: un bloque con contenido sin terminar (imagen sin cargar, texto placeholder) pasó desapercibido hasta revisar en Desktop — confirma la necesidad del paso explícito de revisión en las 3 vistas antes de cerrar cualquier sección.**
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
@@ -526,6 +645,8 @@ if (document.getElementById('mi-modulo-root')) {
 - Si la barra negra superior del header "Studio" es una fila del Header Builder o el Top Bar legacy de Global Options.
 - Si el título "Studio" del header es el Site Title de WordPress o un elemento de Título suelto.
 - Cuál de los dos valores de los tokens (`wp-config.php` o el `define()` del propio snippet) está realmente activo en el snippet "TT Creators + Biblioteca — Endpoint central v3" (Sección 2).
+- **Si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` del código (Sección 8.4).**
+- **Qué valor tiene actualmente "Responsive Typography Sensitivity" (Sección 8.4).**
 
 ---
 
@@ -547,6 +668,12 @@ if (document.getElementById('mi-modulo-root')) {
 - How To Use The Performance Wizard: avada.com/documentation/how-to-use-the-performance-wizard/
 - Local by Flywheel — Live Links, limitaciones confirmadas: localwp.com/help-docs/local-features/live-links/
 - Sesión de diagnóstico en Local (WP-CLI, SSL, discrepancia de tokens): `CORRECCIONES_DOCUMENTACION_11-12_julio_2026.md`, redactado por Hno A
+- **Responsive Option Sets: avada.com/documentation/responsive-option-sets/**
+- **Responsive Design in Avada: avada.com/documentation/responsive-design-in-avada/**
+- **Responsive Options in Avada (breakpoints globales): avada.com/documentation/responsive-options-in-avada/**
+- **Responsive Headings (tipografía automática): avada.com/documentation/responsive-headings/**
+- **Column Size and Order for Responsive Design: avada.com/documentation/column-size-and-order-for-responsive-design-in-avada/**
+- **Responsive Header Design With Avada: avada.com/documentation/responsive-header-design-with-avada/**
 
 ---
 
@@ -561,6 +688,8 @@ if (document.getElementById('mi-modulo-root')) {
 6. Hno A: confirmar el token realmente activo del snippet "TT Creators + Biblioteca — Endpoint central v3" (comandos en Sección 2) y resolver la discrepancia entre el comentario y el código
 7. Hno A: revisar si la app Biblioteca (token separado) necesita el mismo ajuste de URL que Tiritaito for Creators
 8. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
+9. **Hno A: verificar si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` (Sección 8.4)**
+10. **Hno A: revisar el valor actual de "Responsive Typography Sensitivity" — si está en 0, el texto nunca se reduce en pantallas pequeñas (Sección 8.4)**
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -570,8 +699,9 @@ if (document.getElementById('mi-modulo-root')) {
 | 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica |
 | 3 | ¿Se desactiva "Portafolio"? | Sigue activo sin caso de uso — riesgo de repetir el Patrón B de deuda técnica si se deja así |
 | 4 | ¿Se migran los tokens de verdad a `wp-config.php`, o se corrige el comentario del snippet? | La discrepancia actual entre comentario y código no puede quedar así (Sección 2) |
+| 5 | ¿Se confirma en Local que los breakpoints de Avada y del código (`1024/768/480px`) coinciden? | Sección 8.4 — si no coinciden, puede haber una zona intermedia donde el diseño visual y el código no cambian de "modo móvil" en el mismo punto |
 
-**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · **el Local NO usa `/blog/`, vive en la raíz (12 julio 2026)** · certificado SSL necesita "Trust" manual — añadido a la checklist · Live Link confirmado no fiable para QA visual · desbordamiento en "Qué hacemos" confirmado como efecto de Live Link, no un fallo real · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada.
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · **el Local NO usa `/blog/`, vive en la raíz (12 julio 2026)** · certificado SSL necesita "Trust" manual — añadido a la checklist · Live Link confirmado no fiable para QA visual · desbordamiento en "Qué hacemos" confirmado como efecto de Live Link, no un fallo real · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · **principio de Responsive incorporado como parte del proceso de construcción, no como paso final — Sección 8.4, con caso de prueba real confirmado (13 julio 2026)**.
 
 ---
 
