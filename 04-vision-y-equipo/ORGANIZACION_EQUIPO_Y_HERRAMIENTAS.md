@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Organización del Equipo y Herramientas
 **Roles, mapa de Proyectos de Claude, GitHub, economía de tokens, WPMobile.app y Search Console**
 *Fusiona: CONFIGURACION_PROYECTOS_CLAUDE_Y_GITHUB.md (autoridad sobre el mapa de proyectos) + INFORME_ESTRATEGICO_2026_1.md (Parte 6.1, 6.3) + INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Partes 1, 4, 5)*
-*Verificado contra support.claude.com — julio 2026 · Instrucciones del Proyecto 3 ampliadas con criterio de Responsive proactivo — 13 julio 2026*
+*Verificado contra support.claude.com — julio 2026 · Instrucciones del Proyecto 3 ampliadas con criterio de Responsive proactivo — 13 julio 2026 · Ampliadas con criterio de previsualización con bocetos — 14 julio 2026*
 *Audiencia: Carlitos (coordinación transversal) · cada dueño de cuenta para su propia sección*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -175,7 +175,7 @@ Ad maiorem Dei gloriam.
 
 ---
 
-### Proyecto 3 — Web Nueva (fusionado: Backend+Snippets y Maquetación+Avada) *(configurado — instrucciones ampliadas con Responsive proactivo, 13 julio 2026)*
+### Proyecto 3 — Web Nueva (fusionado: Backend+Snippets y Maquetación+Avada) *(configurado — instrucciones ampliadas con Responsive proactivo, 13 julio 2026, y previsualización con bocetos, 14 julio 2026)*
 
 ```
 Eres un Desarrollador Web Senior experto en WordPress, Avada Live/
@@ -227,6 +227,41 @@ GUIA_AVADA_LOCAL.md Sección 8.4 para el detalle completo):
   Sensitivity mal calibrado (Avada → Options → Responsive), no solo
   al layout de columnas.
 
+0.2 PREVISUALIZACIÓN — PROPÓN BOCETOS ANTES DE CONSTRUIR (ver
+GUIA_AVADA_LOCAL.md Sección 8.4-bis para el detalle completo):
+- Cuando se esté decidiendo cómo construir una sección nueva o
+  rediseñar una existente (no un ajuste menor, sino una decisión de
+  layout/diseño real), antes de dar instrucciones de Avada paso a
+  paso, genera 2-3 bocetos visuales (mockups) de opciones distintas
+  que respeten el ADN visual de Tiritaito (--tt-*, border-radius
+  25px, Yeah Papa/Helvetica Neue, iOS limpio y luminoso) — para que
+  Hno A pueda elegir antes de construir, no reconstruir después de
+  haber elegido mal.
+- Esto aplica a CUALQUIER sección de la web, no solo a la página de
+  inicio — el mismo criterio vale para Qué Hacemos, Tiritaito,
+  Biblioteca, Hombres de Dios, etc.
+- Si el equipo ya tiene una referencia visual externa (una captura o
+  foto de otra web, como el caso de Novedades), pide verla o que se
+  describa antes de proponer bocetos — no asumas un patrón visual
+  externo sin confirmarlo primero. Si la referencia que se comparte
+  no corresponde claramente a lo que se está pidiendo (por ejemplo,
+  se pide inspiración para un bloque de noticias y la imagen muestra
+  otra parte de la web, como un hero o slider), dilo explícitamente
+  en vez de asumir que sirve.
+- Las secciones de la página de inicio (y, en general, del resto de
+  la web salvo justificación explícita) NO deben ocupar la pantalla
+  completa (evitar min-height:100vh salvo excepción justificada) —
+  cada sección ocupa aproximadamente lo que necesita su contenido,
+  para que la página no se sienta excesivamente larga. Esto aplica
+  con más fuerza en móvil, donde el espacio es más limitado, pero
+  también en escritorio/tablet.
+- Los bocetos deben incluir SIEMPRE vista de escritorio y vista de
+  móvil — nunca solo una, dado el principio de Responsive ya
+  establecido en la Sección 0.1.
+- Tras mostrar los bocetos y que se elija uno, recién ahí pasa a
+  aplicar el flujo normal de la Sección 0 (decidir si es Avada
+  visual o código, y guiar paso a paso).
+
 1. FILOSOFÍA DE ENTREGA DE CÓDIGO (cuando la tarea es código):
 - Código complejo/largo (+300 líneas): PHP estructurado para Code
   Snippets, con [shortcode] corto para Avada Live.
@@ -263,7 +298,8 @@ propio (TT_WRITE_TOKEN), no Application Password — definitivo.
 
 REFERENCIA CONSTANTE:
 - GUIA_AVADA_LOCAL.md para la mecánica de Avada y Local, INCLUYENDO
-  el criterio de Responsive de la Sección 8.4.
+  el criterio de Responsive de la Sección 8.4 y el de altura de
+  sección/previsualización de la Sección 8.4-bis.
 - METODOLOGIA_CONSTRUCCION.md para dónde vive cada pieza de contenido.
 - ALCANCE_WEB_NUEVA.md para qué sección se construye y su prioridad.
 - 04_ENTORNO_LOCAL.md para el entorno — nunca datos de producción.
@@ -272,7 +308,8 @@ REFERENCIA CONSTANTE:
 cambió o resolvió algo que no coincide con lo ya escrito en
 GUIA_AVADA_LOCAL.md, METODOLOGIA_CONSTRUCCION.md o ALCANCE_WEB_NUEVA.md
 (p. ej. "esto sí/no funciona como se pensaba", "se descarta tal
-opción"), dilo explícitamente al final en 2-3 líneas: qué cambió y qué
+opción", o "se confirmó el patrón visual de una sección tras ver
+bocetos"), dilo explícitamente al final en 2-3 líneas: qué cambió y qué
 documento debería reflejarlo. Esa nota se lleva al Proyecto de
 Investigación para aplicarse allí — no la apliques tú mismo aquí.
 
@@ -428,7 +465,7 @@ Sin instrucciones redactadas todavía. Se activa cuando el equipo empiece a conf
 
 ### Proyecto 6 — Web Nueva · Repuesto
 
-Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado, **incluyendo la Sección 0.1 de Responsive proactivo**), copiadas tal cual. Base de conocimiento **vacía a propósito** — se conecta vía GitHub (Sección 5), no con archivos sueltos, para que nunca se desincronice con la cuenta principal.
+Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado, **incluyendo las Secciones 0.1 de Responsive proactivo y 0.2 de previsualización con bocetos**), copiadas tal cual. Base de conocimiento **vacía a propósito** — se conecta vía GitHub (Sección 5), no con archivos sueltos, para que nunca se desincronice con la cuenta principal.
 
 ---
 
@@ -473,7 +510,9 @@ El problema que resuelve: evitar que dos sitios (cuenta principal y cuenta de re
 
 ⚠️ **Matiz:** existen reportes documentados de que el conector a veces muestra **"Conectado"** sin que el contenido esté realmente actualizado — no es lo habitual, pero ha ocurrido. Probarlo antes de confiar en él para algo delicado (como `04_ENTORNO_LOCAL.md`).
 
-**Recordatorio directo, a raíz de esta sesión (13 julio 2026):** cualquier actualización hecha aquí a `GUIA_AVADA_LOCAL.md` o a las instrucciones de este documento **no llega sola al Proyecto 3 de Hno A** — necesita: (1) que el archivo actualizado se suba a GitHub, y (2) que Hno A pulse "Sync now" en su Proyecto antes de la próxima sesión donde importe. Sin esos dos pasos, Hno A sigue trabajando con la versión antigua aunque el repositorio ya esté al día.
+**Recordatorio directo, a raíz de la sesión del 13 de julio de 2026:** cualquier actualización hecha aquí a `GUIA_AVADA_LOCAL.md` o a las instrucciones de este documento **no llega sola al Proyecto 3 de Hno A** — necesita: (1) que el archivo actualizado se suba a GitHub, y (2) que Hno A pulse "Sync now" en su Proyecto antes de la próxima sesión donde importe. Sin esos dos pasos, Hno A sigue trabajando con la versión antigua aunque el repositorio ya esté al día.
+
+**Este mismo recordatorio aplica a la actualización del 14 de julio de 2026** (Sección 0.2 de previsualización con bocetos, añadida a las instrucciones del Proyecto 3 más arriba): subir este documento a GitHub no la activa sola — hay que repegar el bloque de instrucciones completo en Configuración → Instrucciones personalizadas del Proyecto 3 en claude.ai.
 
 ### 5.4 Estructura del repositorio (actualizada — con `apps/`)
 
@@ -553,6 +592,7 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 | Cambio en `wp_options`, endpoint REST o autenticación | `00_CORE.md` / `04_ENTORNO_LOCAL.md` | Hno A directamente |
 | Nueva versión o módulo de Tiritaito for Creators (V1/V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` | Hno A directamente — avisar a Hno C si el módulo requiere una clave nueva de `wp_options` que también deba constar en `00_CORE.md` |
 | Cambio de organización del equipo o cuentas | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | Hno C, con confirmación de Carlitos |
+| Patrón visual confirmado tras ver bocetos (ej. Novedades) | `ALCANCE_WEB_NUEVA.md` (Sección 4/5) y `GUIA_AVADA_LOCAL.md` (Sección 8.4-bis) | Hno C, a partir del resumen de Hno A |
 
 ---
 
@@ -598,7 +638,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 |---|---|
 | Proyecto 1 (Web Vieja) | ✅ Configurado |
 | Proyecto 2 (Investigación) | ✅ Activo — es este mismo proyecto |
-| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas con Responsive proactivo (13 julio 2026), pendiente de que Hno A las repegue en claude.ai** |
+| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas con Responsive proactivo (13 julio 2026) y previsualización con bocetos (14 julio 2026), pendiente de que Hno A las repegue en claude.ai** |
 | Proyecto 4 (Diseño y Avada) | ✅ Configurado |
 | Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2 |
 | Proyecto 6 (Web Nueva — Repuesto) | 🔵 Recomendado, no creado |
@@ -607,8 +647,8 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista |
 | Documento de versiones de Tiritaito for Creators | ✅ `TIRITAITO_FOR_CREATORS_VERSIONS.md` creado (2026-07-11) |
 | `04_ENTORNO_LOCAL.md` | ⚠️ Necesita reescritura — dominio corregido a `tiritaito-real.local`, patrón de autenticación (token) pendiente de reflejar |
-| Módulo Novedades (V2) | ✅ Construido en la app — 🔲 pendiente en Local: whitelist + widget de home |
-| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (principio de Responsive), verificado contra documentación oficial de Avada — 13 julio 2026 |
+| Módulo Novedades (V2) | ✅ Construido en la app — 🔲 pendiente en Local: whitelist + widget de home + 🔲 patrón visual sin cerrar (ver `ALCANCE_WEB_NUEVA.md` Sección 5.1) |
+| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (principio de Responsive) y Sección 8.4-bis (altura de sección y previsualización), verificado contra documentación oficial de Avada — 13-14 julio 2026 |
 
 ---
 
@@ -618,11 +658,12 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 1. Carlitos: subir `README.md`, `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` y `TIRITAITO_FOR_CREATORS_VERSIONS.md` a GitHub, y crear las carpetas `apps/v1/` y `apps/v2/` con el HTML y los changelogs correspondientes
 2. Hno A: crear la cuenta de Repuesto y copiar en ella las instrucciones del Proyecto 3
 3. Hno A: reescribir `04_ENTORNO_LOCAL.md` con el patrón de token
-4. Hno A: añadir `tt_novedades` a la whitelist de `tt_opciones_permitidas()` y construir el widget de Novedades en Avada
+4. Hno A: añadir `tt_novedades` a la whitelist de `tt_opciones_permitidas()` y construir el widget de Novedades en Avada — 🔲 pendiente del patrón visual (Sección 9)
 5. Hno A: verificar con soporte de WPMobile.app la política de sitio de desarrollo
-6. **Carlitos: subir esta versión actualizada de `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` y de `GUIA_AVADA_LOCAL.md` a GitHub**
-7. **Hno A: pegar las instrucciones actualizadas del Proyecto 3 (con la Sección 0.1 de Responsive) en "Instrucciones personalizadas" en claude.ai — esto NO se aplica solo por subir el documento a GitHub, hay que repegarlas a mano una vez**
-8. **Hno A: pulsar "Sync now" en el conector de GitHub del Proyecto 3, para que `GUIA_AVADA_LOCAL.md` actualizado (con la Sección 8.4) se refleje en la base de conocimiento**
+6. Carlitos: subir esta versión actualizada de `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`, `GUIA_AVADA_LOCAL.md` y `ALCANCE_WEB_NUEVA.md` a GitHub
+7. **Hno A: pegar las instrucciones actualizadas del Proyecto 3 (con las Secciones 0.1 de Responsive y 0.2 de previsualización) en "Instrucciones personalizadas" en claude.ai — esto NO se aplica solo por subir el documento a GitHub, hay que repegarlas a mano una vez**
+8. Hno A: pulsar "Sync now" en el conector de GitHub del Proyecto 3, para que los tres documentos actualizados (con las Secciones 8.4, 8.4-bis y 5.1 respectivamente) se reflejen en la base de conocimiento
+9. **Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para cerrar `ALCANCE_WEB_NUEVA.md` Sección 5.1**
 
 **Preguntas abiertas:**
 
@@ -632,6 +673,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | 2 | ¿WPMobile.app admite el plugin activo en dos sitios sin licencia adicional? | Bloquea cualquier prueba contra el entorno Local |
 | 3 | ¿Quién asume el Proyecto 7 (WPMobile.app)? | Sin asignar |
 | 4 | ¿Qué otras funcionalidades nuevas llevará V2 de Tiritaito for Creators, además de Novedades? | Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 — sin decidir |
+| 5 | ¿Se fija como regla formal el criterio "sección = 1 página vs varias entradas"? | Ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 — Carlitos necesita pensarlo con el equipo antes |
 
 ---
 
