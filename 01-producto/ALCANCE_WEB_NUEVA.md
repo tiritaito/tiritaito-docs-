@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Alcance de la Web Nueva
 **Estructura de la web nueva: páginas, secciones internas, prioridades y método de trabajo**
-*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026*
+*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026*
 *Aprobación: Hna C · Redacción: Hno C*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -28,7 +28,7 @@ sigue sin decidir?**
 |---|---|
 | Dónde y cómo construir en Avada una pieza ya decidida aquí (Global/Guardado/Snippet) | `METODOLOGIA_CONSTRUCCION.md` |
 | Qué contenido de la web vieja migrar y con qué método | `MIGRACION_CONTENIDO.md` |
-| Cómo funciona Avada/Local mecánicamente | `GUIA_AVADA_LOCAL.md` |
+| Cómo funciona Avada/Local mecánicamente, incluyendo altura de sección y previsualización | `GUIA_AVADA_LOCAL.md` |
 | **Qué construir, dónde vive cada cosa, y en qué orden** | **Este documento** |
 
 ---
@@ -45,6 +45,11 @@ secciones sueltas, más una página que se mantiene independiente (Hombres de Di
 apartado que deja de ser página (Novedades, ahora parte de la home) y una pieza sin
 resolver (Próximos eventos). Detalle completo en la Sección 4.
 
+La sesión de equipo del 14 de julio de 2026 añade dos criterios de diseño transversales
+(Sección 5.1) y dos preguntas nuevas pendientes de discutir con el equipo (Sección 6, #8 y
+#9) — no cambia la estructura de páginas ya definida, solo añade cómo deben verse y cómo se
+decide su forma.
+
 ---
 
 ## 2. Mapa de la página de inicio
@@ -55,6 +60,7 @@ PÁGINA DE INICIO
 ├── NOVEDADES  (no es página — apartado de apertura de la home)
 │     └── Tips (también en Conecta cada día) · avisos litúrgicos/eventos importantes
 │         de la Iglesia · noticias de Tiritaito
+│         🔲 Patrón visual sin cerrar — ver Sección 5.1
 │
 ├── QUÉ HACEMOS (página)
 │     ├── 1. Seminarios          — mayor prioridad, más contenido
@@ -95,7 +101,7 @@ PÁGINA DE INICIO
 
 | # | Página / apartado | Tipo | Prioridad | Estado |
 |---|---|---|---|---|
-| — | Novedades | Apartado de home (no es página) | 🔴 Crítica | Definido |
+| — | Novedades | Apartado de home (no es página) | 🔴 Crítica | Definido en concepto — patrón visual pendiente (Sección 5.1) |
 | 1 | Qué hacemos | Página | 🔴 Crítica | Seminarios definido en parte, resto informativo |
 | 2 | Conecta cada día | Página | 🔴 Crítica | Definido, con 2 piezas sin ubicar |
 | 3 | Tiritaito | Página + 4 entradas | 🔴 Crítica | Definido — falta aplicar la unidad de podcast |
@@ -113,6 +119,9 @@ Novedades abre la página (lo primero que ve cualquier visitante, sin clic), seg
 los accesos a las cinco páginas contenedoras. Próximos Eventos es la única pieza sin
 encaje resuelto todavía en este mapa.
 
+**Criterio de diseño transversal (14 julio 2026):** ninguna sección de la home debe ocupar
+la pantalla completa por defecto — ver Sección 5.1 para el detalle y su razón de fondo.
+
 ### B. Novedades
 
 ⚠️ **Corrijo algo que entendí mal en la ronda anterior:** asumí que era página propia por
@@ -125,6 +134,15 @@ Tiritaito.
 
 *Implicación técnica a confirmar con Hno A:* sin URL propia — vive como sección del
 Layout de la home, no como Post/Page independiente, salvo que se decida lo contrario.
+
+**Patrón visual (añadido 14 julio 2026):** el equipo quiere que Novedades ocupe
+aproximadamente "media pantalla", no toda — con una referencia visual externa de
+inspiración que Carlitos compartirá con Hno C en foto. 🔲 El patrón exacto (si lleva una
+noticia destacada grande + rejilla de tarjetas más pequeñas debajo, solo rejilla, u otro
+formato) **queda sin cerrar todavía**: la primera captura compartida en la sesión de
+investigación correspondía al hero/slider principal de la web de referencia, no al bloque
+de noticias — no se tomó como válida. Se decide con la referencia correcta, al construir la
+home de verdad (ver también `GUIA_AVADA_LOCAL.md` Sección 8.4-bis).
 
 ### C. Qué hacemos
 
@@ -172,6 +190,13 @@ sobrio), **pero el formato del reproductor debe ser el mismo**. Esto ya está re
 técnicamente — es el patrón `[tt_podcast]` ya documentado en `METODOLOGIA_CONSTRUCCION.md`
 (componente compartido, parámetros por instancia). No hace falta inventar nada, solo
 aplicarlo con disciplina.
+
+**Nota de arquitectura de información (añadida 14 julio 2026, ver Sección 5.1):**
+Tiritaito es el ejemplo natural del criterio "sección con varias entradas propias" — cada
+una de las 4 piezas tiene personalidad propia (estilo, formato, público), aunque las cuatro
+están dirigidas al mismo tipo de público general de Tiritaito. Contrasta con páginas como
+Qué Hacemos, donde los tres apartados están más unidos entre sí. Ver Sección 6, pregunta
+#8, sobre si esto se convierte en regla formal.
 
 ### F. Ejército de Intercesores
 
@@ -228,7 +253,7 @@ misma combinación de piezas (unos llevan audio, otros discursos, otros solo bio
 Custom Post Type con ACF — con elementos Guardados, el valor de ACF (automatizar campos
 uniformes) pierde sentido, porque los santos no comparten la misma estructura de campos.
 
-🔲 *(Ver Sección 6 — actualizar `METODOLOGIA_CONSTRUCCION.md` cuando confirmes que este
+🔲 *(Ver Sección 7 — actualizar `METODOLOGIA_CONSTRUCCION.md` cuando confirmes que este
 Alcance está cerrado; no lo toco en esta sesión para no cambiar varios documentos a la vez
 sin tu confirmación.)*
 
@@ -240,10 +265,12 @@ personaliza.
 
 ---
 
-## 5. Principio transversal — unidad dentro de la diversidad
+## 5. Principios transversales
 
-Aparece dos veces en esta sesión (Tiritaito, Oraciones) y conviene dejarlo como regla
-general del proyecto, no solo de esas dos páginas:
+### 5.0 Unidad dentro de la diversidad
+
+Aparece dos veces en la sesión de julio (Tiritaito, Oraciones) y conviene dejarlo como
+regla general del proyecto, no solo de esas dos páginas:
 
 > Cuando una página agrupa contenido de naturaleza distinta, cada pieza puede tener su
 > propio tono o estilo visual, **pero el patrón de presentación debe ser compartido**,
@@ -253,6 +280,33 @@ general del proyecto, no solo de esas dos páginas:
 Técnicamente es lo que ya resuelve el árbol de decisión de `GUIA_AVADA_LOCAL.md` Sección 8
 (shortcode parametrizable o elemento Guardado, según quién mantenga el contenido) — no es
 un principio nuevo, es la razón de negocio detrás de una decisión técnica ya tomada.
+
+### 5.1 Altura de sección y previsualización — añadido 14 julio 2026
+
+Surgido en la sesión de equipo sobre la página de inicio, pero declarado explícitamente
+como aplicable **a toda la web**, no solo a la home:
+
+> Ninguna sección debe ocupar la pantalla completa por defecto — ni en la página de
+> inicio ni en el resto de páginas — salvo que haya una razón explícita para hacerlo.
+> Cada sección ocupa aproximadamente lo que su contenido necesita. El motivo: evitar que
+> la página se sienta excesivamente larga, sobre todo en móvil, donde cada scroll cuesta
+> más que en escritorio, pero también en el resto de pantallas.
+
+Técnicamente, esto se traduce (ver `GUIA_AVADA_LOCAL.md` Sección 8.4-bis) en evitar
+`min-height: 100vh` como valor por defecto en los Containers de Avada, y en que el
+Proyecto 3 (Hno A) proponga bocetos visuales antes de construir cada sección — para
+decidir la altura con criterio, no por inercia del editor.
+
+**Aplicación concreta ya conocida — Novedades:** ver Sección 4.B. Debe ocupar
+aproximadamente "media pantalla", con una referencia visual externa (estilo a definir)
+que Carlitos compartirá con Hno C en foto — 🔲 sin cerrar todavía el patrón exacto. Se
+decide cuando se construya la home, no en este documento.
+
+**Previsualización con bocetos:** antes de construir cualquier sección nueva (no solo en
+la home), el Proyecto 3 debe proponer 2-3 opciones visuales para elegir, respetando el ADN
+de Tiritaito. El detalle completo del criterio vive en las Instrucciones del Proyecto 3
+(`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) y en `GUIA_AVADA_LOCAL.md` Sección
+8.4-bis — no se repite aquí para no duplicar mantenimiento.
 
 ---
 
@@ -266,6 +320,8 @@ un principio nuevo, es la razón de negocio detrás de una decisión técnica ya
    suelta; Biblioteca entra en v1; Charlas de la Biblia vive bajo Tiritaito, no Biblioteca)
 3. Revisar si `MIGRACION_CONTENIDO.md` necesita el mismo ajuste en su checklist de
    migración por sección
+4. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de
+   noticias, no el hero/slider) para cerrar la Sección 4.B / 5.1
 
 **Preguntas abiertas** (ninguna bloquea empezar a construir Qué hacemos y Conecta cada
 día, que ya tienen lo esencial definido):
@@ -279,6 +335,8 @@ día, que ya tienen lo esencial definido):
 | 5 | ¿La PWA de biblioteca de libros es Tiritaito for Creators, un módulo suyo, u otra cosa? | G |
 | 6 | ¿Oraciones es una entrada única densa o necesita estructura distinta? | G |
 | 7 | ¿Se usa la feature Eventos de Avada tal cual, o se personaliza? | I |
+| 8 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | 5.0, E |
+| 9 | ¿Cuál es el patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro)? Pendiente de referencia visual correcta compartida por Carlitos | B, 5.1 |
 
 ---
 
