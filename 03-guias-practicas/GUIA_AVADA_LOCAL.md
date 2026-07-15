@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Guía Avada + Local
 **Referencia técnica completa: licencia, infraestructura, Global Options, Header/Footer Builder, Layouts, elementos nativos y convenciones**
 *Audiencia principal: Hno A · Fusiona y verifica: INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Parte 3-4) + INFORME_ESTRATEGICO_2026_1.md (Parte 2, 5, 8) + METODOLOGIA_WEB_NUEVA_v2.md (Secciones 3-11) + 04_ENTORNO_LOCAL.md*
-*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026 · Ampliado con principio de Responsive — 13 julio 2026*
+*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026 · Ampliado con principio de Responsive — 13 julio 2026 · Ampliado con altura de sección y previsualización — 14 julio 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -433,8 +433,68 @@ pequeñas") — dicta que la pregunta se haga siempre, y que la respuesta a esa 
 decisión consciente, visible en el propio Builder (con los iconos Responsive usados de
 verdad), no una casualidad de lo que Avada hace por defecto sin tocar nada.
 
-**Ver también:** Sección 16 (Checklist maestro) y Sección 9.1 (menú móvil, que ya sigue este
-mismo principio con Off Canvas Builder).
+**Ver también:** Sección 8.4-bis (altura de sección y previsualización, mismo espíritu de
+"decidir con criterio, no por inercia del editor"), Sección 16 (Checklist maestro) y Sección
+9.1 (menú móvil, que ya sigue este mismo principio con Off Canvas Builder).
+
+---
+
+## 8.4-bis ⭐ Principio de trabajo — Altura de sección y previsualización antes de construir
+
+**Añadido 14 julio 2026, a partir de la sesión de equipo sobre la página de inicio (Novedades,
+estructura de secciones y forma de trabajar con Claude en el Proyecto 3).**
+
+Esta sección vive justo después de la 8.4 (Responsive) porque comparte el mismo espíritu:
+antes de dar una sección por cerrada, hay una pregunta concreta que hay que hacerse
+conscientemente — no confiar en el comportamiento por defecto del editor sin comprobarlo.
+
+### Altura de sección — no ocupar la pantalla completa por defecto
+
+> Ninguna sección de Avada (Container en Fusion Builder) debe ocupar la pantalla completa
+> por defecto — ni en la página de inicio ni en el resto de páginas de la web — salvo que
+> haya una razón explícita y consciente para usar `min-height: 100vh` (ej. un hero de
+> apertura muy concreto, si se decide así de forma deliberada). El criterio es que cada
+> sección ocupe aproximadamente lo que su contenido necesita, no que llene el viewport
+> porque es el comportamiento por defecto del editor.
+
+Aplica en las tres vistas de la Sección 8.4, con más fuerza en Small (móvil), donde cada
+scroll adicional cuesta más que en escritorio. El motivo de fondo, tal como lo planteó el
+equipo: evitar que la página se sienta excesivamente larga, sobre todo al enlazar varias
+secciones seguidas en la home.
+
+**Fuente de esta regla:** decisión de equipo (sesión del 14 de julio de 2026), no
+documentación oficial de Avada — es un criterio de diseño propio de Tiritaito, no una
+limitación o recomendación de ThemeFusion. Avada permite tanto secciones de altura completa
+como de altura acotada; la elección es nuestra, no una restricción técnica.
+
+**Aplicación conocida — Novedades:** debe ocupar aproximadamente "media pantalla", con
+inspiración visual externa (una referencia que Carlitos compartirá en foto con Hno C) — 🔲
+el patrón visual exacto (si lleva una noticia destacada grande + rejilla debajo, solo
+rejilla, u otro formato) queda sin cerrar todavía. La primera captura compartida en esta
+sesión de investigación correspondía al hero/slider principal de la web de referencia, no
+al bloque de noticias/novedades — no se toma como válida para este criterio; se decide
+cuando se comparta la referencia correcta y se construya la home de verdad.
+
+### Previsualización con bocetos — dónde vive esta capacidad
+
+Antes de construir una sección nueva o rediseñar una existente, el Proyecto 3 (Web Nueva,
+cuenta de Hno A) debe proponer 2-3 bocetos visuales (mockups) de opciones distintas,
+respetando el ADN visual de Tiritaito, para elegir antes de construir en Avada — en vez de
+construir y luego rehacer si la elección no convence. El detalle completo de este criterio
+vive en las Instrucciones personalizadas de ese Proyecto (Sección 0.2, ver
+`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) — no se repite aquí para no duplicar
+mantenimiento; este documento solo señala que existe y por qué conecta con el principio de
+altura de sección de arriba: decidir bien el boceto ayuda a decidir con criterio cuánto alto
+necesita realmente la sección, en vez de heredar un `100vh` por defecto sin pensarlo.
+
+**Nota técnica:** esto es una capacidad de Claude (generación de imágenes/bocetos dentro de
+la conversación), no una función de Avada — no hay ningún ajuste de Avada que "genere
+previsualizaciones". El boceto es solo apoyo para decidir; la construcción real sigue siendo
+manual en Fusion Builder, siguiendo el árbol de decisión ya existente (Sección 8).
+
+**Este principio aplica a toda la web, no solo a la home** — el mismo criterio de "boceto
+antes de construir" y "altura acotada salvo excepción justificada" vale para Qué Hacemos,
+Tiritaito, Biblioteca, Hombres de Dios, y cualquier sección futura.
 
 ---
 
@@ -568,6 +628,8 @@ if (document.getElementById('mi-modulo-root')) {
 | Alinear la URL del Local con producción (añadir `/blog/`) | El Local vive en la raíz, sin `/blog/` — hacerlo provoca un bucle de redirecciones en el admin y rompe los estilos visuales (ver Sección 2) |
 | Confiar en Live Link para revisar tipografía/CSS | No es fiable para eso — usar DevTools responsive directamente sobre `tiritaito-real.local` (ver Sección 2) |
 | Dar una sección por cerrada solo revisándola en Desktop | Confirmado con un caso real (13 julio 2026): un bloque con imagen sin cargar y texto placeholder pasó desapercibido hasta revisar Desktop porque no se había comprobado explícitamente en las 3 vistas — revisar siempre Desktop/Medium/Small antes de cerrar (Sección 8.4) |
+| Dejar que una sección ocupe `min-height: 100vh` por defecto sin decidirlo conscientemente | Revisar siempre si la sección necesita de verdad ocupar toda la pantalla, o si con la altura de su contenido basta (Sección 8.4-bis) |
+| Construir una sección directamente en Avada sin ver antes 2-3 opciones de boceto | Pedir a Claude (Proyecto 3) que proponga bocetos visuales antes de empezar a construir, salvo ajustes menores (Sección 8.4-bis) |
 
 ---
 
@@ -612,6 +674,8 @@ if (document.getElementById('mi-modulo-root')) {
 - [ ] **¿El orden de las columnas tiene sentido en móvil, no solo en ordenador?**
 - [ ] **Si hay imágenes de fondo: ¿se ven bien recortadas en móvil, sin partes importantes cortadas?**
 - [ ] **¿Se ha probado además en un móvil real o DevTools responsive, no solo el editor o Live Link?**
+- [ ] **¿Se propusieron 2-3 bocetos visuales antes de construir esta sección, o fue un ajuste menor que no lo necesitaba? (Sección 8.4-bis)**
+- [ ] **¿La sección ocupa aproximadamente lo que su contenido necesita, o hereda un `min-height: 100vh` sin haberlo decidido conscientemente? (Sección 8.4-bis)**
 
 ---
 
@@ -636,6 +700,7 @@ if (document.getElementById('mi-modulo-root')) {
 - 12 julio 2026: el desbordamiento visto en los botones de "Qué hacemos" era un efecto de la limitación de Live Link con fuentes, no un fallo de maquetación real — cerrado, sin acción pendiente.
 - **13 julio 2026: Responsive Option Sets confirmado funcionando en un caso real — layout de 3 columnas iguales en Desktop/Tablet que pasa a 1 columna ancha + 2 en pareja en Móvil, usando solo Column Width + Column Order por pantalla, sin código (Sección 8.4).**
 - **13 julio 2026: un bloque con contenido sin terminar (imagen sin cargar, texto placeholder) pasó desapercibido hasta revisar en Desktop — confirma la necesidad del paso explícito de revisión en las 3 vistas antes de cerrar cualquier sección.**
+- **14 julio 2026: sesión de equipo sobre la home confirma dos criterios de trabajo nuevos, sin verificación técnica en Local todavía (son decisiones de equipo, no hallazgos de Avada): altura de sección acotada por defecto, y previsualización con bocetos antes de construir (Sección 8.4-bis).**
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
@@ -647,6 +712,7 @@ if (document.getElementById('mi-modulo-root')) {
 - Cuál de los dos valores de los tokens (`wp-config.php` o el `define()` del propio snippet) está realmente activo en el snippet "TT Creators + Biblioteca — Endpoint central v3" (Sección 2).
 - **Si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` del código (Sección 8.4).**
 - **Qué valor tiene actualmente "Responsive Typography Sensitivity" (Sección 8.4).**
+- **El patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro) — pendiente de que Carlitos comparta la referencia visual correcta con Hno C (Sección 8.4-bis; la primera captura compartida en esta sesión era del hero/slider, no del bloque de noticias, y no se usó como referencia).**
 
 ---
 
@@ -674,6 +740,7 @@ if (document.getElementById('mi-modulo-root')) {
 - **Responsive Headings (tipografía automática): avada.com/documentation/responsive-headings/**
 - **Column Size and Order for Responsive Design: avada.com/documentation/column-size-and-order-for-responsive-design-in-avada/**
 - **Responsive Header Design With Avada: avada.com/documentation/responsive-header-design-with-avada/**
+- **Altura de sección y previsualización con bocetos (Sección 8.4-bis): criterio de equipo, sesión 14 julio 2026 — no es una fuente de documentación oficial de Avada, se anota como decisión propia**
 
 ---
 
@@ -690,6 +757,8 @@ if (document.getElementById('mi-modulo-root')) {
 8. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
 9. **Hno A: verificar si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` (Sección 8.4)**
 10. **Hno A: revisar el valor actual de "Responsive Typography Sensitivity" — si está en 0, el texto nunca se reduce en pantallas pequeñas (Sección 8.4)**
+11. **Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)**
+12. **Hno A: pegar el bloque `0.2` de previsualización en las Instrucciones personalizadas del Proyecto 3 en claude.ai (ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) — subir este documento a GitHub no actualiza las instrucciones solas**
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -700,8 +769,10 @@ if (document.getElementById('mi-modulo-root')) {
 | 3 | ¿Se desactiva "Portafolio"? | Sigue activo sin caso de uso — riesgo de repetir el Patrón B de deuda técnica si se deja así |
 | 4 | ¿Se migran los tokens de verdad a `wp-config.php`, o se corrige el comentario del snippet? | La discrepancia actual entre comentario y código no puede quedar así (Sección 2) |
 | 5 | ¿Se confirma en Local que los breakpoints de Avada y del código (`1024/768/480px`) coinciden? | Sección 8.4 — si no coinciden, puede haber una zona intermedia donde el diseño visual y el código no cambian de "modo móvil" en el mismo punto |
+| 6 | ¿Cuál es el patrón visual exacto de Novedades? | Sección 8.4-bis — sin la referencia correcta compartida todavía, no se puede cerrar |
+| 7 | ¿Se fija como regla formal el criterio "sección = 1 página si todo cabe en un solo lugar, sección = varias entradas si cada apartado tiene personalidad propia"? | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8. Si se aprueba, este documento necesitaría una sección nueva con el árbol de decisión correspondiente |
 
-**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · **el Local NO usa `/blog/`, vive en la raíz (12 julio 2026)** · certificado SSL necesita "Trust" manual — añadido a la checklist · Live Link confirmado no fiable para QA visual · desbordamiento en "Qué hacemos" confirmado como efecto de Live Link, no un fallo real · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · **principio de Responsive incorporado como parte del proceso de construcción, no como paso final — Sección 8.4, con caso de prueba real confirmado (13 julio 2026)**.
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · **el Local NO usa `/blog/`, vive en la raíz (12 julio 2026)** · certificado SSL necesita "Trust" manual — añadido a la checklist · Live Link confirmado no fiable para QA visual · desbordamiento en "Qué hacemos" confirmado como efecto de Live Link, no un fallo real · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive incorporado como parte del proceso de construcción, no como paso final — Sección 8.4, con caso de prueba real confirmado (13 julio 2026) · **principio de altura de sección acotada y previsualización con bocetos incorporado como parte del proceso de construcción — Sección 8.4-bis, criterio de equipo del 14 de julio de 2026, aplicable a toda la web, no solo a la home**.
 
 ---
 
