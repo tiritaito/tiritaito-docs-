@@ -625,7 +625,7 @@ h1, h2, h3, h4, .tt-title {
 
         </div>
       </div>
-      <div class="tt-footer-note">Tiritaito for Creators · v2-02 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
+      <div class="tt-footer-note">Tiritaito for Creators · v2-03 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
     </section>
 
     <!-- ───────── PÁGINA: RECURSOS ───────── -->
@@ -1569,13 +1569,38 @@ window.generarYPublicar = async (tipo) => {
 };
 
 /* ════════════════════════════════════════════════════════
-   15b. MÓDULO NOVEDADES — hero + tira de la home
+   15b. MÓDULO NOVEDADES — CPT propio vía endpoint dedicado
    ════════════════════════════════════════════════════════
-   Contrato de datos con el servidor (Web Nueva / Local):
-   una sola clave wp_options "tt_novedades", guardada como JSON
-   de un array de objetos { id, tipo, media_url, texto, enlace,
-   fecha, activo }. Se lee y se escribe entera, igual que
-   tt_fiesta_dias — sin rutas REST propias por elemento.
+   Migrado v2-01 → v2-02: de un único blob JSON en wp_options
+   (tt_novedades) a entradas reales de WordPress, en el Post
+   Type "novedades" (rest_base confirmado: "novedades"), con
+   campos ACF. Decisión y razones completas: ver changelog v2-02.
+
+   CONTRATO DE DATOS ASUMIDO CON EL SERVIDOR (Camino B —
+   la app solo habla con tiritaito/v1/*, nunca con /wp/v2/*):
+
+   GET  /tiritaito/v1/novedades
+     → array de objetos, cada uno:
+       { id: <int, ID real del post>, tipo: "imagen"|"video",
+         media_url: <string>, texto: <string>, enlace: <string>,
+         fecha: "YYYY-MM-DD", activo: <bool> }
+
+   POST /tiritaito/v1/novedades
+     body: { tipo, media_url, texto, enlace, fecha, activo }
+     → { id: <int> }  (ID del post recién creado)
+
+   PUT  /tiritaito/v1/novedades/{id}
+     body: { tipo, media_url, texto, enlace, fecha, activo }
+     → 200 OK
+
+   DELETE /tiritaito/v1/novedades/{id}
+     → 200 OK
+
+   ⚠️ Este contrato es lo que la APP espera — no está verificado
+   contra el PHP real de Hno A (Proyecto 3). Si el PHP devuelve
+   una forma distinta (nombres de campo, envoltorio {data:...},
+   etc.), ajustar aquí tras la primera prueba real contra Local.
+   Wrapper json() ya tolerante: ver comentario en cargarNovedades().
    ════════════════════════════════════════════════════════ */
 let novedadEditandoId      = null;
 let novedadArchivoPendiente = null;
@@ -1583,11 +1608,15 @@ let novedadTipoPendiente    = null;
 let novedadMediaUrlActual   = null;
 let novedadActivoActual     = true;
 
-function parseNovedades(json) {
+async function cargarNovedades() {
   try {
-    const arr = JSON.parse(json || '[]');
-    return Array.isArray(arr) ? arr : [];
-  } catch { return []; }
+    const data = await wpFetch('/tiritaito/v1/novedades', { method: 'GET' });
+    // Tolerante a que el PHP devuelva el array directo o envuelto en {data:[...]}
+    S.novedades = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : []);
+  } catch (e) {
+    toast(mensajeError(e), 'error');
+    S.novedades = [];
+  }
 }
 
 function renderPreviewNovedad(item) {
@@ -1742,26 +1771,24 @@ window.guardarNovedad = async () => {
       mediaUrl = media.source_url;
     }
 
+    const payload = { tipo, media_url: mediaUrl, texto, enlace, fecha, activo: novedadActivoActual };
+
     if (novedadEditandoId) {
-      const item = S.novedades.find(n => n.id === novedadEditandoId);
-      if (item) {
-        item.tipo = tipo;
-        item.media_url = mediaUrl;
-        item.texto = texto;
-        item.enlace = enlace;
-        item.fecha = fecha;
-        item.activo = novedadActivoActual;
-      }
-    } else {
-      S.novedades.push({
-        id: 'nov_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-        tipo, media_url: mediaUrl, texto, enlace, fecha,
-        activo: novedadActivoActual
+      await wpFetch(`/tiritaito/v1/novedades/${novedadEditandoId}`, {
+        method: 'PUT',
+        body: JSON.stringify(payload)
       });
+      const item = S.novedades.find(n => n.id === novedadEditandoId);
+      if (item) Object.assign(item, payload);
+    } else {
+      const creada = await wpFetch('/tiritaito/v1/novedades', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      // El servidor asigna el id real (ID de post de WordPress) — nunca lo genera el navegador.
+      S.novedades.push({ id: creada.id, ...payload });
     }
 
-    await guardarOpciones({ tt_novedades: JSON.stringify(S.novedades) });
-    S.opciones.tt_novedades = JSON.stringify(S.novedades);
     document.getElementById('tt-modal-novedad')?.remove();
     pintarNovedades();
     toast(novedadEditandoId ? '✅ Novedad actualizada.' : '✅ Novedad publicada.', 'ok');
@@ -1777,16 +1804,15 @@ window.guardarNovedad = async () => {
 window.confirmarEliminarNovedad = (id) => {
   const item = S.novedades.find(n => n.id === id);
   const nombre = item?.texto ? item.texto.slice(0, 40) : 'esta novedad';
-  window.confirmarEliminar(nombre, `window.eliminarNovedad('${id}')`);
+  window.confirmarEliminar(nombre, `window.eliminarNovedad(${id})`);
 };
 
 window.eliminarNovedad = async (id) => {
   const anterior = S.novedades.slice();
   S.novedades = S.novedades.filter(n => n.id !== id);
+  pintarNovedades();
   try {
-    await guardarOpciones({ tt_novedades: JSON.stringify(S.novedades) });
-    S.opciones.tt_novedades = JSON.stringify(S.novedades);
-    pintarNovedades();
+    await wpFetch(`/tiritaito/v1/novedades/${id}`, { method: 'DELETE' });
     toast('✅ Novedad eliminada.', 'ok');
   } catch (e) {
     S.novedades = anterior;
@@ -1809,7 +1835,7 @@ async function iniciarApp() {
     S.opciones = {};
   }
   S.fiestaDias = parseFiestaDias(S.opciones.tt_fiesta_dias);
-  S.novedades  = parseNovedades(S.opciones.tt_novedades);
+  await cargarNovedades();
   pintarEstadoDevocional();
   pintarEstadoRecursos();
   pintarNovedades();
