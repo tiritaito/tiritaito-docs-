@@ -1,0 +1,396 @@
+/* ============================================================
+   TT Creators + Biblioteca — Endpoint central
+   Entorno: Local (tiritaito-real.local) — NUNCA producción
+   Token de escritura: X-TT-Token, comparado contra TT_WRITE_TOKEN
+   Añadido: 26 julio 2026
+   ============================================================ */
+
+// ⚠️ Debe coincidir EXACTAMENTE con el valor del HTML de la app.
+// Si se cambia aquí, hay que cambiarlo también en tiritaito-creators-v2-XX.html
+// y redistribuir el archivo — no hay rotación automática.
+if (!defined('TT_WRITE_TOKEN')) {
+    define('TT_WRITE_TOKEN', '36374494995SFGJKF453534');
+}
+
+
+/* ============================================================
+   1. VERIFICACIÓN DE TOKEN — usada como permission_callback
+   ============================================================ */
+function tt_verificar_token($request) {
+    $token_recibido = $request->get_header('X-TT-Token');
+    if (empty($token_recibido) || $token_recibido !== TT_WRITE_TOKEN) {
+        return new WP_Error(
+            'tt_no_autorizado',
+            'Token inválido o ausente.',
+            ['status' => 401]
+        );
+    }
+    return true;
+}
+
+
+/* ============================================================
+   2. CORS — necesario porque la app se sirve desde un Code Block
+      de Avada pero llama al REST API por fetch/XHR
+   ============================================================ */
+add_action('init', function () {
+    header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type, X-TT-Token');
+    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        status_header(200);
+        exit();
+    }
+}, 15); // priority 15, ya estandarizado en el proyecto
+
+
+/* ============================================================
+   3. WHITELIST DE wp_options — tt_opciones_permitidas()
+      Solo estas claves pueden escribirse vía /tiritaito/v1/datos.
+      tt_novedades queda FUERA a propósito: Novedades ya no vive
+      en wp_options, vive en el CPT (ver Sección 6 en adelante).
+   ============================================================ */
+function tt_opciones_permitidas() {
+    return [
+        'tt_virgen',
+        'tt_brisa',
+        'tt_homilia_audio',
+        'tt_homilia_texto',
+        'tt_lenguas_url',
+        'tt_tip_1',
+        'tt_tip_2',
+        'tt_docx_lectura_url',
+        'tt_youtube_json_url',
+        'tt_seminarios_json_url',
+        'tt_viacrucis_json_url',
+        'tt_fiesta_dias',
+    ];
+}
+
+
+/* ============================================================
+   4. REGISTRO DEL CPT 'novedades'
+   ============================================================ */
+add_action('init', function () {
+    register_post_type('novedades', [
+        'label'        => 'Novedades',
+        'public'       => false,       // no genera páginas propias públicas
+        'show_ui'      => true,        // sí visible en wp-admin, para revisar a mano
+        'show_in_rest' => true,        // necesario para que ACF y REST lo vean
+        'supports'     => ['title'],
+        'menu_icon'    => 'dashicons-megaphone',
+    ]);
+});
+
+
+/* ============================================================
+   5. RUTAS REST — tiritaito/v1/*
+   ============================================================ */
+add_action('rest_api_init', function () {
+
+    /* ---------- Base — wp_options (Devocional, Recursos) ---------- */
+
+    register_rest_route('tiritaito/v1', '/datos', [
+        'methods'             => 'GET',
+        'callback'            => 'tt_datos_leer',
+        'permission_callback' => '__return_true', // lectura pública
+    ]);
+
+    register_rest_route('tiritaito/v1', '/datos', [
+        'methods'             => 'POST',
+        'callback'            => 'tt_datos_guardar',
+        'permission_callback' => 'tt_verificar_token',
+    ]);
+
+    /* ---------- Base — subida de archivos a Biblioteca de Medios ---------- */
+
+    register_rest_route('tiritaito/v1', '/subir', [
+        'methods'             => 'POST',
+        'callback'            => 'tt_subir_archivo',
+        'permission_callback' => 'tt_verificar_token',
+    ]);
+
+    /* ---------- Base — listado y borrado de Biblioteca de Medios ---------- */
+
+    register_rest_route('tiritaito/v1', '/medios', [
+        'methods'             => 'GET',
+        'callback'            => 'tt_medios_listar',
+        'permission_callback' => 'tt_verificar_token',
+    ]);
+
+    register_rest_route('tiritaito/v1', '/medio/(?P<id>\d+)', [
+        'methods'             => 'DELETE',
+        'callback'            => 'tt_medio_borrar',
+        'permission_callback' => 'tt_verificar_token',
+        'args'                => [
+            'id' => ['validate_callback' => function ($p) { return is_numeric($p); }],
+        ],
+    ]);
+
+    /* ---------- Novedades — CPT propio ---------- */
+
+    register_rest_route('tiritaito/v1', '/novedades', [
+        'methods'             => 'GET',
+        'callback'            => 'tt_novedades_listar',
+        'permission_callback' => '__return_true', // lectura pública, igual que /datos
+    ]);
+
+    register_rest_route('tiritaito/v1', '/novedades', [
+        'methods'             => 'POST',
+        'callback'            => 'tt_novedades_crear',
+        'permission_callback' => 'tt_verificar_token',
+    ]);
+
+    register_rest_route('tiritaito/v1', '/novedades/(?P<id>\d+)', [
+        'methods'             => 'PUT',
+        'callback'            => 'tt_novedades_editar',
+        'permission_callback' => 'tt_verificar_token',
+        'args'                => [
+            'id' => ['validate_callback' => function ($p) { return is_numeric($p); }],
+        ],
+    ]);
+
+    register_rest_route('tiritaito/v1', '/novedades/(?P<id>\d+)', [
+        'methods'             => 'DELETE',
+        'callback'            => 'tt_novedades_borrar',
+        'permission_callback' => 'tt_verificar_token',
+        'args'                => [
+            'id' => ['validate_callback' => function ($p) { return is_numeric($p); }],
+        ],
+    ]);
+});
+
+
+/* ============================================================
+   6. FUNCIONES — wp_options (GET/POST /datos)
+   ============================================================ */
+
+function tt_datos_leer($request) {
+    $permitidas = tt_opciones_permitidas();
+    $resultado  = [];
+    foreach ($permitidas as $clave) {
+        $resultado[$clave] = get_option($clave, '');
+    }
+    return new WP_REST_Response($resultado, 200);
+}
+
+function tt_datos_guardar($request) {
+    $body       = $request->get_json_params();
+    $permitidas = tt_opciones_permitidas();
+    $guardadas  = [];
+    $rechazadas = [];
+
+    foreach ($body as $clave => $valor) {
+        if (in_array($clave, $permitidas, true)) {
+            update_option($clave, sanitize_text_field($valor));
+            $guardadas[] = $clave;
+        } else {
+            $rechazadas[] = $clave;
+        }
+    }
+
+    return new WP_REST_Response([
+        'guardadas'  => $guardadas,
+        'rechazadas' => $rechazadas, // la app ya sabe leer esto (ver guardarFiestaDias)
+    ], 200);
+}
+
+
+/* ============================================================
+   7. FUNCIONES — subida y gestión de Biblioteca de Medios
+   ============================================================ */
+
+function tt_subir_archivo($request) {
+    if (empty($_FILES['file'])) {
+        return new WP_REST_Response(['error' => 'No se recibió ningún archivo'], 400);
+    }
+
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+
+    $attachment_id = media_handle_upload('file', 0);
+
+    if (is_wp_error($attachment_id)) {
+        return new WP_REST_Response(['error' => $attachment_id->get_error_message()], 500);
+    }
+
+    return new WP_REST_Response([
+        'id'         => $attachment_id,
+        'source_url' => wp_get_attachment_url($attachment_id),
+    ], 200);
+}
+
+function tt_medios_listar($request) {
+    $per_page = (int) ($request->get_param('per_page') ?: 24);
+    $page     = (int) ($request->get_param('page') ?: 1);
+    $tipo     = $request->get_param('media_type');
+    $busqueda = $request->get_param('search');
+
+    $args = [
+        'post_type'      => 'attachment',
+        'post_status'    => 'inherit',
+        'posts_per_page' => $per_page,
+        'paged'          => $page,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ];
+    if (!empty($tipo))     $args['post_mime_type'] = $tipo;
+    if (!empty($busqueda)) $args['s'] = sanitize_text_field($busqueda);
+
+    $query = new WP_Query($args);
+    $resultado = [];
+
+    foreach ($query->posts as $post) {
+        $id = $post->ID;
+        $resultado[] = [
+            'id'            => $id,
+            'title'         => ['rendered' => get_the_title($id)],
+            'media_type'    => explode('/', get_post_mime_type($id))[0],
+            'source_url'    => wp_get_attachment_url($id),
+            'date'          => $post->post_date,
+            'media_details' => ['sizes' => wp_get_attachment_metadata($id)['sizes'] ?? []],
+        ];
+    }
+
+    $response = new WP_REST_Response($resultado, 200);
+    $response->header('X-WP-TotalPages', (string) $query->max_num_pages);
+    return $response;
+}
+
+function tt_medio_borrar($request) {
+    $id = (int) $request['id'];
+    if (!get_post($id) || get_post_type($id) !== 'attachment') {
+        return new WP_REST_Response(['error' => 'Archivo no encontrado'], 404);
+    }
+    $borrado = wp_delete_attachment($id, true); // true = borrado permanente
+    if (!$borrado) {
+        return new WP_REST_Response(['error' => 'No se pudo borrar el archivo'], 500);
+    }
+    return new WP_REST_Response(['ok' => true], 200);
+}
+
+
+/* ============================================================
+   8. FUNCIONES — Novedades (conversión de fecha en la frontera)
+   ============================================================ */
+
+// De Ymd (guardado en ACF) a YYYY-MM-DD (lo que espera la app)
+function tt_novedades_fecha_a_app($fecha_ymd) {
+    if (empty($fecha_ymd)) return '';
+    $dt = DateTime::createFromFormat('Ymd', $fecha_ymd);
+    return $dt ? $dt->format('Y-m-d') : '';
+}
+
+// De YYYY-MM-DD (lo que manda la app) a Ymd (lo que espera ACF)
+function tt_novedades_fecha_a_acf($fecha_app) {
+    if (empty($fecha_app)) return '';
+    $dt = DateTime::createFromFormat('Y-m-d', $fecha_app);
+    return $dt ? $dt->format('Ymd') : '';
+}
+
+function tt_novedades_listar($request) {
+    $posts = get_posts([
+        'post_type'      => 'novedades',
+        'posts_per_page' => -1,
+        'post_status'    => 'publish',
+    ]);
+
+    $resultado = [];
+    foreach ($posts as $post) {
+        $id = $post->ID;
+        $resultado[] = [
+            'id'        => $id,
+            'tipo'      => (string) get_field('tipo', $id),
+            'media_url' => (string) get_field('media_url', $id),
+            'texto'     => (string) get_field('texto', $id),
+            'enlace'    => (string) get_field('enlace', $id),
+            'fecha'     => tt_novedades_fecha_a_app(get_field('fecha', $id)),
+            'activo'    => (bool) get_field('activo', $id),
+            'titulo'    => (string) get_field('titulo', $id),
+        ];
+    }
+
+    return new WP_REST_Response($resultado, 200);
+}
+
+function tt_novedades_crear($request) {
+    $body = $request->get_json_params();
+
+    $tipo      = sanitize_text_field($body['tipo'] ?? '');
+    $media_url = esc_url_raw($body['media_url'] ?? '');
+    $texto     = sanitize_textarea_field($body['texto'] ?? '');
+    $enlace    = esc_url_raw($body['enlace'] ?? '');
+    $fecha_acf = tt_novedades_fecha_a_acf($body['fecha'] ?? '');
+    $activo    = !empty($body['activo']);
+    $titulo    = sanitize_text_field($body['titulo'] ?? '');
+
+    $post_id = wp_insert_post([
+        'post_type'   => 'novedades',
+        'post_status' => 'publish',
+        'post_title'  => $titulo !== '' ? $titulo : ('Novedad ' . current_time('Y-m-d H:i')),
+    ]);
+
+    if (is_wp_error($post_id) || !$post_id) {
+        return new WP_REST_Response(['error' => 'No se pudo crear la novedad'], 500);
+    }
+
+    update_field('tipo', $tipo, $post_id);
+    update_field('media_url', $media_url, $post_id);
+    update_field('texto', $texto, $post_id);
+    update_field('enlace', $enlace, $post_id);
+    update_field('fecha', $fecha_acf, $post_id);
+    update_field('activo', $activo, $post_id);
+    update_field('titulo', $titulo, $post_id);
+
+    return new WP_REST_Response(['id' => $post_id], 200);
+}
+
+function tt_novedades_editar($request) {
+    $id = (int) $request['id'];
+
+    $post = get_post($id);
+    if (!$post || $post->post_type !== 'novedades') {
+        return new WP_REST_Response(['error' => 'Novedad no encontrada'], 404);
+    }
+
+    $body = $request->get_json_params();
+
+    $tipo      = sanitize_text_field($body['tipo'] ?? '');
+    $media_url = esc_url_raw($body['media_url'] ?? '');
+    $texto     = sanitize_textarea_field($body['texto'] ?? '');
+    $enlace    = esc_url_raw($body['enlace'] ?? '');
+    $fecha_acf = tt_novedades_fecha_a_acf($body['fecha'] ?? '');
+    $activo    = !empty($body['activo']);
+    $titulo    = sanitize_text_field($body['titulo'] ?? '');
+
+    update_field('tipo', $tipo, $id);
+    update_field('media_url', $media_url, $id);
+    update_field('texto', $texto, $id);
+    update_field('enlace', $enlace, $id);
+    update_field('fecha', $fecha_acf, $id);
+    update_field('activo', $activo, $id);
+    update_field('titulo', $titulo, $id);
+
+    if ($titulo !== '') {
+        wp_update_post(['ID' => $id, 'post_title' => $titulo]);
+    }
+
+    return new WP_REST_Response(['ok' => true], 200);
+}
+
+function tt_novedades_borrar($request) {
+    $id = (int) $request['id'];
+
+    $post = get_post($id);
+    if (!$post || $post->post_type !== 'novedades') {
+        return new WP_REST_Response(['error' => 'Novedad no encontrada'], 404);
+    }
+
+    $borrado = wp_delete_post($id, true);
+    if (!$borrado) {
+        return new WP_REST_Response(['error' => 'No se pudo borrar la novedad'], 500);
+    }
+
+    return new WP_REST_Response(['ok' => true], 200);
+}
