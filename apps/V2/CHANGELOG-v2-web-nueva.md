@@ -1,3 +1,31 @@
+## v2-05 — 2026-07-26
+
+✅ Mensaje de la Virgen y Hora de la Brisa: fecha y autor pasan a ser
+   campos separados (tt_virgen_fecha, tt_brisa_autor) en vez de venir
+   pegados dentro del texto — permite que Avada los muestre con
+   estilo propio vía Dynamic Content
+✅ Fecha del mensaje de la Virgen pasa a ser obligatoria antes de
+   publicar (antes era opcional)
+▪️ Sin cambios en el resto de módulos
+
+---
+
+## v2-04 — fecha exacta sin confirmar
+
+⚠️ **Entrada reconstruida, no registrada en su momento.** Esta versión
+   existió como paso de trabajo entre v2-03 y v2-05, pero su changelog
+   nunca se escribió — Carlitos no recuerda con precisión qué cambió
+   en ella, y el HTML que se usó como base para construir v2-05 resultó
+   ser, según confirmación directa de Carlitos, idéntico al de v2-03
+   salvo el número en el footer. No hay evidencia de código de ningún
+   cambio funcional real entre v2-03 y v2-04.
+🔲 Si Carlitos recuerda o encuentra más adelante qué se cambió
+   realmente en v2-04, esta entrada debe corregirse con el detalle real
+   — lo de arriba es un registro honesto de lo que se sabe ahora, no
+   una afirmación de que no hubo cambios
+
+---
+
 ## v2-03 — 2026-07-25
 
 ✅ Migrado el módulo Novedades: de un único blob JSON en `wp_options`
