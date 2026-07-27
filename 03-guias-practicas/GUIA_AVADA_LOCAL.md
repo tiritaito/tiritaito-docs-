@@ -61,6 +61,12 @@ wp rewrite flush --hard
 | WordPress | Instalado en la **raíz** del sitio — **no** en un subdirectorio `/blog/` como producción. No intentar alinear esto con producción vía Ajustes → Generales; provoca un bucle de redirecciones (ver arriba) |
 | SSL | Local lo genera automáticamente — comportamiento igual que en producción. Si el navegador sigue avisando de "no seguro", falta pulsar "Trust" en la pestaña SSL del sitio dentro de Local |
 
+⚠️ **Riesgo real, ya ocurrido una vez (26 julio 2026):** el entorno Local se perdió por
+completo antes de una sesión de trabajo y hubo que reconstruir el backend desde cero
+(snippet PHP, CPT, campos ACF). Sin causa documentada todavía. Recomendación: guardar un
+Blueprint actualizado de vez en cuando (Sección 2, tabla de herramientas, más abajo) como
+red de seguridad.
+
 ### Constantes del entorno (usar siempre estas, nunca las de producción de `00_CORE.md`, en código que corra en Local)
 
 ```
@@ -68,19 +74,9 @@ WP_BASE  = https://tiritaito-real.local/wp-json
 APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 ```
 
-✅ **Resuelto y definitivo:** el sistema de autenticación de Tiritaito for Creators es **token propio (`TT_WRITE_TOKEN`)** desde v1-04, no Application Password. Es la decisión definitiva del equipo — `WP_USER`/`WP_PASS`/`AUTH Basic` quedan descartados en cualquier documento nuevo. `00_CORE.md` y `04_ENTORNO_LOCAL.md` siguen describiendo el patrón antiguo (Basic Auth) y necesitan reescribirse para reflejar el token — queda anotado como tarea pendiente de esa fusión, no de este documento.
+✅ **Resuelto y definitivo:** el sistema de autenticación de Tiritaito for Creators es **token propio (`TT_WRITE_TOKEN`)** desde v1-04, no Application Password — vía header `X-TT-Token`. Es la decisión definitiva del equipo, confirmada contra el HTML real de la app el 26 de julio de 2026.
 
-⚠️ **Nota aparte, fuera del alcance de este documento:** cualquier snippet que use `wpFetch()` o `guardarOpciones()` contra el WordPress del Local necesita el Application Password real del usuario `makecom` **de ese WordPress local** (nunca el de producción) — sin eso, esas llamadas fallan con 401. Esto es del Proyecto Web Nueva (Backend), no de este documento; queda mencionado aquí solo para que no se pierda de vista.
-
-⚠️ **Discrepancia sin resolver (detectada 11-12 julio 2026):** el snippet "TT Creators + Biblioteca — Endpoint central v3" tiene un comentario de cabecera que afirma que los 3 tokens (`TT_READ_TOKEN`, `TT_WRITE_TOKEN`, `BIBLIOTECA_TOKEN`) ya no están escritos en texto plano — que se leen de `wp-config.php`. **El código real sigue teniendo los 3 valores escritos directamente con `define()`**, como respaldo. No se sabe sin comprobarlo cuál de los dos está realmente activo:
-
-```
-wp eval "echo TT_WRITE_TOKEN;"
-wp eval "echo TT_READ_TOKEN;"
-wp eval "echo BIBLIOTECA_TOKEN;"
-```
-
-Pendiente de decisión de Hno A: migrar los tokens de verdad a `wp-config.php`, o corregir el comentario del snippet para reflejar que siguen en el código. Cualquiera de las dos es válida — lo que no puede quedar así es la discrepancia entre lo que dice el comentario y lo que hace el código.
+✅ **Resuelto (26 julio 2026) — discrepancia de tokens:** el snippet "TT Creators + Biblioteca — Endpoint central" se reconstruyó desde cero en la sesión del 26 de julio (el Local se había perdido por completo, ver arriba). El token vive en `define()` dentro del propio snippet — ya no hay discrepancia entre comentario y código porque el snippet es nuevo. Decisión de Carlitos: se queda en `define()`, no se migra a `wp-config.php`. ✅ Confirmado por segunda vez contra el archivo PHP real y completo, ya subido a `apps/v2/snippet-tt-creators-endpoint-central.php` — la primera copia compartida ese mismo día resultó ser de la web vieja, no de esta.
 
 ### Herramientas exclusivas de Local (aprovecharlas)
 
@@ -89,7 +85,7 @@ Pendiente de decisión de Hno A: migrar los tokens de verdad a `wp-config.php`, 
 | Base de datos directa (Adminer) | Inspeccionar `wp_options` sin pasar por el panel de WP — más rápido al depurar | Botón "Database" en Local |
 | WP-CLI | Comandos de WordPress desde terminal — pruebas rápidas de snippets, y la única vía para corregir el sitio si el panel de administración queda bloqueado (ver corrección de `/blog/` arriba) | Botón "Open Site Shell" en Local |
 | Live Link | URL pública temporal del sitio local — para que Hna C o el equipo lo vean sin estar en el mismo ordenador/red. ⚠️ **No fiable para verificar diseño/tipografía/CSS** — confirmado que Local reescribe las rutas del dominio local sobre la marcha pero reconoce abiertamente que no las coge todas (fuente: localwp.com/help-docs/local-features/live-links/); afecta a cualquier CSS/JS/fuente con ruta absoluta, no solo a `@font-face`. Sirve solo para enseñar estructura general a Hna C — para QA visual real, usar el modo responsive de Chrome DevTools o Safari directamente sobre `tiritaito-real.local`. El nombre del Live Link (ej. `sneaky-doctor`) es aleatorio y cambia en cada reinicio — no perseguirlo. Desde julio 2026, Local añade usuario/contraseña automáticamente al Live Link; si se comparte con Hna C, pasarle también esas credenciales | Botón "Live Link" en Local |
-| Blueprint | Guarda el estado actual del sitio como plantilla reutilizable | Menú del sitio → "Save as Blueprint" |
+| Blueprint | Guarda el estado actual del sitio como plantilla reutilizable — también sirve como copia de seguridad ante una pérdida del entorno (ver aviso arriba) | Menú del sitio → "Save as Blueprint" |
 
 ### Checklist antes de cada sesión de trabajo en Local
 
@@ -97,6 +93,7 @@ Pendiente de decisión de Hno A: migrar los tokens de verdad a `wp-config.php`, 
 - [ ] Confirmar que la Avada está registrada como staging (Avada → Registro no pide licencia nueva)
 - [ ] Confirmar que el certificado SSL sigue en estado **"Trusted"** en la pestaña SSL del sitio dentro de Local — puede perderse al recrear el sitio, y si no está confiado puede llegar a romper silenciosamente las respuestas de la API (`/wp-json` devolviendo un carácter suelto en vez del JSON completo)
 - [ ] Si el código incluye una URL o credencial, verificar que viene de este documento o de `04_ENTORNO_LOCAL.md` actualizado — nunca de producción
+- [ ] Si el Local se ha recreado recientemente: verificar que el snippet PHP, el CPT `novedades` y la Options Page de ACF siguen existiendo — no darlos por hecho
 
 ---
 
@@ -160,7 +157,7 @@ Las Características (Features) se revisaron una por una, no en bloque:
 | Formas (Forms) | ✅ Activada | Para formularios de contacto/oración |
 | Off Canvas | ✅ Activada | Coincide con el método de menú móvil recomendado en Sección 9.1 |
 | Portafolio | ✅ Activada | ⚠️ Marcada para reconsiderar — no hay contenido de portafolio planeado; activa CPT + plantillas Single/Archive innecesarias, exactamente el Patrón B de deuda técnica que `METODOLOGIA_CONSTRUCCION.md` ya advierte evitar |
-| Herramientas de desarrollo (ACF) | ✅ Activada | Confirmado: ACF Pro viene incluido gratis con la licencia de Avada, con soporte nativo en Avada Dynamic Content. Relevante para "Hombres de Dios" y "Novenas" (dentro de Oraciones) — ver `METODOLOGIA_CONSTRUCCION.md` |
+| Herramientas de desarrollo (ACF) | ✅ Activada | Confirmado: ACF Pro viene incluido gratis con la licencia de Avada, con soporte nativo en Avada Dynamic Content. Ya en uso real (Novedades, Devocional — ver `METODOLOGIA_CONSTRUCCION.md`) |
 | Modo de mantenimiento, Gestión de medios | ✅ Activadas | Sin objeción |
 | Comprar, Foro, Marca personalizada, Chat en vivo | ☐ Sin activar | Correcto — sin caso de uso documentado en Tiritaito |
 
@@ -290,6 +287,13 @@ Ejemplo práctico: "Rincón de Nico" con un header más colorido, sin el menú p
 
 **Esto es lo más importante que corrige la investigación anterior. Léelo antes de construir cualquier componente reutilizable.**
 
+**Principio de fondo que gobierna todo este árbol (reforzado 26 julio 2026):** en cualquier
+rama de este árbol, la prioridad es **usar el menor código posible.** Antes de llegar a
+"Code Snippets: shortcode parametrizable", intenta primero si un elemento nativo de Avada
+(Sección 9) combinado con ACF (Dynamic Content) resuelve lo mismo sin escribir una sola
+línea de PHP o JS nuevo. El código es el último recurso del árbol, no un punto de partida
+igual de válido que los demás.
+
 ### 8.1 La corrección
 
 Un elemento **Global** de la Avada Library sincroniza el contenido al 100% en todas sus instancias: editar una copia edita todas las demás, en todo el sitio, automáticamente. **No existe un modo de "misma estructura, contenido distinto por instancia" dentro de un elemento Global** — los elementos Global no admiten contenido dinámico ni campos variables. Sirve para "esto debe decir exactamente lo mismo en todas partes" (footer, aviso legal, CTA de donación fija).
@@ -303,8 +307,10 @@ Lo que sí varía por instancia es un elemento **Guardado (no-global)**: se inse
 ```
 ANTES DE CONSTRUIR NADA NUEVO
 │
-├── 1. ¿Lo resuelve un elemento NATIVO de Fusion Builder? (Sección 9)
-│      → SÍ: úsalo. No hay snippet que mantener.
+├── 1. ¿Lo resuelve un elemento NATIVO de Fusion Builder, solo o combinado
+│      con ACF (Dynamic Content)? (Sección 9)
+│      → SÍ: úsalo. No hay snippet que mantener. ESTA ES LA OPCIÓN
+│        PREFERIDA — mínimo código posible (ver principio de fondo arriba).
 │      → NO: sigue.
 │
 ├── 2. ¿Ya existe un snippet global de Tiritaito que hace esto o algo parecido?
@@ -320,7 +326,7 @@ ANTES DE CONSTRUIR NADA NUEVO
        │                └── NO, cambia por página, pero la ESTRUCTURA se repite
        │                      ├── Lo mantiene Hna C/editores, sin código → Avada Library: GUARDADO
        │                      └── Lo mantiene Hno A, con lógica de servidor → Code Snippets: shortcode
-       │                            parametrizable (patrón [tt_podcast], ya probado)
+       │                            parametrizable (patrón [tt_podcast], ya probado) — ÚLTIMO RECURSO
        │
        └── En cualquier caso: constrúyelo pensando en el siguiente santo, el siguiente
            seminario, el siguiente "Rincón de X" — con parámetros, no contenido fijo.
@@ -332,9 +338,10 @@ ANTES DE CONSTRUIR NADA NUEVO
 
 | Opción | Cuándo usarla | Coste |
 |---|---|---|
+| **Elemento nativo + ACF (Dynamic Content)** | Contenido dinámico o repetible que un Slider, Post Cards, Toggles u otro elemento nativo ya sabe pintar | Ninguno — cero código, mantenimiento 100% visual |
 | **Global** (Avada Library) | Contenido idéntico en todas partes (footer, CTA fija) | Ninguno — es su propósito |
 | **Guardado / no-global** (Avada Library) | Estructura repetida, contenido distinto, lo mantiene Hna C/editores sin tocar código | Si cambia el diseño, hay que actualizar cada instancia a mano |
-| **Shortcode parametrizable** (Code Snippets) | Estructura repetida, contenido distinto, lo mantiene Hno A | El diseño se actualiza en un solo sitio y se propaga automáticamente — mismo patrón que `[tt_podcast]` |
+| **Shortcode parametrizable** (Code Snippets) | Estructura repetida, contenido distinto, lo mantiene Hno A, y ninguna opción nativa lo resuelve | El diseño se actualiza en un solo sitio y se propaga automáticamente — mismo patrón que `[tt_podcast]`, pero es la opción de más mantenimiento de las cuatro |
 
 ---
 
@@ -507,7 +514,7 @@ Tiritaito, Biblioteca, Hombres de Dios, y cualquier sección futura.
 | Carrusel con vídeo | (mismo JS a mano) | **Avada Slider Element** — imagen Y vídeo (YouTube/Vimeo) por diapositiva | ✅ Confirmado — mejor candidato si el carrusel mezcla vídeo |
 | Accordion desplegable | `toggle-ios` custom | **Toggles Element** — modo Toggle (uno abierto) o Accordion (varios abiertos) | ✅ Confirmado |
 | Modal / vídeo al clic | Modal custom | **Lightbox Element** (imagen/vídeo en overlay) o **Modal Element** (contenido libre) | ✅ Ambos confirmados |
-| Listado con diseño de tarjeta | — | **Post Cards** (Avada Library) | 🔲 Existe, no verificado en profundidad — candidato para "Seminarios pasados" y portada "Hombres de Dios" |
+| Listado con diseño de tarjeta | — | **Post Cards** (Avada Library) | ✅ Confirmado en Local (piloto de Novedades, 22-23 julio 2026): ordena de forma nativa por Custom Field ACF (ej. fecha). ❌ NO filtra por valor de campo de forma nativa — decisión de equipo (26 julio 2026): no se construye el filtro; el listado de Novedades muestra todas las entradas, activas u ocultas, sin distinción. El campo `activo` queda como control interno del editor en la app, sin efecto en la web pública. Si en el futuro "Seminarios pasados" u otra sección sí necesitan filtrar de verdad, ahí haría falta el hook `fusion_post_cards_shortcode_query_override` |
 | Reproductor de audio | 3 sistemas distintos (`.pp-*`, `.mp-*`, `.hmds-*`) | No es un elemento Avada — consolidación de snippets propios | Ver `METODOLOGIA_CONSTRUCCION.md` |
 
 ### 9.1 ⚠️ Corrección — menú móvil: Flyout Menu es método legacy
@@ -542,7 +549,7 @@ El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código
 ## 11. Avada Studio y Dynamic Content — mención breve
 
 - **Avada Studio:** biblioteca de plantillas preconstruidas (páginas, secciones, elementos). Útil como punto de partida visual que luego se adapta al ADN Tiritaito — nunca como resultado final sin personalizar.
-- **Dynamic Content:** permite conectar elementos del Fusion Builder a datos de WordPress (título del post, imagen destacada, autor, fecha, campos personalizados). Para contenido editorial estándar, puede eliminar la necesidad de shortcodes PHP simples — confirmado con soporte nativo para campos ACF (texto, imagen, repetidor, relación) — relevante para "Hombres de Dios" y "Novenas" (ver `METODOLOGIA_CONSTRUCCION.md`).
+- **Dynamic Content:** permite conectar elementos del Fusion Builder a datos de WordPress (título del post, imagen destacada, autor, fecha, campos personalizados). Para contenido editorial estándar, puede eliminar la necesidad de shortcodes PHP simples — confirmado con soporte nativo para campos ACF (texto, imagen, repetidor, relación), incluyendo **Options Page de ACF** (prefijo `awb_acfop_`) desde el piloto de Novedades/Devocional (22-23 julio 2026, ver `METODOLOGIA_CONSTRUCCION.md`).
 
 ---
 
@@ -560,11 +567,13 @@ El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código
 ### Regla de oro
 
 ```
-¿Es visual y se puede configurar en Avada Theme Options o el Builder?
-    → Avada. No toques código.
+¿Es visual y se puede configurar en Avada Theme Options, el Builder, o con ACF+Dynamic
+Content?
+    → Avada + ACF. No toques código. Esta es la opción por defecto (ver Sección 8,
+      principio de mínimo código).
 
 ¿Es lógica de servidor (PHP), datos dinámicos del REST API, o un shortcode?
-    → Code Snippets PHP.
+    → Code Snippets PHP — solo si de verdad no hay forma nativa.
 
 ¿Es un módulo con JS interactivo complejo y su propio estilo visual?
     → Code Snippets HTML (con <style> + <script> integrados).
@@ -630,6 +639,7 @@ if (document.getElementById('mi-modulo-root')) {
 | Dar una sección por cerrada solo revisándola en Desktop | Confirmado con un caso real (13 julio 2026): un bloque con imagen sin cargar y texto placeholder pasó desapercibido hasta revisar Desktop porque no se había comprobado explícitamente en las 3 vistas — revisar siempre Desktop/Medium/Small antes de cerrar (Sección 8.4) |
 | Dejar que una sección ocupe `min-height: 100vh` por defecto sin decidirlo conscientemente | Revisar siempre si la sección necesita de verdad ocupar toda la pantalla, o si con la altura de su contenido basta (Sección 8.4-bis) |
 | Construir una sección directamente en Avada sin ver antes 2-3 opciones de boceto | Pedir a Claude (Proyecto 3) que proponga bocetos visuales antes de empezar a construir, salvo ajustes menores (Sección 8.4-bis) |
+| Escribir un snippet nuevo sin comprobar antes si ACF + un elemento nativo ya lo resuelve | El árbol de decisión (Sección 8) empieza siempre por la opción nativa — código es el último recurso, no el primero (reforzado 26 julio 2026) |
 
 ---
 
@@ -659,7 +669,7 @@ if (document.getElementById('mi-modulo-root')) {
 
 ## 16. Checklist maestro — antes de dar una plantilla por cerrada
 
-- [ ] ¿Ya existe un elemento nativo de Fusion Builder que resuelva esto? (Sección 9)
+- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (Sección 9) — esta pregunta va SIEMPRE primero
 - [ ] ¿Ya existe un snippet global de Tiritaito equivalente?
 - [ ] Si se construye desde cero: ¿pensado para reutilizarse — parámetros, no contenido fijo?
 - [ ] Si es candidato a Avada Library: ¿Guardado o Global? (Sección 8 — no son intercambiables)
@@ -688,7 +698,7 @@ if (document.getElementById('mi-modulo-root')) {
 - El Flyout Menu clásico es un método legacy; el método actual es el Off Canvas Builder (Sección 9.1).
 - Ni Flyout ni Off Canvas resuelven de forma nativa menús con submenús.
 - ACF Pro y FileBird Pro vienen incluidos gratis con la licencia de Avada, instalables desde Avada → Plugins.
-- Avada Dynamic Content tiene soporte nativo para campos ACF.
+- Avada Dynamic Content tiene soporte nativo para campos ACF, incluida Options Page.
 - **Responsive Option Sets permite configurar ancho, orden, márgenes, padding y fondo de forma independiente por pantalla en Container/Columna, y alineación en Botón/Imagen/Texto/Título (Sección 8.4).**
 - **Responsive Typography Sensitivity y Minimum Font Size Factor controlan si y cómo se reduce el tamaño de letra en pantallas pequeñas (Sección 8.4).**
 
@@ -701,18 +711,21 @@ if (document.getElementById('mi-modulo-root')) {
 - **13 julio 2026: Responsive Option Sets confirmado funcionando en un caso real — layout de 3 columnas iguales en Desktop/Tablet que pasa a 1 columna ancha + 2 en pareja en Móvil, usando solo Column Width + Column Order por pantalla, sin código (Sección 8.4).**
 - **13 julio 2026: un bloque con contenido sin terminar (imagen sin cargar, texto placeholder) pasó desapercibido hasta revisar en Desktop — confirma la necesidad del paso explícito de revisión en las 3 vistas antes de cerrar cualquier sección.**
 - **14 julio 2026: sesión de equipo sobre la home confirma dos criterios de trabajo nuevos, sin verificación técnica en Local todavía (son decisiones de equipo, no hallazgos de Avada): altura de sección acotada por defecto, y previsualización con bocetos antes de construir (Sección 8.4-bis).**
+- **22-23 julio 2026: piloto de ACF Options Page + CPT Novedades confirma que Dynamic Content lee campos de Options Page vía el prefijo `awb_acfop_`, pero solo si se escriben con `update_field()` — no con `update_option()` directo, que guarda en una fila distinta que Avada nunca consulta (el nombre real de la fila lleva el prefijo `options_`, no el nombre plano del campo). Confirma también que Post Cards ordena de forma nativa por Custom Field, pero no filtra por valor de campo (necesita snippet con el hook `fusion_post_cards_shortcode_query_override` — decisión de equipo, 26 julio: no se construye ese hook para Novedades, ver Sección 9).**
+- **26 julio 2026: backend de Novedades reconstruido en Local desde cero (el entorno se había perdido por completo) — CPT `novedades` + ACF (6 campos) + endpoint propio `tiritaito/v1/novedades`, confirmado funcionando de extremo a extremo desde la app real.**
+- **26 julio 2026: Devocional (Virgen, Brisa, Homilía, Lenguas) migrado parcialmente a ACF Options Page "Devocional — Contenido Diario" — 7 de 12 claves antiguas de `wp_options`.**
+- **26 julio 2026: confirmado el header real de autenticación de la app — `X-TT-Token`, no `Authorization: Bearer`.**
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
-- Si Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" sin shortcode propio.
 - Código fuente completo de la home — "Grupo de alabanza" y "Próximos eventos" a nivel CSS/JS.
 - Si "Yeah Papa" se registra correctamente en Avada → Typography → Custom Fonts, o si hace falta volver a subir el `.woff2` ahí específicamente.
 - Si la barra negra superior del header "Studio" es una fila del Header Builder o el Top Bar legacy de Global Options.
 - Si el título "Studio" del header es el Site Title de WordPress o un elemento de Título suelto.
-- Cuál de los dos valores de los tokens (`wp-config.php` o el `define()` del propio snippet) está realmente activo en el snippet "TT Creators + Biblioteca — Endpoint central v3" (Sección 2).
 - **Si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` del código (Sección 8.4).**
 - **Qué valor tiene actualmente "Responsive Typography Sensitivity" (Sección 8.4).**
 - **El patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro) — pendiente de que Carlitos comparta la referencia visual correcta con Hno C (Sección 8.4-bis; la primera captura compartida en esta sesión era del hero/slider, no del bloque de noticias, y no se usó como referencia).**
+- Si Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" — el listado + orden por fecha sí funciona nativo (piloto 22-23 julio), pero si esas dos secciones necesitan filtrar de verdad (a diferencia de Novedades, que decidió no filtrar), esa pieza sigue sin construir.
 
 ---
 
@@ -734,13 +747,14 @@ if (document.getElementById('mi-modulo-root')) {
 - How To Use The Performance Wizard: avada.com/documentation/how-to-use-the-performance-wizard/
 - Local by Flywheel — Live Links, limitaciones confirmadas: localwp.com/help-docs/local-features/live-links/
 - Sesión de diagnóstico en Local (WP-CLI, SSL, discrepancia de tokens): `CORRECCIONES_DOCUMENTACION_11-12_julio_2026.md`, redactado por Hno A
-- **Responsive Option Sets: avada.com/documentation/responsive-option-sets/**
-- **Responsive Design in Avada: avada.com/documentation/responsive-design-in-avada/**
-- **Responsive Options in Avada (breakpoints globales): avada.com/documentation/responsive-options-in-avada/**
-- **Responsive Headings (tipografía automática): avada.com/documentation/responsive-headings/**
-- **Column Size and Order for Responsive Design: avada.com/documentation/column-size-and-order-for-responsive-design-in-avada/**
-- **Responsive Header Design With Avada: avada.com/documentation/responsive-header-design-with-avada/**
-- **Altura de sección y previsualización con bocetos (Sección 8.4-bis): criterio de equipo, sesión 14 julio 2026 — no es una fuente de documentación oficial de Avada, se anota como decisión propia**
+- Responsive Option Sets: avada.com/documentation/responsive-option-sets/
+- Responsive Design in Avada: avada.com/documentation/responsive-design-in-avada/
+- Responsive Options in Avada (breakpoints globales): avada.com/documentation/responsive-options-in-avada/
+- Responsive Headings (tipografía automática): avada.com/documentation/responsive-headings/
+- Column Size and Order for Responsive Design: avada.com/documentation/column-size-and-order-for-responsive-design-in-avada/
+- Responsive Header Design With Avada: avada.com/documentation/responsive-header-design-with-avada/
+- Altura de sección y previsualización con bocetos (Sección 8.4-bis): criterio de equipo, sesión 14 julio 2026 — no es una fuente de documentación oficial de Avada, se anota como decisión propia
+- Piloto ACF Options Page + CPT (Sección 8.4, 9, 17): sesión real en Local, 22-23 julio 2026, y reconstrucción del backend, 26 julio 2026 — decisiones y hallazgos de equipo, no documentación oficial de Avada
 
 ---
 
@@ -752,27 +766,24 @@ if (document.getElementById('mi-modulo-root')) {
 3. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
 4. Hno A + Carlitos: decidir si se desactiva "Portafolio" en Características, ya que no hay contenido planeado
 5. Hno A: actualizar la URL configurada en la app Tiritaito for Creators de `.../blog/wp-json` a `https://tiritaito-real.local/wp-json`
-6. Hno A: confirmar el token realmente activo del snippet "TT Creators + Biblioteca — Endpoint central v3" (comandos en Sección 2) y resolver la discrepancia entre el comentario y el código
-7. Hno A: revisar si la app Biblioteca (token separado) necesita el mismo ajuste de URL que Tiritaito for Creators
-8. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
-9. **Hno A: verificar si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` (Sección 8.4)**
-10. **Hno A: revisar el valor actual de "Responsive Typography Sensitivity" — si está en 0, el texto nunca se reduce en pantallas pequeñas (Sección 8.4)**
-11. **Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)**
-12. **Hno A: pegar el bloque `0.2` de previsualización en las Instrucciones personalizadas del Proyecto 3 en claude.ai (ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) — subir este documento a GitHub no actualiza las instrucciones solas**
+6. Hno A: verificar si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` (Sección 8.4)
+7. Hno A: revisar el valor actual de "Responsive Typography Sensitivity" — si está en 0, el texto nunca se reduce en pantallas pequeñas (Sección 8.4)
+8. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)
+9. Hno A: pegar el bloque `0.2` de previsualización y `0.3`/`0.4` de ACF/verificación en las Instrucciones personalizadas del Proyecto 3 en claude.ai (ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) — subir este documento a GitHub no actualiza las instrucciones solas
+10. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
 | # | Pregunta | Por qué importa |
 |---|---|---|
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
-| 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica |
+| 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica. A diferencia de Novedades, si estas dos necesitan filtrar de verdad, sí haría falta el hook de la Sección 9 |
 | 3 | ¿Se desactiva "Portafolio"? | Sigue activo sin caso de uso — riesgo de repetir el Patrón B de deuda técnica si se deja así |
-| 4 | ¿Se migran los tokens de verdad a `wp-config.php`, o se corrige el comentario del snippet? | La discrepancia actual entre comentario y código no puede quedar así (Sección 2) |
 | 5 | ¿Se confirma en Local que los breakpoints de Avada y del código (`1024/768/480px`) coinciden? | Sección 8.4 — si no coinciden, puede haber una zona intermedia donde el diseño visual y el código no cambian de "modo móvil" en el mismo punto |
 | 6 | ¿Cuál es el patrón visual exacto de Novedades? | Sección 8.4-bis — sin la referencia correcta compartida todavía, no se puede cerrar |
-| 7 | ¿Se fija como regla formal el criterio "sección = 1 página si todo cabe en un solo lugar, sección = varias entradas si cada apartado tiene personalidad propia"? | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8. Si se aprueba, este documento necesitaría una sección nueva con el árbol de decisión correspondiente |
+| 7 | ¿Se fija como regla formal el criterio "sección = 1 página si todo cabe en un solo lugar, sección = varias entradas si cada apartado tiene personalidad propia"? | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 |
 
-**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`), definitivo, Application Password descartado · dominio real del Local corregido a `tiritaito-real.local` · **el Local NO usa `/blog/`, vive en la raíz (12 julio 2026)** · certificado SSL necesita "Trust" manual — añadido a la checklist · Live Link confirmado no fiable para QA visual · desbordamiento en "Qué hacemos" confirmado como efecto de Live Link, no un fallo real · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive incorporado como parte del proceso de construcción, no como paso final — Sección 8.4, con caso de prueba real confirmado (13 julio 2026) · **principio de altura de sección acotada y previsualización con bocetos incorporado como parte del proceso de construcción — Sección 8.4-bis, criterio de equipo del 14 de julio de 2026, aplicable a toda la web, no solo a la home**.
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · **discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026)** · **Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026)** · **principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026)**.
 
 ---
 
