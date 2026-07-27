@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Metodología de Construcción
 **Diagnóstico heredado, inventario de consolidación y aplicación práctica a cada sección real de la web nueva**
-*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior*
+*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF*
 *Audiencia: Hno A (aplicación técnica) · Hna C (para entender el porqué de cada decisión)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -20,8 +20,9 @@ decidida en `ALCANCE_WEB_NUEVA.md` — ¿dónde y cómo la construyo?"**
 | **Para una sección concreta ya decidida: dónde construirla y con qué patrón** | **Este documento** |
 
 **Regla de uso:** antes de construir cualquier pieza nueva, aplica primero el árbol de
-decisión completo de `GUIA_AVADA_LOCAL.md` Sección 8. Este documento asume ese árbol ya
-conocido y solo lo aplica caso por caso.
+decisión completo de `GUIA_AVADA_LOCAL.md` Sección 8 — que empieza siempre preguntando si
+un elemento nativo de Avada, solo o combinado con ACF, ya resuelve la necesidad, antes de
+pasar a código. Este documento asume ese árbol ya conocido y solo lo aplica caso por caso.
 
 ---
 
@@ -70,7 +71,9 @@ página `ejercito-de-intercesores` + revisión estructural de `home`, `san-juan-
 **Causa raíz común:** todo el contenido se pegó directamente en el `post_content` de cada
 página, reinventando CSS/JS cada vez, en vez de construir snippets globales reutilizables
 o usar los elementos nativos de Fusion Builder. No es un problema de Avada — es un
-problema de disciplina de componentización.
+problema de disciplina de componentización. **El mismo patrón C es el motivo por el que,
+desde el 26 de julio de 2026, el equipo prioriza explícitamente ACF + elementos nativos de
+Avada sobre código nuevo — ver `GUIA_AVADA_LOCAL.md` Sección 8.**
 
 ---
 
@@ -88,6 +91,7 @@ problema de disciplina de componentización.
 | Carrusel Swiper (`unpkg.com`) | — | Varias páginas | Sustituir por Image Carousel / Avada Slider nativo |
 | "Grupo de alabanza" | Sin confirmar | Home (web vieja) | ⚠️ **Actualizado:** en la web nueva ya no es widget de home — pasa a ser un apartado informativo dentro de **Qué hacemos** (`ALCANCE_WEB_NUEVA.md` Sección 4.C). Sigue sin auditar a nivel de código |
 | Teaser de "Ejército de Intercesores" | — | Home (web vieja) | 🔲 **Revisar con Hna C:** la home nueva ya no tiene necesariamente un teaser propio de Ejército de Intercesores — ahora vive dentro del acceso general a la página **Tiritaito**. Confirmar si el teaser individual se mantiene o desaparece |
+| "Tip del día" | `tt_tip_1` / `tt_tip_2` en `wp_options` | Devocional (web vieja y primera versión de la web nueva) | ❌ **Eliminado por decisión (26 julio 2026).** Ese contenido se sube ahora directamente como Novedades — ver la fila de Novedades más abajo. ⚠️ Todavía construido en la app (confirmado en `apps/v2/tiritaito-creators-v2-01.html`), pendiente de que Proyecto 5 lo retire |
 
 ---
 
@@ -102,7 +106,7 @@ ya decidida.
 | Pieza | Dónde vive | Nota |
 |---|---|---|
 | Página de inicio — estructura | Fusion Builder puro | Accesos a las cinco páginas contenedoras + apartado Novedades arriba de todo |
-| Novedades | Code Block con el snippet de Tips ya existente + contenido editorial de avisos | No es página ni entrada (`ALCANCE_WEB_NUEVA.md` Sección 4.B) — vive dentro del Layout de la home |
+| Novedades | CPT `novedades` + ACF (6 campos) + Post Cards de Avada con Dynamic Content — backend confirmado y probado de extremo a extremo (26 julio 2026), falta el montaje visual en Avada | No es página ni entrada aparte (`ALCANCE_WEB_NUEVA.md` Sección 4.B) — vive dentro del Layout de la home. El listado NO filtra por el campo `activo` — se muestran todas las novedades (decisión de equipo, ver `GUIA_AVADA_LOCAL.md` Sección 9). El snippet PHP antiguo `[tt_novedades]` que se llegó a construir por error se descartó, no llegó a activarse. El contenido que antes era "Tip del día" se sube ahora directamente aquí |
 
 ### Qué hacemos
 
@@ -117,11 +121,14 @@ ya decidida.
 
 | Pieza | Dónde vive | Nota |
 |---|---|---|
-| Hora de la brisa, Mensaje de la Virgen, Lenguas | Snippets ya existentes, montar en Avada | Sin cambios |
+| Hora de la brisa, Mensaje de la Virgen, Lenguas | ACF Options Page "Devocional — Contenido Diario" + Dynamic Content en Avada (26 julio 2026, reemplaza al snippet/shortcode) | Backend confirmado; falta montar visualmente con Dynamic Content en Fusion Builder. Virgen y Brisa ahora tienen fecha/autor en campos propios (`virgen_fecha`, `brisa_autor`) — separados del texto, para poder darles estilo distinto en Avada. `virgen_fecha` es obligatoria en la app desde v2-05 |
 | Misa | Snippet de lecturas DOCX ya existente | 🔲 Si absorbe el Salmo del día, revisar si el snippet necesita ampliarse o si el salmo se monta aparte dentro del mismo Layout |
-| Tip | Snippet ya existente | Mismo snippet en dos ubicaciones: aquí y en Novedades |
 | Habla por la palabra (cita aleatoria) | Lógica PHP server-side ya existente (generador de citas) | 🔲 Sin ubicación decidida — falta definir el mecanismo de compartir por QR/URL descrito en `ALCANCE_WEB_NUEVA.md` Sección 4.D |
 | Elige tu santo | — | 🔲 Sin ubicación decidida |
+
+**❌ Tip — eliminado (26 julio 2026).** Ya no existe como apartado independiente de Conecta
+cada día ni como clave separada de `wp_options`. Ese contenido se sube ahora directamente
+como Novedades (ver arriba).
 
 ### Tiritaito
 
@@ -131,7 +138,7 @@ ya decidida.
 | Rincón de Nico | Snippet `[tt_podcast]` + accordion | Sin cambios |
 | Charlas de la Biblia | Snippet `[tt_podcast]` | **Actualizado: vive en Tiritaito, ya no en Biblioteca** |
 | Ejército de Intercesores — Introducción | **Guardado (no-global)** o `[tt_accordion]` | Mismo patrón que el resto de accordions "¿Qué es X?" |
-| Ejército de Intercesores — Batalla de cada día (vídeo + intenciones + lenguas) | 🔲 Candidato a snippet PHP nuevo con lógica de fecha, similar al patrón de `wp_options` de Conecta cada día | El contenido cambia a diario — probablemente necesita clave(s) nueva(s) en `wp_options`. **Requiere coordinación previa** (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6, regla 1) antes de tocar el contrato de datos de la PWA Creators |
+| Ejército de Intercesores — Batalla de cada día (vídeo + intenciones + lenguas) | 🔲 Candidato a snippet PHP nuevo con lógica de fecha, similar al patrón de `wp_options` de Conecta cada día — o, siguiendo el principio de mínimo código (`GUIA_AVADA_LOCAL.md` Sección 8), evaluar primero si un CPT + ACF con Dynamic Content resuelve lo mismo sin lógica de servidor nueva | El contenido cambia a diario — probablemente necesita clave(s) nueva(s) en `wp_options` o un CPT propio, según se resuelva. **Requiere coordinación previa** (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6) antes de tocar el contrato de datos de la PWA Creators |
 | Ejército de Intercesores — Batalla de la semana | 🔲 Igual que arriba, con periodicidad semanal | Misma nota sobre coordinación previa |
 | Ejército de Intercesores — Formulario de inscripción | Avada Forms (nativo) | Confirmado en `INFORME_ESTRATEGICO_2026_1.md` Sección 2.1.G |
 | Ejército de Intercesores — Claves de intercesión | Fusion Builder puro | Contenido estático |
@@ -159,15 +166,7 @@ nuevo.
 
 ---
 
-## 4. Hombres de Dios — actualizado: Layout + Elementos Guardados (reemplaza Dynamic Content)
-
-⚠️ **Corrección respecto a la versión anterior de este documento.** Aquí se recomendaba
-"Layout Content Section con Dynamic Content". La sesión de alcance de julio 2026
-(`ALCANCE_WEB_NUEVA.md` Sección 4.H) **lo descarta explícitamente**, a petición directa de
-Carlitos — no por un hallazgo técnico nuevo, sino porque el equipo, con años ya trabajando
-en Avada, prefiere un método más flexible y menos automatizado.
-
-### 4.1 El método confirmado
+## 4. Hombres de Dios — Layout + Elementos Guardados (Dynamic Content descartado)
 
 Un **Layout** único sirve de plantilla compartida — probablemente el envoltorio (Header,
 Page Title Bar, Footer) que Avada aplica automáticamente a todas las entradas de Hombres
@@ -179,22 +178,24 @@ insertados y editados a mano, con el contenido específico de cada santo.
 piezas — unos llevan audio, otros discursos, otros solo biografía. Dynamic Content asume
 una estructura de campos uniforme (vía ACF) que se rellena igual en todas las instancias;
 aquí la estructura varía santo a santo, así que Dynamic Content no encaja bien con la
-realidad del contenido.
+realidad del contenido — a diferencia de Novedades o Devocional, donde todas las entradas
+sí comparten exactamente los mismos campos y por eso ACF + Dynamic Content sí funciona
+bien ahí.
 
-### 4.2 Lo que esto cambia respecto a la decisión anterior
+### 4.1 El método confirmado
 
 | Aspecto | Con Dynamic Content (descartado) | Con Layout + Guardados (confirmado) |
 |---|---|---|
 | Consistencia de campos | Misma estructura para todos los santos | Cada santo puede combinar módulos distintos |
 | Mantenimiento | Automático — cambiar el Layout cambia todos los santos a la vez | Manual — cada instancia se edita por separado si cambia el contenido |
 | Valor de un CPT + ACF | Alto — automatiza el llenado de campos uniformes | Bajo — sin campos uniformes que rellenar automáticamente, ACF pierde buena parte de su utilidad aquí |
-| Post Cards para el listado/portada | Compatible | Sigue siendo compatible — solo necesita Posts o CPT (con o sin ACF) del que tirar, independientemente de si el contenido interno usa Dynamic Content o Guardados |
+| Post Cards para el listado/portada | Compatible | Sigue siendo compatible — solo necesita Posts o CPT (con o sin ACF) del que tirar |
 
-### 4.3 Lo que sigue pendiente de definir en Local
+### 4.2 Lo que sigue pendiente de definir en Local
 
 | Pendiente | Nota |
 |---|---|
-| ¿Posts normales con categoría, o Custom Post Type? | Con Guardados en vez de Dynamic Content, la razón principal para un CPT+ACF (automatizar campos) ya no aplica con la misma fuerza — puede que Posts con categoría baste. La herramienta ACF sigue activada por si acaso (`GUIA_AVADA_LOCAL.md` Sección 4.0.1), pero no es necesaria por el método elegido |
+| ¿Posts normales con categoría, o Custom Post Type? | Con Guardados en vez de Dynamic Content, la razón principal para un CPT+ACF (automatizar campos) ya no aplica con la misma fuerza — puede que Posts con categoría baste |
 | ¿Qué elementos Guardados se preparan de antemano como piezas reutilizables? | P.ej. "bloque de biografía", "bloque de audio", "bloque de discursos" — cada santo elige y edita los que le apliquen |
 | Confirmar en Local que el Layout + Guardados funciona como se espera visualmente | 🔲 Pendiente de prueba práctica, no de documentación |
 
@@ -204,14 +205,16 @@ realidad del contenido.
 
 ### Antes de crear un módulo nuevo
 
-- [ ] ¿Ya existe un elemento nativo de Fusion Builder que resuelva esto? (`GUIA_AVADA_LOCAL.md` Sección 9)
+- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (`GUIA_AVADA_LOCAL.md` Sección 9) — pregunta siempre primero, es la opción de mínimo código
 - [ ] ¿Ya existe un snippet global de Tiritaito con funcionalidad equivalente? (Sección 2 de este documento)
 - [ ] Si se construye desde cero: ¿está pensado para reutilizarse — parámetros, no contenido fijo?
 - [ ] Si es candidato a Avada Library: ¿Guardado o Global? (`GUIA_AVADA_LOCAL.md` Sección 8 — no son intercambiables)
+- [ ] Si es candidato a ACF: ¿Options Page, CPT+ACF por entrada, o campos en Página/Entrada normal? (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3, Proyecto 3, punto 0.3)
 - [ ] ¿El JS sigue el patrón condicional + IIFE? (`00_CORE.md`)
 - [ ] ¿Usa `var(--tt-*)` en vez de hex sueltos?
 - [ ] ¿Se ha probado en consola del navegador que no hay errores de elementos inexistentes?
-- [ ] Si toca `wp_options` o el contrato de datos de la PWA Creators: ¿se ha coordinado con el equipo antes? (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6)
+- [ ] Si toca `wp_options`, ACF o el contrato de datos de la PWA Creators: ¿se ha coordinado con el equipo antes? (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6)
+- [ ] Si el contenido lo va a gestionar el equipo desde Tiritaito for Creators: ¿se preparó el prompt completo para el Proyecto 5?
 
 ### Antes de marcar un snippet "Run everywhere"
 
@@ -224,16 +227,17 @@ realidad del contenido.
 ## 6. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Hno A: validar en Local, en este orden — Off Canvas Builder (menú) → Toggles (Introducción del Ejército) → Layout + Guardados para Hombres de Dios → snippets nuevos de "Batalla de cada día/semana" del Ejército de Intercesores
-2. Coordinar con el equipo antes de crear las claves nuevas de `wp_options` que probablemente necesite la Batalla de cada día/semana del Ejército de Intercesores
-3. Cuando se resuelvan las preguntas abiertas de `ALCANCE_WEB_NUEVA.md` sobre Biblioteca (PWA de libros, estructura de Oraciones), completar las filas correspondientes de la Sección 3 de este documento
+1. Hno A: validar en Local, en este orden — Off Canvas Builder (menú) → Toggles (Introducción del Ejército) → Layout + Guardados para Hombres de Dios → Dynamic Content para Novedades y Devocional → snippets nuevos de "Batalla de cada día/semana" del Ejército de Intercesores (evaluando primero si ACF+nativo lo resuelve, ver Sección 3)
+2. Coordinar con el equipo antes de crear las claves nuevas de `wp_options` o campos ACF que probablemente necesite la Batalla de cada día/semana del Ejército de Intercesores
+3. Proyecto 5: retirar la UI de "Tip del día" de la app (ver Sección 2) — pendiente confirmado el 26 de julio 2026
+4. Cuando se resuelvan las preguntas abiertas de `ALCANCE_WEB_NUEVA.md` sobre Biblioteca (PWA de libros, estructura de Oraciones), completar las filas correspondientes de la Sección 3 de este documento
 
 **Preguntas abiertas propias de este documento:**
 
 | # | Pregunta | Por qué importa |
 |---|---|---|
 | 1 | ¿Se mantiene el teaser individual de "Ejército de Intercesores" en la home, o desaparece al agruparse bajo Tiritaito? | Sección 2 |
-| 2 | ¿Qué elementos Guardados conviene preparar de antemano para Hombres de Dios (biografía, audio, discursos...)? | Sección 4.3 |
+| 2 | ¿Qué elementos Guardados conviene preparar de antemano para Hombres de Dios (biografía, audio, discursos...)? | Sección 4.2 |
 | 3 | ¿Testimonios de intercesión: volumen aproximado, para decidir Post Cards vs contenido estático? | Sección 3, Tiritaito |
 
 **Heredadas de `ALCANCE_WEB_NUEVA.md` (no se repiten aquí en detalle, solo se enlazan):**
@@ -241,10 +245,10 @@ Salmo del día dentro de Misa, ubicación de "Habla por la palabra" y "Elige tu 
 integración de vídeos de seminarios pasados, "Canción del Ejército", naturaleza de la PWA
 de libros, estructura de Oraciones, feature Eventos de Avada.
 
-**Resuelto en esta revisión:** método técnico de Hombres de Dios (Layout + Guardados,
-Dynamic Content descartado) · reestructuración completa de la aplicación práctica
-sección-por-sección según el nuevo Alcance · Charlas de la Biblia reubicada de Biblioteca
-a Tiritaito · Ejército de Intercesores desglosado en sus piezas reales.
+**Resuelto en esta revisión (26 julio 2026):** Novedades migrado a CPT+ACF, backend
+confirmado y probado · Devocional migrado parcialmente a ACF Options Page · Tip eliminado
+por decisión (pendiente solo de aplicarse en la app) · principio de mínimo código
+reforzado en toda la sección 3 y en los checklists.
 
 ---
 
