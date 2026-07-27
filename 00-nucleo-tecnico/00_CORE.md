@@ -1,6 +1,7 @@
 # TIRITAITO.COM — Contexto Maestro
 *Reemplaza: ENTORNO_TÉCNICO · GUÍA_DE_ESTILO_VISUAL · tiritaito-guia-diseno-visual.md · secciones 2,9-14 de protocolo-tiritaito-creators-2.md*
 *Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast) · TIRITAITO_FOR_CREATORS_VERSIONS.md (si trabajas en V1/V2 de la app)*
+*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026*
 
 ---
 
@@ -12,9 +13,9 @@
 | CMS | WordPress en `/blog/` + Avada Live Builder |
 | Plugin código | Code Snippets (free): tipos PHP y HTML únicamente — NO JS/CSS separados |
 | Caché | LiteSpeed Cache — excluir `/blog/wp-json/tiritaito/` |
-| Plugins activos | WPMobile.app · Jetpack · Limit Login Attempts · Administrador Archivos WP |
+| Plugins activos | WPMobile.app · Jetpack · Limit Login Attempts · Administrador Archivos WP · ACF Pro (incluido con la licencia de Avada) |
 
-**Regla crítica de Avada:** el `post_content` serializa Code Blocks en Base64. Jamás escribir ahí desde fuera. Todo dato dinámico → `wp_options` + Biblioteca de Medios.
+**Regla crítica de Avada:** el `post_content` serializa Code Blocks en Base64. Jamás escribir ahí desde fuera. Todo dato dinámico → `wp_options`, ACF, o Biblioteca de Medios (ver Sección 3 para cuál usar en cada caso).
 
 **`admin-ajax.php` no disponible** para usuarios públicos (bloqueo nivel servidor Raiola). Usar siempre REST API o shortcodes PHP server-side.
 
@@ -27,8 +28,8 @@ WordPress:        https://www.tiritaito.com/blog/
 REST API:         https://www.tiritaito.com/blog/wp-json/wp/v2/
 Endpoint propio:  https://www.tiritaito.com/blog/wp-json/tiritaito/v1/
 Usuario app:      makecom  (rol: Editor)
-Auth:             Token propio — TT_WRITE_TOKEN (Application Password descartado
-                   definitivamente, ver TIRITAITO_FOR_CREATORS_VERSIONS.md)
+Auth:             Token propio — TT_WRITE_TOKEN, vía header HTTP `X-TT-Token`
+                   (Application Password descartado definitivamente)
 ```
 
 ### Constantes JS base
@@ -40,16 +41,15 @@ const LOGO_URL       = 'https://www.tiritaito.com/blog/wp-content/uploads/2026/0
 const APP_PIN        = '1234'; // cambiar antes de producción
 ```
 
-⚠️ **Reconstrucción, no código verificado:** no tengo acceso al HTML real de la app para confirmar el nombre exacto del header o parámetro con el que se envía `TT_WRITE_TOKEN` al servidor. Las funciones de abajo (`wpFetch`, `subirArchivo`) siguen escritas con el patrón antiguo de Basic Auth como referencia de estructura — **antes de copiar este bloque, sustituir `AUTH` por el mecanismo real que ya usa `apps/v1/tiritaito-creators-v1-XX.html` o `apps/v2/tiritaito-creators-v2-XX.html` en GitHub.** No copiar el bloque de abajo tal cual sin ese paso.
+### Funciones JS base
 
-### Funciones JS base (plantilla — verificar auth real antes de usar)
+✅ **Confirmado contra el HTML real de la app (26 julio 2026)** — ya no es una reconstrucción sin verificar.
 
 ```javascript
 // Peticiones REST autenticadas
-// ⚠️ Sustituir la línea de 'headers' por el mecanismo real de TT_WRITE_TOKEN
 async function wpFetch(endpoint, options = {}) {
   const url     = WP_BASE + endpoint;
-  const headers = { 'Authorization': 'Bearer ' + TT_WRITE_TOKEN, ...(options.headers || {}) }; // ⚠️ verificar formato real
+  const headers = { 'X-TT-Token': TT_WRITE_TOKEN, ...(options.headers || {}) };
   if (!(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
   const res = await fetch(url, { ...options, headers });
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
@@ -70,16 +70,15 @@ function subirArchivo(file, onProgress) {
         : reject(new Error(`HTTP ${xhr.status}`));
     });
     xhr.addEventListener('error', () => reject(new Error('Error de red')));
-    xhr.open('POST', WP_BASE + '/wp/v2/media');
-    xhr.setRequestHeader('Authorization', 'Bearer ' + TT_WRITE_TOKEN); // ⚠️ verificar formato real
-    xhr.setRequestHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(file.name)}"`);
+    xhr.open('POST', WP_BASE + '/tiritaito/v1/subir');
+    xhr.setRequestHeader('X-TT-Token', TT_WRITE_TOKEN);
     xhr.send(form); // NO añadir Content-Type — FormData lo pone solo con boundary correcto
   });
 }
 
-// wp_options — leer (público) y escribir (autenticado)
+// Devocional + resto de wp_options — leer y escribir (modo híbrido, ver Sección 3)
 async function leerOpciones() {
-  const res = await fetch(WP_BASE + '/tiritaito/v1/datos');
+  const res = await fetch(WP_BASE + '/tiritaito/v1/datos', { headers: { 'X-TT-Token': TT_WRITE_TOKEN } });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
@@ -90,48 +89,95 @@ async function guardarOpciones(datos) {
 
 ---
 
-## 3. MAPA DE DATOS — wp_options
+## 3. MAPA DE DATOS
+
+⚠️ Este mapa cambió el 26 de julio de 2026: el contenido Devocional (Virgen, Brisa, Homilía,
+Lenguas) migró de `wp_options` a una Options Page de ACF, y Novedades migró de `wp_options`
+a un Custom Post Type (CPT) propio con ACF. El resto de claves se queda en `wp_options`.
+
+### 3.1 ACF Options Page — "Devocional — Contenido Diario"
+
+| Campo ACF | Tipo | Clave que usa la app (`/tiritaito/v1/datos`) | Frecuencia |
+|---|---|---|---|
+| `virgen` | Texto largo | `tt_virgen` | Diaria |
+| `virgen_fecha` | Fecha (campo propio, separado del texto) — **obligatoria** antes de publicar (v2-05) | `tt_virgen_fecha` | Diaria |
+| `brisa` | Texto largo | `tt_brisa` | Diaria |
+| `brisa_autor` | Texto (campo propio, separado del texto) | `tt_brisa_autor` | Diaria |
+| `homilia_audio` | URL Media Library | `tt_homilia_audio` | Diaria |
+| `homilia_texto` | Texto largo — ⚠️ debería dejar de llevar fecha (decisión de Carlitos, 26 julio 2026: siempre es la fecha de publicación); la app en v2-05 todavía la pide y la pega al final del texto — pendiente de corregir | `tt_homilia_texto` | Diaria |
+| `lenguas_url` | URL Media Library | `tt_lenguas_url` | Diaria |
+
+⚠️ **Nombre de campo ACF ≠ clave de la API.** El campo dentro de ACF no lleva el prefijo
+`tt_` (ej. `virgen_fecha`), pero la app manda y recibe esa clave CON el prefijo
+(`tt_virgen_fecha`) en el JSON de `/tiritaito/v1/datos`. El snippet PHP traduce entre una
+forma y otra. Escribir código nuevo contra el endpoint usando la clave con `tt_`.
+
+⚠️ Escribir estos campos SIEMPRE con `update_field()`, nunca con `update_option()` — Avada
+Dynamic Content (prefijo `awb_acfop_`) solo lee lo que ACF guarda con su propio prefijo
+interno (`options_` + nombre del campo). Confirmado en el piloto del 22-23 julio 2026.
+
+🔲 Pendiente sin decidir: si conviene desactivar el autoload de los campos de texto largo
+(`virgen`, `brisa`, `homilia_texto`) — no verificado, sin datos reales que lo justifiquen.
+
+**`tt_tip_1` / `tt_tip_2` — eliminados por decisión (26 julio 2026), pero ⚠️ todavía
+presentes en el código de la app (confirmado en v2-05).** El concepto de "Tip del día" ya
+no debe existir: ese contenido se sube ahora directamente como Novedades (ver 3.3). Falta
+que Proyecto 5 retire la UI real.
+
+### 3.2 wp_options — lo que se queda igual
 
 | Clave | Tipo | Módulo | Frecuencia |
 |---|---|---|---|
-| `tt_virgen` | Texto largo (fecha en 1ª línea) | Devocional | Diaria |
-| `tt_brisa` | Texto largo (autor en última línea con —) | Devocional | Diaria |
-| `tt_homilia_audio` | URL Media Library | Devocional | Diaria |
-| `tt_homilia_texto` | Texto largo (fecha en última línea) | Devocional | Diaria |
-| `tt_lenguas_url` | URL Media Library | Devocional | Diaria |
-| `tt_tip_1` | URL Media Library | Devocional | Diaria |
-| `tt_tip_2` | URL Media Library (opcional) | Devocional | Diaria |
 | `tt_docx_lectura_url` | URL Media Library | Lecturas | Semanal |
 | `tt_youtube_json_url` | URL Media Library (`music-data.json`) | YouTube | Ocasional |
 | `tt_seminarios_json_url` | URL Media Library (`Seminarios.json`) | YouTube | Ocasional |
-| `tt_viacrucis_json_url` | URL Media Library (JSON) — 🔲 tipo inferido por el patrón de nombre (`_json_url`, igual que las dos filas de arriba); confirmar con Hno A | Vía Crucis | Ocasional |
-| `tt_fiesta_dias` | JSON directo, no URL — 🔲 inferido: mismo patrón que `tt_novedades` (la app manda la lista completa en cada cambio); confirmar esquema exacto con Hno A | Fiestas / calendario | Ocasional |
-| `tt_novedades` | JSON directo (lista de objetos, no URL — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6 para el esquema completo) | Novedades (V2) | Ocasional |
+| `tt_viacrucis_json_url` | URL Media Library (JSON) — 🔲 tipo inferido por el patrón de nombre; confirmar con Hno A | Vía Crucis | Ocasional |
+| `tt_fiesta_dias` | JSON directo, no URL — 🔲 sigue sin estructura confirmada | Fiestas / calendario | Ocasional |
 
-**Endpoint tiritaito/v1:**
-- Token GET (público): `ttcr2026sanjoseyvirgenmaria` — 🔲 probablemente sea el `TT_READ_TOKEN` mencionado en la investigación de integración Avada+Creators, sin nombre formal asignado en este documento; confirmar y renombrar la constante si es así
-- POST: requiere `TT_WRITE_TOKEN`
-- Header: `Cache-Control: no-store`
-- CORS: priority 15
+### 3.3 CPT `novedades` — Custom Post Type propio
+
+Sustituye por completo a la antigua clave `tt_novedades` de `wp_options`. Esquema completo
+en `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6 — no se repite aquí para no duplicar
+mantenimiento. 6 campos ACF por entrada (`tipo`, `media_url`, `texto`, `enlace`, `fecha`,
+`activo`, `titulo`), gestionados vía endpoint propio `tiritaito/v1/novedades` (Sección 4),
+nunca vía `/wp/v2/posts`.
+
+**El campo `activo` no filtra el listado público** (decisión de equipo, 26 julio 2026) —
+Post Cards en Avada muestra todas las novedades, visibles u ocultas. `activo` queda solo
+como control interno del editor en la app. Ver `GUIA_AVADA_LOCAL.md` Sección 9.
+
+**Endpoint GET (público) de lectura:** token GET `ttcr2026sanjoseyvirgenmaria` —
+🔲 probablemente sea el `TT_READ_TOKEN` mencionado en la investigación de integración
+Avada+Creators, sin nombre formal asignado en este documento; confirmar y renombrar la
+constante si es así.
+
+**Header:** `Cache-Control: no-store` · **CORS:** priority 15
 
 ---
 
 ## 4. ENDPOINTS REST COMPLETOS
 
+⚠️ **Corrección (26 julio 2026):** esta tabla llevaba tiempo listando rutas nativas de
+WordPress (`/wp/v2/media`, `/wp/v2/posts`) marcadas como "sin confirmar". El HTML real de
+la app (`apps/v2/tiritaito-creators-v2-01.html`) confirma que la app nunca las usa — todo
+pasa por rutas propias bajo `tiritaito/v1/*`.
+
 | Método | Ruta | Función |
 |---|---|---|
-| GET | `/tiritaito/v1/datos` | Lee wp_options (widgets + app) |
-| POST | `/tiritaito/v1/datos` | Guarda wp_options (app) |
-| GET | `/wp/v2/media` | Lista Biblioteca de Medios |
-| POST | `/wp/v2/media` | Sube archivo |
-| DELETE | `/wp/v2/media/{id}?force=true` | Elimina archivo permanente |
-| GET | `/wp/v2/posts` | Lista entradas |
-| POST | `/wp/v2/posts` | Crea entrada |
-| PUT | `/wp/v2/posts/{id}` | Edita entrada |
-| DELETE | `/wp/v2/posts/{id}?force=true` | Elimina entrada |
-| GET | `/wp/v2/categories` | Lista categorías |
+| GET | `/tiritaito/v1/datos` | Lee Devocional (ACF) + resto de wp_options (modo híbrido, ver Sección 3) |
+| POST | `/tiritaito/v1/datos` | Guarda Devocional (ACF) + resto de wp_options (modo híbrido) |
+| GET | `/tiritaito/v1/medios` | Lista Biblioteca de Medios |
+| POST | `/tiritaito/v1/subir` | Sube archivo |
+| DELETE | `/tiritaito/v1/medio/{id}` | Elimina archivo permanente |
+| GET | `/tiritaito/v1/novedades` | Lista todas las novedades (activas y ocultas, sin filtrar) |
+| POST | `/tiritaito/v1/novedades` | Crea una novedad — el `id` lo asigna el servidor |
+| PUT | `/tiritaito/v1/novedades/{id}` | Edita una novedad |
+| DELETE | `/tiritaito/v1/novedades/{id}` | Elimina una novedad |
 
-🔲 **Sin confirmar:** si `/wp/v2/media` y `/wp/v2/posts` (endpoints nativos de WordPress) también migraron a `TT_WRITE_TOKEN`, o si siguen necesitando autenticación de WordPress porque son rutas del core y no del endpoint propio `tiritaito/v1`. La investigación histórica (`ESTUDIO_INTEGRACION_AVADA_CREATORS`) menciona un endpoint propio `/tiritaito/v1/subir` — si ese sustituyó a `/wp/v2/media`, esta tabla necesita actualizarse para reflejarlo. Verificar con Hno A antes de dar esta tabla por definitiva.
+🔲 **Sin confirmar todavía:** si `/wp/v2/posts` y `/wp/v2/categories` (rutas nativas de
+WordPress) se usan en algún punto del sistema fuera de la app — no hay evidencia de ello en
+el HTML de la app, pero no se ha verificado del lado del servidor. Si nadie las usa, se
+pueden retirar de esta tabla en la próxima revisión.
 
 ---
 
@@ -246,6 +292,7 @@ if (document.getElementById('mi-modulo-root')) {
 | `admin-ajax.php` | Bloqueado por Raiola para usuarios públicos — usar REST API |
 | `sessionStorage` vs `localStorage` para PIN | `sessionStorage` — debe expirar al cerrar pestaña |
 | `TT_WRITE_TOKEN` expuesto en el HTML | El token vive hardcodeado en el HTML de la app (riesgo operativo, no de frontend público) — si se compromete, redistribuir el HTML es la mitigación actual, no hay rotación automática |
+| ACF Options Page + `update_option()` | Escribir un campo de la Options Page con `update_option()` en vez de `update_field()` lo deja invisible para Avada Dynamic Content — ACF lo guarda con el prefijo `options_` por delante del nombre, no con el nombre plano. Confirmado en el piloto de Novedades (23 julio 2026) |
 
 *Eliminada la fila "Application Password con espacios" — ya no aplica desde que se descartó ese patrón de autenticación.*
 
@@ -261,6 +308,7 @@ if (document.getElementById('mi-modulo-root')) {
 - [ ] JS en IIFE, condicional fuera, lógica dentro
 - [ ] Mensajes de error en lenguaje humano (no códigos HTTP)
 - [ ] Barra de progreso visible en subidas de archivo
+- [ ] Si el componente lee/escribe contenido dinámico: ¿va en ACF (Options Page o CPT) o en `wp_options`? Ver Sección 3 antes de decidir, y siempre `update_field()` si es ACF
 
 ---
 
