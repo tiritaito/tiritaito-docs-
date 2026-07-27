@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Alcance de la Web Nueva
 **Estructura de la web nueva: páginas, secciones internas, prioridades y método de trabajo**
-*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026*
+*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades*
 *Aprobación: Hna C · Redacción: Hno C*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -26,7 +26,7 @@ sigue sin decidir?**
 
 | Si necesitas... | Ve a este documento en su lugar |
 |---|---|
-| Dónde y cómo construir en Avada una pieza ya decidida aquí (Global/Guardado/Snippet) | `METODOLOGIA_CONSTRUCCION.md` |
+| Dónde y cómo construir en Avada una pieza ya decidida aquí (Global/Guardado/Snippet/ACF) | `METODOLOGIA_CONSTRUCCION.md` |
 | Qué contenido de la web vieja migrar y con qué método | `MIGRACION_CONTENIDO.md` |
 | Cómo funciona Avada/Local mecánicamente, incluyendo altura de sección y previsualización | `GUIA_AVADA_LOCAL.md` |
 | **Qué construir, dónde vive cada cosa, y en qué orden** | **Este documento** |
@@ -50,6 +50,11 @@ La sesión de equipo del 14 de julio de 2026 añade dos criterios de diseño tra
 #9) — no cambia la estructura de páginas ya definida, solo añade cómo deben verse y cómo se
 decide su forma.
 
+⚠️ **Actualización del 26 de julio de 2026:** el "Tip del día", que hasta ahora aparecía
+como contenido duplicado a propósito entre Novedades y Conecta cada día, **desaparece como
+concepto independiente** — ese contenido se sube ahora directamente como una Novedad más.
+Ver Secciones 2, 4.B y 4.D.
+
 ---
 
 ## 2. Mapa de la página de inicio
@@ -58,9 +63,11 @@ decide su forma.
 PÁGINA DE INICIO
 │
 ├── NOVEDADES  (no es página — apartado de apertura de la home)
-│     └── Tips (también en Conecta cada día) · avisos litúrgicos/eventos importantes
-│         de la Iglesia · noticias de Tiritaito
+│     └── Avisos litúrgicos/eventos importantes de la Iglesia · noticias de Tiritaito
+│         · cualquier contenido que antes se hubiera publicado como "Tip" (eliminado
+│         como concepto independiente, 26 julio 2026 — se sube directamente aquí)
 │         🔲 Patrón visual sin cerrar — ver Sección 5.1
+│         ✅ Backend construido y probado (CPT + ACF) — falta el montaje visual en Avada
 │
 ├── QUÉ HACEMOS (página)
 │     ├── 1. Seminarios          — mayor prioridad, más contenido
@@ -71,7 +78,6 @@ PÁGINA DE INICIO
 │     ├── Hora de la brisa
 │     ├── Mensaje de la Virgen de hoy
 │     ├── Misa                     🔲 probablemente absorbe el Salmo del día
-│     ├── Tip                      (también en Novedades — duplicado intencional)
 │     ├── Lenguas
 │     ├── 🔲 Habla por la palabra (cita aleatoria) — ubicación sin decidir
 │     └── 🔲 Elige tu santo — ubicación sin decidir
@@ -101,9 +107,9 @@ PÁGINA DE INICIO
 
 | # | Página / apartado | Tipo | Prioridad | Estado |
 |---|---|---|---|---|
-| — | Novedades | Apartado de home (no es página) | 🔴 Crítica | Definido en concepto — patrón visual pendiente (Sección 5.1) |
+| — | Novedades | Apartado de home (no es página) | 🔴 Crítica | Backend confirmado (26 julio 2026) — patrón visual pendiente (Sección 5.1) |
 | 1 | Qué hacemos | Página | 🔴 Crítica | Seminarios definido en parte, resto informativo |
-| 2 | Conecta cada día | Página | 🔴 Crítica | Definido, con 2 piezas sin ubicar |
+| 2 | Conecta cada día | Página | 🔴 Crítica | Backend Devocional en ACF (parcial, 26 julio 2026), 2 piezas sin ubicar, falta Dynamic Content en Avada |
 | 3 | Tiritaito | Página + 4 entradas | 🔴 Crítica | Definido — falta aplicar la unidad de podcast |
 | 4 | Biblioteca | Página + 3 apartados | 🟡 Alta | Libros/Películas definidos, Oraciones con duda estructural |
 | 5 | Hombres de Dios | Página + 9 entradas | 🟡 Alta | Método técnico confirmado (Sección 4.H) |
@@ -128,9 +134,20 @@ la pantalla completa por defecto — ver Sección 5.1 para el detalle y su razó
 estar en amarillo en el post-it. Carlitos aclara que **no es página ni entrada** — es el
 apartado con el que se abre la home.
 
-Contenido: tips del día (duplicado a propósito con Conecta cada día), avisos de eventos
-importantes de la Iglesia o la liturgia (grandes fiestas), recordatorios generales de
-Tiritaito.
+Contenido: avisos de eventos importantes de la Iglesia o la liturgia (grandes fiestas),
+recordatorios generales de Tiritaito.
+
+**Actualizado 26 julio 2026 — "Tip" desaparece como concepto independiente:** lo que antes
+se llamaba "Tip del día" ya no existe como pieza separada en `wp_options` ni en Conecta
+cada día — ese contenido se sube ahora directamente aquí, como una Novedad más.
+
+**Backend confirmado (26 julio 2026):** CPT `novedades` + ACF (6 campos: tipo, media_url,
+texto, enlace, fecha, activo, y titulo pendiente de input en la app) + endpoint propio
+`tiritaito/v1/novedades`, probado de extremo a extremo desde la app (crear, editar,
+ocultar/mostrar, borrar). Falta solo el montaje visual en Avada (Post Cards + Dynamic
+Content) — ver `METODOLOGIA_CONSTRUCCION.md`. El campo `activo` no filtra el listado
+público — se muestran todas las novedades (decisión de equipo, ver `GUIA_AVADA_LOCAL.md`
+Sección 9).
 
 *Implicación técnica a confirmar con Hno A:* sin URL propia — vive como sección del
 Layout de la home, no como Post/Page independiente, salvo que se decida lo contrario.
@@ -169,14 +186,19 @@ adicional confirmada por ahora.
 
 | Elemento | Estado |
 |---|---|
-| Hora de la brisa | ✅ Definido, sección propia |
-| Mensaje de la Virgen de hoy | ✅ Definido, sección propia |
+| Hora de la brisa | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
+| Mensaje de la Virgen de hoy | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
 | Misa | ✅ Definido — 🔲 probablemente absorbe el Salmo del día (ver abajo) |
-| Tip | ✅ Definido — también en Novedades, duplicado intencional |
-| Lenguas | ✅ Definido, sección propia |
+| Lenguas | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
 | Salmo del día | 🔲 Se está evaluando integrarlo dentro de Misa (porque el salmo se lee en la misa de ese día) en vez de mantenerlo como apartado independiente |
 | Habla por la palabra (cita bíblica aleatoria) | 🔲 Sin resolver dónde vive. Concepto de producto ya fijado: pensado para evangelización, fácil de compartir por QR o URL; al compartirse debe verse atractivo, y al clicar debe llevar a la sección propia de Conecta cada día donde está el generador. Pendiente confirmar si se construye así |
 | Elige tu santo | 🔲 Sin resolver dónde vive |
+
+**❌ Tip — eliminado (26 julio 2026).** Ya no existe como apartado independiente de Conecta
+cada día ni como clave separada. Ese contenido se sube ahora directamente como Novedades
+(ver Sección B). ⚠️ Todavía construido en la app real (confirmado revisando
+`apps/v2/tiritaito-creators-v2-01.html`) — pendiente de que Proyecto 5 lo retire de verdad
+en la siguiente actualización.
 
 ### E. Tiritaito
 
@@ -251,11 +273,9 @@ misma combinación de piezas (unos llevan audio, otros discursos, otros solo bio
 **Esto descarta explícitamente el "Layout Content Section + Dynamic Content"** anotado en
 `METODOLOGIA_CONSTRUCCION.md` Sección 4. No es un matiz menor: cambia si conviene un
 Custom Post Type con ACF — con elementos Guardados, el valor de ACF (automatizar campos
-uniformes) pierde sentido, porque los santos no comparten la misma estructura de campos.
-
-🔲 *(Ver Sección 7 — actualizar `METODOLOGIA_CONSTRUCCION.md` cuando confirmes que este
-Alcance está cerrado; no lo toco en esta sesión para no cambiar varios documentos a la vez
-sin tu confirmación.)*
+uniformes) pierde sentido, porque los santos no comparten la misma estructura de campos —
+a diferencia de Novedades o Devocional, donde sí comparten estructura y por eso ahí ACF sí
+funciona bien.
 
 ### I. Próximos eventos
 
@@ -278,8 +298,9 @@ regla general del proyecto, no solo de esas dos páginas:
 > cambie.
 
 Técnicamente es lo que ya resuelve el árbol de decisión de `GUIA_AVADA_LOCAL.md` Sección 8
-(shortcode parametrizable o elemento Guardado, según quién mantenga el contenido) — no es
-un principio nuevo, es la razón de negocio detrás de una decisión técnica ya tomada.
+(elemento nativo + ACF, shortcode parametrizable, o elemento Guardado, según quién
+mantenga el contenido) — no es un principio nuevo, es la razón de negocio detrás de una
+decisión técnica ya tomada.
 
 ### 5.1 Altura de sección y previsualización — añadido 14 julio 2026
 
@@ -322,6 +343,7 @@ de Tiritaito. El detalle completo del criterio vive en las Instrucciones del Pro
    migración por sección
 4. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de
    noticias, no el hero/slider) para cerrar la Sección 4.B / 5.1
+5. Proyecto 5: retirar la UI de "Tip del día" que sigue en la app real (Sección 4.D)
 
 **Preguntas abiertas** (ninguna bloquea empezar a construir Qué hacemos y Conecta cada
 día, que ya tienen lo esencial definido):
