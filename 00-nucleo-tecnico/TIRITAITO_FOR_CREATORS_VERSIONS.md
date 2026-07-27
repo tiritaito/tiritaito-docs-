@@ -59,17 +59,19 @@ tiritaito-docs/
     └── v2/
         ├── tiritaito-creators-v2-01.html               ← HTML de la app (nombre fijo)
         ├── CHANGELOG-v2-web-nueva.md                    ← changelog de V2
-        └── snippet-tt-creators-endpoint-central.php     ← PHP del endpoint (nuevo,
-                                                             26 julio 2026 — decisión de
+        └── snippet-tt-creators-endpoint-central.php     ← PHP del endpoint (decisión de
                                                              Carlitos: vive aquí, no en
                                                              un documento aparte)
 ```
 
-⚠️ **El PHP compartido el 26 de julio de 2026 no se ha subido** — estaba desactualizado
-(sin las rutas de Novedades ni la lógica de ACF de Devocional, y con una función que Hno A
-dijo haber eliminado) y llegó cortado a mitad de una función, copiado de una conversación
-de Telegram. Antes de subir el archivo a esta carpeta, conseguir la versión real y completa
-directamente desde Local o Code Snippets.
+✅ **Resuelto (26 julio 2026):** la primera copia del PHP compartida ese mismo día era en
+realidad la del sitio de producción (la web vieja) — desactualizada respecto a este
+proyecto (sin las rutas de Novedades ni la lógica de ACF de Devocional) y llegó cortada a
+mitad de una función, copiada de una conversación de Telegram. Se obtuvo después la versión
+real y completa del backend de Local, verificada línea por línea contra lo reportado por
+Hno A — coincide en todo. Lista para subir a `apps/v2/snippet-tt-creators-endpoint-central.php`.
+Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 para tres avisos abiertos encontrados
+al revisarla (sin bloquear la subida).
 
 ### ⚠️ Regla de nombres — DISTINTA para V1 y V2 (corregido 26 julio 2026)
 
@@ -140,9 +142,9 @@ Cada entrada nueva, arriba de las anteriores:
 
 ## 6. Novedades — especificación técnica
 
-⚠️ **Esquema actualizado el 26 de julio de 2026.** El esquema anterior (bloque JSON único en `wp_options`, clave `tt_novedades`) queda sustituido por completo por un Custom Post Type propio con ACF — confirmado funcionando de extremo a extremo.
+✅ **Confirmado contra el snippet PHP real y completo** (`apps/v2/snippet-tt-creators-endpoint-central.php`, subido 26 julio 2026 — la primera versión compartida ese mismo día estaba desactualizada y cortada; ver Sección 8 para el historial).
 
-**CPT:** `novedades` (`public => false`, visible en wp-admin; `rest_base` confirmado: `novedades`)
+**CPT:** `novedades` — `public => false` (no genera páginas propias públicas), `show_ui => true` (visible en wp-admin), `show_in_rest => true` (necesario para ACF y REST), `supports => ['title']`. `rest_base` confirmado: `novedades`.
 
 **Campos ACF (6):**
 
@@ -152,20 +154,20 @@ Cada entrada nueva, arriba de las anteriores:
 | `media_url` | Texto/URL | ⚠️ Debe ser tipo Texto, no tipo "Image" de ACF — evita depender de un ID de archivo que la app no tiene (hallazgo del piloto, 23 julio) |
 | `texto` | Texto largo | Opcional |
 | `enlace` | Texto/URL | Opcional |
-| `fecha` | Fecha, Return Format `Ymd` | El endpoint convierte `Ymd` ↔ `YYYY-MM-DD` en la frontera — el campo ACF interno se queda siempre en `Ymd` para que Post Cards ordene bien |
+| `fecha` | Fecha, Return Format `Ymd` | El endpoint convierte `Ymd` ↔ `YYYY-MM-DD` en la frontera (`tt_novedades_fecha_a_app()` / `tt_novedades_fecha_a_acf()`) — el campo ACF interno se queda siempre en `Ymd` para que Post Cards ordene bien |
 | `activo` | Verdadero/Falso | Control interno del editor — **no filtra el listado público** (decisión de equipo, 26 julio 2026, ver `GUIA_AVADA_LOCAL.md` Sección 9) |
-| `titulo` | Texto | Campo confirmado en el backend desde el inicio (Opción A) — ⚠️ **sin input todavía en la app** (v2-05 no lo envía) |
+| `titulo` | Texto | Confirmado en el backend — si llega vacío, el título del post se autogenera como `"Novedad " + fecha/hora`. ⚠️ **Sin input todavía en la app** (v2-05 no lo envía) |
 
 **Endpoint dedicado — `tiritaito/v1/novedades`** (nunca `/wp/v2/posts`):
 
-| Método | Ruta | Función |
-|---|---|---|
-| GET | `/tiritaito/v1/novedades` | Lista todas las novedades — activas y ocultas, sin filtrar |
-| POST | `/tiritaito/v1/novedades` | Crea una novedad — el `id` lo asigna el servidor (ID real del post), nunca lo genera la app |
-| PUT | `/tiritaito/v1/novedades/{id}` | Edita una novedad |
-| DELETE | `/tiritaito/v1/novedades/{id}` | Elimina una novedad |
+| Método | Ruta | Auth | Función |
+|---|---|---|---|
+| GET | `/tiritaito/v1/novedades` | Pública | Lista todas las novedades — activas y ocultas, sin filtrar |
+| POST | `/tiritaito/v1/novedades` | `X-TT-Token` | Crea una novedad — el `id` lo asigna el servidor |
+| PUT | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Edita una novedad |
+| DELETE | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Elimina una novedad |
 
-**El shortcode `[tt_novedades]`** que se llegó a construir en el snippet PHP replicando el patrón antiguo de `wp_options` **queda descartado** — la lectura pública es Post Cards de Avada + Dynamic Content, no un shortcode propio.
+**El shortcode `[tt_novedades]`** que se llegó a construir por error replicando el patrón antiguo de `wp_options` **queda descartado** — la lectura pública es Post Cards de Avada + Dynamic Content, no un shortcode propio. No está presente en el PHP real subido.
 
 **Pendiente:**
 - App: añadir el input de `titulo` al formulario de Novedades
@@ -175,21 +177,37 @@ Cada entrada nueva, arriba de las anteriores:
 
 ## 7. Devocional — especificación técnica
 
+✅ **Confirmado contra el snippet PHP real y completo** (`apps/v2/snippet-tt-creators-endpoint-central.php`, 26 julio 2026).
+
 **ACF Options Page:** "Devocional — Contenido Diario"
 
 | Campo ACF | Tipo | Clave que envía/recibe la app vía `/tiritaito/v1/datos` |
 |---|---|---|
 | `virgen` | Texto largo | `tt_virgen` |
-| `virgen_fecha` | Fecha | `tt_virgen_fecha` — **obligatoria** antes de publicar (validación añadida en v2-05) |
+| `virgen_fecha` | Fecha | `tt_virgen_fecha` — **obligatoria** antes de publicar (validación añadida en v2-05); el PHP valida el patrón `YYYY-MM-DD` con expresión regular y descarta el valor si no coincide |
 | `brisa` | Texto largo | `tt_brisa` |
 | `brisa_autor` | Texto | `tt_brisa_autor` |
 | `homilia_audio` | URL Media Library | `tt_homilia_audio` |
 | `homilia_texto` | Texto largo | `tt_homilia_texto` — ⚠️ debería dejar de llevar fecha (decisión 26 julio: siempre es la fecha de publicación), pendiente de aplicar en la app |
 | `lenguas_url` | URL Media Library | `tt_lenguas_url` |
 
-⚠️ **Nota de nomenclatura, para no confundir campo ACF con clave de API:** el nombre del campo dentro de ACF no lleva el prefijo `tt_` (ej. `virgen_fecha`), pero la clave que la app manda y recibe en el JSON de `/tiritaito/v1/datos` sí lo lleva (`tt_virgen_fecha`). El snippet PHP hace la traducción entre una forma y otra. Si en algún momento se escribe código nuevo contra este endpoint, usar la clave con `tt_`, no el nombre interno de ACF.
+⚠️ **Nota de nomenclatura, para no confundir campo ACF con clave de API:** el nombre del campo dentro de ACF no lleva el prefijo `tt_` (ej. `virgen_fecha`), pero la clave que la app manda y recibe en el JSON de `/tiritaito/v1/datos` sí lo lleva (`tt_virgen_fecha`). El snippet PHP hace la traducción entre una forma y otra (`tt_mapa_campos_devocional()`). Si en algún momento se escribe código nuevo contra este endpoint, usar la clave con `tt_`, no el nombre interno de ACF.
+
+✅ **Sanitizado por tipo de campo, no binario texto/URL (confirmado 26 julio 2026):** `virgen`/`brisa`/`homilia_texto` usan `sanitize_textarea_field()`; `homilia_audio`/`lenguas_url` usan `esc_url_raw()`; `virgen_fecha` valida el patrón de fecha; `brisa_autor` y el resto usan `sanitize_text_field()`. A propósito, para que un nombre de persona (ej. "José María" en `brisa_autor`) no se trate como URL y se corrompan los acentos.
 
 Las otras 5 claves antiguas de Devocional/Recursos (`tt_docx_lectura_url`, `tt_youtube_json_url`, `tt_seminarios_json_url`, `tt_viacrucis_json_url`, `tt_fiesta_dias`) **se quedan en `wp_options` sin tocar** — ver `00_CORE.md` Sección 3.2.
+
+---
+
+## 7.1 Avisos abiertos sobre el backend actual — no bloquean, pero hay que confirmarlos
+
+Tres observaciones al revisar el PHP real y completo (26 julio 2026), comparándolo con la versión anterior del snippet (la de la web vieja, no la de este proyecto):
+
+| Observación | Detalle | Estado |
+|---|---|---|
+| Sin límite de peticiones (rate limit) | El PHP anterior limitaba a 60 peticiones/hora por IP con el token de escritura. El actual no tiene ningún límite | 🔲 Sin confirmar si es una omisión temporal tras la reconstrucción del 26 de julio, o una decisión deliberada |
+| Subida de archivos sin validar tipo ni tamaño | `tt_subir_archivo()` llama directo a `media_handle_upload()`, sin lista de tipos MIME permitidos ni tamaño máximo — el PHP anterior sí los comprobaba antes de subir | 🔲 Igual que arriba, sin confirmar |
+| Sin rastro de Biblioteca (libros) ni de gestión de entradas (`/entradas`) | El PHP anterior tenía un subsistema completo `biblioteca/v1/*` (con `BIBLIOTECA_TOKEN` propio) y rutas `/tiritaito/v1/entradas` para gestionar posts normales desde la app. Ninguno de los dos está en el backend actual | 🔲 No se sabe si es un descarte deliberado o si simplemente no se han reconstruido todavía — relevante para la pregunta abierta #5 de `ALCANCE_WEB_NUEVA.md` sobre la PWA de Biblioteca |
 
 ---
 
@@ -201,8 +219,9 @@ Las otras 5 claves antiguas de Devocional/Recursos (`tt_docx_lectura_url`, `tt_y
 3. Proyecto 5: retirar por completo la UI de "Tip del día" (tarjetas, inputs, botones de quitar) — confirmado de nuevo por Carlitos el 26 de julio, es la próxima actualización de la app
 4. Al subir cualquiera de esos cambios: seguir el paso a paso de la Sección 4 — nombre de archivo fijo para V2, número real solo en el footer y en el changelog
 5. Confirmar con Hno A qué cambió realmente en v2-04 (si se recuerda) para completar esa entrada del changelog — no es urgente, es un hueco honesto, no un bloqueante
-6. Conseguir el snippet PHP real y completo del endpoint central y subirlo a `apps/v2/` (Sección 2) — el que se compartió el 26 de julio no sirve, ver el aviso de esa sección
-7. Cuando el snippet PHP esté subido: dar acceso de lectura a Proyecto 5 sobre ese archivo (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.2) para que pueda verificar el contrato real antes de escribir cada fetch nuevo
+6. ✅ Snippet PHP real y completo obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026) — la primera versión compartida ese mismo día era de la web vieja, no de esta; ya corregido
+7. Confirmar con Hno A los tres avisos de la Sección 7.1 (rate limit, validación de subidas, Biblioteca/entradas ausentes)
+8. Dar acceso de lectura a Proyecto 5 sobre `apps/v2/snippet-tt-creators-endpoint-central.php` (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.2) para que pueda verificar el contrato real antes de escribir cada fetch nuevo
 
 **Preguntas abiertas:**
 
@@ -211,6 +230,7 @@ Las otras 5 claves antiguas de Devocional/Recursos (`tt_docx_lectura_url`, `tt_y
 | 1 | ¿La regla de "nombre de archivo fijo" se extiende también a V1, o V1 se queda con un archivo por versión como hasta ahora? | Asunción actual: solo V2 cambia — V1 está en mantenimiento mínimo, tiene fecha de caducidad conocida (Sección 1) y no se ha reportado confusión ahí. Confirmar si es correcto |
 | 2 | ¿Qué otras funcionalidades nuevas llevará V2, además de Novedades y Devocional? | El equipo aún no lo ha determinado — no asumir nada hasta que se confirme aquí |
 | 3 | ¿`01_CREATORS_APP.md` tenía contenido real en el repositorio de GitHub que no llegó a este Proyecto de Investigación? | Antes de confirmar que su fusión aquí (Sección 0) no perdió nada, verificar contra el archivo real en GitHub |
+| 4 | ¿Rate limit, validación de subidas, y Biblioteca/entradas ausentes (Sección 7.1) — deliberado o pendiente de reconstruir? | Determina si hace falta una sesión de Proyecto 3 para restaurarlas, o si el sistema se queda así a propósito |
 
 ---
 

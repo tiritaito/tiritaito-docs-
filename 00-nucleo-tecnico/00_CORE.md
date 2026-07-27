@@ -142,9 +142,20 @@ mantenimiento. 6 campos ACF por entrada (`tipo`, `media_url`, `texto`, `enlace`,
 `activo`, `titulo`), gestionados vía endpoint propio `tiritaito/v1/novedades` (Sección 4),
 nunca vía `/wp/v2/posts`.
 
+✅ **Registro del CPT, confirmado contra el PHP real (26 julio 2026):** `public => false`
+(no genera páginas propias públicas), `show_ui => true` (visible en wp-admin para revisar
+a mano), `show_in_rest => true` (necesario para que ACF y REST lo vean), `supports =>
+['title']`.
+
 **El campo `activo` no filtra el listado público** (decisión de equipo, 26 julio 2026) —
 Post Cards en Avada muestra todas las novedades, visibles u ocultas. `activo` queda solo
 como control interno del editor en la app. Ver `GUIA_AVADA_LOCAL.md` Sección 9.
+
+**Sanitizado por campo (confirmado 26 julio 2026):** cada campo de Devocional se limpia
+según lo que realmente contiene (texto largo, URL, o fecha con patrón `YYYY-MM-DD`
+validado por expresión regular) — a propósito, para evitar que `esc_url_raw()` se aplique
+a un nombre de persona o a una fecha y corrompa acentos (ej. "José María"). El mismo
+principio aplica a los campos de Novedades.
 
 **Endpoint GET (público) de lectura:** token GET `ttcr2026sanjoseyvirgenmaria` —
 🔲 probablemente sea el `TT_READ_TOKEN` mencionado en la investigación de integración
@@ -157,27 +168,27 @@ constante si es así.
 
 ## 4. ENDPOINTS REST COMPLETOS
 
-⚠️ **Corrección (26 julio 2026):** esta tabla llevaba tiempo listando rutas nativas de
-WordPress (`/wp/v2/media`, `/wp/v2/posts`) marcadas como "sin confirmar". El HTML real de
-la app (`apps/v2/tiritaito-creators-v2-01.html`) confirma que la app nunca las usa — todo
-pasa por rutas propias bajo `tiritaito/v1/*`.
+✅ **Confirmado contra el snippet PHP real y completo (`apps/v2/snippet-tt-creators-endpoint-central.php`, 26 julio 2026)** — ya no es una tabla reconstruida por evidencia indirecta del HTML.
 
-| Método | Ruta | Función |
-|---|---|---|
-| GET | `/tiritaito/v1/datos` | Lee Devocional (ACF) + resto de wp_options (modo híbrido, ver Sección 3) |
-| POST | `/tiritaito/v1/datos` | Guarda Devocional (ACF) + resto de wp_options (modo híbrido) |
-| GET | `/tiritaito/v1/medios` | Lista Biblioteca de Medios |
-| POST | `/tiritaito/v1/subir` | Sube archivo |
-| DELETE | `/tiritaito/v1/medio/{id}` | Elimina archivo permanente |
-| GET | `/tiritaito/v1/novedades` | Lista todas las novedades (activas y ocultas, sin filtrar) |
-| POST | `/tiritaito/v1/novedades` | Crea una novedad — el `id` lo asigna el servidor |
-| PUT | `/tiritaito/v1/novedades/{id}` | Edita una novedad |
-| DELETE | `/tiritaito/v1/novedades/{id}` | Elimina una novedad |
+| Método | Ruta | Auth | Función |
+|---|---|---|---|
+| GET | `/tiritaito/v1/datos` | Pública | Lee Devocional (ACF Options Page) + resto de wp_options (modo híbrido, ver Sección 3) |
+| POST | `/tiritaito/v1/datos` | `X-TT-Token` | Guarda Devocional (ACF) + resto de wp_options (modo híbrido) |
+| POST | `/tiritaito/v1/subir` | `X-TT-Token` | Sube archivo a la Biblioteca de Medios — ⚠️ sin validación de tipo MIME ni tamaño máximo en el propio endpoint (ver aviso más abajo) |
+| GET | `/tiritaito/v1/medios` | `X-TT-Token` | Lista Biblioteca de Medios — a diferencia de `/datos`, esta ruta pide token incluso para leer |
+| DELETE | `/tiritaito/v1/medio/{id}` | `X-TT-Token` | Elimina archivo permanente |
+| GET | `/tiritaito/v1/novedades` | Pública | Lista todas las novedades (activas y ocultas, sin filtrar) |
+| POST | `/tiritaito/v1/novedades` | `X-TT-Token` | Crea una novedad — el `id` lo asigna el servidor |
+| PUT | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Edita una novedad |
+| DELETE | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Elimina una novedad |
 
-🔲 **Sin confirmar todavía:** si `/wp/v2/posts` y `/wp/v2/categories` (rutas nativas de
-WordPress) se usan en algún punto del sistema fuera de la app — no hay evidencia de ello en
-el HTML de la app, pero no se ha verificado del lado del servidor. Si nadie las usa, se
-pueden retirar de esta tabla en la próxima revisión.
+⚠️ **Confirmado que ya NO existen en el backend actual (26 julio 2026):** las rutas
+`/tiritaito/v1/entradas` y `/tiritaito/v1/entrada/{id}` (gestión de posts normales desde la
+app) y todo el subsistema `biblioteca/v1/*` (subida/importación de portadas de libros, con
+su propio `BIBLIOTECA_TOKEN`) — ambos presentes en una versión anterior del snippet, pero
+ausentes en el que está realmente activo hoy. 🔲 No confirmado si es una eliminación
+deliberada o si esas piezas simplemente no se han reconstruido todavía tras la pérdida del
+Local del 26 de julio — preguntar a Hno A antes de asumir cualquiera de las dos.
 
 ---
 
@@ -293,6 +304,8 @@ if (document.getElementById('mi-modulo-root')) {
 | `sessionStorage` vs `localStorage` para PIN | `sessionStorage` — debe expirar al cerrar pestaña |
 | `TT_WRITE_TOKEN` expuesto en el HTML | El token vive hardcodeado en el HTML de la app (riesgo operativo, no de frontend público) — si se compromete, redistribuir el HTML es la mitigación actual, no hay rotación automática |
 | ACF Options Page + `update_option()` | Escribir un campo de la Options Page con `update_option()` en vez de `update_field()` lo deja invisible para Avada Dynamic Content — ACF lo guarda con el prefijo `options_` por delante del nombre, no con el nombre plano. Confirmado en el piloto de Novedades (23 julio 2026) |
+| Sin límite de peticiones en el backend actual (26 julio 2026) | El snippet reconstruido tras la pérdida del Local no tiene rate limiting — el PHP anterior sí lo tenía (60 peticiones/hora por IP con el token de escritura). No confirmado si es una omisión temporal o una decisión — preguntar a Hno A antes de asumir que es definitivo |
+| Subida de archivos sin validar tipo ni tamaño (26 julio 2026) | `tt_subir_archivo()` llama directo a `media_handle_upload()` sin comprobar el tipo MIME real ni un tamaño máximo — el PHP anterior sí validaba ambos antes de subir. Mismo aviso: confirmar con Hno A si es intencional |
 
 *Eliminada la fila "Application Password con espacios" — ya no aplica desde que se descartó ese patrón de autenticación.*
 
