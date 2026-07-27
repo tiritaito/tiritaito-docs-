@@ -400,7 +400,7 @@ h1, h2, h3, h4, .tt-title {
         <div class="tt-card-body">
           <div class="tt-dev-status" id="virgen-status">Cargando estado…</div>
           <div class="tt-fg">
-            <label class="tt-flabel" for="virgen-fecha">Fecha</label>
+            <label class="tt-flabel" for="virgen-fecha">Fecha del mensaje (obligatoria)</label>
             <input type="date" class="tt-finput" id="virgen-fecha">
           </div>
           <div class="tt-fg">
@@ -428,7 +428,7 @@ h1, h2, h3, h4, .tt-title {
             <textarea class="tt-finput tt-ftextarea" id="brisa-texto" placeholder="Escribe aquí el texto de hoy…"></textarea>
           </div>
           <div class="tt-fg">
-            <label class="tt-flabel" for="brisa-autor">Autor (va después del —)</label>
+            <label class="tt-flabel" for="brisa-autor">Autor del mensaje de hoy</label>
             <input type="text" class="tt-finput" id="brisa-autor" placeholder="Ej. San Josemaría Escrivá">
           </div>
           <button class="tt-btn tt-btn-primary" onclick="window.guardarBrisa()">Publicar texto</button>
@@ -625,7 +625,7 @@ h1, h2, h3, h4, .tt-title {
 
         </div>
       </div>
-      <div class="tt-footer-note">Tiritaito for Creators · v2-03 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
+      <div class="tt-footer-note">Tiritaito for Creators · v2-05 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
     </section>
 
     <!-- ───────── PÁGINA: RECURSOS ───────── -->
@@ -1024,8 +1024,6 @@ window.cambiarPagina = (pagina) => {
    ════════════════════════════════════════════════════════ */
 function pintarEstadoDevocional() {
   const mapa = {
-    'virgen':         'tt_virgen',
-    'brisa':          'tt_brisa',
     'homilia-audio':  'tt_homilia_audio',
     'homilia-texto':  'tt_homilia_texto',
     'lenguas':        'tt_lenguas_url',
@@ -1044,16 +1042,46 @@ function pintarEstadoDevocional() {
       el.textContent = '📝 ' + preview.replace(/\n/g, ' ');
     }
   }
+
+  // Virgen y Brisa se pintan aparte: desde v2-05 la fecha y el autor
+  // llegan en claves separadas (tt_virgen_fecha, tt_brisa_autor), ya
+  // no vienen pegados dentro del texto principal.
+  const elVirgen = document.getElementById('virgen-status');
+  if (elVirgen) {
+    const texto = S.opciones.tt_virgen;
+    if (!texto) {
+      elVirgen.textContent = 'Aún no publicado hoy.';
+    } else {
+      const fecha = S.opciones.tt_virgen_fecha;
+      const fechaTxt = fecha ? '(' + formatFechaLarga(fecha) + ') ' : '';
+      const preview = texto.length > 70 ? texto.slice(0, 70) + '…' : texto;
+      elVirgen.textContent = '📝 ' + fechaTxt + preview.replace(/\n/g, ' ');
+    }
+  }
+
+  const elBrisa = document.getElementById('brisa-status');
+  if (elBrisa) {
+    const texto = S.opciones.tt_brisa;
+    if (!texto) {
+      elBrisa.textContent = 'Aún no publicado hoy.';
+    } else {
+      const autor = S.opciones.tt_brisa_autor;
+      const autorTxt = autor ? ' — ' + autor : '';
+      const preview = texto.length > 70 ? texto.slice(0, 70) + '…' : texto;
+      elBrisa.textContent = '📝 ' + preview.replace(/\n/g, ' ') + autorTxt;
+    }
+  }
 }
 
 window.guardarVirgen = async () => {
   const fecha = document.getElementById('virgen-fecha').value;
   const texto = document.getElementById('virgen-texto').value.trim();
   if (!texto) { toast('Escribe el mensaje antes de publicar.', 'warn'); return; }
-  const valor = (fecha ? formatFechaLarga(fecha) + '\n' : '') + texto;
+  if (!fecha) { toast('Elige la fecha del mensaje.', 'warn'); return; }
   try {
-    await guardarOpciones({ tt_virgen: valor });
-    S.opciones.tt_virgen = valor;
+    await guardarOpciones({ tt_virgen: texto, tt_virgen_fecha: fecha });
+    S.opciones.tt_virgen = texto;
+    S.opciones.tt_virgen_fecha = fecha;
     pintarEstadoDevocional();
     toast('✅ Publicado. Ya aparece en la web.', 'ok');
   } catch (e) { toast(mensajeError(e), 'error'); }
@@ -1063,10 +1091,10 @@ window.guardarBrisa = async () => {
   const texto = document.getElementById('brisa-texto').value.trim();
   const autor = document.getElementById('brisa-autor').value.trim();
   if (!texto) { toast('Escribe el texto antes de publicar.', 'warn'); return; }
-  const valor = texto + (autor ? '\n— ' + autor : '');
   try {
-    await guardarOpciones({ tt_brisa: valor });
-    S.opciones.tt_brisa = valor;
+    await guardarOpciones({ tt_brisa: texto, tt_brisa_autor: autor });
+    S.opciones.tt_brisa = texto;
+    S.opciones.tt_brisa_autor = autor;
     pintarEstadoDevocional();
     toast('✅ Publicado. Ya aparece en la web.', 'ok');
   } catch (e) { toast(mensajeError(e), 'error'); }
