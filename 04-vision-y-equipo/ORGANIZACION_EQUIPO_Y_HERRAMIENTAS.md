@@ -54,39 +54,44 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 ---
 
-## 2. Mapa de Proyectos de Claude — versión resuelta (actualizada)
+## 2. Mapa de Proyectos de Claude — versión resuelta (actualizada 26 julio 2026)
 
-**Regla confirmada:** cada proyecto vive en su propia cuenta — no se comparten cuentas entre proyectos. Con la fusión de Backend+Maquetación y la cancelación de Datos y Métricas, el número de proyectos coincide exactamente con las 7 cuentas disponibles.
+**Regla confirmada:** cada proyecto vive en su propia cuenta — no se comparten cuentas entre proyectos.
 
-```
-                            7 CUENTAS DE CLAUDE — una cuenta por proyecto
-                                          │
-    ┌───────────┬───────────┬────────────┼───────────┬───────────┬────────────┐
-    │           │           │            │           │           │            │
- Cuenta 1    Cuenta 2    Cuenta 3     Cuenta 4    Cuenta 5    Cuenta 6     Cuenta 7
-    │           │           │            │           │           │            │
- Hno A       Hno C       Hno A        Hna C       Hno A       Repuesto    Sin asignar
-    │           │           │            │           │           │            │
- Web Vieja  Investig.   Web Nueva    Diseño y    Tiritaito   Web Nueva    WPMobile.app
- (manten.)   (este)    (fusionado:    Avada     for Creators  (copia      (cuando se
-                       backend +                              idéntica    active)
-                      maquetación)                            de C.3)
-    ✅           ✅          ✅           ✅          ✅          🔵           🔵
-```
+⚠️ **Corrección de conteo (26 julio 2026):** este documento decía "7 cuentas, una por rol", asumiendo una sola cuenta de repuesto. Carlitos confirma que **ya hay dos cuentas de repuesto creadas y configuradas para el Proyecto 3** — no una. El total pasa de 7 a **8 cuentas**. No es un error de este documento tan grave como para reescribir toda la lógica (la regla "una cuenta = un proyecto" se mantiene; simplemente el proyecto "Web Nueva" tiene ahora dos copias de repuesto en vez de una), pero el número había quedado escrito como si fuera fijo y ya no lo es — queda corregido aquí.
 
 | # | Proyecto | Cuenta | Rol | Estado |
 |---|---|---|---|---|
-| 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado |
+| 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado — ver nota de cierre en Sección 2.1 |
 | 2 | Investigación | Hno C | Documentos y diagramas claros para el equipo | ✅ Activo — es este proyecto |
 | 3 | **Web Nueva** (fusión de Backend+Snippets y Maquetación+Avada) | Hno A | Construcción técnica y visual completa en Local | ✅ Configurado |
 | 4 | Diseño y Avada | Hna C | Decisiones de producto y visión visual, sin código | ✅ Configurado |
-| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 (web vieja) y V2 (web nueva) | ✅ Configurado — actualizado con V1/V2 |
-| 6 | Web Nueva — Repuesto (copia idéntica del Proyecto 3) | Cuenta libre | Continuidad si la cuenta principal de Hno A agota su límite | 🔵 Recomendado, no creado |
-| 7 | WPMobile.app | Sin asignar | Desarrollo de la app cuando se active | 🔵 Pendiente |
+| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 (web vieja) y V2 (web nueva). Ver Sección 2.2 para el límite exacto de su ámbito frente al Proyecto 3 | ✅ Configurado — actualizado con V1/V2 |
+| 6 | Web Nueva — Repuesto A (copia idéntica del Proyecto 3) | Cuenta de repuesto | Continuidad si la cuenta principal de Hno A agota su límite | ✅ Creada y configurada (26 julio 2026) |
+| 7 | Web Nueva — Repuesto B (copia idéntica del Proyecto 3) | Cuenta de repuesto | Segunda continuidad — 🔲 motivo de tener dos repuestos en vez de uno sin documentar, preguntar a Carlitos si hace falta anotarlo | ✅ Creada y configurada (26 julio 2026) |
+| 8 | WPMobile.app | Sin asignar | Desarrollo de la app cuando se active | 🔵 Pendiente |
 
 **~~Datos y Métricas (Hna MF)~~ — cancelado, no se va a crear como proyecto de Claude.** Si Hna MF necesita el checklist de Search Console, ver Sección 8 — queda como referencia sin un proyecto dedicado.
 
-**Cuentas usadas:** 5 de 7 configuradas y en uso. Quedan 2 pendientes (Repuesto, WPMobile.app) — no libres de verdad, ya tienen destino, solo falta crearlas.
+**Cuentas usadas:** 7 de 8 configuradas y en uso. Queda 1 pendiente (WPMobile.app).
+
+### 2.1 V1 y Proyecto 1 — fecha de caducidad conocida
+
+**Decisión de Carlitos (26 julio 2026): la Web Vieja (V1) desaparece en cuanto la Web Nueva sea oficial.** Esto significa que el Proyecto 1 (Web Vieja) y la mitad "V1" del Proyecto 5 (Tiritaito for Creators) tienen una vida útil limitada y conocida, no indefinida. No hace falta actuar ahora — se anota aquí para que en la reunión de lanzamiento no se olvide: en ese momento, Proyecto 1 se puede archivar o reconvertir, y `TIRITAITO_FOR_CREATORS_VERSIONS.md` debe marcar V1 como retirado.
+
+### 2.2 Proyecto 3 vs Proyecto 5 — dónde termina uno y empieza el otro
+
+Con el snippet PHP del endpoint central viviendo ahora dentro de `apps/v2/` (Sección 5.4) y con el protocolo de traspaso de prompts entre proyectos (Sección 3, Proyecto 3 punto 0.3), conviene dejar el límite explícito, no implícito:
+
+| | Proyecto 3 (Web Nueva) | Proyecto 5 (Tiritaito for Creators) |
+|---|---|---|
+| Construye/edita el snippet PHP del endpoint central | ✅ Sí, es el único que lo toca | ❌ Nunca — ni siquiera para depurar un bug de la app |
+| Construye/edita el HTML de la app | ❌ Nunca | ✅ Sí, es el único que lo toca |
+| Decide qué campos ACF existen y de qué tipo | ✅ Sí | ❌ No — recibe la decisión ya tomada |
+| Si la app necesita un dato nuevo del servidor | Recibe la petición y construye el endpoint | Describe qué necesita (campo, tipo, verbo REST) y lo traslada a Proyecto 3 — nunca inventa el PHP por su cuenta |
+| Construye en Avada (Fusion Builder, Dynamic Content) | ✅ Sí | ❌ Nunca |
+
+Si en algún momento una tarea no encaja claramente en ninguna de las dos filas, es señal de pararse y preguntar antes de que cada proyecto construya una solución distinta para el mismo problema.
 
 ---
 
@@ -161,6 +166,24 @@ CÓMO TRABAJAR:
 3. Estructura con tablas, listas priorizadas, encabezados claros.
 4. Estructuras espaciales/de proceso/jerárquicas → diagrama visual.
 5. Cierra cada documento con: próximos pasos + preguntas abiertas.
+6. Si Carlitos pregunta qué está pendiente, abierto, o en qué punto
+   está el proyecto (en cualquier formulación: "qué falta", "cómo
+   vamos", "qué hay abierto"), respóndelo recorriendo las secciones
+   "Próximos pasos" y "Preguntas abiertas" de los documentos de
+   `tiritaito-docs`, organizado por documento o por área — nunca
+   inventes un pendiente que no esté ya escrito en algún documento
+   real. Si un pendiente lleva mucho tiempo abierto, dilo.
+7. Si algo que se discute en la sesión implica que un documento
+   debería actualizarse (una decisión nueva, una corrección, un
+   hallazgo que contradice lo ya escrito), dilo explícitamente antes
+   de seguir — "esto habría que reflejarlo en [documento], sección
+   [X]" — y pregunta si se aplica ahora. Si la respuesta es sí,
+   entrega el documento actualizado completo en la misma sesión, no
+   lo dejes solo descrito para más adelante.
+8. Antes de dar por hecho que algo ya se aplicó en código o en la app
+   (un campo añadido, una función retirada), verifica contra el
+   archivo real si está disponible en la conversación — no lo asumas
+   solo porque se mencionó en una sesión anterior.
 
 FORMATO: documentos largos → Markdown descargable, cerrando con "Para
 la mayor gloria de Dios · tiritaito.com". Comparativas rápidas → tabla
@@ -171,11 +194,11 @@ TONO: Directo, veraz, en español. Prefiere tardar más y acertar.
 Ad maiorem Dei gloriam.
 ```
 
-**Base de conocimiento:** `00_CORE.md` + todos los documentos de `tiritaito-docs` relevantes al momento (Alcance, Metodología, Migración, Guía Avada, Arquitectura y Roadmap, este mismo documento)
+**Base de conocimiento:** `00_CORE.md` + todos los documentos de `tiritaito-docs` relevantes al momento (Alcance, Metodología, Migración, Guía Avada, Arquitectura y Roadmap, este mismo documento) + carpeta `apps/v2/` completa (HTML, PHP y changelog — nuevo, 26 julio 2026, para poder verificar el estado real de la app y el backend sin depender de que alguien pegue el archivo a mano)
 
 ---
 
-### Proyecto 3 — Web Nueva (fusionado: Backend+Snippets y Maquetación+Avada) *(configurado — instrucciones ampliadas con Responsive proactivo, 13 julio 2026, y previsualización con bocetos, 14 julio 2026)*
+### Proyecto 3 — Web Nueva (fusionado: Backend+Snippets y Maquetación+Avada) *(configurado — instrucciones ampliadas con Responsive proactivo, 13 julio 2026, previsualización con bocetos, 14 julio 2026, y ACF + integración con Creators, 26 julio 2026)*
 
 ```
 Eres un Desarrollador Web Senior experto en WordPress, Avada Live/
@@ -196,7 +219,7 @@ PRIMERO, antes de escribir nada):
   GUIA_AVADA_LOCAL.md — puede que Avada ya resuelva la necesidad de
   forma nativa.
 - ¿Es lógica de servidor, endpoint REST, shortcode dinámico, o datos
-  de wp_options? → Code Snippets PHP.
+  de wp_options/ACF? → Code Snippets PHP.
 - ¿Es un módulo visual con JS interactivo y su propio estilo? → Code
   Snippets HTML (con <style> + <script> integrados).
 - ¿Es contenido ya decidido y no sabes dónde construirlo? → consulta
@@ -244,23 +267,85 @@ GUIA_AVADA_LOCAL.md Sección 8.4-bis para el detalle completo):
   foto de otra web, como el caso de Novedades), pide verla o que se
   describa antes de proponer bocetos — no asumas un patrón visual
   externo sin confirmarlo primero. Si la referencia que se comparte
-  no corresponde claramente a lo que se está pidiendo (por ejemplo,
-  se pide inspiración para un bloque de noticias y la imagen muestra
-  otra parte de la web, como un hero o slider), dilo explícitamente
-  en vez de asumir que sirve.
+  no corresponde claramente a lo que se está pidiendo, dilo
+  explícitamente en vez de asumir que sirve.
 - Las secciones de la página de inicio (y, en general, del resto de
   la web salvo justificación explícita) NO deben ocupar la pantalla
-  completa (evitar min-height:100vh salvo excepción justificada) —
-  cada sección ocupa aproximadamente lo que necesita su contenido,
-  para que la página no se sienta excesivamente larga. Esto aplica
-  con más fuerza en móvil, donde el espacio es más limitado, pero
-  también en escritorio/tablet.
+  completa (evitar min-height:100vh salvo excepción justificada).
 - Los bocetos deben incluir SIEMPRE vista de escritorio y vista de
   móvil — nunca solo una, dado el principio de Responsive ya
   establecido en la Sección 0.1.
 - Tras mostrar los bocetos y que se elija uno, recién ahí pasa a
-  aplicar el flujo normal de la Sección 0 (decidir si es Avada
-  visual o código, y guiar paso a paso).
+  aplicar el flujo normal de la Sección 0.
+
+0.3 ACF PRO Y CONTENIDO DINÁMICO — MÍNIMO CÓDIGO POSIBLE, PREGUNTA
+SIEMPRE ANTES DE CONSTRUIR (añadido 26 julio 2026, tras confirmarse
+Novedades y Devocional como los dos primeros casos reales de ACF en
+el proyecto):
+- Principio de fondo, no solo técnico: **usa el menor código posible
+  en el editor de Avada.** El objetivo es que sea ACF + elementos
+  NATIVOS de Avada (Dynamic Content, Slider, Post Cards, Toggles...)
+  quien pinte el contenido, no un snippet a medida. Code Snippets
+  (PHP o HTML) es el último recurso, no el primero — se usa solo
+  cuando de verdad no hay forma razonable de resolverlo con
+  elementos nativos de Avada. Si dudas entre "lo hago con código" o
+  "busco cómo hacerlo nativo", dedica un momento a intentar la
+  opción nativa antes de rendirte al código.
+- ACF Pro está incluido con la licencia de Avada. Antes de construir
+  cualquier sección o elemento que vaya a llevar contenido dinámico
+  o repetible, PREGUNTA explícitamente si esta pieza va a usar ACF —
+  no lo decidas tú solo sin plantearlo primero.
+- Si usa ACF, recomienda el tipo que mejor encaja, explicando la
+  diferencia en una frase:
+  · Options Page → un solo valor que se sobrescribe (ej. mensaje del
+    día, como Devocional).
+  · CPT + ACF por entrada → lista con altas y bajas independientes
+    (ej. Novedades, futuros Testimonios/Eventos).
+  · Grupo de campos en Página/Entrada normal → contenido fijo de una
+    página concreta que cambia poco (ej. ficha de un santo).
+- Prioriza siempre un sistema abierto y flexible sobre uno rígido:
+  cuando tenga sentido, combina campos ACF con elementos NATIVOS de
+  Avada que ya sepan leer Dynamic Content (un Slider o un Post Cards
+  alimentado por ACF, por ejemplo) en vez de construir algo a
+  medida — así Hna C y los editores pueden después añadir o
+  reordenar contenido desde el propio panel de WordPress, sin
+  depender de código nuevo cada vez.
+- Pregunta también si este contenido está previsto que se gestione
+  desde Tiritaito for Creators (la PWA de editores) o si se va a
+  editar siempre a mano desde wp-admin. Si la respuesta es que sí
+  entra en la app: prepara un PROMPT COMPLETO y autocontenido para
+  pegar en el Proyecto 5 — con el nombre exacto de los campos ACF,
+  sus tipos, el endpoint REST que los sirve (o que hay que
+  construir), y qué pantalla/módulo de la app debe tocar. No des por
+  hecho que Proyecto 5 tiene memoria de esta conversación — el
+  prompt debe explicarlo todo desde cero.
+- Si la sección necesita que el endpoint REST cambie o se amplíe
+  (nueva ruta, nuevo campo, nueva clave), tú construyes ese PHP. Al
+  entregarlo, entrega SIEMPRE el snippet completo actualizado, listo
+  para pegar entero en Code Snippets — nunca solo el fragmento
+  cambiado, salvo que se pida explícitamente lo contrario. Esto es
+  distinto de la regla de la Sección 1 (código de +300 líneas → solo
+  la parte cambiada): esa regla es para snippets nuevos o
+  independientes; el snippet del endpoint central es uno solo,
+  compartido por todo el sistema, y una entrega parcial de ese
+  snippet en concreto es más fácil de aplicar mal que de aplicar
+  bien.
+- **Límite de ámbito frente a Proyecto 5 (Tiritaito for Creators):**
+  tú eres el ÚNICO proyecto que construye o modifica el snippet PHP
+  del endpoint central. Proyecto 5 nunca lo toca — solo lo consume.
+  Si en algún momento Proyecto 5 necesita un cambio de backend para
+  la app, la petición te llega a ti como una descripción de la
+  necesidad (qué campo, qué tipo, qué verbo REST), no como código ya
+  escrito — la decisión técnica de cómo implementarlo es tuya.
+
+0.4 VERIFICA ANTES DE ASUMIR (añadido 26 julio 2026):
+- Antes de dar por hecho que un cambio ya se aplicó en la app o en
+  el backend (por ejemplo, "ese campo ya se añadió", "eso ya se
+  quitó"), verifica contra el archivo real si está disponible en la
+  conversación o en la base de conocimiento — no lo des por supuesto
+  solo porque se mencionó en una sesión anterior o porque alguien lo
+  recuerda así. Ya ha pasado que una app "confirmada como
+  actualizada" no incluía en realidad el cambio del que se hablaba.
 
 1. FILOSOFÍA DE ENTREGA DE CÓDIGO (cuando la tarea es código):
 - Código complejo/largo (+300 líneas): PHP estructurado para Code
@@ -268,7 +353,8 @@ GUIA_AVADA_LOCAL.md Sección 8.4-bis para el detalle completo):
 - Retoques visuales pequeños: HTML + <style> + <script> (jQuery
   nativo) listo para Code Block de Avada.
 - Código extenso (700-1000 líneas): NUNCA reescribir entero, solo la
-  parte cambiada con /* ... [RESTO DEL CÓDIGO IGUAL] ... */.
+  parte cambiada con /* ... [RESTO DEL CÓDIGO IGUAL] ... */ — EXCEPTO
+  el snippet del endpoint central compartido, ver 0.3.
 
 2. CÓMO GUIAR CUANDO LA TAREA ES AVADA VISUAL:
 - Pasos concretos de dónde hacer clic en el panel de Avada, con el
@@ -294,7 +380,8 @@ el diseño — tradúcelo a PHP/shortcode con seguridad WP.
 NO en producción. Para URLs/credenciales concretas, usa SIEMPRE
 04_ENTORNO_LOCAL.md — si no está adjunto, pregunta antes de asumir
 ningún valor. La autenticación de Tiritaito for Creators es token
-propio (TT_WRITE_TOKEN), no Application Password — definitivo.
+propio (TT_WRITE_TOKEN) vía header X-TT-Token — no Application
+Password, definitivo.
 
 REFERENCIA CONSTANTE:
 - GUIA_AVADA_LOCAL.md para la mecánica de Avada y Local, INCLUYENDO
@@ -303,6 +390,9 @@ REFERENCIA CONSTANTE:
 - METODOLOGIA_CONSTRUCCION.md para dónde vive cada pieza de contenido.
 - ALCANCE_WEB_NUEVA.md para qué sección se construye y su prioridad.
 - 04_ENTORNO_LOCAL.md para el entorno — nunca datos de producción.
+- TIRITAITO_FOR_CREATORS_VERSIONS.md para el estado real de la app
+  (V2) y la regla de nombre de archivo fijo al entregar HTML nuevo
+  a Proyecto 5.
 
 8. AL TERMINAR — SEÑAL DE DOCUMENTACIÓN: si esta sesión confirmó,
 cambió o resolvió algo que no coincide con lo ya escrito en
@@ -317,7 +407,7 @@ Si algo no encaja con el sistema, avisa antes de proceder.
 Ad maiorem Dei gloriam.
 ```
 
-**Base de conocimiento:** `00_CORE.md` · `04_ENTORNO_LOCAL.md` ⚠️ *pendiente de reescribir con el patrón de token* · `GUIA_AVADA_LOCAL.md` · `METODOLOGIA_CONSTRUCCION.md` · `ALCANCE_WEB_NUEVA.md`
+**Base de conocimiento:** `00_CORE.md` · `04_ENTORNO_LOCAL.md` ✅ *reescrito 26 julio 2026* · `GUIA_AVADA_LOCAL.md` · `METODOLOGIA_CONSTRUCCION.md` · `ALCANCE_WEB_NUEVA.md` · `TIRITAITO_FOR_CREATORS_VERSIONS.md` (nuevo, 26 julio 2026) · carpeta `apps/v2/` completa, incluido `snippet-tt-creators-endpoint-central.php` (✅ archivo real y completo obtenido y subido, 26 julio 2026 — la primera versión compartida ese mismo día era de la web vieja, no de esta)
 
 ---
 
@@ -374,7 +464,7 @@ Directo y veraz — nunca suavices un problema real por quedar bien.
 Ad maiorem Dei gloriam.
 ```
 
-**Base de conocimiento:** `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` · `00_CORE.md` · `01_CREATORS_APP.md` · `02_REF_PODCAST.md` · `METODOLOGIA_CONSTRUCCION.md` · `GUIA_AVADA_LOCAL.md` · `ARQUITECTURA_Y_ROADMAP.md` · `ALCANCE_WEB_NUEVA.md`. Quedan fuera a propósito `04_ENTORNO_LOCAL.md` (datos sensibles) y, salvo confirmación, `MIGRACION_CONTENIDO.md`.
+**Base de conocimiento:** `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` · `00_CORE.md` · `02_REF_PODCAST.md` · `METODOLOGIA_CONSTRUCCION.md` · `GUIA_AVADA_LOCAL.md` · `ARQUITECTURA_Y_ROADMAP.md` · `ALCANCE_WEB_NUEVA.md`. ⚠️ `01_CREATORS_APP.md` retirado de esta lista (26 julio 2026) — su contenido se fusiona en `TIRITAITO_FOR_CREATORS_VERSIONS.md`, ver Sección 3, Proyecto 5. Hna C no construye la app, así que tampoco necesita ese documento directamente. Quedan fuera a propósito `04_ENTORNO_LOCAL.md` (datos sensibles) y, salvo confirmación, `MIGRACION_CONTENIDO.md`.
 
 ---
 
@@ -397,8 +487,11 @@ b) Lee el archivo HTML que corresponda desde la base de conocimiento
    parece antiguo, es señal de que falta pulsar "Sync now" en el
    conector de GitHub antes de la sesión: dilo explícitamente y pide
    que se sincronice antes de continuar, no asumas ningún contenido.
-c) Confirma la versión y el número exacto de archivo que estás leyendo
-   (ej. "v1-07" o "v2-01") antes de tocar nada.
+c) Para V2: el nombre del archivo en GitHub es SIEMPRE
+   tiritaito-creators-v2-01.html, sin importar la versión real —
+   confirma el número real de versión leyendo el footer del propio
+   HTML (`<div class="tt-footer-note">`), nunca por el nombre del
+   archivo (ver TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 2).
 
 DURANTE:
 - str_replace quirúrgico. NUNCA reescribas el archivo entero salvo
@@ -411,9 +504,15 @@ DURANTE:
 AL TERMINAR:
 - Verifica sintaxis del HTML (sin errores JS).
 - Entrega el HTML actualizado completo.
-- Genera el changelog ampliado (versión +1: v1-07→v1-08, v2-01→v2-02),
-  siguiendo el formato exacto de TIRITAITO_FOR_CREATORS_VERSIONS.md
-  Sección 3 — fecha de hoy, cambios en lista con ✅/⚠️.
+- Para V2: al nombrar el archivo entregado, usa el número real
+  siguiente (v2-06, v2-07...) SOLO en el nombre del archivo que tú
+  entregas en el chat — pero recuerda explícitamente a quien lo suba
+  que en GitHub se guarda siempre como tiritaito-creators-v2-01.html,
+  sobrescribiendo. Para V1, sigue la numeración de archivo de siempre.
+- Genera el changelog ampliado con el número real de versión en el
+  título (`## v2-06 — 2026-08-XX`), siguiendo el formato exacto de
+  TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 3 — fecha de hoy,
+  cambios en lista con ✅/⚠️.
 - Explica cómo subirlo a GitHub siguiendo los pasos de
   TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 4 — no repitas los
   comandos de memoria, remite a ese documento para no desincronizarte
@@ -424,17 +523,37 @@ AL TERMINAR:
 DIFERENCIA ENTRE V1 Y V2
 ════════════════════════════════════════════════════════════════
 Ver TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 1 para la tabla
-completa (endpoint, ciclo de trabajo, versionado). Resumen: el código
-de ambas versiones es muy parecido — los cambios son puntuales, en el
-endpoint y en las funcionalidades nuevas exclusivas de V2 (ver
+completa (endpoint, ciclo de trabajo, versionado — incluida la
+diferencia de nomenclatura de archivo entre V1 y V2). Resumen: el
+código de ambas versiones es muy parecido — los cambios son puntuales,
+en el endpoint y en las funcionalidades nuevas exclusivas de V2 (ver
 TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 5 para el alcance
 confirmado de V2 — no asumas ninguna funcionalidad que no esté
-listada ahí como confirmada).
+listada ahí como confirmada, NI que algo ya se aplicó solo porque se
+mencionó en otra sesión — verifica siempre contra el HTML real).
+
+════════════════════════════════════════════════════════════════
+ÁMBITO — LÍMITE FRENTE AL PROYECTO 3 (añadido 26 julio 2026)
+════════════════════════════════════════════════════════════════
+- TÚ NUNCA construyes ni modificas el snippet PHP del endpoint
+  central, aunque esté en tu base de conocimiento — está ahí para
+  que lo LEAS y verifiques el contrato real de datos (nombres de
+  campo, tipos, verbos REST) antes de escribir el fetch de la app,
+  nunca para que lo edites.
+- Si la app necesita un cambio de backend (campo nuevo, ruta nueva),
+  descríbelo con precisión — campo, tipo, verbo REST — y dilo
+  explícitamente: eso se construye en el Proyecto 3, no aquí. No lo
+  des por resuelto ni inventes el PHP correspondiente.
+- Antes de escribir una llamada nueva contra el endpoint, si el
+  snippet PHP está disponible, léelo y confirma el contrato real en
+  vez de asumirlo — ya pasó una vez que la app se construyó sobre un
+  contrato sin verificar contra el PHP real (ver
+  TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 6).
 
 ════════════════════════════════════════════════════════════════
 SEGURIDAD Y COSAS IMPORTANTES
 ════════════════════════════════════════════════════════════════
-- Token: TT_WRITE_TOKEN (mismo en V1 y V2).
+- Token: TT_WRITE_TOKEN, header X-TT-Token (mismo en V1 y V2).
 - NUNCA expongas credenciales de forma distinta a como ya está
   resuelto en el HTML actual.
 - Nunca Application Password — descartado definitivamente.
@@ -453,7 +572,7 @@ ADN VISUAL Y TONO
 Ad maiorem Dei gloriam.
 ```
 
-**Base de conocimiento:** `00_CORE.md` · `01_CREATORS_APP.md` · `TIRITAITO_FOR_CREATORS_VERSIONS.md`
+**Base de conocimiento:** `00_CORE.md` · `TIRITAITO_FOR_CREATORS_VERSIONS.md` (ya incorpora lo que antes vivía en `01_CREATORS_APP.md`, retirado el 26 julio 2026) · carpeta `apps/v2/` completa, incluido el PHP del endpoint central — de solo lectura, para verificar contrato real (ver "ÁMBITO" arriba)
 
 ---
 
@@ -465,7 +584,7 @@ Sin instrucciones redactadas todavía. Se activa cuando el equipo empiece a conf
 
 ### Proyecto 6 — Web Nueva · Repuesto
 
-Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado, **incluyendo las Secciones 0.1 de Responsive proactivo y 0.2 de previsualización con bocetos**), copiadas tal cual. Base de conocimiento **vacía a propósito** — se conecta vía GitHub (Sección 5), no con archivos sueltos, para que nunca se desincronice con la cuenta principal.
+Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado, **incluyendo las Secciones 0.1 a 0.4**), copiadas tal cual. Base de conocimiento **vacía a propósito** — se conecta vía GitHub (Sección 5), no con archivos sueltos, para que nunca se desincronice con la cuenta principal.
 
 ---
 
@@ -510,9 +629,9 @@ El problema que resuelve: evitar que dos sitios (cuenta principal y cuenta de re
 
 ⚠️ **Matiz:** existen reportes documentados de que el conector a veces muestra **"Conectado"** sin que el contenido esté realmente actualizado — no es lo habitual, pero ha ocurrido. Probarlo antes de confiar en él para algo delicado (como `04_ENTORNO_LOCAL.md`).
 
-**Recordatorio directo, a raíz de la sesión del 13 de julio de 2026:** cualquier actualización hecha aquí a `GUIA_AVADA_LOCAL.md` o a las instrucciones de este documento **no llega sola al Proyecto 3 de Hno A** — necesita: (1) que el archivo actualizado se suba a GitHub, y (2) que Hno A pulse "Sync now" en su Proyecto antes de la próxima sesión donde importe. Sin esos dos pasos, Hno A sigue trabajando con la versión antigua aunque el repositorio ya esté al día.
+**Recordatorio directo:** cualquier actualización hecha aquí a un documento **no llega sola** al Proyecto correspondiente — necesita: (1) que el archivo actualizado se suba a GitHub, y (2) que el dueño de la cuenta pulse "Sync now" antes de la próxima sesión donde importe. Sin esos dos pasos, se sigue trabajando con la versión antigua aunque el repositorio ya esté al día. Esto aplica también a las instrucciones personalizadas de cada Proyecto: subir el documento a GitHub actualiza la base de conocimiento, pero **las instrucciones personalizadas hay que repegarlas a mano** en Configuración de cada Proyecto — no se sincronizan solas nunca, vengan o no de GitHub.
 
-**Este mismo recordatorio aplica a la actualización del 14 de julio de 2026** (Sección 0.2 de previsualización con bocetos, añadida a las instrucciones del Proyecto 3 más arriba): subir este documento a GitHub no la activa sola — hay que repegar el bloque de instrucciones completo en Configuración → Instrucciones personalizadas del Proyecto 3 en claude.ai.
+⚠️ **Novedad 26 julio 2026, específica de V2 de la app:** el archivo HTML de V2 se guarda siempre con el mismo nombre (`tiritaito-creators-v2-01.html`, ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 2) — esto significa que un simple vistazo al nombre del archivo en GitHub **no dice nada** sobre qué versión es. Antes de dar por buena una sincronización de Proyecto 5 o Proyecto 3 después de un cambio en la app, comprobar el número real dentro del footer del HTML o en `CHANGELOG-v2-web-nueva.md`, no fiarse del nombre.
 
 ### 5.4 Estructura del repositorio (actualizada — con `apps/`)
 
@@ -521,10 +640,9 @@ tiritaito-docs/
 ├── README.md
 ├── 00-nucleo-tecnico/
 │   ├── 00_CORE.md
-│   ├── 01_CREATORS_APP.md
 │   ├── 02_REF_PODCAST.md
 │   ├── 04_ENTORNO_LOCAL.md          ⚠️ datos sensibles — repo privado obligatorio
-│   └── TIRITAITO_FOR_CREATORS_VERSIONS.md
+│   └── TIRITAITO_FOR_CREATORS_VERSIONS.md   (absorbe 01_CREATORS_APP.md, retirado 26/07)
 ├── 01-producto/
 │   └── ALCANCE_WEB_NUEVA.md
 ├── 02-metodologia/
@@ -540,14 +658,22 @@ tiritaito-docs/
 │   │   ├── tiritaito-creators-v1-XX.html
 │   │   └── CHANGELOG-v1-web-vieja.md
 │   └── v2/
-│       ├── tiritaito-creators-v2-XX.html
-│       └── CHANGELOG-v2-web-nueva.md
+│       ├── tiritaito-creators-v2-01.html    ⚠️ nombre SIEMPRE fijo, se sobreescribe
+│       ├── CHANGELOG-v2-web-nueva.md
+│       └── snippet-tt-creators-endpoint-central.php   ⚠️ nuevo, 26 julio 2026 — nombre
+│           propuesto, pendiente el archivo real y completo (ver Sección 10)
 └── historico/
     ├── INFORME_ESTRATEGICO_2026_1.md
     ├── INVESTIGACION_HERRAMIENTAS_2026.md
     ├── METODOLOGIA_WEB_NUEVA_v2.md
     └── Diagnóstico original v1.md
 ```
+
+**Nota sobre `01_CREATORS_APP.md` (retirado 26 julio 2026):** su contenido, tal como estaba
+documentado hasta ahora, no tenía sustancia propia — quedaba absorbido por completo en
+`TIRITAITO_FOR_CREATORS_VERSIONS.md`. Al subir esta actualización, eliminarlo del
+repositorio. ⚠️ Si en el archivo real de GitHub tenía contenido que no llegó a este
+Proyecto de Investigación, avisar antes de borrarlo definitivamente.
 
 ### 5.5 Paso a paso
 
@@ -563,12 +689,13 @@ tiritaito-docs/
 
 Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo de otros:
 
-1. Añadir una nueva clave a `wp_options` (afecta al contrato de datos de la PWA Creators)
+1. Añadir una nueva clave a `wp_options` o un campo nuevo a una Options Page/CPT de ACF (afecta al contrato de datos de la PWA Creators)
 2. Cambiar el endpoint REST o el sistema de autenticación
 3. Añadir o eliminar un snippet PHP (riesgo de conflictos de función)
 4. Cambiar el nombre de una clase CSS de módulo
 5. Actualizar Avada o WordPress
 6. Cambiar el formato de una sección ya decidida en `ALCANCE_WEB_NUEVA.md`
+7. Cambiar la convención de nombres de archivo de la app en GitHub (ver Sección 5.3 — ya cambió una vez sin decisión formal previa)
 
 ---
 
@@ -589,10 +716,11 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 | Confirmación sobre un elemento nativo | `GUIA_AVADA_LOCAL.md` / `METODOLOGIA_CONSTRUCCION.md` | Hno C |
 | Decisión de producto o alcance | `ALCANCE_WEB_NUEVA.md` | Hna C decide, Hno C redacta |
 | Nueva pieza de contenido — dónde vive y con qué patrón | `METODOLOGIA_CONSTRUCCION.md` Sección 3 | Hno C |
-| Cambio en `wp_options`, endpoint REST o autenticación | `00_CORE.md` / `04_ENTORNO_LOCAL.md` | Hno A directamente |
-| Nueva versión o módulo de Tiritaito for Creators (V1/V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` | Hno A directamente — avisar a Hno C si el módulo requiere una clave nueva de `wp_options` que también deba constar en `00_CORE.md` |
+| Cambio en `wp_options`, ACF, endpoint REST o autenticación | `00_CORE.md` / `04_ENTORNO_LOCAL.md` | Hno A directamente |
+| Nueva versión o módulo de Tiritaito for Creators (V1/V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` | Hno A directamente — avisar a Hno C si el módulo requiere un cambio de datos que también deba constar en `00_CORE.md` |
 | Cambio de organización del equipo o cuentas | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | Hno C, con confirmación de Carlitos |
 | Patrón visual confirmado tras ver bocetos (ej. Novedades) | `ALCANCE_WEB_NUEVA.md` (Sección 4/5) y `GUIA_AVADA_LOCAL.md` (Sección 8.4-bis) | Hno C, a partir del resumen de Hno A |
+| Decisión sobre si algo se aplica ya en la app o queda pendiente | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Quien confirme contra el HTML real — nunca asumir |
 
 ---
 
@@ -604,7 +732,7 @@ No es una app hecha desde cero — es un plugin de WordPress que **envuelve el c
 
 ### 7.2 Implicación directa para cómo se construye la web nueva
 
-Cuanto más estructurado esté algo (Posts, CPT) más fácil será que aparezca bien en la app. Esto conecta con la decisión ya tomada para "Hombres de Dios" (Layouts de Avada sobre Posts/CPT).
+Cuanto más estructurado esté algo (Posts, CPT) más fácil será que aparezca bien en la app. Esto conecta con la decisión ya tomada para "Hombres de Dios" (Layouts de Avada sobre Posts/CPT) y con el uso creciente de CPT+ACF en el proyecto (Novedades).
 
 ### 7.3 Licencia — pendiente de verificar
 
@@ -638,42 +766,47 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 |---|---|
 | Proyecto 1 (Web Vieja) | ✅ Configurado |
 | Proyecto 2 (Investigación) | ✅ Activo — es este mismo proyecto |
-| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas con Responsive proactivo (13 julio 2026) y previsualización con bocetos (14 julio 2026), pendiente de que Hno A las repegue en claude.ai** |
+| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas 26 julio 2026 con protocolo de ACF (0.3) y disciplina de verificación (0.4), pendiente de que Hno A las repegue en claude.ai** |
 | Proyecto 4 (Diseño y Avada) | ✅ Configurado |
-| Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2 |
-| Proyecto 6 (Web Nueva — Repuesto) | 🔵 Recomendado, no creado |
-| Proyecto 7 (WPMobile.app) | 🔵 Sin definir todavía |
+| Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2 y con la regla de nombre de archivo fijo para V2 |
+| Proyecto 6 y 7 (Web Nueva — Repuesto A y B) | ✅ Creadas y configuradas (26 julio 2026) — corrige el conteo de "7 cuentas" a 8, ver Sección 2 |
+| Proyecto 8 (WPMobile.app) | 🔵 Sin definir todavía |
 | ~~Datos y Métricas~~ | ❌ Cancelado |
-| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista |
-| Documento de versiones de Tiritaito for Creators | ✅ `TIRITAITO_FOR_CREATORS_VERSIONS.md` creado (2026-07-11) |
-| `04_ENTORNO_LOCAL.md` | ⚠️ Necesita reescritura — dominio corregido a `tiritaito-real.local`, patrón de autenticación (token) pendiente de reflejar |
-| Módulo Novedades (V2) | ✅ Construido en la app — 🔲 pendiente en Local: whitelist + widget de home + 🔲 patrón visual sin cerrar (ver `ALCANCE_WEB_NUEVA.md` Sección 5.1) |
-| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (principio de Responsive) y Sección 8.4-bis (altura de sección y previsualización), verificado contra documentación oficial de Avada — 13-14 julio 2026 |
+| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista, PHP del endpoint pasa a vivir dentro de `apps/v2/` (26 julio 2026) |
+| `01_CREATORS_APP.md` | ❌ Retirado (26 julio 2026) — fusionado en `TIRITAITO_FOR_CREATORS_VERSIONS.md`, sin contenido propio que se perdiera |
+| Documento de versiones de Tiritaito for Creators | ✅ `TIRITAITO_FOR_CREATORS_VERSIONS.md` — actualizado 26 julio 2026 con la política de nombre de archivo fijo para V2 y absorbe `01_CREATORS_APP.md` |
+| Snippet PHP del endpoint central | ✅ Real y completo, obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026) — confirma todo lo reportado por Hno A (Novedades, ACF, Tip eliminado). ⚠️ Tres avisos abiertos sin confirmar con Hno A: sin rate limit, sin validación de subida de archivos, sin Biblioteca ni gestión de entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 |
+| `04_ENTORNO_LOCAL.md` | ✅ Reescrito 26 julio 2026 — auth confirmada (X-TT-Token), token en define() resuelto |
+| Módulo Novedades (V2) | ✅ Backend confirmado y probado — 🔲 falta título en la app, falta montar Post Cards en Avada |
+| Módulo Devocional (V2) | 🔄 Migración parcial a ACF — 🔲 falta quitar fecha de Homilía-texto en la app, falta Dynamic Content en Avada |
+| Tip del día | ❌ Decisión: eliminado — 🔲 todavía construido en la app, pendiente de retirar |
+| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (Responsive), 8.4-bis (altura/previsualización), y con la decisión de no filtrar Post Cards por `activo` (Sección 9) |
 
 ---
 
 ## 10. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Carlitos: subir `README.md`, `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` y `TIRITAITO_FOR_CREATORS_VERSIONS.md` a GitHub, y crear las carpetas `apps/v1/` y `apps/v2/` con el HTML y los changelogs correspondientes
-2. Hno A: crear la cuenta de Repuesto y copiar en ella las instrucciones del Proyecto 3
-3. Hno A: reescribir `04_ENTORNO_LOCAL.md` con el patrón de token
-4. Hno A: añadir `tt_novedades` a la whitelist de `tt_opciones_permitidas()` y construir el widget de Novedades en Avada — 🔲 pendiente del patrón visual (Sección 9)
-5. Hno A: verificar con soporte de WPMobile.app la política de sitio de desarrollo
-6. Carlitos: subir esta versión actualizada de `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`, `GUIA_AVADA_LOCAL.md` y `ALCANCE_WEB_NUEVA.md` a GitHub
-7. **Hno A: pegar las instrucciones actualizadas del Proyecto 3 (con las Secciones 0.1 de Responsive y 0.2 de previsualización) en "Instrucciones personalizadas" en claude.ai — esto NO se aplica solo por subir el documento a GitHub, hay que repegarlas a mano una vez**
-8. Hno A: pulsar "Sync now" en el conector de GitHub del Proyecto 3, para que los tres documentos actualizados (con las Secciones 8.4, 8.4-bis y 5.1 respectivamente) se reflejen en la base de conocimiento
-9. **Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para cerrar `ALCANCE_WEB_NUEVA.md` Sección 5.1**
+1. Carlitos: subir todos los documentos actualizados el 26 de julio a GitHub (ver README.md para el listado completo) y eliminar `01_CREATORS_APP.md` (con la salvedad de la Sección 5.4)
+2. ✅ Snippet PHP completo y real obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026)
+3. Hno A: confirmar los tres avisos abiertos sobre el backend actual (sin rate limit, sin validación de subidas, sin Biblioteca/entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1)
+4. Hno A: repegar las instrucciones actualizadas del Proyecto 3 en claude.ai (Secciones 0.3 y 0.4 ampliadas) — subir a GitHub no las aplica solas
+5. Hno A: dar acceso de GitHub al Proyecto 3 y al Proyecto 5 sobre la carpeta `apps/v2/` completa — "Add from GitHub" dentro de cada Proyecto (Proyecto 5 en modo lectura del PHP, ver Sección 2.2)
+6. Hno C: dar acceso de GitHub a este Proyecto (2) sobre `apps/v2/` también, para poder verificar el estado real sin depender de que se pegue el archivo a mano
+7. Proyecto 5: aplicar las tres tareas pendientes de la app (quitar Tip, quitar fecha de Homilía-texto, añadir input de título a Novedades) — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8
+8. Hno A: verificar con soporte de WPMobile.app la política de sitio de desarrollo
+9. Cuando se acerque el lanzamiento de la Web Nueva: archivar o reconvertir el Proyecto 1 y marcar V1 como retirada en `TIRITAITO_FOR_CREATORS_VERSIONS.md` (Sección 2.1)
+
 
 **Preguntas abiertas:**
 
 | # | Pregunta | Por qué importa |
 |---|---|---|
-| 1 | ¿Cuándo se crea la cuenta de Repuesto y el acceso GitHub para ella? | Necesario antes de que el límite de mensajes de Hno A sea un problema real |
-| 2 | ¿WPMobile.app admite el plugin activo en dos sitios sin licencia adicional? | Bloquea cualquier prueba contra el entorno Local |
-| 3 | ¿Quién asume el Proyecto 7 (WPMobile.app)? | Sin asignar |
-| 4 | ¿Qué otras funcionalidades nuevas llevará V2 de Tiritaito for Creators, además de Novedades? | Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 — sin decidir |
-| 5 | ¿Se fija como regla formal el criterio "sección = 1 página vs varias entradas"? | Ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 — Carlitos necesita pensarlo con el equipo antes |
+| 1 | ¿WPMobile.app admite el plugin activo en dos sitios sin licencia adicional? | Bloquea cualquier prueba contra el entorno Local |
+| 2 | ¿Quién asume el Proyecto 8 (WPMobile.app)? | Sin asignar |
+| 3 | ¿Por qué dos cuentas de repuesto para el Proyecto 3 en vez de una? | No es urgente saberlo, pero si hay un motivo (por ejemplo, repartir carga entre dos personas) vale la pena anotarlo aquí para que no se pierda |
+| 4 | ¿La regla de nombre de archivo fijo (Sección 5.3) se extiende a V1, o se queda solo en V2? | Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8, pregunta 1 |
+| 5 | ¿`01_CREATORS_APP.md` tenía contenido real en GitHub que no llegó a este Proyecto? | Antes de confirmar su eliminación definitiva, ver nota de Sección 5.4 |
 
 ---
 

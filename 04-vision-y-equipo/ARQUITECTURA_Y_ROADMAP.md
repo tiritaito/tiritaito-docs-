@@ -17,10 +17,8 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | Dónde construir una pieza de contenido decidida | `METODOLOGIA_CONSTRUCCION.md` |
 | Qué migrar de la web vieja | `MIGRACION_CONTENIDO.md` |
 | Quién hace qué, cuentas de Claude, GitHub | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` |
-| Qué secciones tiene la web y en qué orden construirlas | `ALCANCE_WEB_NUEVA.md` *(pendiente de revisión final con Hna C)* |
+| Qué secciones tiene la web y en qué orden construirlas | `ALCANCE_WEB_NUEVA.md` |
 | **Por qué este plan, FODA, fases generales, glosario** | **Este documento** |
-
-**Nota sobre una dependencia evitada a propósito:** este documento no incluye una lista fija de "qué página se construye primero" — esa lista vive en `ALCANCE_WEB_NUEVA.md`, que todavía está pendiente de revisión final entre Carlitos y Hna C. La Fase 2 (Sección 4) remite a ese documento en vez de repetir una lista que podría cambiar, precisamente para que este Roadmap quede cerrado ya, sin necesidad de tocarlo cuando esa revisión termine.
 
 ---
 
@@ -42,7 +40,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 |---|---|---|
 | F1 | Entorno local profesional (Local by Flywheel) | Live Link, Blueprints, múltiples sitios en paralelo, SSL local idéntico a producción — detalle completo en `GUIA_AVADA_LOCAL.md` Sección 2 |
 | F2 | Equipo complementario | Los roles se complementan bien (ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1) — Hna C hace de puente entre criterio de producto y capacidad técnica, sin que ninguno de los dos falte |
-| F3 | Base técnica existente | El sistema REST API, los snippets de podcast, el sistema `--tt-*`, el contrato de `wp_options` — código probado que se migra limpio, no se reinventa |
+| F3 | Base técnica existente | El sistema REST API, los snippets de podcast, el sistema `--tt-*`, el contrato de `wp_options`/ACF — código probado que se migra limpio, no se reinventa |
 | F4 | Avada 7.15.5 es maduro | Header Builder, Footer Builder y Layouts completamente funcionales — la inversión en aprenderlo da retorno en años |
 | F5 | Decisión de no heredar deuda | Empezar desde cero en local, sin presión de producción, permite hacerlo bien — es raro y valioso |
 
@@ -55,6 +53,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | D3 | La web vieja necesita mantenimiento mínimo | Durante el desarrollo de la nueva, la vieja puede empeorar si no se define bien qué no se toca (Sección 3) |
 | D4 | Migración de contenido | Ver `MIGRACION_CONTENIDO.md` para el framework completo |
 | D5 | WPMobile.app — terreno casi inexplorado | Licencia comprada, poco más — ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 |
+| D6 | El entorno Local puede perderse por completo | Ya ocurrió una vez (26 julio 2026) — sin causa documentada. Ver `GUIA_AVADA_LOCAL.md` Sección 2 para la recomendación de Blueprint como red de seguridad |
 
 ### 2.3 Riesgos
 
@@ -65,6 +64,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | R3 | Avada Lock-in (riesgo bajo pero real) | Conocido y aceptado — Avada es maduro, con empresa detrás; la alternativa (Gutenberg, Elementor, Bricks) tiene sus propios lock-ins |
 | R4 | Fragmentación de Claude Projects (riesgo medio) | Resuelto con la reestructuración de `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` — una cuenta por proyecto, GitHub como fuente única |
 | R5 | WPMobile.app vs PWA Creators (confusión de herramientas) | Son herramientas distintas para públicos distintos — definido en `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 |
+| R6 | Reinventar en código lo que Avada+ACF ya resuelve nativo (riesgo medio, ya materializado una vez) | Un shortcode `[tt_novedades]` llegó a construirse por error el 26/07/2026 replicando el patrón antiguo, antes de corregirse a Post Cards+Dynamic Content. Mitigación: principio de "mínimo código posible" reforzado en `GUIA_AVADA_LOCAL.md` Sección 8 y en las instrucciones del Proyecto 3 |
 
 ### 2.4 Oportunidades
 
@@ -76,6 +76,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | O4 | Velocidad desde cero | Una web bien configurada puede cargar entre 2 y 4 veces más rápido — la deuda de velocidad no se hereda |
 | O5 | Blueprint de Local como activo reutilizable | Una vez configurada correctamente, se guarda como Blueprint — base limpia para cualquier sitio futuro |
 | O6 | WPMobile.app integrado desde el principio | Si la arquitectura se piensa con la app en mente desde ahora, la integración futura será mucho más limpia (ver conexión directa en `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7.2) |
+| O7 | ACF Pro + elementos nativos reducen el mantenimiento a largo plazo | Novedades y Devocional (confirmados 26/07/2026) demuestran que Hna C y los editores pueden gestionar contenido dinámico desde wp-admin sin depender de código nuevo cada vez |
 
 ---
 
@@ -97,6 +98,12 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 
 **Respecto a Tiritaito for Creators:** no es parte de la web vieja ni de la nueva — proyecto independiente que continúa en paralelo sin interferir con ninguna de las dos.
 
+⚠️ **Fecha de caducidad conocida (decisión de Carlitos, 26 julio 2026): la web vieja (V1)
+desaparece por completo en cuanto la Web Nueva sea oficial.** El modo supervivencia de
+esta sección no es indefinido — es un puente hasta el lanzamiento. Sin fecha exacta
+todavía. Cuando llegue el momento, ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.1
+para qué pasa con el Proyecto 1 y con la mitad V1 del Proyecto 5.
+
 ---
 
 ## 4. Hoja de ruta
@@ -113,7 +120,7 @@ Checklist completo y verificado en `GUIA_AVADA_LOCAL.md` Sección 15 — no se r
 
 ### Fase 2 — Construir páginas principales
 
-**Esta fase sigue el orden de prioridad de `ALCANCE_WEB_NUEVA.md`** — ese documento es la fuente de verdad de qué se construye primero, no este. En el momento de escribir esto, `ALCANCE_WEB_NUEVA.md` está pendiente de revisión final entre Carlitos y Hna C; cuando se cierre, la Fase 2 se ejecuta directamente sobre esa priorización, sin necesidad de actualizar este Roadmap.
+**Esta fase sigue el orden de prioridad de `ALCANCE_WEB_NUEVA.md`** — ese documento es la fuente de verdad de qué se construye primero, no este.
 
 ### Fase 3 — Migración de contenido
 
@@ -130,7 +137,7 @@ Framework completo en `MIGRACION_CONTENIDO.md`. Resumen de responsabilidad: se d
 
 ### Fase 5 — Lanzamiento
 
-Decisión de Hna C.
+Decisión de Hna C. **Este es también el momento en el que la web vieja (V1) se retira por completo — ver Sección 3.**
 
 ---
 
@@ -142,11 +149,13 @@ Decisión de Hna C.
 
 **Recomendación 3 — Un solo desarrollador principal por sprint.** Dos personas tocando los mismos archivos de Avada en Local pueden crear conflictos. Decidir quién construye en cada sprint; el otro revisa.
 
-**Recomendación 4 — El Blueprint de Local como entregable de Fase 1.** La Fase 1 no termina cuando "parece bien". Termina cuando el Blueprint está guardado — es el activo más valioso de esta etapa.
+**Recomendación 4 — El Blueprint de Local como entregable de Fase 1.** La Fase 1 no termina cuando "parece bien". Termina cuando el Blueprint está guardado — es el activo más valioso de esta etapa. **Reforzado tras la pérdida del entorno del 26 de julio de 2026** — no es solo un entregable formal, es una red de seguridad real.
 
 **Recomendación 5 — WPMobile.app: definición antes de tocarlo.** Ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 — hay preguntas de licencia y arquitectura que conviene resolver antes de construir, no durante.
 
 **Recomendación 6 — Activar Google Search Console completo ya.** Los datos que recoja mientras se construye la web nueva son el criterio objetivo para priorizar qué páginas van primero — no esperar a la web nueva para tener datos buenos.
+
+**Recomendación 7 — Código como último recurso, no como punto de partida (añadida 26 julio 2026).** El equipo ya tiene un ejemplo real de por qué: un shortcode se construyó por error el mismo día en que ACF+Post Cards resolvía lo mismo sin código. Antes de escribir un snippet nuevo, agotar primero la opción nativa de Avada + ACF (`GUIA_AVADA_LOCAL.md` Sección 8).
 
 ---
 
@@ -162,16 +171,18 @@ Decisión de Hna C.
 | Global Options | El panel de configuración global de Avada (colores, tipografía, rendimiento) |
 | Global Element | Un bloque de Avada que se edita una vez y cambia en todos los sitios donde está — nunca admite contenido distinto por instancia |
 | Saved Element (Guardado) | Un bloque de Avada guardado que se inserta como punto de partida — cada copia es independiente |
+| ACF (Advanced Custom Fields) | Plugin, incluido gratis con la licencia de Avada, que permite crear campos de contenido personalizados (texto, fecha, imagen...) que Avada puede leer con Dynamic Content |
+| Options Page (de ACF) | Un solo grupo de campos ACF que se sobrescribe — para contenido de "un solo valor" como el mensaje del día |
+| CPT (Custom Post Type) | Un tipo de contenido de WordPress hecho a medida, además de las "Entradas" y "Páginas" normales — para contenido en lista, con altas y bajas independientes |
 | Code Snippets (PHP) | Lógica de servidor: REST API, shortcodes, procesamiento de feeds |
 | Code Snippets (HTML) | Módulos interactivos: reproductor de podcast, widgets devocionales |
 | Local by Flywheel | Entorno de desarrollo local donde se construye la web nueva |
-| Blueprint | Copia guardada de un sitio en Local — punto de partida reutilizable para el futuro |
+| Blueprint | Copia guardada de un sitio en Local — punto de partida reutilizable para el futuro, también sirve de copia de seguridad |
 | Live Link | Función de Local que comparte el sitio local por URL pública temporal |
 | wp_options | Tabla de WordPress donde se guarda configuración del sitio (textos, URLs dinámicas) |
 | REST API | Sistema de comunicación entre la PWA Creators y WordPress |
 | PWA Creators | Tiritaito for Creators — herramienta interna para editores, independiente de la web |
 | WPMobile.app | Herramienta para crear la app nativa para la comunidad de usuarios |
-| CPT (Custom Post Type) | Un tipo de contenido de WordPress hecho a medida, además de las "Entradas" y "Páginas" normales |
 
 ---
 
@@ -181,6 +192,7 @@ Decisión de Hna C.
 1. Carlitos + Hna C: cerrar `ALCANCE_WEB_NUEVA.md` — desbloquea la Fase 2 de este Roadmap sin necesidad de tocar este documento
 2. Hno A: continuar Fase 0-1 en Local — no depende de lo anterior
 3. Hna MF (o quien aplique el checklist): activar Google Search Console completo cuanto antes (Recomendación 6)
+4. Guardar un Blueprint actualizado de Local de vez en cuando (Recomendación 4) — no hay una periodicidad fijada, queda como buena práctica
 
 **Preguntas abiertas:**
 
@@ -188,6 +200,7 @@ Decisión de Hna C.
 |---|---|---|
 | 1 | ¿Cuándo se cierra la revisión de `ALCANCE_WEB_NUEVA.md` con Hna C? | Es el único bloqueante real de la Fase 2 |
 | 2 | ¿Quién es "un solo desarrollador principal por sprint" en la práctica — se rota o es fijo? | Recomendación 3 — sin definir todavía |
+| 3 | ¿Hay fecha aproximada de lanzamiento, aunque sea orientativa? | Determina cuándo se activa la retirada de V1 (Sección 3) |
 
 ---
 
