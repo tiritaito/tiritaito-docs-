@@ -17,6 +17,19 @@ viceversa.
 
 ---
 
+## v1-08 · Julio 2026 — Módulo Novedades para el ticker de la home
+
+- **Nueva pestaña Novedades** en la navegación inferior (2.º tab, icono de estrella)
+- Guarda un array JSON en `tt_novedades` (wp_options) — mismo patrón que `tt_fiesta_dias`, no un CPT (eso es solo la rama V2/Local)
+- Cada novedad: tipo (imagen/vídeo), archivo subido desde la galería del móvil a la Biblioteca de Medios, título, texto, enlace opcional, fecha editable, visibilidad (activo/oculta), orden manual
+- **Borrado automático del archivo asociado**: al editar una novedad sustituyendo su foto/vídeo, o al eliminarla por completo, la app llama a `DELETE /tiritaito/v1/medio/{id}` sobre el `media_id` que deja de usarse — no quedan archivos huérfanos en la Biblioteca de Medios. Si ese borrado falla, la novedad se guarda/elimina igualmente y se avisa con un aviso, sin bloquear la operación principal
+- **Reordenación manual** por arrastrar y soltar (drag & drop nativo, sin librerías) — fija un campo `orden` en cada novedad; solo reordena entre sí las novedades de la app, no afecta a nada del propio Code Block del ticker
+- Nueva entrada de FAQ en Ayuda explicando el módulo
+- ⚠️ **Pendiente Web Vieja**: añadir `'tt_novedades' => 'textarea'` a la whitelist del snippet PHP (`tt_opciones_permitidas()`) — sin este cambio, guardar novedades desde la app mostrará el aviso de "no aceptado por el servidor", igual que ya ocurre hoy con `tt_fiesta_dias` y `tt_viacrucis_json_url`
+- ⚠️ **Pendiente Tiritaito Web**: transformar el ticker de noticias de la home (Code Block Avada) para que combine sus 4 entradas hardcodeadas actuales con las novedades publicadas desde la app, leídas vía `GET /tiritaito/v1/datos`
+
+---
+
 ## v1-07 · Julio 2026 — Fix: persistencia de "Lectura del santo"
 
 - **Bug corregido**: `S.fiestaDias` se reiniciaba desde `S.opciones` cada vez que se pintaba la pestaña Recursos (incluido al cambiar de pestaña y volver), descartando cualquier día marcado sin guardar. Ahora esa lectura solo ocurre una vez, al arrancar la app (`iniciarApp`)
