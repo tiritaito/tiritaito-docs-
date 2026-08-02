@@ -470,10 +470,6 @@ h1, h2, h3, h4, .tt-title {
             <label class="tt-flabel" for="homilia-texto-texto">Texto completo</label>
             <textarea class="tt-finput tt-ftextarea" id="homilia-texto-texto" style="min-height:160px" placeholder="Escribe aquí el texto completo de la homilía…"></textarea>
           </div>
-          <div class="tt-fg">
-            <label class="tt-flabel" for="homilia-texto-fecha">Fecha (va al final del texto)</label>
-            <input type="date" class="tt-finput" id="homilia-texto-fecha">
-          </div>
           <button class="tt-btn tt-btn-primary" onclick="window.guardarHomiliaTexto()">Publicar texto</button>
         </div>
       </div>
@@ -494,35 +490,6 @@ h1, h2, h3, h4, .tt-title {
           <button class="tt-btn tt-btn-primary" onclick="document.getElementById('lenguas-input').click()">Subir vídeo de Lenguas de Hoy</button>
           <div class="tt-progress-wrap" id="lenguas-progress" style="display:none"><div class="tt-progress-fill" id="lenguas-progress-fill"></div></div>
           <button class="tt-quitar-link" onclick="window.quitarCampo('tt_lenguas_url','lenguas','Vídeo de Lenguas de Hoy')">Quitar vídeo publicado</button>
-        </div>
-      </div>
-
-      <!-- Tip del día -->
-      <div class="tt-card">
-        <div class="tt-card-hdr">
-          <div class="tt-card-hdr-left">
-            <div class="tt-card-hdr-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            </div>
-            <div class="tt-h3">Tip del día</div>
-          </div>
-        </div>
-        <div class="tt-card-body">
-          <div class="tt-flabel" style="margin-bottom:7px">Primer tip</div>
-          <div class="tt-dev-status" id="tip1-status">Cargando estado…</div>
-          <input type="file" id="tip1-input" accept="image/*,video/*" style="display:none">
-          <button class="tt-btn tt-btn-primary" onclick="document.getElementById('tip1-input').click()">Subir primer tip</button>
-          <div class="tt-progress-wrap" id="tip1-progress" style="display:none"><div class="tt-progress-fill" id="tip1-progress-fill"></div></div>
-          <button class="tt-quitar-link" onclick="window.quitarCampo('tt_tip_1','tip1','Primer tip')">Quitar primer tip</button>
-
-          <div style="height:22px"></div>
-
-          <div class="tt-flabel" style="margin-bottom:7px">Segundo tip (opcional)</div>
-          <div class="tt-dev-status" id="tip2-status">Cargando estado…</div>
-          <input type="file" id="tip2-input" accept="image/*,video/*" style="display:none">
-          <button class="tt-btn tt-btn-sec tt-btn-full" onclick="document.getElementById('tip2-input').click()">Subir segundo tip</button>
-          <div class="tt-progress-wrap" id="tip2-progress" style="display:none"><div class="tt-progress-fill" id="tip2-progress-fill"></div></div>
-          <button class="tt-quitar-link" onclick="window.quitarCampo('tt_tip_2','tip2','Segundo tip')">Quitar segundo tip</button>
         </div>
       </div>
 
@@ -595,7 +562,7 @@ h1, h2, h3, h4, .tt-title {
 
           <details class="tt-faq">
             <summary>¿Cómo subo una foto, un vídeo o un audio?</summary>
-            <p>En las tarjetas de "Hoy" que llevan archivo (audio de la homilía, vídeo de Lenguas, tips) pulsa el botón de subir y elige el archivo desde tu móvil. Verás una barra de progreso mientras se sube. Cuando termine, ya estará publicado.</p>
+            <p>En las tarjetas de "Hoy" que llevan archivo (audio de la homilía, vídeo de Lenguas) pulsa el botón de subir y elige el archivo desde tu móvil. Verás una barra de progreso mientras se sube. Cuando termine, ya estará publicado.</p>
           </details>
 
           <details class="tt-faq">
@@ -625,7 +592,7 @@ h1, h2, h3, h4, .tt-title {
 
         </div>
       </div>
-      <div class="tt-footer-note">Tiritaito for Creators · v2-05 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
+      <div class="tt-footer-note">Tiritaito for Creators · v2-06 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
     </section>
 
     <!-- ───────── PÁGINA: RECURSOS ───────── -->
@@ -1026,9 +993,7 @@ function pintarEstadoDevocional() {
   const mapa = {
     'homilia-audio':  'tt_homilia_audio',
     'homilia-texto':  'tt_homilia_texto',
-    'lenguas':        'tt_lenguas_url',
-    'tip1':           'tt_tip_1',
-    'tip2':           'tt_tip_2'
+    'lenguas':        'tt_lenguas_url'
   };
   for (const [prefix, clave] of Object.entries(mapa)) {
     const el = document.getElementById(prefix + '-status');
@@ -1102,12 +1067,10 @@ window.guardarBrisa = async () => {
 
 window.guardarHomiliaTexto = async () => {
   const texto = document.getElementById('homilia-texto-texto').value.trim();
-  const fecha = document.getElementById('homilia-texto-fecha').value;
   if (!texto) { toast('Escribe el texto de la homilía antes de publicar.', 'warn'); return; }
-  const valor = texto + (fecha ? '\n' + formatFechaLarga(fecha) : '');
   try {
-    await guardarOpciones({ tt_homilia_texto: valor });
-    S.opciones.tt_homilia_texto = valor;
+    await guardarOpciones({ tt_homilia_texto: texto });
+    S.opciones.tt_homilia_texto = texto;
     pintarEstadoDevocional();
     toast('✅ Publicado. Ya aparece en la web.', 'ok');
   } catch (e) { toast(mensajeError(e), 'error'); }
@@ -1147,14 +1110,6 @@ document.getElementById('homilia-audio-input').addEventListener('change', e => {
 document.getElementById('lenguas-input').addEventListener('change', e => {
   const file = e.target.files[0]; e.target.value = '';
   if (file) subirYGuardarCampo(file, 'tt_lenguas_url', 'lenguas');
-});
-document.getElementById('tip1-input').addEventListener('change', e => {
-  const file = e.target.files[0]; e.target.value = '';
-  if (file) subirYGuardarCampo(file, 'tt_tip_1', 'tip1');
-});
-document.getElementById('tip2-input').addEventListener('change', e => {
-  const file = e.target.files[0]; e.target.value = '';
-  if (file) subirYGuardarCampo(file, 'tt_tip_2', 'tip2');
 });
 
 /* ════════════════════════════════════════════════════════
@@ -1604,31 +1559,32 @@ window.generarYPublicar = async (tipo) => {
    Type "novedades" (rest_base confirmado: "novedades"), con
    campos ACF. Decisión y razones completas: ver changelog v2-02.
 
-   CONTRATO DE DATOS ASUMIDO CON EL SERVIDOR (Camino B —
-   la app solo habla con tiritaito/v1/*, nunca con /wp/v2/*):
+   CONTRATO DE DATOS CONFIRMADO CONTRA EL PHP REAL (v2-06, revisado
+   línea por línea en snippet-tt-creators-endpoint-central.php antes
+   de este cambio) — la app solo habla con tiritaito/v1/*, nunca con
+   /wp/v2/*:
 
    GET  /tiritaito/v1/novedades
      → array de objetos, cada uno:
        { id: <int, ID real del post>, tipo: "imagen"|"video",
          media_url: <string>, texto: <string>, enlace: <string>,
-         fecha: "YYYY-MM-DD", activo: <bool> }
+         fecha: "YYYY-MM-DD", activo: <bool>, titulo: <string> }
 
    POST /tiritaito/v1/novedades
-     body: { tipo, media_url, texto, enlace, fecha, activo }
-     → { id: <int> }  (ID del post recién creado)
+     body: { tipo, media_url, texto, enlace, fecha, activo, titulo }
+     → { id: <int> }  (ID del post recién creado; si titulo llega
+        vacío, el PHP autogenera "Novedad " + fecha/hora como
+        post_title, pero el campo ACF titulo se guarda tal cual)
 
    PUT  /tiritaito/v1/novedades/{id}
-     body: { tipo, media_url, texto, enlace, fecha, activo }
+     body: { tipo, media_url, texto, enlace, fecha, activo, titulo }
      → 200 OK
 
    DELETE /tiritaito/v1/novedades/{id}
      → 200 OK
 
-   ⚠️ Este contrato es lo que la APP espera — no está verificado
-   contra el PHP real de Hno A (Proyecto 3). Si el PHP devuelve
-   una forma distinta (nombres de campo, envoltorio {data:...},
-   etc.), ajustar aquí tras la primera prueba real contra Local.
-   Wrapper json() ya tolerante: ver comentario en cargarNovedades().
+   Wrapper json() sigue tolerante a {data:[...]} por si acaso: ver
+   comentario en cargarNovedades().
    ════════════════════════════════════════════════════════ */
 let novedadEditandoId      = null;
 let novedadArchivoPendiente = null;
@@ -1725,6 +1681,11 @@ window.abrirModalNovedad = (id = null) => {
     <div class="tt-progress-wrap" id="novedad-progress" style="display:none"><div class="tt-progress-fill" id="novedad-progress-fill"></div></div>
 
     <div class="tt-fg" style="margin-top:18px">
+      <label class="tt-flabel" for="novedad-titulo">Título (opcional)</label>
+      <input type="text" class="tt-finput" id="novedad-titulo" placeholder="Ej. Nuevo Vía Crucis disponible" value="${item?.titulo ? escapeHtml(item.titulo) : ''}">
+    </div>
+
+    <div class="tt-fg">
       <label class="tt-flabel" for="novedad-texto">Texto (opcional)</label>
       <textarea class="tt-finput tt-ftextarea" id="novedad-texto" placeholder="Ej. Ya está aquí el nuevo Vía Crucis…">${item?.texto ? escapeHtml(item.texto) : ''}</textarea>
     </div>
@@ -1773,6 +1734,7 @@ window.abrirModalNovedad = (id = null) => {
 };
 
 window.guardarNovedad = async () => {
+  const titulo = document.getElementById('novedad-titulo').value.trim();
   const texto  = document.getElementById('novedad-texto').value.trim();
   const enlace = document.getElementById('novedad-enlace').value.trim();
   const fecha  = document.getElementById('novedad-fecha').value;
@@ -1799,7 +1761,7 @@ window.guardarNovedad = async () => {
       mediaUrl = media.source_url;
     }
 
-    const payload = { tipo, media_url: mediaUrl, texto, enlace, fecha, activo: novedadActivoActual };
+    const payload = { tipo, media_url: mediaUrl, texto, enlace, fecha, activo: novedadActivoActual, titulo };
 
     if (novedadEditandoId) {
       await wpFetch(`/tiritaito/v1/novedades/${novedadEditandoId}`, {
