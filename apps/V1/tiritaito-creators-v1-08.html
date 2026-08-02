@@ -313,10 +313,12 @@ h1, h2, h3, h4, .tt-title {
 /* ── Módulo Novedades ─────────────────── */
 .tt-novedad-item { display:flex; align-items:center; gap:12px;
   padding:12px; background:var(--tt-surf2); border-radius:var(--tt-r-sm);
-  margin-bottom:10px; cursor:grab }
-.tt-novedad-item.dragging { opacity:.4 }
+  margin-bottom:10px; position:relative;
+  transition: transform .18s cubic-bezier(.4,0,.2,1) }
+.tt-novedad-item.tt-drag-activo { transition:none; z-index:50;
+  box-shadow:var(--tt-sh-md); background:var(--tt-surf) }
 .tt-novedad-drag { display:flex; align-items:center; color:var(--tt-txt4); flex-shrink:0;
-  touch-action:none }
+  touch-action:none; cursor:grab; padding:4px; margin:-4px }
 .tt-novedad-drag svg { width:18px; height:18px }
 .tt-novedad-thumb { width:56px; height:56px; border-radius:var(--tt-r-xs);
   overflow:hidden; flex-shrink:0; background:var(--tt-surf3);
@@ -1638,9 +1640,6 @@ let novedadMediaUrlActual   = null;
 let novedadMediaIdActual    = null;
 let novedadActivoActual     = true;
 
-// arrastrar-para-reordenar — estado del drag en curso
-let novedadDragIdx = null;
-
 function parseNovedades(str) {
   if (!str) return [];
   try {
@@ -1705,7 +1704,7 @@ function pintarNovedades() {
       : `<img src="${item.media_url}" alt="">`;
     const activo = item.activo !== false;
     const fechaTxt = item.fecha ? formatFechaLarga(item.fecha) : 'Sin fecha';
-    return `<div class="tt-novedad-item" draggable="true" data-id="${item.id}">
+    return `<div class="tt-novedad-item" data-id="${item.id}">
       <div class="tt-novedad-drag" aria-label="Arrastrar para reordenar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="8" x2="20" y2="8"/><line x1="4" y1="16" x2="20" y2="16"/></svg>
       </div>
@@ -1731,40 +1730,115 @@ function pintarNovedades() {
   activarDragNovedades();
 }
 
-// Arrastrar-para-reordenar — API HTML5 nativa, sin librerías externas.
-// Al soltar, reescribe S.novedades con el nuevo orden y guarda una vez.
+// Arrastrar-para-reordenar — gestos táctiles nativos (touchstart/move/end).
+// La API HTML5 de drag (dragstart/dragover/drop) no dispara de forma
+// fiable en navegadores móviles (Safari iOS, Chrome Android) — de ahí
+// el bug reportado: el item se elevaba visualmente pero el drop nunca
+// llegaba a completarse. Este mecanismo reemplaza esa API por completo.
+//
+// Solo el asa (.tt-novedad-drag) inicia el gesto — así los botones de
+// editar/eliminar y el resto del item siguen respondiendo a toques
+// normales sin interferencia.
+//
+// Durante el arrastre: el item se desplaza con transform (barato, sin
+// reflow) y en cada movimiento se comprueba si el centro del dedo ha
+// cruzado el punto medio de un vecino — si es así, ese vecino cambia de
+// posición en el DOM en vivo, dando la sensación de reordenar en tiempo
+// real. Al soltar, se lee el orden final tal como quedó en el DOM, se
+// reasigna 'orden' de forma contigua y se guarda una única vez.
 function activarDragNovedades() {
   const cont = document.getElementById('novedades-lista');
   if (!cont) return;
-  const items = Array.from(cont.querySelectorAll('.tt-novedad-item'));
 
-  items.forEach((el, idx) => {
-    el.addEventListener('dragstart', () => {
-      novedadDragIdx = idx;
-      el.classList.add('dragging');
-    });
-    el.addEventListener('dragend', () => {
-      el.classList.remove('dragging');
-      novedadDragIdx = null;
-    });
-    el.addEventListener('dragover', (e) => {
-      e.preventDefault();
-    });
-    el.addEventListener('drop', async (e) => {
-      e.preventDefault();
-      if (novedadDragIdx === null || novedadDragIdx === idx) return;
+  let itemActivo     = null; // elemento .tt-novedad-item que se está moviendo
+  let startY         = 0;    // posición Y del dedo al iniciar el toque
+  let startTop       = 0;    // posición inicial del item respecto al contenedor
+  let alturaItem      = 0;
+  let ordenAlIniciar  = '';  // ids en orden, justo al iniciar el gesto
 
-      // Reordena la lista visible (ya ordenada por 'orden') moviendo
-      // el elemento arrastrado a la posición soltada.
-      const lista = S.novedades.slice().sort((a, b) => (a.orden ?? 0) - (b.orden ?? 0));
-      const [movido] = lista.splice(novedadDragIdx, 1);
-      lista.splice(idx, 0, movido);
+  function idxDe(el) {
+    return Array.from(cont.children).indexOf(el);
+  }
 
-      // Reasigna 'orden' de forma contigua (0, 1, 2...) y sustituye
-      // S.novedades por la lista reordenada.
-      lista.forEach((item, i) => { item.orden = i; });
-      S.novedades = lista;
-      pintarNovedades();
+  cont.querySelectorAll('.tt-novedad-drag').forEach((asa) => {
+    const item = asa.closest('.tt-novedad-item');
+    if (!item) return;
+
+    asa.addEventListener('touchstart', (e) => {
+      itemActivo = item;
+      startY     = e.touches[0].clientY;
+      startTop   = item.offsetTop;
+      alturaItem = item.offsetHeight;
+      // IDs en su orden justo antes de mover, para saber al soltar si
+      // hubo un cambio real o fue solo un toque sin arrastre.
+      ordenAlIniciar = Array.from(cont.children).map(node => node.dataset.id).join(',');
+      item.classList.add('tt-drag-activo');
+      item.style.position = 'relative';
+    }, { passive: true });
+
+    asa.addEventListener('touchmove', (e) => {
+      if (!itemActivo) return;
+      e.preventDefault(); // evita que la página haga scroll mientras se arrastra
+
+      const y        = e.touches[0].clientY;
+      const desplazado = y - startY;
+      itemActivo.style.transform = `translateY(${desplazado}px)`;
+
+      // Punto medio del item activo en su posición actual, para
+      // compararlo contra los vecinos y decidir si hay que intercambiar.
+      const centroActivo = startTop + alturaItem / 2 + desplazado;
+
+      const idxActivo = idxDe(itemActivo);
+      const hermanos  = Array.from(cont.children).filter(el => el !== itemActivo);
+      for (const vecino of hermanos) {
+        const centroVecino  = vecino.offsetTop + vecino.offsetHeight / 2;
+        const activoVaAntes = idxActivo < idxDe(vecino);
+
+        const cruzaHaciaAbajo = activoVaAntes  && centroActivo > centroVecino;
+        const cruzaHaciaArriba = !activoVaAntes && centroActivo < centroVecino;
+
+        if (cruzaHaciaAbajo || cruzaHaciaArriba) {
+          cont.insertBefore(itemActivo, cruzaHaciaAbajo ? vecino.nextSibling : vecino);
+
+          // Tras reinsertar, el navegador recoloca el item en su nueva
+          // posición natural del flujo. En vez de intentar compensar el
+          // transform ya aplicado con aritmética (frágil y, verificado
+          // numéricamente, no funcionaba), reseteamos el punto de
+          // referencia del gesto: quitamos el transform, leemos el
+          // offsetTop real ya recalculado, y el arrastre "continúa"
+          // desde ahí como si empezara de nuevo en este instante — sin
+          // salto, porque el dedo sigue en la misma posición 'y' que
+          // tenía justo antes de este reordenamiento.
+          itemActivo.style.transform = '';
+          startTop = itemActivo.offsetTop;
+          startY   = y;
+          break;
+        }
+      }
+    }, { passive: false });
+
+    const finalizar = async () => {
+      if (!itemActivo) return;
+      const el = itemActivo;
+      itemActivo = null;
+
+      el.classList.remove('tt-drag-activo');
+      el.style.transform = '';
+      el.style.position = '';
+
+      // El orden final es el que quedó en el DOM tras los intercambios
+      // en vivo — se lee directamente de cont.children, no de S.novedades.
+      const idsEnOrden = Array.from(cont.children).map(node => node.dataset.id);
+
+      // Si el gesto fue un simple toque sin arrastre real, el orden no
+      // habrá cambiado — evita una petición de guardado innecesaria.
+      if (idsEnOrden.join(',') === ordenAlIniciar) return;
+
+      const porId = new Map(S.novedades.map(n => [n.id, n]));
+      const listaReordenada = idsEnOrden.map(id => porId.get(id)).filter(Boolean);
+
+      listaReordenada.forEach((item, i) => { item.orden = i; });
+      S.novedades = listaReordenada;
 
       try {
         await guardarListaNovedades();
@@ -1772,7 +1846,10 @@ function activarDragNovedades() {
       } catch (err) {
         toast('⚠️ El servidor aún no acepta tt_novedades: el equipo técnico debe añadirla al snippet PHP.', 'warn');
       }
-    });
+    };
+
+    asa.addEventListener('touchend', finalizar);
+    asa.addEventListener('touchcancel', finalizar);
   });
 }
 
