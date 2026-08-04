@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Guía Avada + Local
 **Referencia técnica completa: licencia, infraestructura, Global Options, Header/Footer Builder, Layouts, elementos nativos y convenciones**
 *Audiencia principal: Hno A · Fusiona y verifica: INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Parte 3-4) + INFORME_ESTRATEGICO_2026_1.md (Parte 2, 5, 8) + METODOLOGIA_WEB_NUEVA_v2.md (Secciones 3-11) + 04_ENTORNO_LOCAL.md*
-*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026 · Ampliado con principio de Responsive — 13 julio 2026 · Ampliado con altura de sección y previsualización — 14 julio 2026*
+*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026 · Ampliado con principio de Responsive — 13 julio 2026 · Ampliado con altura de sección y previsualización — 14 julio 2026 · Ampliado con mecanismo de dos ordenadores (Cloud Backups) — 31 julio 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -85,7 +85,8 @@ APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 | Base de datos directa (Adminer) | Inspeccionar `wp_options` sin pasar por el panel de WP — más rápido al depurar | Botón "Database" en Local |
 | WP-CLI | Comandos de WordPress desde terminal — pruebas rápidas de snippets, y la única vía para corregir el sitio si el panel de administración queda bloqueado (ver corrección de `/blog/` arriba) | Botón "Open Site Shell" en Local |
 | Live Link | URL pública temporal del sitio local — para que Hna C o el equipo lo vean sin estar en el mismo ordenador/red. ⚠️ **No fiable para verificar diseño/tipografía/CSS** — confirmado que Local reescribe las rutas del dominio local sobre la marcha pero reconoce abiertamente que no las coge todas (fuente: localwp.com/help-docs/local-features/live-links/); afecta a cualquier CSS/JS/fuente con ruta absoluta, no solo a `@font-face`. Sirve solo para enseñar estructura general a Hna C — para QA visual real, usar el modo responsive de Chrome DevTools o Safari directamente sobre `tiritaito-real.local`. El nombre del Live Link (ej. `sneaky-doctor`) es aleatorio y cambia en cada reinicio — no perseguirlo. Desde julio 2026, Local añade usuario/contraseña automáticamente al Live Link; si se comparte con Hna C, pasarle también esas credenciales | Botón "Live Link" en Local |
-| Blueprint | Guarda el estado actual del sitio como plantilla reutilizable — también sirve como copia de seguridad ante una pérdida del entorno (ver aviso arriba) | Menú del sitio → "Save as Blueprint" |
+| Blueprint | Guarda el estado actual del sitio como plantilla reutilizable — también sirve como copia de seguridad ante una pérdida del entorno (ver aviso arriba). Es una foto fija en el momento de guardarlo, no un enlace en vivo: importarlo en otro sitio no lo mantiene sincronizado con el original después | Menú del sitio → "Save as Blueprint" |
+| Cloud Backups (Local v10+) | Backups a la nube (Google Drive o Dropbox), restaurables en otro ordenador conectado a la misma cuenta — ver Sección 2.1 para el mecanismo completo de trabajo con dos ordenadores que el equipo usa esto para resolver | Pestaña "Backups" del sitio, dentro de Local |
 
 ### Checklist antes de cada sesión de trabajo en Local
 
@@ -94,6 +95,111 @@ APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 - [ ] Confirmar que el certificado SSL sigue en estado **"Trusted"** en la pestaña SSL del sitio dentro de Local — puede perderse al recrear el sitio, y si no está confiado puede llegar a romper silenciosamente las respuestas de la API (`/wp-json` devolviendo un carácter suelto en vez del JSON completo)
 - [ ] Si el código incluye una URL o credencial, verificar que viene de este documento o de `04_ENTORNO_LOCAL.md` actualizado — nunca de producción
 - [ ] Si el Local se ha recreado recientemente: verificar que el snippet PHP, el CPT `novedades` y la Options Page de ACF siguen existiendo — no darlos por hecho
+- [ ] Si esta sesión va a trabajar con dos ordenadores a la vez: seguir el procedimiento de la Sección 2.1, no improvisar
+
+---
+
+## 2.1 ⭐ Trabajar con dos ordenadores a la vez — mecanismo acordado (31 julio 2026)
+
+**Contexto:** el equipo ha empezado a usar un segundo ordenador con Local instalado, para
+las ocasiones en que hace falta que dos personas construyan en Local al mismo tiempo. Local
+**no sincroniza nada entre ordenadores de forma automática ni en tiempo real** — no existe
+esa función, ni en Local ni de forma segura por ningún otro medio razonable, porque
+WordPress vive sobre una base de datos MySQL completa, no sobre archivos de texto sueltos:
+dos personas escribiendo en dos copias de esa base de datos al mismo tiempo, sin
+coordinación, no se puede fusionar automáticamente después — alguien tiene que decidir cuál
+de las dos copias es la buena. Esta sección documenta la regla que el equipo ha acordado
+para ese arbitraje, y el procedimiento paso a paso alrededor de ella.
+
+**Regla de fondo, ya sabida por el equipo antes de este incidente concreto** —
+`ARQUITECTURA_Y_ROADMAP.md` Recomendación 3 ya advertía: *"Dos personas tocando los mismos
+archivos de Avada en Local pueden crear conflictos. Decidir quién construye en cada sprint;
+el otro revisa."* Lo de abajo es la aplicación práctica de esa recomendación al caso
+concreto de dos ordenadores físicos distintos, con la herramienta real (Cloud Backups) que
+el equipo ya tiene configurada para ello.
+
+### El mecanismo, en una frase
+
+> El ordenador principal ("el de toda la vida") es siempre la fuente de verdad. El segundo
+> ordenador solo se activa para sesiones puntuales de trabajo conjunto, arrancando desde una
+> copia reciente del principal. Al terminar, **gana siempre el ordenador principal** — lo
+> hecho en el segundo se vuelve a aplicar a mano sobre el principal, nunca al revés.
+
+### Cuándo se usa
+
+Solo cuando de verdad hace falta que dos personas construyan en Local a la vez. Fuera de
+esas sesiones, el segundo ordenador no se toca — el ordenador principal sigue siendo el
+único activo, como hasta ahora.
+
+### Herramienta — Local Cloud Backups (Local v10+)
+
+El mecanismo se apoya en la función de backups a la nube de Local (ver tabla de
+"Herramientas exclusivas de Local" más arriba en esta sección). Confirmado en la práctica
+por el equipo, 31 de julio de 2026: conecta ambos ordenadores a la misma cuenta de Google
+Drive de trabajo del equipo (no personal), vía Local → sitio → pestaña **Backups** → **Back
+up to:**.
+
+⚠️ **Aviso ya confirmado en este proyecto — error típico al conectar por primera vez:** si
+al pulsar "Create backup" aparece un error citando `insufficient authentication scopes` o
+`Error 403: Insufficient Permission`, la causa casi siempre es que el consentimiento de
+Google no se completó del todo la primera vez (Local se quedó con un permiso parcial, no el
+necesario para crear/editar archivos). Solución confirmada por el propio soporte de Local
+(community.localwp.com, abril 2026) y verificada por el equipo en este mismo incidente:
+
+1. En Local: **Settings → Connected Accounts → Google Drive → Disconnect Account**
+2. Volver a conectar desde cero
+3. En la pantalla de Google, pulsar **"Continuar"** en la pantalla de consentimiento
+   completa — no cerrarla antes de tiempo
+
+Si el error persiste tras esto, revisar si la cuenta de Google es una cuenta de Google
+Workspace con políticas de administrador que puedan estar restringiendo el permiso — no es
+el caso de la cuenta de trabajo actual del equipo, pero es la siguiente pista documentada
+por soporte de Local si volviera a pasar con otra cuenta en el futuro.
+
+### Procedimiento paso a paso
+
+**1. Antes de empezar la sesión conjunta:**
+- En el ordenador principal: pestaña **Backups** → **Create backup** — esto deja un punto de
+  partida limpio y reciente, con fecha conocida
+- En el segundo ordenador: si ya existe un sitio `tiritaito-real` vacío o desactualizado,
+  **borrarlo primero** — no puede convivir con el sitio nuevo que se va a crear desde el
+  backup, ambos usarían el mismo dominio `tiritaito-real.local`
+- Crear el sitio en el segundo ordenador eligiendo **restaurar desde el backup** recién
+  creado en la cuenta de Google Drive compartida, en vez de "sitio nuevo en blanco"
+
+**2. Durante la sesión conjunta:**
+- Cada persona trabaja en su propio ordenador con normalidad
+- Recomendado (no obligatorio, pero fuertemente aconsejado — ver nota más abajo): llevar
+  en paralelo una tabla de registro de cada cambio de configuración hecho en Avada
+  (panel exacto, campo, valor), para poder reconstruirlo a mano después sin depender de la
+  memoria
+
+**3. Al terminar la sesión conjunta:**
+- **Gana siempre el ordenador principal.** El sitio del segundo ordenador no se sube ni se
+  fusiona automáticamente con nada
+- Los cambios hechos en el segundo ordenador durante la sesión se vuelven a aplicar **a
+  mano**, uno por uno, directamente en el ordenador principal — usando la tabla de registro
+  del punto 2 como guía paso a paso
+- Una vez aplicados y verificados en el principal, el segundo ordenador queda otra vez sin
+  usarse hasta la siguiente sesión conjunta
+
+### ⚠️ Límite honesto de este mecanismo — léase antes de asumir que es una solución completa
+
+Este procedimiento **no elimina el riesgo de perder trabajo** — lo reduce y lo hace
+recuperable, que es distinto. Si durante la sesión conjunta se avanza mucho en el segundo
+ordenador y luego, por lo que sea, no se lleva bien la cuenta de qué se cambió, ese trabajo
+se pierde de verdad al no fusionarse nunca de forma automática con el principal. La tabla de
+registro del punto 2 es la pieza que hace que ese riesgo sea gestionable — sin ella, cada
+sesión con dos ordenadores es una apuesta a que nadie olvide nada.
+
+**No existe, ni en Local ni de forma segura por otro medio, una sincronización instantánea o
+en tiempo real entre dos instalaciones de Local en ordenadores distintos** — se investigó
+explícitamente esta posibilidad (31 julio 2026) y se confirmó que no existe como función de
+producto. Herramientas externas de sincronización de bajo nivel podrían acercarse a eso a
+costa de mucho más riesgo técnico (corrupción de base de datos si se sincroniza mientras
+está en uso) — no evaluadas ni recomendadas todavía; si el equipo quiere explorar esa vía
+en algún momento, merece una sesión de investigación dedicada solo a eso, no una decisión
+tomada de pasada aquí.
 
 ---
 
@@ -640,6 +746,7 @@ if (document.getElementById('mi-modulo-root')) {
 | Dejar que una sección ocupe `min-height: 100vh` por defecto sin decidirlo conscientemente | Revisar siempre si la sección necesita de verdad ocupar toda la pantalla, o si con la altura de su contenido basta (Sección 8.4-bis) |
 | Construir una sección directamente en Avada sin ver antes 2-3 opciones de boceto | Pedir a Claude (Proyecto 3) que proponga bocetos visuales antes de empezar a construir, salvo ajustes menores (Sección 8.4-bis) |
 | Escribir un snippet nuevo sin comprobar antes si ACF + un elemento nativo ya lo resuelve | El árbol de decisión (Sección 8) empieza siempre por la opción nativa — código es el último recurso, no el primero (reforzado 26 julio 2026) |
+| Trabajar con dos ordenadores sin seguir el procedimiento de la Sección 2.1 | Local no sincroniza nada entre ordenadores por sí solo — improvisar sin backup previo puede dejar el segundo ordenador con un WordPress vacío o hacer perder trabajo real (Sección 2.1) |
 
 ---
 
@@ -701,6 +808,7 @@ if (document.getElementById('mi-modulo-root')) {
 - Avada Dynamic Content tiene soporte nativo para campos ACF, incluida Options Page.
 - **Responsive Option Sets permite configurar ancho, orden, márgenes, padding y fondo de forma independiente por pantalla en Container/Columna, y alineación en Botón/Imagen/Texto/Título (Sección 8.4).**
 - **Responsive Typography Sensitivity y Minimum Font Size Factor controlan si y cómo se reduce el tamaño de letra en pantallas pequeñas (Sección 8.4).**
+- **Local Cloud Backups (v10+) permite restaurar el mismo backup en otro ordenador conectado a la misma cuenta de nube — no es sincronización en tiempo real, es un mecanismo de "restaurar bajo demanda" (Sección 2.1).**
 
 **✅ Confirmado en sesiones reales en Local:**
 - 7 julio 2026: el dominio correcto del Local es `tiritaito-real.local`; el Setup Wizard solo admite 8 de los 13 colores y no admite fuentes propias; Off Canvas y Eventos ya activados, Portafolio activo sin caso de uso.
@@ -715,6 +823,8 @@ if (document.getElementById('mi-modulo-root')) {
 - **26 julio 2026: backend de Novedades reconstruido en Local desde cero (el entorno se había perdido por completo) — CPT `novedades` + ACF (6 campos) + endpoint propio `tiritaito/v1/novedades`, confirmado funcionando de extremo a extremo desde la app real.**
 - **26 julio 2026: Devocional (Virgen, Brisa, Homilía, Lenguas) migrado parcialmente a ACF Options Page "Devocional — Contenido Diario" — 7 de 12 claves antiguas de `wp_options`.**
 - **26 julio 2026: confirmado el header real de autenticación de la app — `X-TT-Token`, no `Authorization: Bearer`.**
+- **31 julio 2026: confirmado que Local no ofrece ninguna forma de sincronización automática o en tiempo real entre dos instalaciones en ordenadores distintos — investigado explícitamente, incluyendo foros oficiales de Local y documentación de localwp.com. El mecanismo más cercano disponible es Local Cloud Backups, restaurable bajo demanda (Sección 2.1).**
+- **31 julio 2026: confirmada y resuelta la causa del error `insufficient authentication scopes` / `Error 403: Insufficient Permission` al conectar Cloud Backups con Google Drive — desconectar y reconectar la cuenta, completando el consentimiento de Google hasta el final, según lo confirmado por soporte oficial de Local (community.localwp.com) y verificado en la práctica por el equipo (Sección 2.1).**
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
@@ -755,6 +865,8 @@ if (document.getElementById('mi-modulo-root')) {
 - Responsive Header Design With Avada: avada.com/documentation/responsive-header-design-with-avada/
 - Altura de sección y previsualización con bocetos (Sección 8.4-bis): criterio de equipo, sesión 14 julio 2026 — no es una fuente de documentación oficial de Avada, se anota como decisión propia
 - Piloto ACF Options Page + CPT (Sección 8.4, 9, 17): sesión real en Local, 22-23 julio 2026, y reconstrucción del backend, 26 julio 2026 — decisiones y hallazgos de equipo, no documentación oficial de Avada
+- Local Cloud Backups — documentación oficial: localwp.com/help-docs/local-features/local-cloud-backups/
+- Error "insufficient authentication scopes" en Cloud Backups + Google Drive — hilo oficial de soporte de Local (abril 2026), solución confirmada: community.localwp.com/t/creating-backup-to-google-drive-is-not-working/52070
 
 ---
 
@@ -771,6 +883,7 @@ if (document.getElementById('mi-modulo-root')) {
 8. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)
 9. Hno A: pegar el bloque `0.2` de previsualización y `0.3`/`0.4` de ACF/verificación en las Instrucciones personalizadas del Proyecto 3 en claude.ai (ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) — subir este documento a GitHub no actualiza las instrucciones solas
 10. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
+11. Carlitos + Hno A: si vuelve a hacer falta trabajar con dos ordenadores, seguir el procedimiento de la Sección 2.1 — backup previo en el principal, restaurar en el segundo, y al terminar reaplicar a mano los cambios del segundo sobre el principal, usando una tabla de registro de configuración como guía
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -782,8 +895,9 @@ if (document.getElementById('mi-modulo-root')) {
 | 5 | ¿Se confirma en Local que los breakpoints de Avada y del código (`1024/768/480px`) coinciden? | Sección 8.4 — si no coinciden, puede haber una zona intermedia donde el diseño visual y el código no cambian de "modo móvil" en el mismo punto |
 | 6 | ¿Cuál es el patrón visual exacto de Novedades? | Sección 8.4-bis — sin la referencia correcta compartida todavía, no se puede cerrar |
 | 7 | ¿Se fija como regla formal el criterio "sección = 1 página si todo cabe en un solo lugar, sección = varias entradas si cada apartado tiene personalidad propia"? | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 |
+| 8 | ¿Con qué frecuencia se espera que haga falta el mecanismo de dos ordenadores (Sección 2.1)? | Si va a ser habitual, puede merecer la pena evaluar en algún momento herramientas externas de sincronización más cercanas al tiempo real, con su propio análisis de riesgo — si es puntual, el procedimiento manual actual basta |
 
-**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · **discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026)** · **Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026)** · **principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026)**.
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · **discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026)** · **Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026)** · **principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026)** · **mecanismo de trabajo con dos ordenadores documentado, apoyado en Local Cloud Backups, con el error típico de conexión a Google Drive ya resuelto (31 julio 2026)**.
 
 ---
 
