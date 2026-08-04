@@ -2,6 +2,7 @@
 **Visión de conjunto: FODA, política sobre la web vieja, hoja de ruta por fases, glosario del equipo**
 *Fusiona: INFORME_ESTRATEGICO_2026_1.md (Resumen ejecutivo, Parte 4, 7, 8, 9, Glosario) — sin duplicar el detalle de Avada ya cubierto en `GUIA_AVADA_LOCAL.md` ni el diagnóstico técnico ya cubierto en `METODOLOGIA_CONSTRUCCION.md`*
 *Audiencia: Carlitos (visión de conjunto) · útil también para Hna MF y editores (glosario incluido)*
+*Ampliado con enlace al mecanismo de dos ordenadores — 31 julio 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -54,6 +55,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | D4 | Migración de contenido | Ver `MIGRACION_CONTENIDO.md` para el framework completo |
 | D5 | WPMobile.app — terreno casi inexplorado | Licencia comprada, poco más — ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 |
 | D6 | El entorno Local puede perderse por completo | Ya ocurrió una vez (26 julio 2026) — sin causa documentada. Ver `GUIA_AVADA_LOCAL.md` Sección 2 para la recomendación de Blueprint como red de seguridad |
+| D7 | Trabajar con dos ordenadores multiplica el riesgo de D2/D6 | Local no sincroniza nada entre ordenadores por sí solo — sin el procedimiento acordado (`GUIA_AVADA_LOCAL.md` Sección 2.1), es fácil terminar con un WordPress vacío en el segundo ordenador, o perder trabajo real al no poder fusionar dos copias divergentes |
 
 ### 2.3 Riesgos
 
@@ -65,6 +67,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | R4 | Fragmentación de Claude Projects (riesgo medio) | Resuelto con la reestructuración de `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` — una cuenta por proyecto, GitHub como fuente única |
 | R5 | WPMobile.app vs PWA Creators (confusión de herramientas) | Son herramientas distintas para públicos distintos — definido en `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 |
 | R6 | Reinventar en código lo que Avada+ACF ya resuelve nativo (riesgo medio, ya materializado una vez) | Un shortcode `[tt_novedades]` llegó a construirse por error el 26/07/2026 replicando el patrón antiguo, antes de corregirse a Post Cards+Dynamic Content. Mitigación: principio de "mínimo código posible" reforzado en `GUIA_AVADA_LOCAL.md` Sección 8 y en las instrucciones del Proyecto 3 |
+| R7 | Trabajo perdido por divergencia entre dos ordenadores (riesgo medio, ya materializado una vez como confusión — 31/07/2026) | El segundo ordenador apareció con un WordPress vacío por no partir de un backup del principal. Mitigación: procedimiento acordado en `GUIA_AVADA_LOCAL.md` Sección 2.1 — el ordenador principal gana siempre, backup previo obligatorio, tabla de registro de cambios como red de seguridad |
 
 ### 2.4 Oportunidades
 
@@ -77,6 +80,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | O5 | Blueprint de Local como activo reutilizable | Una vez configurada correctamente, se guarda como Blueprint — base limpia para cualquier sitio futuro |
 | O6 | WPMobile.app integrado desde el principio | Si la arquitectura se piensa con la app en mente desde ahora, la integración futura será mucho más limpia (ver conexión directa en `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7.2) |
 | O7 | ACF Pro + elementos nativos reducen el mantenimiento a largo plazo | Novedades y Devocional (confirmados 26/07/2026) demuestran que Hna C y los editores pueden gestionar contenido dinámico desde wp-admin sin depender de código nuevo cada vez |
+| O8 | Local Cloud Backups habilita trabajo puntual en dos ordenadores sin depender de USB ni de compartir carpetas manualmente | Confirmado y en uso (31/07/2026) — ver `GUIA_AVADA_LOCAL.md` Sección 2.1. No es sincronización en tiempo real, pero resuelve de forma razonable el caso de sesiones puntuales de trabajo conjunto |
 
 ---
 
@@ -147,7 +151,7 @@ Decisión de Hna C. **Este es también el momento en el que la web vieja (V1) se
 
 **Recomendación 2 — Hna C define el alcance antes de la Fase 1.** Esa pregunta tiene que tener respuesta escrita (`ALCANCE_WEB_NUEVA.md`) antes de instalar Avada en serio. Si no, el scope creep llegará.
 
-**Recomendación 3 — Un solo desarrollador principal por sprint.** Dos personas tocando los mismos archivos de Avada en Local pueden crear conflictos. Decidir quién construye en cada sprint; el otro revisa.
+**Recomendación 3 — Un solo desarrollador principal por sprint.** Dos personas tocando los mismos archivos de Avada en Local pueden crear conflictos. Decidir quién construye en cada sprint; el otro revisa. **Cuando de verdad hace falta trabajar con dos ordenadores a la vez, ver el procedimiento acordado en `GUIA_AVADA_LOCAL.md` Sección 2.1 (31 julio 2026) — el ordenador principal gana siempre, lo hecho en el segundo se reaplica a mano.**
 
 **Recomendación 4 — El Blueprint de Local como entregable de Fase 1.** La Fase 1 no termina cuando "parece bien". Termina cuando el Blueprint está guardado — es el activo más valioso de esta etapa. **Reforzado tras la pérdida del entorno del 26 de julio de 2026** — no es solo un entregable formal, es una red de seguridad real.
 
@@ -177,7 +181,8 @@ Decisión de Hna C. **Este es también el momento en el que la web vieja (V1) se
 | Code Snippets (PHP) | Lógica de servidor: REST API, shortcodes, procesamiento de feeds |
 | Code Snippets (HTML) | Módulos interactivos: reproductor de podcast, widgets devocionales |
 | Local by Flywheel | Entorno de desarrollo local donde se construye la web nueva |
-| Blueprint | Copia guardada de un sitio en Local — punto de partida reutilizable para el futuro, también sirve de copia de seguridad |
+| Blueprint | Copia guardada de un sitio en Local — punto de partida reutilizable para el futuro, también sirve de copia de seguridad. Es una foto fija en el momento de guardarlo, no queda sincronizada con el sitio original después |
+| Cloud Backups | Función de Local (v10+) para respaldar un sitio a Google Drive o Dropbox, restaurable en otro ordenador conectado a la misma cuenta — el mecanismo que sostiene el procedimiento de trabajo con dos ordenadores (`GUIA_AVADA_LOCAL.md` Sección 2.1) |
 | Live Link | Función de Local que comparte el sitio local por URL pública temporal |
 | wp_options | Tabla de WordPress donde se guarda configuración del sitio (textos, URLs dinámicas) |
 | REST API | Sistema de comunicación entre la PWA Creators y WordPress |
@@ -193,13 +198,14 @@ Decisión de Hna C. **Este es también el momento en el que la web vieja (V1) se
 2. Hno A: continuar Fase 0-1 en Local — no depende de lo anterior
 3. Hna MF (o quien aplique el checklist): activar Google Search Console completo cuanto antes (Recomendación 6)
 4. Guardar un Blueprint actualizado de Local de vez en cuando (Recomendación 4) — no hay una periodicidad fijada, queda como buena práctica
+5. Carlitos + Hno A: si se repite el trabajo con dos ordenadores, seguir el procedimiento de `GUIA_AVADA_LOCAL.md` Sección 2.1 y evaluar, con el tiempo, si su frecuencia justifica investigar alternativas más cercanas al tiempo real (ver pregunta abierta #8 de ese documento)
 
 **Preguntas abiertas:**
 
 | # | Pregunta | Por qué importa |
 |---|---|---|
 | 1 | ¿Cuándo se cierra la revisión de `ALCANCE_WEB_NUEVA.md` con Hna C? | Es el único bloqueante real de la Fase 2 |
-| 2 | ¿Quién es "un solo desarrollador principal por sprint" en la práctica — se rota o es fijo? | Recomendación 3 — sin definir todavía |
+| 2 | ¿Quién es "un solo desarrollador principal por sprint" en la práctica — se rota o es fijo? | Recomendación 3 — sin definir todavía. Ahora conecta también con la pregunta de cuándo se activa el segundo ordenador (`GUIA_AVADA_LOCAL.md` Sección 2.1) |
 | 3 | ¿Hay fecha aproximada de lanzamiento, aunque sea orientativa? | Determina cuándo se activa la retirada de V1 (Sección 3) |
 
 ---
