@@ -17,16 +17,23 @@ viceversa.
 
 ---
 
-## v1-08 · Julio 2026 — Módulo Novedades para el ticker de la home
+## v1-08 · Agosto 2026 — Módulo Novedades para el ticker de la home
 
 - **Nueva pestaña Novedades** en la navegación inferior (2.º tab, icono de estrella)
 - Guarda un array JSON en `tt_novedades` (wp_options) — mismo patrón que `tt_fiesta_dias`, no un CPT (eso es solo la rama V2/Local)
 - Cada novedad: tipo (imagen/vídeo), archivo subido desde la galería del móvil a la Biblioteca de Medios, título, texto, enlace opcional, fecha editable, visibilidad (activo/oculta), orden manual
 - **Borrado automático del archivo asociado**: al editar una novedad sustituyendo su foto/vídeo, o al eliminarla por completo, la app llama a `DELETE /tiritaito/v1/medio/{id}` sobre el `media_id` que deja de usarse — no quedan archivos huérfanos en la Biblioteca de Medios. Si ese borrado falla, la novedad se guarda/elimina igualmente y se avisa con un aviso, sin bloquear la operación principal
-- **Reordenación manual** por arrastrar y soltar (drag & drop nativo, sin librerías) — fija un campo `orden` en cada novedad; solo reordena entre sí las novedades de la app, no afecta a nada del propio Code Block del ticker
+- **Reordenación manual por gestos táctiles**, corregida durante esta sesión — solo reordena entre sí las novedades de la app, no afecta a nada del propio Code Block del ticker
 - Nueva entrada de FAQ en Ayuda explicando el módulo
-- ⚠️ **Pendiente Web Vieja**: añadir `'tt_novedades' => 'textarea'` a la whitelist del snippet PHP (`tt_opciones_permitidas()`) — sin este cambio, guardar novedades desde la app mostrará el aviso de "no aceptado por el servidor", igual que ya ocurre hoy con `tt_fiesta_dias` y `tt_viacrucis_json_url`
-- ⚠️ **Pendiente Tiritaito Web**: transformar el ticker de noticias de la home (Code Block Avada) para que combine sus 4 entradas hardcodeadas actuales con las novedades publicadas desde la app, leídas vía `GET /tiritaito/v1/datos`
+- ✅ **Confirmado — Web Vieja**: `tt_novedades` ya está en la whitelist del snippet PHP (`tt_opciones_permitidas()`), aplicado por Hno A durante esta sesión. Verificado directamente contra `GET /tiritaito/v1/datos`, que ya devuelve la clave con datos reales guardados
+- ⚠️ **Pendiente Tiritaito Web**: transformar el ticker de noticias de la home (Code Block Avada) para que combine sus 4 entradas hardcodeadas actuales con las novedades publicadas desde la app, leídas vía `GET /tiritaito/v1/datos` — prompt ya entregado en esta sesión, pendiente de aplicar
+
+### Bug corregido durante la sesión — reordenamiento no guardaba en móvil
+
+- **Síntoma reportado**: al arrastrar una novedad para reordenarla en el móvil, el elemento se elevaba visualmente pero al soltar volvía a su posición original, con una sensación de movimiento trabado y sin suavidad
+- **Diagnóstico**: la implementación inicial usaba la API HTML5 de arrastre (`draggable="true"` + `dragstart`/`dragover`/`drop`), que no dispara de forma fiable en navegadores móviles táctiles (Safari iOS, Chrome Android) — el `dragstart` sí llegaba a activarse parcialmente (de ahí la elevación visual), pero el `drop` nunca se completaba, así que el nuevo orden nunca llegaba a guardarse
+- **Corrección**: sustituido el mecanismo completo por gestos táctiles nativos (`touchstart`/`touchmove`/`touchend`) sobre el asa de arrastre, con reordenamiento en vivo de los elementos vecinos según la posición del dedo, y guardado único al soltar
+- ⚠️ **Sin confirmación final del usuario en esta sesión**: aunque el PHP ya está verificado como correcto y activo (ver arriba), no hay una prueba explícita del usuario, tras ese cambio de PHP, confirmando que el gesto de reordenar guarda sin el aviso de rechazo — pendiente de confirmar en la próxima sesión o interacción
 
 ---
 
