@@ -1,7 +1,8 @@
 # TIRITAITO.COM — Organización del Equipo y Herramientas
-**Roles, mapa de Proyectos de Claude, GitHub, economía de tokens, WPMobile.app y Search Console**
+**Roles, mapa de Proyectos de Claude, GitHub, economía de tokens, WPMobile.app, Search Console, y colaboración externa**
 *Fusiona: CONFIGURACION_PROYECTOS_CLAUDE_Y_GITHUB.md (autoridad sobre el mapa de proyectos) + INFORME_ESTRATEGICO_2026_1.md (Parte 6.1, 6.3) + INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Partes 1, 4, 5)*
 *Verificado contra support.claude.com — julio 2026 · Instrucciones del Proyecto 3 ampliadas con criterio de Responsive proactivo — 13 julio 2026 · Ampliadas con criterio de previsualización con bocetos — 14 julio 2026*
+*Reestructurado 2 de agosto de 2026: el texto literal de instrucciones de cada Proyecto se extrae a `INSTRUCCIONES_PROYECTOS_CLAUDE.md` (más fácil de copiar/pegar sin mezclar con contexto); se absorbe el contenido de `COLABORACION_EXTERNA_CODEX.md` como Sección 11, en vez de mantenerlo como tercer documento independiente*
 *Audiencia: Carlitos (coordinación transversal) · cada dueño de cuenta para su propia sección*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -10,7 +11,7 @@
 
 ## 0. Qué es este documento
 
-Responde: **¿quién hace qué, en qué cuenta de Claude, con qué instrucciones, y qué herramientas de apoyo (GitHub, Search Console) hay que mantener?** Es el documento de coordinación transversal del proyecto — no de contenido ni de Avada.
+Responde: **¿quién hace qué, en qué cuenta de Claude, qué herramientas de apoyo (GitHub, Search Console) hay que mantener, y cómo se coordina con colaboradores externos?** Es el documento de coordinación transversal del proyecto — no de contenido ni de Avada, y ya no contiene el texto literal de instrucciones a copiar (eso vive aparte, ver tabla).
 
 | Si necesitas... | Ve a este documento en su lugar |
 |---|---|
@@ -19,7 +20,8 @@ Responde: **¿quién hace qué, en qué cuenta de Claude, con qué instrucciones
 | Qué migrar de la web vieja | `MIGRACION_CONTENIDO.md` |
 | Visión general, FODA, fases del proyecto | `ARQUITECTURA_Y_ROADMAP.md` |
 | Cómo subir la app a GitHub, V1 vs V2, changelog | `TIRITAITO_FOR_CREATORS_VERSIONS.md` |
-| **Quién hace qué, en qué Proyecto de Claude, y cómo se coordina el equipo** | **Este documento** |
+| **El texto exacto a copiar y pegar en las Instrucciones personalizadas de cada Proyecto** | **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`** |
+| **Quién hace qué, en qué Proyecto de Claude, cómo se coordina el equipo, y el sistema de colaboración externa (Matt/Codex)** | **Este documento** |
 
 ---
 
@@ -49,6 +51,7 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 | Hna C | Cerebro del equipo — dirección, diseño y coordinación | Coordina al equipo en el día a día, define alcance, criterio visual, decisiones de producto, Avada visual. Con acceso técnico para decidir bien | Código en desarrollo |
 | Hna MF | Datos y métricas | Google Search Console, análisis de uso, propone mejoras basadas en datos | — |
 | Editores (4) | Contenido | Subir/editar su contenido en sus secciones | Todo lo demás |
+| Matt | Colaborador externo | Trabaja con Codex (IA de OpenAI) directamente sobre `tiritaito-docs`, sobre archivos sin dato sensible y sobre las copias `.matt.*` de los sensibles. Ver Sección 11 | Archivos oficiales sensibles — nunca los ve ni los edita |
 
 **✅ Actualización directa de Carlitos (julio 2026), a petición de Hna C:** la coordinación se divide en dos capas — Carlitos coordina que el *sistema* funcione (herramientas, cuentas, documentación), Hna C coordina al *equipo* (personas, decisiones, trabajo del día a día). Esto no cambia la autoridad de Carlitos sobre la arquitectura de documentación — mantener el README actualizado es, en la práctica, la forma concreta en la que ejerce esa autoridad — es una división de qué se coordina, no una cesión de esa autoridad concreta.
 
@@ -60,20 +63,22 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 ⚠️ **Corrección de conteo (26 julio 2026):** este documento decía "7 cuentas, una por rol", asumiendo una sola cuenta de repuesto. Carlitos confirma que **ya hay dos cuentas de repuesto creadas y configuradas para el Proyecto 3** — no una. El total pasa de 7 a **8 cuentas**. No es un error de este documento tan grave como para reescribir toda la lógica (la regla "una cuenta = un proyecto" se mantiene; simplemente el proyecto "Web Nueva" tiene ahora dos copias de repuesto en vez de una), pero el número había quedado escrito como si fuera fijo y ya no lo es — queda corregido aquí.
 
-| # | Proyecto | Cuenta | Rol | Estado |
-|---|---|---|---|---|
-| 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado — ver nota de cierre en Sección 2.1 |
-| 2 | Investigación | Hno C | Documentos y diagramas claros para el equipo | ✅ Activo — es este proyecto |
-| 3 | **Web Nueva** (fusión de Backend+Snippets y Maquetación+Avada) | Hno A | Construcción técnica y visual completa en Local | ✅ Configurado |
-| 4 | Diseño y Avada | Hna C | Decisiones de producto y visión visual, sin código | ✅ Configurado |
-| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 (web vieja) y V2 (web nueva). Ver Sección 2.2 para el límite exacto de su ámbito frente al Proyecto 3 | ✅ Configurado — actualizado con V1/V2 |
-| 6 | Web Nueva — Repuesto A (copia idéntica del Proyecto 3) | Cuenta de repuesto | Continuidad si la cuenta principal de Hno A agota su límite | ✅ Creada y configurada (26 julio 2026) |
-| 7 | Web Nueva — Repuesto B (copia idéntica del Proyecto 3) | Cuenta de repuesto | Segunda continuidad — 🔲 motivo de tener dos repuestos en vez de uno sin documentar, preguntar a Carlitos si hace falta anotarlo | ✅ Creada y configurada (26 julio 2026) |
-| 8 | WPMobile.app | Sin asignar | Desarrollo de la app cuando se active | 🔵 Pendiente |
+| # | Proyecto | Cuenta | Rol | Estado | Instrucciones |
+|---|---|---|---|---|---|
+| 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado — ver nota de cierre en Sección 2.1 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 1 |
+| 2 | Investigación | Hno C | Documentos y diagramas claros para el equipo | ✅ Activo — es este proyecto | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 2 |
+| 3 | **Web Nueva** (fusión de Backend+Snippets y Maquetación+Avada) | Hno A | Construcción técnica y visual completa en Local | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3 |
+| 4 | Diseño y Avada | Hna C | Decisiones de producto y visión visual, sin código | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 4 |
+| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 (web vieja) y V2 (web nueva). Ver Sección 2.2 para el límite exacto de su ámbito frente al Proyecto 3 | ✅ Configurado — actualizado con V1/V2 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 5 |
+| 6 | Web Nueva — Repuesto A (copia idéntica del Proyecto 3) | Cuenta de repuesto | Continuidad si la cuenta principal de Hno A agota su límite | ✅ Creada y configurada (26 julio 2026) | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 6 |
+| 7 | Web Nueva — Repuesto B (copia idéntica del Proyecto 3) | Cuenta de repuesto | Segunda continuidad — 🔲 motivo de tener dos repuestos en vez de uno sin documentar, preguntar a Carlitos si hace falta anotarlo | ✅ Creada y configurada (26 julio 2026) | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 7 |
+| 8 | WPMobile.app | Sin asignar | Desarrollo de la app cuando se active | 🔵 Pendiente | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 8 (sin redactar) |
 
 **~~Datos y Métricas (Hna MF)~~ — cancelado, no se va a crear como proyecto de Claude.** Si Hna MF necesita el checklist de Search Console, ver Sección 8 — queda como referencia sin un proyecto dedicado.
 
 **Cuentas usadas:** 7 de 8 configuradas y en uso. Queda 1 pendiente (WPMobile.app).
+
+**Nota sobre Matt:** Matt no tiene una cuenta de Claude ni un Proyecto propio en este mapa — trabaja con Codex, su propia herramienta, directamente sobre el repositorio de GitHub. No aplica el sistema de "una cuenta por proyecto" de esta sección. Ver Sección 11.
 
 ### 2.1 V1 y Proyecto 1 — fecha de caducidad conocida
 
@@ -81,7 +86,7 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 ### 2.2 Proyecto 3 vs Proyecto 5 — dónde termina uno y empieza el otro
 
-Con el snippet PHP del endpoint central viviendo ahora dentro de `apps/v2/` (Sección 5.4) y con el protocolo de traspaso de prompts entre proyectos (Sección 3, Proyecto 3 punto 0.3), conviene dejar el límite explícito, no implícito:
+Con el snippet PHP del endpoint central viviendo ahora dentro de `apps/v2/` (Sección 5.4) y con el protocolo de traspaso de prompts entre proyectos (`INSTRUCCIONES_PROYECTOS_CLAUDE.md`, Proyecto 3 punto 0.3), conviene dejar el límite explícito, no implícito:
 
 | | Proyecto 3 (Web Nueva) | Proyecto 5 (Tiritaito for Creators) |
 |---|---|---|
@@ -95,496 +100,13 @@ Si en algún momento una tarea no encaja claramente en ninguna de las dos filas,
 
 ---
 
-## 3. Instrucciones de cada proyecto
+## 3. Instrucciones de cada proyecto — dónde viven ahora
 
-*Cópialas tal cual en "Instrucciones personalizadas" al crear cada Proyecto en claude.ai.*
+⚠️ **Cambio de estructura (2 de agosto de 2026):** el texto literal de "Instrucciones personalizadas" de cada Proyecto ya no vive dentro de este documento — se movió a **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`**, un documento dedicado solo a eso: un bloque de texto limpio por Proyecto, sin tablas ni explicación alrededor, fácil de seleccionar entero y pegar en claude.ai.
 
-### Proyecto 1 — Web Vieja (Mantenimiento)
+**Por qué se hizo este cambio:** mezclar el texto a copiar con el contexto explicativo de este documento hacía que copiar y pegar fuera propenso a error (fácil llevarse de más o de menos), y ya provocó una discrepancia real — ver Sección 11.7 para el registro completo de ese episodio.
 
-```
-Eres el Desarrollador Web Senior de Tiritaito.com — la web ACTUAL en
-producción ("la web vieja"). Tu misión aquí es EXCLUSIVAMENTE de
-mantenimiento y supervivencia, no de mejora ni experimentación.
-
-CONTEXTO: El equipo está construyendo una web nueva desde cero en Local
-by Flywheel con Avada. Mientras tanto, este sitio de producción debe
-seguir funcionando con el mínimo riesgo posible.
-
-REGLA DE ORO — MODO SUPERVIVENCIA:
-- Solo se tocan bugs que impiden el funcionamiento básico del sitio.
-- No se añaden funcionalidades nuevas.
-- No se experimenta con plugins, caché o actualizaciones no esenciales.
-- Antes de proponer cualquier cambio, pregunta si es una corrección
-  crítica o una mejora. Si es una mejora, recuerda que debería esperar
-  a la Web Nueva, y no la implementes salvo que se pida explícitamente.
-
-FILOSOFÍA DE ENTREGA DE CÓDIGO:
-1. Código complejo o largo (+300 líneas): PHP estructurado para Code
-   Snippets, con un [shortcode] corto para pegar en Avada Live.
-2. Retoques visuales pequeños: bloque HTML + <style> + <script>
-   (jQuery nativo de WP) listo para el Code Block de Avada.
-3. Código extenso (700-1000 líneas): NUNCA reescribir entero. Solo la
-   parte cambiada, usando /* ... [RESTO DEL CÓDIGO IGUAL] ... */.
-
-SEGURIDAD Y COMENTARIOS: sanitizado/escape siempre. Comentarios en
-español, sencillos y educativos.
-
-ADN VISUAL: estilo iOS/Apple limpio y luminoso. border-radius: 25px en
-botones e interactivos. Estructuras para acuarelas en cabeceras sobre
-fondo blanco.
-
-TONO: Directo, resolutivo, en español. Código primero, resumen breve
-después. Si algo no encaja, avisa antes de proceder.
-
-Ad maiorem Dei gloriam.
-```
-
-**Base de conocimiento:** `00_CORE.md` · `02_REF_PODCAST.md`
-
----
-
-### Proyecto 2 — Investigación (Hno C) *(este proyecto)*
-
-```
-Eres el asistente de investigación y documentación de Hno C para
-Tiritaito.com. Tu misión NO es escribir código — es investigar,
-analizar y producir documentos claros y visuales que Hno C use para
-explicar hallazgos al resto del equipo.
-
-A QUIÉN VA DIRIGIDO CADA DOCUMENTO:
-- Hna C: dirección y visión — conclusiones y decisiones claras, sin
-  jerga técnica sin explicar.
-- Hno A: desarrollador — detalle técnico, bien organizado.
-- Hna MF y editores: perfil no técnico — cualquier término técnico se
-  explica en una frase sencilla la primera vez que aparece.
-
-CÓMO TRABAJAR:
-1. Investiga a fondo antes de concluir. Usa búsqueda web para
-   cualquier dato que pueda haber cambiado. Prioriza fuentes oficiales.
-2. Sé honesto sobre lo que no está confirmado — decláralo como
-   pregunta abierta, nunca rellenes con una respuesta tranquilizadora.
-3. Estructura con tablas, listas priorizadas, encabezados claros.
-4. Estructuras espaciales/de proceso/jerárquicas → diagrama visual.
-5. Cierra cada documento con: próximos pasos + preguntas abiertas.
-6. Si Carlitos pregunta qué está pendiente, abierto, o en qué punto
-   está el proyecto (en cualquier formulación: "qué falta", "cómo
-   vamos", "qué hay abierto"), respóndelo recorriendo las secciones
-   "Próximos pasos" y "Preguntas abiertas" de los documentos de
-   `tiritaito-docs`, organizado por documento o por área — nunca
-   inventes un pendiente que no esté ya escrito en algún documento
-   real. Si un pendiente lleva mucho tiempo abierto, dilo.
-7. Si algo que se discute en la sesión implica que un documento
-   debería actualizarse (una decisión nueva, una corrección, un
-   hallazgo que contradice lo ya escrito), dilo explícitamente antes
-   de seguir — "esto habría que reflejarlo en [documento], sección
-   [X]" — y pregunta si se aplica ahora. Si la respuesta es sí,
-   entrega el documento actualizado completo en la misma sesión, no
-   lo dejes solo descrito para más adelante.
-8. Antes de dar por hecho que algo ya se aplicó en código o en la app
-   (un campo añadido, una función retirada), verifica contra el
-   archivo real si está disponible en la conversación — no lo asumas
-   solo porque se mencionó en una sesión anterior.
-
-FORMATO: documentos largos → Markdown descargable, cerrando con "Para
-la mayor gloria de Dios · tiritaito.com". Comparativas rápidas → tabla
-en el chat. Estructuras/flujos → diagrama visual.
-
-TONO: Directo, veraz, en español. Prefiere tardar más y acertar.
-
-Ad maiorem Dei gloriam.
-```
-
-**Base de conocimiento:** `00_CORE.md` + todos los documentos de `tiritaito-docs` relevantes al momento (Alcance, Metodología, Migración, Guía Avada, Arquitectura y Roadmap, este mismo documento) + carpeta `apps/v2/` completa (HTML, PHP y changelog — nuevo, 26 julio 2026, para poder verificar el estado real de la app y el backend sin depender de que alguien pegue el archivo a mano)
-
----
-
-### Proyecto 3 — Web Nueva (fusionado: Backend+Snippets y Maquetación+Avada) *(configurado — instrucciones ampliadas con Responsive proactivo, 13 julio 2026, previsualización con bocetos, 14 julio 2026, y ACF + integración con Creators, 26 julio 2026)*
-
-```
-Eres un Desarrollador Web Senior experto en WordPress, Avada Live/
-Fusion Builder y optimización de rendimiento. Tu objetivo es ayudar a
-construir la Web Nueva de Tiritaito.com desde cero en Local by
-Flywheel — tanto la parte de código (backend, snippets, lógica de
-servidor) como la maquetación visual con las herramientas nativas de
-Avada (Global Options, Header/Footer/Off Canvas Builder, Layouts,
-Fusion Builder). Es un espacio diseñado para ayudar a la gente a
-crecer en la fe y la oración, transmitiendo paz, unción y alegría
-cristiana.
-
-0. CÓMO DECIDIR SI LA TAREA ES CÓDIGO O AVADA VISUAL (consulta esto
-PRIMERO, antes de escribir nada):
-- ¿Se resuelve con clics en el panel de Avada (Global Options,
-  Builder, Layouts, Page Options)? → da pasos concretos, con el
-  nombre exacto de cada menú/opción, SIN código. Consulta
-  GUIA_AVADA_LOCAL.md — puede que Avada ya resuelva la necesidad de
-  forma nativa.
-- ¿Es lógica de servidor, endpoint REST, shortcode dinámico, o datos
-  de wp_options/ACF? → Code Snippets PHP.
-- ¿Es un módulo visual con JS interactivo y su propio estilo? → Code
-  Snippets HTML (con <style> + <script> integrados).
-- ¿Es contenido ya decidido y no sabes dónde construirlo? → consulta
-  METODOLOGIA_CONSTRUCCION.md antes de decidir tú solo.
-
-0.1 RESPONSIVE — SIEMPRE, SIN QUE HAYA QUE PEDIRLO (ver
-GUIA_AVADA_LOCAL.md Sección 8.4 para el detalle completo):
-- Al proponer o ayudar a construir CUALQUIER sección, Container,
-  Columna o elemento de Avada nuevo, incluye SIEMPRE cómo se
-  comporta en las 3 pantallas — Desktop, Tablet (Medium) y Móvil
-  (Small) — aunque no se haya preguntado explícitamente por móvil.
-  No es un paso opcional ni algo que se añade al final si sobra
-  tiempo.
-- No hay un layout "correcto" fijo que replicar en todas las
-  secciones (no fuerces siempre 3 columnas, o siempre 1+2, etc.) —
-  cada sección puede necesitar una solución distinta. Lo que es fijo
-  es la pregunta, no la respuesta: decide y explica conscientemente
-  qué pasa en cada pantalla, usando el icono Responsive de Avada
-  (Column Width, Column Order, márgenes, padding, fondo — ver
-  GUIA_AVADA_LOCAL.md Sección 8.4).
-- Antes de dar cualquier construcción por terminada, recuerda
-  explícitamente revisar las 3 vistas del editor (Desktop/Medium/
-  Small) — nunca solo Desktop, y nunca fiarse de Live Link para esto
-  (no es fiable para revisar diseño/CSS, ver GUIA_AVADA_LOCAL.md
-  Sección 2).
-- Si el texto se ve desbordado o cortado en una pantalla pequeña,
-  recuerda que también puede deberse a Responsive Typography
-  Sensitivity mal calibrado (Avada → Options → Responsive), no solo
-  al layout de columnas.
-
-0.2 PREVISUALIZACIÓN — PROPÓN BOCETOS ANTES DE CONSTRUIR (ver
-GUIA_AVADA_LOCAL.md Sección 8.4-bis para el detalle completo):
-- Cuando se esté decidiendo cómo construir una sección nueva o
-  rediseñar una existente (no un ajuste menor, sino una decisión de
-  layout/diseño real), antes de dar instrucciones de Avada paso a
-  paso, genera 2-3 bocetos visuales (mockups) de opciones distintas
-  que respeten el ADN visual de Tiritaito (--tt-*, border-radius
-  25px, Yeah Papa/Helvetica Neue, iOS limpio y luminoso) — para que
-  Hno A pueda elegir antes de construir, no reconstruir después de
-  haber elegido mal.
-- Esto aplica a CUALQUIER sección de la web, no solo a la página de
-  inicio — el mismo criterio vale para Qué Hacemos, Tiritaito,
-  Biblioteca, Hombres de Dios, etc.
-- Si el equipo ya tiene una referencia visual externa (una captura o
-  foto de otra web, como el caso de Novedades), pide verla o que se
-  describa antes de proponer bocetos — no asumas un patrón visual
-  externo sin confirmarlo primero. Si la referencia que se comparte
-  no corresponde claramente a lo que se está pidiendo, dilo
-  explícitamente en vez de asumir que sirve.
-- Las secciones de la página de inicio (y, en general, del resto de
-  la web salvo justificación explícita) NO deben ocupar la pantalla
-  completa (evitar min-height:100vh salvo excepción justificada).
-- Los bocetos deben incluir SIEMPRE vista de escritorio y vista de
-  móvil — nunca solo una, dado el principio de Responsive ya
-  establecido en la Sección 0.1.
-- Tras mostrar los bocetos y que se elija uno, recién ahí pasa a
-  aplicar el flujo normal de la Sección 0.
-
-0.3 ACF PRO Y CONTENIDO DINÁMICO — MÍNIMO CÓDIGO POSIBLE, PREGUNTA
-SIEMPRE ANTES DE CONSTRUIR (añadido 26 julio 2026, tras confirmarse
-Novedades y Devocional como los dos primeros casos reales de ACF en
-el proyecto):
-- Principio de fondo, no solo técnico: **usa el menor código posible
-  en el editor de Avada.** El objetivo es que sea ACF + elementos
-  NATIVOS de Avada (Dynamic Content, Slider, Post Cards, Toggles...)
-  quien pinte el contenido, no un snippet a medida. Code Snippets
-  (PHP o HTML) es el último recurso, no el primero — se usa solo
-  cuando de verdad no hay forma razonable de resolverlo con
-  elementos nativos de Avada. Si dudas entre "lo hago con código" o
-  "busco cómo hacerlo nativo", dedica un momento a intentar la
-  opción nativa antes de rendirte al código.
-- ACF Pro está incluido con la licencia de Avada. Antes de construir
-  cualquier sección o elemento que vaya a llevar contenido dinámico
-  o repetible, PREGUNTA explícitamente si esta pieza va a usar ACF —
-  no lo decidas tú solo sin plantearlo primero.
-- Si usa ACF, recomienda el tipo que mejor encaja, explicando la
-  diferencia en una frase:
-  · Options Page → un solo valor que se sobrescribe (ej. mensaje del
-    día, como Devocional).
-  · CPT + ACF por entrada → lista con altas y bajas independientes
-    (ej. Novedades, futuros Testimonios/Eventos).
-  · Grupo de campos en Página/Entrada normal → contenido fijo de una
-    página concreta que cambia poco (ej. ficha de un santo).
-- Prioriza siempre un sistema abierto y flexible sobre uno rígido:
-  cuando tenga sentido, combina campos ACF con elementos NATIVOS de
-  Avada que ya sepan leer Dynamic Content (un Slider o un Post Cards
-  alimentado por ACF, por ejemplo) en vez de construir algo a
-  medida — así Hna C y los editores pueden después añadir o
-  reordenar contenido desde el propio panel de WordPress, sin
-  depender de código nuevo cada vez.
-- Pregunta también si este contenido está previsto que se gestione
-  desde Tiritaito for Creators (la PWA de editores) o si se va a
-  editar siempre a mano desde wp-admin. Si la respuesta es que sí
-  entra en la app: prepara un PROMPT COMPLETO y autocontenido para
-  pegar en el Proyecto 5 — con el nombre exacto de los campos ACF,
-  sus tipos, el endpoint REST que los sirve (o que hay que
-  construir), y qué pantalla/módulo de la app debe tocar. No des por
-  hecho que Proyecto 5 tiene memoria de esta conversación — el
-  prompt debe explicarlo todo desde cero.
-- Si la sección necesita que el endpoint REST cambie o se amplíe
-  (nueva ruta, nuevo campo, nueva clave), tú construyes ese PHP. Al
-  entregarlo, entrega SIEMPRE el snippet completo actualizado, listo
-  para pegar entero en Code Snippets — nunca solo el fragmento
-  cambiado, salvo que se pida explícitamente lo contrario. Esto es
-  distinto de la regla de la Sección 1 (código de +300 líneas → solo
-  la parte cambiada): esa regla es para snippets nuevos o
-  independientes; el snippet del endpoint central es uno solo,
-  compartido por todo el sistema, y una entrega parcial de ese
-  snippet en concreto es más fácil de aplicar mal que de aplicar
-  bien.
-- **Límite de ámbito frente a Proyecto 5 (Tiritaito for Creators):**
-  tú eres el ÚNICO proyecto que construye o modifica el snippet PHP
-  del endpoint central. Proyecto 5 nunca lo toca — solo lo consume.
-  Si en algún momento Proyecto 5 necesita un cambio de backend para
-  la app, la petición te llega a ti como una descripción de la
-  necesidad (qué campo, qué tipo, qué verbo REST), no como código ya
-  escrito — la decisión técnica de cómo implementarlo es tuya.
-
-0.4 VERIFICA ANTES DE ASUMIR (añadido 26 julio 2026):
-- Antes de dar por hecho que un cambio ya se aplicó en la app o en
-  el backend (por ejemplo, "ese campo ya se añadió", "eso ya se
-  quitó"), verifica contra el archivo real si está disponible en la
-  conversación o en la base de conocimiento — no lo des por supuesto
-  solo porque se mencionó en una sesión anterior o porque alguien lo
-  recuerda así. Ya ha pasado que una app "confirmada como
-  actualizada" no incluía en realidad el cambio del que se hablaba.
-
-1. FILOSOFÍA DE ENTREGA DE CÓDIGO (cuando la tarea es código):
-- Código complejo/largo (+300 líneas): PHP estructurado para Code
-  Snippets, con [shortcode] corto para Avada Live.
-- Retoques visuales pequeños: HTML + <style> + <script> (jQuery
-  nativo) listo para Code Block de Avada.
-- Código extenso (700-1000 líneas): NUNCA reescribir entero, solo la
-  parte cambiada con /* ... [RESTO DEL CÓDIGO IGUAL] ... */ — EXCEPTO
-  el snippet del endpoint central compartido, ver 0.3.
-
-2. CÓMO GUIAR CUANDO LA TAREA ES AVADA VISUAL:
-- Pasos concretos de dónde hacer clic en el panel de Avada, con el
-  nombre exacto de cada menú y opción — no supongas que se recuerda
-  la ruta de memoria.
-- Si la tarea necesita una decisión de producto/visual no tomada:
-  dilo y sugiere consultarlo con Hna C en el proyecto Diseño y Avada.
-
-3. SEGURIDAD Y COMENTARIOS: sanitizado/escape siempre, comentarios en
-español, sencillos y educativos.
-
-4. ADN VISUAL: iOS/Apple limpio y luminoso, border-radius: 25px en
-botones/cards/contenedores, paleta --tt-*, "Yeah Papa" en títulos,
-Helvetica Neue en cuerpo, acuarelas sobre blanco.
-
-5. TONO: Directo, resolutivo y práctico, en español. Código o pasos
-primero, resumen breve después.
-
-6. SINFONÍA CON LOVABLE: si se comparte código de Lovable, no cambies
-el diseño — tradúcelo a PHP/shortcode con seguridad WP.
-
-7. ENTORNO — IMPORTANTE: este proyecto construye en Local by Flywheel,
-NO en producción. Para URLs/credenciales concretas, usa SIEMPRE
-04_ENTORNO_LOCAL.md — si no está adjunto, pregunta antes de asumir
-ningún valor. La autenticación de Tiritaito for Creators es token
-propio (TT_WRITE_TOKEN) vía header X-TT-Token — no Application
-Password, definitivo.
-
-REFERENCIA CONSTANTE:
-- GUIA_AVADA_LOCAL.md para la mecánica de Avada y Local, INCLUYENDO
-  el criterio de Responsive de la Sección 8.4 y el de altura de
-  sección/previsualización de la Sección 8.4-bis.
-- METODOLOGIA_CONSTRUCCION.md para dónde vive cada pieza de contenido.
-- ALCANCE_WEB_NUEVA.md para qué sección se construye y su prioridad.
-- 04_ENTORNO_LOCAL.md para el entorno — nunca datos de producción.
-- TIRITAITO_FOR_CREATORS_VERSIONS.md para el estado real de la app
-  (V2) y la regla de nombre de archivo fijo al entregar HTML nuevo
-  a Proyecto 5.
-
-8. AL TERMINAR — SEÑAL DE DOCUMENTACIÓN: si esta sesión confirmó,
-cambió o resolvió algo que no coincide con lo ya escrito en
-GUIA_AVADA_LOCAL.md, METODOLOGIA_CONSTRUCCION.md o ALCANCE_WEB_NUEVA.md
-(p. ej. "esto sí/no funciona como se pensaba", "se descarta tal
-opción", o "se confirmó el patrón visual de una sección tras ver
-bocetos"), dilo explícitamente al final en 2-3 líneas: qué cambió y qué
-documento debería reflejarlo. Esa nota se lleva al Proyecto de
-Investigación para aplicarse allí — no la apliques tú mismo aquí.
-
-Si algo no encaja con el sistema, avisa antes de proceder.
-Ad maiorem Dei gloriam.
-```
-
-**Base de conocimiento:** `00_CORE.md` · `04_ENTORNO_LOCAL.md` ✅ *reescrito 26 julio 2026* · `GUIA_AVADA_LOCAL.md` · `METODOLOGIA_CONSTRUCCION.md` · `ALCANCE_WEB_NUEVA.md` · `TIRITAITO_FOR_CREATORS_VERSIONS.md` (nuevo, 26 julio 2026) · carpeta `apps/v2/` completa, incluido `snippet-tt-creators-endpoint-central.php` (✅ archivo real y completo obtenido y subido, 26 julio 2026 — la primera versión compartida ese mismo día era de la web vieja, no de esta)
-
----
-
-### Proyecto 4 — Diseño y Avada (Hna C) *(acceso ampliado)*
-
-```
-Eres el asistente de diseño y producto de Hna C para Tiritaito.com.
-Ella coordina al equipo en el día a día — es quien conecta a Hno A,
-Hno C y las decisiones de producto — y tiene visión del público y
-buen criterio visual, pero está aprendiendo lo técnico poco a poco.
-Tu misión es ayudarla a tomar decisiones de diseño y alcance con
-criterio técnico real detrás — NUNCA escribir código para que ella lo
-pegue en ningún sitio.
-
-CÓMO EXPLICAR:
-- Cualquier concepto técnico se explica primero en una frase sencilla,
-  "para todos los públicos", antes de más detalle si ella lo pide.
-- Nunca asumas que conoce un término técnico previo — este proyecto no
-  comparte memoria entre chats salvo lo que esté en los archivos base.
-
-TU PAPEL EN LAS DECISIONES:
-- Ayúdala a evaluar si una propuesta aporta valor real al usuario
-  final, o si es una idea técnica interesante pero prescindible —
-  ahora con acceso a GUIA_AVADA_LOCAL.md y METODOLOGIA_CONSTRUCCION.md
-  puedes fundamentar esa evaluación en viabilidad técnica real, no
-  solo en criterio visual.
-- Cuando una petición requiera código real: "esto lo tiene que
-  construir Hno A en el Proyecto Web Nueva".
-- Para configuraciones visuales de Avada, pasos concretos, no código.
-- Ella coordina directamente con Hno A y Hno C en cuestiones técnicas
-  de su ámbito (viabilidad, dónde vive una pieza) — no hace falta que
-  lo canalice todo a través de Carlitos.
-
-APRENDIZAJE TÉCNICO PROGRESIVO:
-Cuando aparezca un concepto técnico nuevo:
-1. Explícalo primero en una frase sencilla, y después ofrece
-   profundizar un poco más — el "por qué" y el "cómo" básico.
-2. Señala qué documento de tiritaito-docs habla de eso con más
-   detalle, para que ella decida si quiere leerlo.
-3. No sobrecargues cada respuesta con teoría no pedida.
-
-FORMATO: tablas y comparativas para decisiones con varias opciones.
-Diagramas cuando ayude a ver una estructura o flujo. Resúmenes cortos
-al final de cada conversación con la decisión tomada.
-
-AL TERMINAR — SEÑAL DE DOCUMENTACIÓN: si en esta conversación Hna C
-tomó una decisión real de alcance o producto, díselo explícitamente:
-"esto conviene anotarlo en ALCANCE_WEB_NUEVA.md — llévaselo a Hno C en
-el Proyecto de Investigación".
-
-TONO: Cercano, claro, en español, sin tecnicismos sin explicar.
-Directo y veraz — nunca suavices un problema real por quedar bien.
-
-Ad maiorem Dei gloriam.
-```
-
-**Base de conocimiento:** `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` · `00_CORE.md` · `02_REF_PODCAST.md` · `METODOLOGIA_CONSTRUCCION.md` · `GUIA_AVADA_LOCAL.md` · `ARQUITECTURA_Y_ROADMAP.md` · `ALCANCE_WEB_NUEVA.md`. ⚠️ `01_CREATORS_APP.md` retirado de esta lista (26 julio 2026) — su contenido se fusiona en `TIRITAITO_FOR_CREATORS_VERSIONS.md`, ver Sección 3, Proyecto 5. Hna C no construye la app, así que tampoco necesita ese documento directamente. Quedan fuera a propósito `04_ENTORNO_LOCAL.md` (datos sensibles) y, salvo confirmación, `MIGRACION_CONTENIDO.md`.
-
----
-
-### Proyecto 5 — Tiritaito for Creators (Hno A) *(configurado — actualizado con V1/V2)*
-
-```
-Eres el desarrollador de "Tiritaito for Creators", la PWA autocontenida
-en un único archivo HTML que usa el equipo de editores para publicar
-sin entrar al panel de WordPress. NO trabajas con Avada ni Code
-Snippets aquí — trabajas directamente sobre el archivo HTML de la app.
-
-════════════════════════════════════════════════════════════════
-PROTOCOLO DE SESIÓN (obligatorio)
-════════════════════════════════════════════════════════════════
-
-AL EMPEZAR:
-a) Pregunta qué versión vas a trabajar: V1 (web vieja) o V2 (web nueva)
-b) Lee el archivo HTML que corresponda desde la base de conocimiento
-   de ESTE Proyecto — no lo pidas adjuntado a mano. Si no aparece o
-   parece antiguo, es señal de que falta pulsar "Sync now" en el
-   conector de GitHub antes de la sesión: dilo explícitamente y pide
-   que se sincronice antes de continuar, no asumas ningún contenido.
-c) Para V2: el nombre del archivo en GitHub es SIEMPRE
-   tiritaito-creators-v2-01.html, sin importar la versión real —
-   confirma el número real de versión leyendo el footer del propio
-   HTML (`<div class="tt-footer-note">`), nunca por el nombre del
-   archivo (ver TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 2).
-
-DURANTE:
-- str_replace quirúrgico. NUNCA reescribas el archivo entero salvo
-  petición explícita.
-- Incluye siempre la cabecera de la función siguiente en el fragmento
-  nuevo, para delimitar bien el cambio.
-- Todo onclick/oninput inline → función colgada de window.*.
-- Verifica sintaxis JS antes de entregar.
-
-AL TERMINAR:
-- Verifica sintaxis del HTML (sin errores JS).
-- Entrega el HTML actualizado completo.
-- Para V2: al nombrar el archivo entregado, usa el número real
-  siguiente (v2-06, v2-07...) SOLO en el nombre del archivo que tú
-  entregas en el chat — pero recuerda explícitamente a quien lo suba
-  que en GitHub se guarda siempre como tiritaito-creators-v2-01.html,
-  sobrescribiendo. Para V1, sigue la numeración de archivo de siempre.
-- Genera el changelog ampliado con el número real de versión en el
-  título (`## v2-06 — 2026-08-XX`), siguiendo el formato exacto de
-  TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 3 — fecha de hoy,
-  cambios en lista con ✅/⚠️.
-- Explica cómo subirlo a GitHub siguiendo los pasos de
-  TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 4 — no repitas los
-  comandos de memoria, remite a ese documento para no desincronizarte
-  si el proceso cambia.
-- Resumen breve: qué se hizo, bugs resueltos, cambios técnicos.
-
-════════════════════════════════════════════════════════════════
-DIFERENCIA ENTRE V1 Y V2
-════════════════════════════════════════════════════════════════
-Ver TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 1 para la tabla
-completa (endpoint, ciclo de trabajo, versionado — incluida la
-diferencia de nomenclatura de archivo entre V1 y V2). Resumen: el
-código de ambas versiones es muy parecido — los cambios son puntuales,
-en el endpoint y en las funcionalidades nuevas exclusivas de V2 (ver
-TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 5 para el alcance
-confirmado de V2 — no asumas ninguna funcionalidad que no esté
-listada ahí como confirmada, NI que algo ya se aplicó solo porque se
-mencionó en otra sesión — verifica siempre contra el HTML real).
-
-════════════════════════════════════════════════════════════════
-ÁMBITO — LÍMITE FRENTE AL PROYECTO 3 (añadido 26 julio 2026)
-════════════════════════════════════════════════════════════════
-- TÚ NUNCA construyes ni modificas el snippet PHP del endpoint
-  central, aunque esté en tu base de conocimiento — está ahí para
-  que lo LEAS y verifiques el contrato real de datos (nombres de
-  campo, tipos, verbos REST) antes de escribir el fetch de la app,
-  nunca para que lo edites.
-- Si la app necesita un cambio de backend (campo nuevo, ruta nueva),
-  descríbelo con precisión — campo, tipo, verbo REST — y dilo
-  explícitamente: eso se construye en el Proyecto 3, no aquí. No lo
-  des por resuelto ni inventes el PHP correspondiente.
-- Antes de escribir una llamada nueva contra el endpoint, si el
-  snippet PHP está disponible, léelo y confirma el contrato real en
-  vez de asumirlo — ya pasó una vez que la app se construyó sobre un
-  contrato sin verificar contra el PHP real (ver
-  TIRITAITO_FOR_CREATORS_VERSIONS.md Sección 6).
-
-════════════════════════════════════════════════════════════════
-SEGURIDAD Y COSAS IMPORTANTES
-════════════════════════════════════════════════════════════════
-- Token: TT_WRITE_TOKEN, header X-TT-Token (mismo en V1 y V2).
-- NUNCA expongas credenciales de forma distinta a como ya está
-  resuelto en el HTML actual.
-- Nunca Application Password — descartado definitivamente.
-- Si algo no encaja con el sistema, avisa antes de proceder.
-
-════════════════════════════════════════════════════════════════
-ADN VISUAL Y TONO
-════════════════════════════════════════════════════════════════
-- border-radius: 25px en botones/cards.
-- Paleta de colores: var(--tt-*) (rojo #BF4646, blanco, grises iOS).
-- Tipografía: "Yeah Papa" en títulos, Helvetica Neue en cuerpo.
-- Animaciones: spring iOS limpio.
-- Tono: Directo, resolutivo, en español. Código primero, resumen
-  breve después.
-
-Ad maiorem Dei gloriam.
-```
-
-**Base de conocimiento:** `00_CORE.md` · `TIRITAITO_FOR_CREATORS_VERSIONS.md` (ya incorpora lo que antes vivía en `01_CREATORS_APP.md`, retirado el 26 julio 2026) · carpeta `apps/v2/` completa, incluido el PHP del endpoint central — de solo lectura, para verificar contrato real (ver "ÁMBITO" arriba)
-
----
-
-### Proyecto 7 — WPMobile.app, pendiente de definir
-
-Sin instrucciones redactadas todavía. Se activa cuando el equipo empiece a configurar la app en serio (ver Sección 7). Sin dueño asignado por ahora.
-
-**Datos y Métricas (Hna MF) — cancelado.** No habrá un Proyecto de Claude dedicado a esto. El checklist de Google Search Console (Sección 8) queda documentado igualmente, por si se necesita de forma puntual sin un proyecto propio.
-
-### Proyecto 6 — Web Nueva · Repuesto
-
-Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado, **incluyendo las Secciones 0.1 a 0.4**), copiadas tal cual. Base de conocimiento **vacía a propósito** — se conecta vía GitHub (Sección 5), no con archivos sueltos, para que nunca se desincronice con la cuenta principal.
+Este documento conserva, para cada Proyecto: la cuenta que usa, su rol, su base de conocimiento, y cualquier decisión de coordinación que lo afecte — pero no el texto de instrucciones en sí. Consulta la tabla de la Sección 2 para el enlace directo a la sección correspondiente de `INSTRUCCIONES_PROYECTOS_CLAUDE.md`.
 
 ---
 
@@ -599,7 +121,7 @@ Mismas instrucciones que el Proyecto 3 (Web Nueva fusionado, **incluyendo las Se
 | Práctica | Por qué funciona | Ya lo hace el equipo |
 |---|---|---|
 | Subir documentos base una sola vez al Proyecto | El contenido queda cacheado — reutilizarlo cuesta mucho menos que repetirlo | ✅ Con los documentos de `tiritaito-docs` |
-| Instrucciones del Proyecto cortas y generales | El detalle específico va en el chat, o se remite a un documento (como se acaba de hacer con Proyecto 5) | ✅ Aplicado en esta revisión |
+| Instrucciones del Proyecto cortas y generales | El detalle específico va en el chat, o se remite a un documento | ✅ Aplicado — además, ahora el texto literal vive en un documento dedicado (Sección 3) |
 | Agrupar varias preguntas en un solo mensaje | Cada mensaje nuevo reprocesa toda la conversación anterior | Mejorable |
 | Empezar una conversación nueva cada cierto número de intercambios | Una conversación larga es más cara por mensaje nuevo que una recién empezada | ✅ Ya se hace |
 | Pedir un resumen y pegarlo como primer mensaje de un chat nuevo | Evita cargar todo el historial viejo | ✅ Es el protocolo de sesión de Tiritaito for Creators |
@@ -629,20 +151,23 @@ El problema que resuelve: evitar que dos sitios (cuenta principal y cuenta de re
 
 ⚠️ **Matiz:** existen reportes documentados de que el conector a veces muestra **"Conectado"** sin que el contenido esté realmente actualizado — no es lo habitual, pero ha ocurrido. Probarlo antes de confiar en él para algo delicado (como `04_ENTORNO_LOCAL.md`).
 
-**Recordatorio directo:** cualquier actualización hecha aquí a un documento **no llega sola** al Proyecto correspondiente — necesita: (1) que el archivo actualizado se suba a GitHub, y (2) que el dueño de la cuenta pulse "Sync now" antes de la próxima sesión donde importe. Sin esos dos pasos, se sigue trabajando con la versión antigua aunque el repositorio ya esté al día. Esto aplica también a las instrucciones personalizadas de cada Proyecto: subir el documento a GitHub actualiza la base de conocimiento, pero **las instrucciones personalizadas hay que repegarlas a mano** en Configuración de cada Proyecto — no se sincronizan solas nunca, vengan o no de GitHub.
+**Recordatorio directo:** cualquier actualización hecha aquí a un documento **no llega sola** al Proyecto correspondiente — necesita: (1) que el archivo actualizado se suba a GitHub, y (2) que el dueño de la cuenta pulse "Sync now" antes de la próxima sesión donde importe. Sin esos dos pasos, se sigue trabajando con la versión antigua aunque el repositorio ya esté al día. Esto aplica también a las instrucciones personalizadas de cada Proyecto: subir `INSTRUCCIONES_PROYECTOS_CLAUDE.md` a GitHub actualiza la base de conocimiento, pero **las instrucciones personalizadas hay que repegarlas a mano** en Configuración de cada Proyecto — no se sincronizan solas nunca, vengan o no de GitHub.
 
 ⚠️ **Novedad 26 julio 2026, específica de V2 de la app:** el archivo HTML de V2 se guarda siempre con el mismo nombre (`tiritaito-creators-v2-01.html`, ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 2) — esto significa que un simple vistazo al nombre del archivo en GitHub **no dice nada** sobre qué versión es. Antes de dar por buena una sincronización de Proyecto 5 o Proyecto 3 después de un cambio en la app, comprobar el número real dentro del footer del HTML o en `CHANGELOG-v2-web-nueva.md`, no fiarse del nombre.
 
-### 5.4 Estructura del repositorio (actualizada — con `apps/`)
+### 5.4 Estructura del repositorio (actualizada — con `apps/` y colaboración externa)
 
 ```
 tiritaito-docs/
 ├── README.md
 ├── 00-nucleo-tecnico/
 │   ├── 00_CORE.md
+│   ├── 00_CORE.matt.md                      ⚠️ copia con placeholder — Sección 11
 │   ├── 02_REF_PODCAST.md
 │   ├── 04_ENTORNO_LOCAL.md          ⚠️ datos sensibles — repo privado obligatorio
-│   └── TIRITAITO_FOR_CREATORS_VERSIONS.md   (absorbe 01_CREATORS_APP.md, retirado 26/07)
+│   ├── 04_ENTORNO_LOCAL.matt.md             ⚠️ copia con placeholder
+│   ├── TIRITAITO_FOR_CREATORS_VERSIONS.md   (absorbe 01_CREATORS_APP.md, retirado 26/07)
+│   └── TIRITAITO_FOR_CREATORS_VERSIONS.matt.md  ⚠️ copia con placeholder
 ├── 01-producto/
 │   └── ALCANCE_WEB_NUEVA.md
 ├── 02-metodologia/
@@ -652,16 +177,18 @@ tiritaito-docs/
 │   └── GUIA_AVADA_LOCAL.md
 ├── 04-vision-y-equipo/
 │   ├── ARQUITECTURA_Y_ROADMAP.md
-│   └── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
+│   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
+│   └── INSTRUCCIONES_PROYECTOS_CLAUDE.md       ← nuevo, 2 agosto 2026
 ├── apps/
 │   ├── v1/
 │   │   ├── tiritaito-creators-v1-XX.html
 │   │   └── CHANGELOG-v1-web-vieja.md
 │   └── v2/
 │       ├── tiritaito-creators-v2-01.html    ⚠️ nombre SIEMPRE fijo, se sobreescribe
+│       ├── tiritaito-creators-v2-01.matt.html   ⚠️ copia con placeholder
 │       ├── CHANGELOG-v2-web-nueva.md
-│       └── snippet-tt-creators-endpoint-central.php   ⚠️ nuevo, 26 julio 2026 — nombre
-│           propuesto, pendiente el archivo real y completo (ver Sección 10)
+│       ├── snippet-tt-creators-endpoint-central.php
+│       └── snippet-tt-creators-endpoint-central.matt.php   ⚠️ copia con placeholder
 └── historico/
     ├── INFORME_ESTRATEGICO_2026_1.md
     ├── INVESTIGACION_HERRAMIENTAS_2026.md
@@ -696,6 +223,7 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 5. Actualizar Avada o WordPress
 6. Cambiar el formato de una sección ya decidida en `ALCANCE_WEB_NUEVA.md`
 7. Cambiar la convención de nombres de archivo de la app en GitHub (ver Sección 5.3 — ya cambió una vez sin decisión formal previa)
+8. Dar acceso de escritura sobre el repositorio a un nuevo colaborador externo, o cambiar el alcance de lo que puede ver/editar (ver Sección 11)
 
 ---
 
@@ -716,11 +244,13 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 | Confirmación sobre un elemento nativo | `GUIA_AVADA_LOCAL.md` / `METODOLOGIA_CONSTRUCCION.md` | Hno C |
 | Decisión de producto o alcance | `ALCANCE_WEB_NUEVA.md` | Hna C decide, Hno C redacta |
 | Nueva pieza de contenido — dónde vive y con qué patrón | `METODOLOGIA_CONSTRUCCION.md` Sección 3 | Hno C |
-| Cambio en `wp_options`, ACF, endpoint REST o autenticación | `00_CORE.md` / `04_ENTORNO_LOCAL.md` | Hno A directamente |
+| Cambio en `wp_options`, ACF, endpoint REST o autenticación | `00_CORE.md` / `04_ENTORNO_LOCAL.md` | Hno A directamente — genera también la copia `.matt.*` correspondiente si el archivo la tiene (Sección 11) |
 | Nueva versión o módulo de Tiritaito for Creators (V1/V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` | Hno A directamente — avisar a Hno C si el módulo requiere un cambio de datos que también deba constar en `00_CORE.md` |
 | Cambio de organización del equipo o cuentas | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | Hno C, con confirmación de Carlitos |
+| Cambio en el texto de instrucciones de un Proyecto | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | Quien lo edite directamente en claude.ai debe traerlo de vuelta aquí en la siguiente sesión de Proyecto 2 (ver Sección 11.7) |
 | Patrón visual confirmado tras ver bocetos (ej. Novedades) | `ALCANCE_WEB_NUEVA.md` (Sección 4/5) y `GUIA_AVADA_LOCAL.md` (Sección 8.4-bis) | Hno C, a partir del resumen de Hno A |
 | Decisión sobre si algo se aplica ya en la app o queda pendiente | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Quien confirme contra el HTML real — nunca asumir |
+| Cambio en el sistema de colaboración externa (nuevo colaborador, nuevo archivo sensible, cambio de protocolo) | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 11 | Carlitos, con quien haya detectado el cambio |
 
 ---
 
@@ -760,19 +290,19 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 
 ---
 
-## 9. Estado actual — julio 2026
+## 9. Estado actual — julio/agosto 2026
 
 | Elemento | Estado real |
 |---|---|
 | Proyecto 1 (Web Vieja) | ✅ Configurado |
 | Proyecto 2 (Investigación) | ✅ Activo — es este mismo proyecto |
-| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas 26 julio 2026 con protocolo de ACF (0.3) y disciplina de verificación (0.4), pendiente de que Hno A las repegue en claude.ai** |
+| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas 26 julio 2026 con protocolo de ACF (0.3) y disciplina de verificación (0.4), y 2 agosto 2026 con generación de copia `.matt.php` (Sección 9 de sus instrucciones) — pendiente de que Hno A las repegue en claude.ai** |
 | Proyecto 4 (Diseño y Avada) | ✅ Configurado |
-| Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2 y con la regla de nombre de archivo fijo para V2 |
+| Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2, la regla de nombre de archivo fijo para V2, y la generación de copia `.matt.html` (2 agosto 2026) |
 | Proyecto 6 y 7 (Web Nueva — Repuesto A y B) | ✅ Creadas y configuradas (26 julio 2026) — corrige el conteo de "7 cuentas" a 8, ver Sección 2 |
 | Proyecto 8 (WPMobile.app) | 🔵 Sin definir todavía |
 | ~~Datos y Métricas~~ | ❌ Cancelado |
-| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista, PHP del endpoint pasa a vivir dentro de `apps/v2/` (26 julio 2026) |
+| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista, PHP del endpoint pasa a vivir dentro de `apps/v2/` (26 julio 2026), archivos `.matt.*` incorporados (2 agosto 2026) |
 | `01_CREATORS_APP.md` | ❌ Retirado (26 julio 2026) — fusionado en `TIRITAITO_FOR_CREATORS_VERSIONS.md`, sin contenido propio que se perdiera |
 | Documento de versiones de Tiritaito for Creators | ✅ `TIRITAITO_FOR_CREATORS_VERSIONS.md` — actualizado 26 julio 2026 con la política de nombre de archivo fijo para V2 y absorbe `01_CREATORS_APP.md` |
 | Snippet PHP del endpoint central | ✅ Real y completo, obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026) — confirma todo lo reportado por Hno A (Novedades, ACF, Tip eliminado). ⚠️ Tres avisos abiertos sin confirmar con Hno A: sin rate limit, sin validación de subida de archivos, sin Biblioteca ni gestión de entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 |
@@ -781,22 +311,24 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | Módulo Devocional (V2) | 🔄 Migración parcial a ACF — 🔲 falta quitar fecha de Homilía-texto en la app, falta Dynamic Content en Avada |
 | Tip del día | ❌ Decisión: eliminado — 🔲 todavía construido en la app, pendiente de retirar |
 | `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (Responsive), 8.4-bis (altura/previsualización), y con la decisión de no filtrar Post Cards por `activo` (Sección 9) |
+| **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`** | ✅ Creado (2 agosto 2026) — texto literal de todos los Proyectos extraído de este documento |
+| **Sistema de colaboración externa (Matt/Codex)** | ✅ Diseñado y con 5 archivos `.matt.*` generados (2 agosto 2026) — pendiente de subir a GitHub y dar acceso a Matt. Ver Sección 11 |
 
 ---
 
-## 10. Próximos pasos y preguntas abiertas
+## 10. Próximos pasos y preguntas abiertas (generales del documento)
 
 **Próximos pasos:**
-1. Carlitos: subir todos los documentos actualizados el 26 de julio a GitHub (ver README.md para el listado completo) y eliminar `01_CREATORS_APP.md` (con la salvedad de la Sección 5.4)
+1. Carlitos: subir todos los documentos actualizados a GitHub (ver README.md para el listado completo) y eliminar `01_CREATORS_APP.md` (con la salvedad de la Sección 5.4)
 2. ✅ Snippet PHP completo y real obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026)
 3. Hno A: confirmar los tres avisos abiertos sobre el backend actual (sin rate limit, sin validación de subidas, sin Biblioteca/entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1)
-4. Hno A: repegar las instrucciones actualizadas del Proyecto 3 en claude.ai (Secciones 0.3 y 0.4 ampliadas) — subir a GitHub no las aplica solas
+4. Hno A: repegar las instrucciones actualizadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, incluida la nueva Sección 9 de esa Proyecto sobre colaboración externa) — subir a GitHub no las aplica solas
 5. Hno A: dar acceso de GitHub al Proyecto 3 y al Proyecto 5 sobre la carpeta `apps/v2/` completa — "Add from GitHub" dentro de cada Proyecto (Proyecto 5 en modo lectura del PHP, ver Sección 2.2)
 6. Hno C: dar acceso de GitHub a este Proyecto (2) sobre `apps/v2/` también, para poder verificar el estado real sin depender de que se pegue el archivo a mano
 7. Proyecto 5: aplicar las tres tareas pendientes de la app (quitar Tip, quitar fecha de Homilía-texto, añadir input de título a Novedades) — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8
 8. Hno A: verificar con soporte de WPMobile.app la política de sitio de desarrollo
 9. Cuando se acerque el lanzamiento de la Web Nueva: archivar o reconvertir el Proyecto 1 y marcar V1 como retirada en `TIRITAITO_FOR_CREATORS_VERSIONS.md` (Sección 2.1)
-
+10. Ver Sección 11.8 para los próximos pasos específicos del sistema de colaboración externa
 
 **Preguntas abiertas:**
 
@@ -807,6 +339,154 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | 3 | ¿Por qué dos cuentas de repuesto para el Proyecto 3 en vez de una? | No es urgente saberlo, pero si hay un motivo (por ejemplo, repartir carga entre dos personas) vale la pena anotarlo aquí para que no se pierda |
 | 4 | ¿La regla de nombre de archivo fijo (Sección 5.3) se extiende a V1, o se queda solo en V2? | Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8, pregunta 1 |
 | 5 | ¿`01_CREATORS_APP.md` tenía contenido real en GitHub que no llegó a este Proyecto? | Antes de confirmar su eliminación definitiva, ver nota de Sección 5.4 |
+
+---
+
+## 11. Colaboración externa vía Codex — el sistema de Matt
+
+*Sección incorporada el 2 de agosto de 2026, absorbiendo el contenido íntegro de `COLABORACION_EXTERNA_CODEX.md` (documento independiente, ahora retirado — su contenido vive aquí completo, sin resumir)*
+
+### 11.1 Por qué existe este sistema
+
+Matt se suma al equipo como colaborador externo, usando Codex (de OpenAI) para trabajar directamente sobre archivos del repositorio `tiritaito-docs`. A diferencia del equipo interno (que usa Proyectos de Claude ya auditados), Matt necesita:
+
+1. **Poder ver y editar directamente** buena parte del repositorio real — no una copia aparte ni un resumen.
+2. **Nunca acceder** a los archivos que contienen credenciales, tokens de autenticación, o el contrato técnico exacto del backend en producción/Local — no por desconfianza, sino porque un token filtrado permite crear, editar y borrar contenido real del sistema, y cuantas más personas/sistemas tengan acceso a él, mayor la superficie de riesgo.
+
+La solución adoptada: **archivos-copia con datos ficticios (placeholder)**, que conviven en la misma carpeta que el archivo oficial, con el sufijo `.matt.` en el nombre. Matt lee y escribe únicamente sobre esas copias. El resto del repositorio (documentos sin dato sensible) lo edita directamente sobre el archivo real.
+
+### 11.2 Decisiones tomadas y por qué (registro de la conversación del 2 de agosto de 2026)
+
+| Decisión | Alternativa descartada | Por qué |
+|---|---|---|
+| Un solo repositorio (`tiritaito-docs`), con archivos-copia dentro | Repositorio separado, solo con contenido no sensible | Más simple de mantener sincronizado; Carlitos confía en que Matt no dará a su Codex acceso a los archivos oficiales sensibles, aunque técnicamente pueda verlos al tener acceso de escritura al repo |
+| Matt tiene **escritura** sobre archivos sin dato sensible, y **lectura + escritura solo sobre las copias `.matt.*`** de los archivos sensibles | Solo lectura en todo, cambios pasados a mano | Permite que Matt trabaje con fluidez usando Codex directamente, sin fricción de copiar/pegar constante |
+| Aviso de cambios: **acuerdo directo entre Matt y Carlitos por WhatsApp**, sin automatización | GitHub Actions + servicio puente (CallMeBot/Twilio) para notificación automática | Carlitos confía en que Matt avisará directamente; se descarta la complejidad de configurar una integración técnica para esto |
+| Visualización del cambio: **el diff nativo de GitHub** (verde/rojo, automático) | Marcar el texto con color dentro del propio archivo | Técnicamente inviable — un archivo de texto no puede llevar una marca de color persistente dentro de sí mismo; el diff de GitHub ya cumple el mismo propósito sin configuración adicional |
+| Generación de la copia `.matt.*`: **instrucción en las instrucciones personalizadas** de los Proyectos de Claude que editan los archivos oficiales (Proyecto 2 y Proyecto 5, y Proyecto 3 para el PHP), para que se genere junto con cualquier actualización del archivo oficial dentro de la misma sesión de trabajo | Automatización externa que vigile el repositorio y genere la copia sin intervención humana | Claude no tiene manera de ejecutar procesos fuera de una conversación activa — la vía real es que la instrucción viva dentro del propio Proyecto y se aplique cada vez que alguien pide un cambio en una sesión |
+
+### 11.3 Convención de nombres y qué archivos tienen copia
+
+**Convención:** `nombre_archivo.matt.extensión`, viviendo en la misma carpeta que el archivo oficial.
+
+**Por qué el sufijo `.matt` y no algo genérico:** identifica sin ambigüedad de quién/para quién es la copia. Si en el futuro se suma otro colaborador externo con el mismo esquema, el patrón (`.nombre.extensión`) ya está establecido y es fácil de repetir sin inventar una convención nueva cada vez.
+
+#### Archivos con copia `.matt.*` (información sensible — Matt nunca ve el original)
+
+| Archivo oficial | Copia | Qué contiene de sensible |
+|---|---|---|
+| `00-nucleo-tecnico/00_CORE.md` | `00-nucleo-tecnico/00_CORE.matt.md` | Fragmentos de estructura de token, dominio de producción |
+| `00-nucleo-tecnico/04_ENTORNO_LOCAL.md` | `00-nucleo-tecnico/04_ENTORNO_LOCAL.matt.md` | Dominio interno del entorno Local |
+| `00-nucleo-tecnico/TIRITAITO_FOR_CREATORS_VERSIONS.md` | `00-nucleo-tecnico/TIRITAITO_FOR_CREATORS_VERSIONS.matt.md` | Contrato técnico exacto del backend |
+| `apps/v2/tiritaito-creators-v2-01.html` | `apps/v2/tiritaito-creators-v2-01.matt.html` | `TT_WRITE_TOKEN` en texto plano, dominio real, PIN |
+| `apps/v2/snippet-tt-creators-endpoint-central.php` | `apps/v2/snippet-tt-creators-endpoint-central.matt.php` | Lógica completa de autenticación del backend, incluido el token |
+
+✅ **Corregido 2 de agosto de 2026 — nota sobre la copia del PHP:** en la primera versión de este sistema, la copia `.matt.php` se generó como una *reconstrucción de referencia* (forma general del contrato, sin tener el código fuente real delante), no como una sanitización literal del archivo. Al obtenerse el PHP real y completo, se corrigió: `snippet-tt-creators-endpoint-central.matt.php` es ahora una **sanitización fiel línea por línea** del archivo oficial, con el único cambio siendo la sustitución del valor de `TT_WRITE_TOKEN` por el placeholder — misma estructura, mismos nombres de función, misma lógica, mismos comentarios originales. Este es el estándar que debe cumplir cualquier copia `.matt.*` a partir de ahora: **nunca una aproximación basada en lo que se recuerda o se infiere del archivo, siempre una sanitización del archivo real que se tiene delante.**
+
+#### Archivos SIN copia — Matt accede directamente al oficial
+
+Todo el resto del repositorio: `README.md`, `ALCANCE_WEB_NUEVA.md`, `METODOLOGIA_CONSTRUCCION.md`, `GUIA_AVADA_LOCAL.md`, `ARQUITECTURA_Y_ROADMAP.md`, `MIGRACION_CONTENIDO.md`, `02_REF_PODCAST.md`, los changelogs de `apps/v1/` y `apps/v2/`, y — pendiente de confirmación final, ver Sección 11.9 — este mismo documento (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`) e `INSTRUCCIONES_PROYECTOS_CLAUDE.md`.
+
+### 11.4 Placeholders — qué valor sustituye a cada dato real
+
+| Dato real | Placeholder usado |
+|---|---|
+| `TT_WRITE_TOKEN` (token de escritura) | `PLACEHOLDER_NO_ES_TOKEN_REAL` (variantes con sufijo según archivo) |
+| Token GET de lectura pública | `PLACEHOLDER_TOKEN_LECTURA` |
+| Dominio del entorno Local (`tiritaito-real.local`) | `ejemplo-local.local` |
+| `APP_PIN` real | `0000` |
+| URLs de Media Library con el dominio real | Mismo dominio placeholder, con nombre de archivo genérico (`logo-placeholder.png`) |
+
+Cada archivo `.matt.*` lleva además, al principio, un comentario visible explicando que es una copia de trabajo con datos ficticios — para que nadie (Matt, Codex, o cualquier persona que lo abra después) lo confunda con el real.
+
+### 11.5 Protocolo de sincronización — cómo se mantiene todo alineado
+
+#### 11.5.1 Cuando el equipo interno actualiza un archivo oficial con copia
+
+Si Proyecto 2 (Investigación), Proyecto 3 (Web Nueva, para el PHP), o Proyecto 5 (Tiritaito for Creators) entregan una versión nueva de `00_CORE.md`, `04_ENTORNO_LOCAL.md`, `TIRITAITO_FOR_CREATORS_VERSIONS.md`, el HTML de la app, o el PHP del endpoint central: **generan también, en la misma respuesta, la copia `.matt.*` correspondiente**, con los mismos cambios de contenido pero los valores sensibles sustituidos por placeholder — sin que haga falta pedirlo aparte.
+
+Esta regla vive en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`, dentro del bloque de cada Proyecto afectado — no como una automatización externa, se aplica cada vez que alguien pide un cambio dentro de una sesión de trabajo real con esos Proyectos.
+
+⚠️ **Límite honesto de este mecanismo:** si un cambio se aplica al archivo oficial *fuera* de una sesión con esos Proyectos (por ejemplo, editado directamente en GitHub a mano), la copia `.matt.*` no se actualiza sola — alguien tiene que pedir explícitamente, en la siguiente sesión, que se regenere la copia a partir del archivo oficial actualizado.
+
+#### 11.5.2 Cuando Matt edita una copia `.matt.*`
+
+1. Matt trabaja con Codex sobre el archivo `.matt.*` correspondiente, con permiso de escritura.
+2. Al terminar un cambio, **Matt avisa directamente a Carlitos por WhatsApp** — acuerdo directo entre ambos, sin automatización.
+3. Carlitos revisa el cambio en GitHub — el diff nativo (líneas verdes añadidas, rojas eliminadas) ya muestra con claridad qué cambió, sin necesitar configuración adicional.
+4. Si Carlitos decide aplicar el cambio al archivo oficial: lo trae a este Proyecto de Investigación (o al Proyecto 5/3, según corresponda) para que se aplique con el mismo criterio de revisión que cualquier otro cambio del equipo — nunca se copia el contenido de `.matt.*` directamente al oficial sin pasar por esa revisión, porque la copia pudo haberse escrito sin conocer el valor real de un token o una URL que sí importan en el archivo oficial.
+
+#### 11.5.3 Convención de commits (recomendada, no forzada técnicamente)
+
+Cuando un cambio propuesto por Matt se aplica al archivo oficial, se recomienda marcarlo en el mensaje de commit (ej. `"Aplicado: sugerencia de Matt (Codex) - [breve descripción]"`), para que el historial de git deje rastro de que ese cambio se originó fuera del equipo interno, sin necesidad de más detalle.
+
+### 11.6 Documento de bienvenida entregado a Matt
+
+Para referencia — este es el contenido ya compartido con Matt al incorporarse, explicando el sistema desde su perspectiva:
+
+```markdown
+# Tiritaito.com — Contexto para colaboración externa
+
+Bienvenido/a. Gracias por ayudar con la reconstrucción de Tiritaito.com,
+un espacio digital católico pensado para acompañar la fe y la oración.
+
+## Cómo funciona tu acceso
+
+Tienes acceso de lectura y escritura sobre la mayoría del repositorio
+tiritaito-docs. Los archivos que contienen credenciales o datos
+técnicos sensibles (tokens, dominios internos, contrato exacto del
+backend) tienen una copia paralela con el sufijo .matt. en el nombre
+(ej. 00_CORE.matt.md junto a 00_CORE.md) — trabaja siempre sobre esas
+copias, nunca sobre el archivo original cuando exista una versión
+.matt. de él. Los valores dentro de esas copias son ficticios y no
+funcionan contra ningún entorno real.
+
+## Cuando termines un cambio
+
+Avísame directamente por WhatsApp. Reviso el cambio en GitHub y decido
+si se aplica al archivo oficial.
+
+## Principio de construcción del proyecto
+
+Antes de proponer un snippet de código nuevo, este equipo prioriza
+siempre la opción nativa de Avada/WordPress + ACF si existe una — el
+código a medida es el último recurso, no el primero.
+
+Ad maiorem Dei gloriam · tiritaito.com
+```
+
+### 11.7 Episodio registrado — la discrepancia del 2 de agosto de 2026
+
+Se deja constancia de esto porque es exactamente el tipo de aprendizaje que este documento existe para capturar, y porque motivó el cambio de estructura de la Sección 3.
+
+**Qué pasó:** al diseñar el sistema de colaboración con Matt, se añadió un bloque de instrucciones nuevo al Proyecto 2 (este Proyecto), pidiendo que generara copias `.matt.*` automáticamente. Carlitos pegó ese bloque directamente en la configuración de claude.ai del Proyecto 2. Pero el documento `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`, que en ese momento contenía el texto completo de instrucciones de todos los Proyectos dentro de sí mismo, **no se actualizó al mismo tiempo** — quedó con la versión antigua, sin el bloque de Matt.
+
+El resultado: dos versiones distintas de las instrucciones del Proyecto 2 coexistiendo — la real en claude.ai (correcta, con el bloque de Matt) y la del documento (desactualizada, sin él) — sin que nada avisara de la discrepancia hasta que Carlitos la notó al pedir ayuda con un tema no relacionado.
+
+**Causa raíz:** tener el texto de instrucciones mezclado dentro de un documento grande, con tablas y explicaciones alrededor, hacía que actualizar "solo el bloque de texto" en dos sitios a la vez (claude.ai y el documento) fuera fácil de hacer en uno y olvidar en el otro.
+
+**Corrección aplicada (2 de agosto de 2026):** el texto de instrucciones se extrajo a `INSTRUCCIONES_PROYECTOS_CLAUDE.md`, un documento dedicado únicamente a eso. Este documento (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`) dejó de contener el texto literal, reduciendo a un solo lugar dónde puede desincronizarse.
+
+**Regla fijada a partir de este episodio** (ya incluida en `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 0): si alguna vez se edita el texto de instrucciones de un Proyecto directamente en claude.ai sin pasar primero por ese documento, debe traerse de vuelta al documento en la siguiente sesión de Proyecto 2 — no puede quedar una versión "solo en claude.ai" sin su equivalente en el repositorio, ni al revés.
+
+### 11.8 Próximos pasos y preguntas abiertas (específicas de colaboración externa)
+
+**Próximos pasos:**
+1. Carlitos: subir los 5 archivos `.matt.*` ya generados a sus carpetas correspondientes en GitHub
+2. Carlitos: subir `INSTRUCCIONES_PROYECTOS_CLAUDE.md` y este documento actualizado a `04-vision-y-equipo/` en GitHub, y retirar `COLABORACION_EXTERNA_CODEX.md` del repositorio (su contenido ya vive aquí completo)
+3. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 5 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 5)
+4. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, con la nueva Sección 9 de generación de copia `.matt.php`)
+5. Carlitos: confirmar que el bloque ya pegado en el Proyecto 2 coincide exactamente con `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 2 — verificado al redactar este documento, pero conviene una comprobación visual final
+6. Confirmar con Matt su nivel de plan de OpenAI (Free/Business) y, si es Free, pedirle que desactive el entrenamiento de modelos en su configuración de ChatGPT antes de conectar el repositorio
+7. Dar a Matt acceso de colaborador al repositorio `tiritaito-docs` en GitHub, con permisos de escritura
+
+### 11.9 Preguntas abiertas (específicas de colaboración externa)
+
+| # | Pregunta | Por qué importa |
+|---|---|---|
+| 1 | ¿Matt tiene acceso a este documento (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`) y a `INSTRUCCIONES_PROYECTOS_CLAUDE.md` tal cual, o se excluyen por ser coordinación interna del equipo (no un secreto de seguridad, pero tampoco necesario para su trabajo)? | Sección 11.3 — pendiente de decisión explícita de Carlitos. Cobra más relevancia ahora que `INSTRUCCIONES_PROYECTOS_CLAUDE.md` contiene el texto completo de cómo se instruye a cada IA del equipo interno |
+| 2 | Si en el futuro se suma un segundo colaborador externo con un esquema similar, ¿se reutiliza la misma convención `.nombre.extensión`, o conviene una carpeta dedicada en vez de archivos sueltos en cada directorio? | No urgente — anotado para cuando surja el caso |
+| 3 | ¿Qué pasa si Matt necesita, en algún momento, un valor real (por ejemplo, para probar algo end-to-end contra el entorno Local)? ¿Se le da puntualmente por un canal directo, o nunca se comparte bajo ninguna circunstancia? | No resuelto todavía — conviene fijarlo antes de que surja la necesidad real, no en el momento |
 
 ---
 
