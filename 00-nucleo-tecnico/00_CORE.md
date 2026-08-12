@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Contexto Maestro
 *Reemplaza: ENTORNO_TÉCNICO · GUÍA_DE_ESTILO_VISUAL · tiritaito-guia-diseno-visual.md · secciones 2,9-14 de protocolo-tiritaito-creators-2.md*
 *Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast) · TIRITAITO_FOR_CREATORS_VERSIONS.md (si trabajas en V1/V2 de la app)*
-*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026*
+*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026*
 
 ---
 
@@ -234,6 +234,17 @@ Local del 26 de julio — preguntar a Hno A antes de asumir cualquiera de las do
 }
 ```
 
+🔲 **Pendiente de formalizar (añadido 11 agosto 2026, sin resolver todavía):** en la ronda de
+configuración de Avada Global Options, apareció un segundo valor de radio, `10px`, decidido
+por Hna C de forma independiente en dos elementos distintos — Toggles y campos de
+Formulario — sin relación aparente entre ambas decisiones más que la persona que las tomó.
+Es un candidato razonable a cuarto token (ej. `--tt-r-int: 10px` para elementos interactivos
+pequeños, dejando `--tt-r: 25px` para contenedores y superficies grandes), pero **no se
+añade aquí todavía** porque no hay confirmación explícita de que sea una regla deliberada y
+no dos coincidencias. Ver `GUIA_AVADA_LOCAL.md` Sección 13 y `CATALOGO_ELEMENTOS_AVADA.md`
+Sección 13.1 para la evidencia completa. Mientras no se resuelva, no uses `10px` en ningún
+elemento nuevo fuera de Toggles/Forms sin confirmarlo antes.
+
 ---
 
 ## 6. TIPOGRAFÍA
@@ -254,6 +265,16 @@ h1,h2,h3,h4 { font-family: 'Yeah Papa', 'Helvetica Neue', sans-serif; font-weigh
 ```
 
 Jerarquía: `.tt-h1` 32px / `.tt-h2` 24px / `.tt-h3` 20px / `.tt-body` 15px / `.tt-caption` 12px / `.tt-label` 11px uppercase
+
+✅ **Calibración de tamaño, confirmada de forma independiente 3 veces (última: 11 agosto
+2026, durante la ronda de Global Options):** "Yeah Papa" necesita un tamaño en `px`
+notablemente mayor que "Helvetica Neue" para lograr el mismo peso visual — la fuente "ocupa
+menos" espacio dentro de su misma caja de diseño que una tipografía de palo seco estándar.
+No es un defecto de la fuente ni un error de configuración — es una característica del
+propio diseño de "Yeah Papa" que hay que tener en cuenta desde el principio al calibrar
+cualquier título nuevo, en vez de descubrirlo cada vez por ensayo y error. Ejemplo real ya
+aplicado en Avada: el título de Toggles se ajustó de 16px a 30px para lograr el peso visual
+esperado.
 
 ---
 
@@ -306,6 +327,7 @@ if (document.getElementById('mi-modulo-root')) {
 | ACF Options Page + `update_option()` | Escribir un campo de la Options Page con `update_option()` en vez de `update_field()` lo deja invisible para Avada Dynamic Content — ACF lo guarda con el prefijo `options_` por delante del nombre, no con el nombre plano. Confirmado en el piloto de Novedades (23 julio 2026) |
 | Sin límite de peticiones en el backend actual (26 julio 2026) | El snippet reconstruido tras la pérdida del Local no tiene rate limiting — el PHP anterior sí lo tenía (60 peticiones/hora por IP con el token de escritura). No confirmado si es una omisión temporal o una decisión — preguntar a Hno A antes de asumir que es definitivo |
 | Subida de archivos sin validar tipo ni tamaño (26 julio 2026) | `tt_subir_archivo()` llama directo a `media_handle_upload()` sin comprobar el tipo MIME real ni un tamaño máximo — el PHP anterior sí validaba ambos antes de subir. Mismo aviso: confirmar con Hno A si es intencional |
+| Confundir "Slideshows" con "Post Slider" en Avada (11 agosto 2026) | Slideshows (Avada → Options) solo controla varias imágenes DENTRO de una misma entrada. Para rotar entre entradas distintas (ej. los 9 santos de Hombres de Dios) hace falta Post Slider, un elemento del Builder — confusión ya cometida y corregida dos veces de forma independiente durante la ronda de Global Options. Ver `GUIA_AVADA_LOCAL.md` Sección 9 |
 
 *Eliminada la fila "Application Password con espacios" — ya no aplica desde que se descartó ese patrón de autenticación.*
 
@@ -313,15 +335,16 @@ if (document.getElementById('mi-modulo-root')) {
 
 ## 9. CHECKLIST NUEVO COMPONENTE
 
-- [ ] `border-radius: var(--tt-r)` en cards y botones
+- [ ] `border-radius: var(--tt-r)` en cards y botones — ver nota pendiente de la Sección 5 sobre `10px` antes de introducir un radio distinto
 - [ ] Fondo `var(--tt-bg)` — blanco puro, sin modo oscuro
-- [ ] Títulos en 'Yeah Papa', cuerpo en 'Helvetica Neue'
+- [ ] Títulos en 'Yeah Papa' (calibrar el tamaño en `px` más alto de lo que parece necesario a simple vista, ver Sección 6), cuerpo en 'Helvetica Neue'
 - [ ] Colores siempre vía `var(--tt-*)`, nunca hex sueltos
 - [ ] Breakpoints en 1024 / 768 / 480px
 - [ ] JS en IIFE, condicional fuera, lógica dentro
 - [ ] Mensajes de error en lenguaje humano (no códigos HTTP)
 - [ ] Barra de progreso visible en subidas de archivo
 - [ ] Si el componente lee/escribe contenido dinámico: ¿va en ACF (Options Page o CPT) o en `wp_options`? Ver Sección 3 antes de decidir, y siempre `update_field()` si es ACF
+- [ ] Si el componente se puede resolver con un elemento nativo de Avada: consultar `CATALOGO_ELEMENTOS_AVADA.md` antes de escribir código nuevo (ver `GUIA_AVADA_LOCAL.md` Sección 8)
 
 ---
 
