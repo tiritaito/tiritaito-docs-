@@ -16,6 +16,7 @@ Responde: **¿quién hace qué, en qué cuenta de Claude, qué herramientas de a
 | Si necesitas... | Ve a este documento en su lugar |
 |---|---|
 | Cómo funciona Avada / Local técnicamente | `GUIA_AVADA_LOCAL.md` |
+| Qué elemento de Avada resuelve una necesidad de contenido concreta | `CATALOGO_ELEMENTOS_AVADA.md` |
 | Dónde construir una pieza de contenido decidida | `METODOLOGIA_CONSTRUCCION.md` |
 | Qué migrar de la web vieja | `MIGRACION_CONTENIDO.md` |
 | Visión general, FODA, fases del proyecto | `ARQUITECTURA_Y_ROADMAP.md` |
@@ -67,7 +68,7 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 |---|---|---|---|---|---|
 | 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado — ver nota de cierre en Sección 2.1 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 1 |
 | 2 | Investigación | Hno C | Documentos y diagramas claros para el equipo | ✅ Activo — es este proyecto | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 2 |
-| 3 | **Web Nueva** (fusión de Backend+Snippets y Maquetación+Avada) | Hno A | Construcción técnica y visual completa en Local | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3 |
+| 3 | **Web Nueva** (fusión de Backend+Snippets y Maquetación+Avada) | Hno A | Construcción técnica y visual completa en Local, incluida la recomendación de elementos de Avada a partir de `CATALOGO_ELEMENTOS_AVADA.md` (ampliado 11 agosto 2026, ver Sección 3) | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3 |
 | 4 | Diseño y Avada | Hna C | Decisiones de producto y visión visual, sin código | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 4 |
 | 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 (web vieja) y V2 (web nueva). Ver Sección 2.2 para el límite exacto de su ámbito frente al Proyecto 3 | ✅ Configurado — actualizado con V1/V2 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 5 |
 | 6 | Web Nueva — Repuesto A (copia idéntica del Proyecto 3) | Cuenta de repuesto | Continuidad si la cuenta principal de Hno A agota su límite | ✅ Creada y configurada (26 julio 2026) | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 6 |
@@ -79,6 +80,8 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 **Cuentas usadas:** 7 de 8 configuradas y en uso. Queda 1 pendiente (WPMobile.app).
 
 **Nota sobre Matt:** Matt no tiene una cuenta de Claude ni un Proyecto propio en este mapa — trabaja con Codex, su propia herramienta, directamente sobre el repositorio de GitHub. No aplica el sistema de "una cuenta por proyecto" de esta sección. Ver Sección 11.
+
+⚠️ **Nota de capacidad, añadida 11 agosto 2026:** una de las cuentas que participó en la ronda de Avada Global Options aparece en Plan gratuito en al menos una captura compartida por Carlitos. Las cuentas gratuitas no expanden memoria sola cuando la base de conocimiento crece (Sección 4) — con `CATALOGO_ELEMENTOS_AVADA.md` sumado a lo que ya carga el Proyecto 3, conviene confirmar el tipo de plan de cada cuenta activa antes de seguir ampliando su base de conocimiento. No se ha confirmado todavía si esa cuenta es una de las numeradas en la tabla de arriba o una cuenta de prueba aparte.
 
 ### 2.1 V1 y Proyecto 1 — fecha de caducidad conocida
 
@@ -95,6 +98,7 @@ Con el snippet PHP del endpoint central viviendo ahora dentro de `apps/v2/` (Sec
 | Decide qué campos ACF existen y de qué tipo | ✅ Sí | ❌ No — recibe la decisión ya tomada |
 | Si la app necesita un dato nuevo del servidor | Recibe la petición y construye el endpoint | Describe qué necesita (campo, tipo, verbo REST) y lo traslada a Proyecto 3 — nunca inventa el PHP por su cuenta |
 | Construye en Avada (Fusion Builder, Dynamic Content) | ✅ Sí | ❌ Nunca |
+| Recomienda qué elemento de Avada usar para una necesidad | ✅ Sí, a partir de `CATALOGO_ELEMENTOS_AVADA.md` | ❌ No aplica — no trabaja con Avada |
 
 Si en algún momento una tarea no encaja claramente en ninguna de las dos filas, es señal de pararse y preguntar antes de que cada proyecto construya una solución distinta para el mismo problema.
 
@@ -108,6 +112,8 @@ Si en algún momento una tarea no encaja claramente en ninguna de las dos filas,
 
 Este documento conserva, para cada Proyecto: la cuenta que usa, su rol, su base de conocimiento, y cualquier decisión de coordinación que lo afecte — pero no el texto de instrucciones en sí. Consulta la tabla de la Sección 2 para el enlace directo a la sección correspondiente de `INSTRUCCIONES_PROYECTOS_CLAUDE.md`.
 
+⚠️ **Ampliación pendiente de repegar (11 agosto 2026):** tras el cierre de la ronda de Avada Global Options, el bloque del Proyecto 3 en `INSTRUCCIONES_PROYECTOS_CLAUDE.md` creció con las Secciones 0.5 (consulta obligatoria de `CATALOGO_ELEMENTOS_AVADA.md` antes de recomendar) y 0.6 (construcción en los distintos niveles de Avada Live Builder — elemento, columna, container/sección, entrada, página — y cuándo preguntar por código en vez de decidirlo en silencio). Esto **no está aplicado todavía en claude.ai** — sigue el mismo patrón de siempre: subir el documento a GitHub actualiza la base de conocimiento, pero las instrucciones personalizadas solo cambian si alguien las repega a mano.
+
 ---
 
 ## 4. Economía de tokens en cuentas gratuitas — verificado
@@ -116,12 +122,14 @@ Este documento conserva, para cada Proyecto: la cuenta que usa, su rol, su base 
 
 *Fuente: support.claude.com/en/articles/9517075-what-are-projects*
 
+⚠️ **Relevancia directa, añadida 11 agosto 2026:** con `CATALOGO_ELEMENTOS_AVADA.md` sumándose a la base de conocimiento ya cargada del Proyecto 3 (`00_CORE.md`, `04_ENTORNO_LOCAL.md`, `GUIA_AVADA_LOCAL.md`, `METODOLOGIA_CONSTRUCCION.md`, `ALCANCE_WEB_NUEVA.md`, `TIRITAITO_FOR_CREATORS_VERSIONS.md`, la carpeta `apps/v2/` completa), y con la intención declarada de ampliar el catálogo con el tiempo hasta cubrir los casi 100 elementos activos de Avada (no solo los ~24-50 ya revisados), esta limitación deja de ser teórica si la cuenta que lo recibe resulta ser gratuita — ver el aviso de la Sección 2.
+
 **Reglas de economía de tokens (prácticas oficiales, ya aplicadas por el equipo):**
 
 | Práctica | Por qué funciona | Ya lo hace el equipo |
 |---|---|---|
 | Subir documentos base una sola vez al Proyecto | El contenido queda cacheado — reutilizarlo cuesta mucho menos que repetirlo | ✅ Con los documentos de `tiritaito-docs` |
-| Instrucciones del Proyecto cortas y generales | El detalle específico va en el chat, o se remite a un documento | ✅ Aplicado — además, ahora el texto literal vive en un documento dedicado (Sección 3) |
+| Instrucciones del Proyecto cortas y generales | El detalle específico va en el chat, o se remite a un documento | ✅ Aplicado — además, ahora el texto literal vive en un documento dedicado (Sección 3). Principio reforzado en las Secciones 0.5-0.6 del Proyecto 3: el detalle de "qué elemento sirve para qué" vive en `CATALOGO_ELEMENTOS_AVADA.md` (se sincroniza solo por GitHub), las instrucciones solo dicen cómo usarlo |
 | Agrupar varias preguntas en un solo mensaje | Cada mensaje nuevo reprocesa toda la conversación anterior | Mejorable |
 | Empezar una conversación nueva cada cierto número de intercambios | Una conversación larga es más cara por mensaje nuevo que una recién empezada | ✅ Ya se hace |
 | Pedir un resumen y pegarlo como primer mensaje de un chat nuevo | Evita cargar todo el historial viejo | ✅ Es el protocolo de sesión de Tiritaito for Creators |
@@ -174,7 +182,8 @@ tiritaito-docs/
 │   ├── METODOLOGIA_CONSTRUCCION.md
 │   └── MIGRACION_CONTENIDO.md
 ├── 03-guias-practicas/
-│   └── GUIA_AVADA_LOCAL.md
+│   ├── GUIA_AVADA_LOCAL.md
+│   └── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026, sin dato sensible
 ├── 04-vision-y-equipo/
 │   ├── ARQUITECTURA_Y_ROADMAP.md
 │   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
@@ -202,6 +211,8 @@ documentado hasta ahora, no tenía sustancia propia — quedaba absorbido por co
 repositorio. ⚠️ Si en el archivo real de GitHub tenía contenido que no llegó a este
 Proyecto de Investigación, avisar antes de borrarlo definitivamente.
 
+**Nota sobre `CATALOGO_ELEMENTOS_AVADA.md` (añadido 11 agosto 2026):** no lleva ninguna copia `.matt.*` — no contiene tokens, dominios ni credenciales, solo referencia de qué elemento de Avada sirve para qué. Matt puede leerlo y editarlo directamente si en algún momento colabora en esa parte del proyecto (sin decisión tomada todavía al respecto).
+
 ### 5.5 Paso a paso
 
 1. **Repositorio privado** `tiritaito-docs` (ya creado) — solo `.md` y el contenido de `apps/`, nunca credenciales sueltas fuera de `04_ENTORNO_LOCAL.md`
@@ -224,6 +235,7 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 6. Cambiar el formato de una sección ya decidida en `ALCANCE_WEB_NUEVA.md`
 7. Cambiar la convención de nombres de archivo de la app en GitHub (ver Sección 5.3 — ya cambió una vez sin decisión formal previa)
 8. Dar acceso de escritura sobre el repositorio a un nuevo colaborador externo, o cambiar el alcance de lo que puede ver/editar (ver Sección 11)
+9. Formalizar `10px` como cuarto token de radio en `00_CORE.md` Sección 5, en vez de dejarlo como excepción puntual de Toggles/Forms (añadido 11 agosto 2026, ver Sección 6.1)
 
 ---
 
@@ -242,6 +254,7 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 |---|---|---|
 | Configuración de Avada ya probada y estable | `GUIA_AVADA_LOCAL.md` | Hno C (aquí), a partir del resumen de Hno A |
 | Confirmación sobre un elemento nativo | `GUIA_AVADA_LOCAL.md` / `METODOLOGIA_CONSTRUCCION.md` | Hno C |
+| Qué elemento de Avada resuelve una necesidad de contenido nueva, o un elemento pasa de 🔲 a ✅ tras probarse en Local | `CATALOGO_ELEMENTOS_AVADA.md` | Hno A construye la entrada inicial; Hno C (aquí) reconcilia contra el resto de `tiritaito-docs` si hay contradicción con algo ya escrito |
 | Decisión de producto o alcance | `ALCANCE_WEB_NUEVA.md` | Hna C decide, Hno C redacta |
 | Nueva pieza de contenido — dónde vive y con qué patrón | `METODOLOGIA_CONSTRUCCION.md` Sección 3 | Hno C |
 | Cambio en `wp_options`, ACF, endpoint REST o autenticación | `00_CORE.md` / `04_ENTORNO_LOCAL.md` | Hno A directamente — genera también la copia `.matt.*` correspondiente si el archivo la tiene (Sección 11) |
@@ -296,13 +309,13 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 |---|---|
 | Proyecto 1 (Web Vieja) | ✅ Configurado |
 | Proyecto 2 (Investigación) | ✅ Activo — es este mismo proyecto |
-| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — **instrucciones ampliadas 26 julio 2026 con protocolo de ACF (0.3) y disciplina de verificación (0.4), y 2 agosto 2026 con generación de copia `.matt.php` (Sección 9 de sus instrucciones) — pendiente de que Hno A las repegue en claude.ai** |
+| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — instrucciones ampliadas 26 julio 2026 (ACF 0.3, verificación 0.4) y 2 agosto 2026 (`.matt.php`, Sección 9) — **y de nuevo el 11 de agosto de 2026 con las Secciones 0.5 (catálogo de elementos) y 0.6 (construcción por niveles + pregunta de código)** — pendiente de que Hno A repegue el bloque completo actualizado en claude.ai |
 | Proyecto 4 (Diseño y Avada) | ✅ Configurado |
 | Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2, la regla de nombre de archivo fijo para V2, y la generación de copia `.matt.html` (2 agosto 2026) |
-| Proyecto 6 y 7 (Web Nueva — Repuesto A y B) | ✅ Creadas y configuradas (26 julio 2026) — corrige el conteo de "7 cuentas" a 8, ver Sección 2 |
+| Proyecto 6 y 7 (Web Nueva — Repuesto A y B) | ✅ Creadas y configuradas (26 julio 2026) — corrige el conteo de "7 cuentas" a 8, ver Sección 2. Pendiente confirmar que su conector de GitHub incluye `CATALOGO_ELEMENTOS_AVADA.md` (Sección 3) |
 | Proyecto 8 (WPMobile.app) | 🔵 Sin definir todavía |
 | ~~Datos y Métricas~~ | ❌ Cancelado |
-| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista, PHP del endpoint pasa a vivir dentro de `apps/v2/` (26 julio 2026), archivos `.matt.*` incorporados (2 agosto 2026) |
+| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista, PHP del endpoint pasa a vivir dentro de `apps/v2/` (26 julio 2026), archivos `.matt.*` incorporados (2 agosto 2026), `CATALOGO_ELEMENTOS_AVADA.md` incorporado en `03-guias-practicas/` (11 agosto 2026) |
 | `01_CREATORS_APP.md` | ❌ Retirado (26 julio 2026) — fusionado en `TIRITAITO_FOR_CREATORS_VERSIONS.md`, sin contenido propio que se perdiera |
 | Documento de versiones de Tiritaito for Creators | ✅ `TIRITAITO_FOR_CREATORS_VERSIONS.md` — actualizado 26 julio 2026 con la política de nombre de archivo fijo para V2 y absorbe `01_CREATORS_APP.md` |
 | Snippet PHP del endpoint central | ✅ Real y completo, obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026) — confirma todo lo reportado por Hno A (Novedades, ACF, Tip eliminado). ⚠️ Tres avisos abiertos sin confirmar con Hno A: sin rate limit, sin validación de subida de archivos, sin Biblioteca ni gestión de entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 |
@@ -310,8 +323,9 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | Módulo Novedades (V2) | ✅ Backend confirmado y probado — 🔲 falta título en la app, falta montar Post Cards en Avada |
 | Módulo Devocional (V2) | 🔄 Migración parcial a ACF — 🔲 falta quitar fecha de Homilía-texto en la app, falta Dynamic Content en Avada |
 | Tip del día | ❌ Decisión: eliminado — 🔲 todavía construido en la app, pendiente de retirar |
-| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (Responsive), 8.4-bis (altura/previsualización), y con la decisión de no filtrar Post Cards por `activo` (Sección 9) |
-| **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`** | ✅ Creado (2 agosto 2026) — texto literal de todos los Proyectos extraído de este documento |
+| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (Responsive), 8.4-bis (altura/previsualización), la decisión de no filtrar Post Cards por `activo` (Sección 9), y — **11 agosto 2026** — orden real de colores (4.1), mecanismo de Default Page Template (4.0.3), panel de Performance completo (4.4), breakpoints confirmados (8.4) y distinción Slideshows/Post Slider (9) |
+| **`CATALOGO_ELEMENTOS_AVADA.md`** | ✅ Creado (11 agosto 2026) — resultado de la ronda de tres cuentas de Avada Global Options (28/07-10/08) más el material de Off-Canvas. Organizado por necesidad de contenido, con nivel de certeza por entrada. 🔲 Pendiente completar el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar |
+| **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`** | ✅ Creado (2 agosto 2026) — texto literal de todos los Proyectos extraído de este documento. Ampliado (11 agosto 2026) con las Secciones 0.5-0.6 del Proyecto 3 |
 | **Sistema de colaboración externa (Matt/Codex)** | ✅ Diseñado y con 5 archivos `.matt.*` generados (2 agosto 2026) — pendiente de subir a GitHub y dar acceso a Matt. Ver Sección 11 |
 
 ---
@@ -322,13 +336,15 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 1. Carlitos: subir todos los documentos actualizados a GitHub (ver README.md para el listado completo) y eliminar `01_CREATORS_APP.md` (con la salvedad de la Sección 5.4)
 2. ✅ Snippet PHP completo y real obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026)
 3. Hno A: confirmar los tres avisos abiertos sobre el backend actual (sin rate limit, sin validación de subidas, sin Biblioteca/entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1)
-4. Hno A: repegar las instrucciones actualizadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, incluida la nueva Sección 9 de esa Proyecto sobre colaboración externa) — subir a GitHub no las aplica solas
-5. Hno A: dar acceso de GitHub al Proyecto 3 y al Proyecto 5 sobre la carpeta `apps/v2/` completa — "Add from GitHub" dentro de cada Proyecto (Proyecto 5 en modo lectura del PHP, ver Sección 2.2)
+4. Hno A: repegar las instrucciones actualizadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, incluidas las Secciones 0.5-0.6 sobre el catálogo de elementos y la construcción por niveles) — subir a GitHub no las aplica solas
+5. Hno A: dar acceso de GitHub al Proyecto 3 y al Proyecto 5 sobre la carpeta `apps/v2/` completa, y confirmar que el Proyecto 3 (y sus Repuestos) tienen acceso a `03-guias-practicas/CATALOGO_ELEMENTOS_AVADA.md`
 6. Hno C: dar acceso de GitHub a este Proyecto (2) sobre `apps/v2/` también, para poder verificar el estado real sin depender de que se pegue el archivo a mano
 7. Proyecto 5: aplicar las tres tareas pendientes de la app (quitar Tip, quitar fecha de Homilía-texto, añadir input de título a Novedades) — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8
 8. Hno A: verificar con soporte de WPMobile.app la política de sitio de desarrollo
 9. Cuando se acerque el lanzamiento de la Web Nueva: archivar o reconvertir el Proyecto 1 y marcar V1 como retirada en `TIRITAITO_FOR_CREATORS_VERSIONS.md` (Sección 2.1)
 10. Ver Sección 11.8 para los próximos pasos específicos del sistema de colaboración externa
+11. Confirmar el tipo de plan (gratuito/pago) de la cuenta que reciba el catálogo ampliado, antes de seguir haciéndolo crecer (Sección 2, Sección 4)
+12. Hna C / equipo: decidir si `10px` se formaliza como cuarto token de radio (Sección 6, punto 9)
 
 **Preguntas abiertas:**
 
@@ -339,6 +355,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | 3 | ¿Por qué dos cuentas de repuesto para el Proyecto 3 en vez de una? | No es urgente saberlo, pero si hay un motivo (por ejemplo, repartir carga entre dos personas) vale la pena anotarlo aquí para que no se pierda |
 | 4 | ¿La regla de nombre de archivo fijo (Sección 5.3) se extiende a V1, o se queda solo en V2? | Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8, pregunta 1 |
 | 5 | ¿`01_CREATORS_APP.md` tenía contenido real en GitHub que no llegó a este Proyecto? | Antes de confirmar su eliminación definitiva, ver nota de Sección 5.4 |
+| 6 | ¿Es de pago la cuenta que participó en la ronda de Avada Global Options y que aparece en una captura como Plan gratuito? | Determina si el plan de ampliar `CATALOGO_ELEMENTOS_AVADA.md` progresivamente es viable tal cual, o si hace falta gestionar el tamaño de la base de conocimiento con más cuidado (Sección 2, Sección 4) |
 
 ---
 
@@ -353,7 +370,7 @@ Matt se suma al equipo como colaborador externo, usando Codex (de OpenAI) para t
 1. **Poder ver y editar directamente** buena parte del repositorio real — no una copia aparte ni un resumen.
 2. **Nunca acceder** a los archivos que contienen credenciales, tokens de autenticación, o el contrato técnico exacto del backend en producción/Local — no por desconfianza, sino porque un token filtrado permite crear, editar y borrar contenido real del sistema, y cuantas más personas/sistemas tengan acceso a él, mayor la superficie de riesgo.
 
-La solución adoptada: **archivos-copia con datos ficticios (placeholder)**, que conviven en la misma carpeta que el archivo oficial, con el sufijo `.matt.` en el nombre. Matt lee y escribe únicamente sobre esas copias. El resto del repositorio (documentos sin dato sensible) lo edita directamente sobre el archivo real.
+La solución adoptada: **archivos-copia con datos ficticios (placeholder)**, que conviven en la misma carpeta que el archivo oficial, con el sufijo `.matt.` en el nombre. Matt lee y escribe únicamente sobre esas copias. El resto del repositorio (documentos sin dato sensible, incluido `CATALOGO_ELEMENTOS_AVADA.md`) lo edita directamente sobre el archivo real.
 
 ### 11.2 Decisiones tomadas y por qué (registro de la conversación del 2 de agosto de 2026)
 
@@ -385,7 +402,7 @@ La solución adoptada: **archivos-copia con datos ficticios (placeholder)**, que
 
 #### Archivos SIN copia — Matt accede directamente al oficial
 
-Todo el resto del repositorio: `README.md`, `ALCANCE_WEB_NUEVA.md`, `METODOLOGIA_CONSTRUCCION.md`, `GUIA_AVADA_LOCAL.md`, `ARQUITECTURA_Y_ROADMAP.md`, `MIGRACION_CONTENIDO.md`, `02_REF_PODCAST.md`, los changelogs de `apps/v1/` y `apps/v2/`, y — pendiente de confirmación final, ver Sección 11.9 — este mismo documento (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`) e `INSTRUCCIONES_PROYECTOS_CLAUDE.md`.
+Todo el resto del repositorio: `README.md`, `ALCANCE_WEB_NUEVA.md`, `METODOLOGIA_CONSTRUCCION.md`, `GUIA_AVADA_LOCAL.md`, `CATALOGO_ELEMENTOS_AVADA.md`, `ARQUITECTURA_Y_ROADMAP.md`, `MIGRACION_CONTENIDO.md`, `02_REF_PODCAST.md`, los changelogs de `apps/v1/` y `apps/v2/`, y — pendiente de confirmación final, ver Sección 11.9 — este mismo documento (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md`) e `INSTRUCCIONES_PROYECTOS_CLAUDE.md`.
 
 ### 11.4 Placeholders — qué valor sustituye a cada dato real
 
@@ -469,13 +486,15 @@ El resultado: dos versiones distintas de las instrucciones del Proyecto 2 coexis
 
 **Regla fijada a partir de este episodio** (ya incluida en `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 0): si alguna vez se edita el texto de instrucciones de un Proyecto directamente en claude.ai sin pasar primero por ese documento, debe traerse de vuelta al documento en la siguiente sesión de Proyecto 2 — no puede quedar una versión "solo en claude.ai" sin su equivalente en el repositorio, ni al revés.
 
+⚠️ **Recordatorio de que este riesgo sigue vivo, no solo histórico (11 agosto 2026):** la ampliación de las Secciones 0.5-0.6 del Proyecto 3 (Sección 3 de este documento, y Sección 9) es, ahora mismo, exactamente este mismo escenario — ya está en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`, pendiente de repegarse en claude.ai. Mientras no se repegue, existe la misma discrepancia que motivó esta corrección.
+
 ### 11.8 Próximos pasos y preguntas abiertas (específicas de colaboración externa)
 
 **Próximos pasos:**
 1. Carlitos: subir los 5 archivos `.matt.*` ya generados a sus carpetas correspondientes en GitHub
 2. Carlitos: subir `INSTRUCCIONES_PROYECTOS_CLAUDE.md` y este documento actualizado a `04-vision-y-equipo/` en GitHub, y retirar `COLABORACION_EXTERNA_CODEX.md` del repositorio (su contenido ya vive aquí completo)
 3. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 5 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 5)
-4. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, con la nueva Sección 9 de generación de copia `.matt.php`)
+4. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, con las Secciones 0.5-0.6 nuevas y la Sección 9 de generación de copia `.matt.php`)
 5. Carlitos: confirmar que el bloque ya pegado en el Proyecto 2 coincide exactamente con `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 2 — verificado al redactar este documento, pero conviene una comprobación visual final
 6. Confirmar con Matt su nivel de plan de OpenAI (Free/Business) y, si es Free, pedirle que desactive el entrenamiento de modelos en su configuración de ChatGPT antes de conectar el repositorio
 7. Dar a Matt acceso de colaborador al repositorio `tiritaito-docs` en GitHub, con permisos de escritura
