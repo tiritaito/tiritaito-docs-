@@ -17,9 +17,10 @@ Este documento responde una sola pregunta: **¿cómo configuro y construyo con A
 | Qué secciones tiene la web y con qué prioridad | `ALCANCE_WEB_NUEVA.md` |
 | Dónde construir una pieza concreta de contenido ya decidida (Global vs Guardado vs Snippet) | `METODOLOGIA_CONSTRUCCION.md` |
 | Qué contenido de la web vieja migrar y cómo | `MIGRACION_CONTENIDO.md` |
+| Qué elemento de Avada resuelve una necesidad de contenido concreta, y con qué certeza | `CATALOGO_ELEMENTOS_AVADA.md` |
 | **Cómo configurar Avada y Local paso a paso, y qué puede hacer Avada de fondo** | **Este documento** |
 
-Este documento no repite el mapa de qué-va-dónde por sección (eso vive en `METODOLOGIA_CONSTRUCCION.md`) — se centra en la mecánica de Avada y Local en sí.
+Este documento no repite el mapa de qué-va-dónde por sección (eso vive en `METODOLOGIA_CONSTRUCCION.md`) — se centra en la mecánica de Avada y Local en sí. Tampoco repite, elemento por elemento, qué sirve para qué necesidad de contenido — eso vive en `CATALOGO_ELEMENTOS_AVADA.md`.
 
 **Nota honesta:** todo lo marcado ✅ está confirmado contra documentación oficial de ThemeFusion/Avada o contra una sesión real de trabajo en Local (con fecha de verificación). Todo lo marcado 🔲 solo se puede confirmar dentro de Local, probando de verdad — no lo des por sentado sin probarlo.
 
@@ -271,27 +272,40 @@ Las Características (Features) se revisaron una por una, no en bloque:
 
 Todo lo que se configura aquí se aplica en todo el sitio automáticamente. Es la base que hay que cerrar **antes** de construir ninguna página. Si el Setup Wizard ya dejó una base (Sección 4.0.1), esto es la verificación/ajuste fino sobre esa base — en concreto, añadir los 5 colores que el Wizard no permitió y registrar la tipografía real, no un punto de partida alternativo.
 
+### 4.0.3 ⭐ "Default Page Template = 100% Width" — mecanismo de tres capas, no un interruptor simple (añadido 11 agosto 2026)
+
+Confirmado por dos sesiones de trabajo independientes (Global Options — Layout, y la revisión de Blog Single Post): este ajuste **no fuerza nada a ir de borde a borde**. Funciona en tres capas:
+
+1. La opción global (`Avada → Options → Layout → Default Page Template = 100% Width`) por sí sola no cambia el aspecto de ninguna página.
+2. Lo único que hace es dar a cada **Container**, al crearse, la *opción disponible* de activar `Interior Content Width: 100%` en sus propios ajustes.
+3. Ir a pantalla completa sigue siendo **siempre una decisión explícita por Container**, sección por sección. Sin ese toggle activado en el Container concreto, el contenido sigue centrado en el `Site Width` fijo (`1200px`, ver Sección 4.1).
+
+El equipo revirtió esta opción de `Site Width` a `100% Width` por acuerdo del 30 de julio de 2026, precisamente para tener esa flexibilidad disponible sección por sección sin tener que cambiar el valor global cada vez. **No confundir con "Boxed"** (otro valor de `Layout`, no de `Default Page Template`): Boxed no es "contenido centrado con margen" — es un marco con sombra alrededor de todo el sitio. El efecto de contenido centrado que sí se quiere se consigue con `Layout = Wide` + `Site Width` fijo, que es la configuración real actual — ver Sección 4.1.
+
+⚠️ **Nota de honestidad documental:** una nota de trabajo anterior daba esta opción por "conflicto crítico ya resuelto" en sentido contrario a lo aquí descrito. No se ha podido localizar el pasaje original de esa nota para verificar la contradicción exacta — puede tratarse de una versión de este documento anterior a esta edición. Lo que sí está confirmado con evidencia directa, de forma independiente por dos sesiones de trabajo, es que el valor real y actual en Local es `100% Width`, con el mecanismo de tres capas descrito arriba.
+
 ### 4.1 Colores (Avada → Global Options → Colors)
 
-13 slots de color disponibles en todos los selectores de color del Builder. La paleta `--tt-*` va aquí completa:
+13 slots de color disponibles en todos los selectores de color del Builder. La paleta `--tt-*` va aquí completa.
 
-| Slot | Variable | Hex | Uso |
+✅ **Orden real confirmado en Local (11 agosto 2026), sustituye la asignación teórica de una versión anterior de esta tabla:** verificado directamente en el panel de Avada (nombre ↔ hex ↔ variable), con triple confirmación — verificación directa en el panel, reconstrucción independiente cruzando otra sesión de trabajo, y coincidencia exacta con el orden claro→oscuro ya descrito en la Sección 4.0.1 como resultado del propio Wizard (7 julio 2026):
+
+| Slot | Variable | Hex | Nombre en el panel real de Avada |
 |---|---|---|---|
-| Color 1 | `--tt-red` | `#BF4646` | Acento principal, botones |
-| Color 2 | `--tt-red-d` | `#A33B3B` | Hover/active |
-| Color 3 | `--tt-red-bg` | `#FDF2F2` | Fondos suaves |
-| Color 4 | `--tt-txt` | `#1d1d1f` | Texto principal |
-| Color 5 | `--tt-txt2` | `#3a3a3c` | Texto secundario |
-| Color 6 | `--tt-txt3` | `#6e6e73` | Texto terciario |
-| Color 7 | `--tt-txt4` | `#86868b` | Placeholders, labels |
-| Color 8 | `--tt-sep` | `#c7c7cc` | Separadores |
-| Color 9 | `--tt-bg` | `#FFFFFF` | Fondo principal |
-| Color 10 | `--tt-surf2` | `#F5F5F7` | Superficies secundarias |
-| Color 11 | `--tt-green` | `#34C759` | Estados positivos |
-| Color 12 | `--tt-orange` | `#FF9500` | Advertencias |
-| Color 13 | `--tt-alert` | `#FF3B30` | Errores |
+| Color 1 | `--tt-bg` | `#FFFFFF` | Fondo Blanco |
+| Color 2 | `--tt-surf2` | `#F5F5F7` | Superficie secundaria |
+| Color 3 | `--tt-sep` | `#c7c7cc` | Separador |
+| Color 4 | `--tt-txt4` | `#86868b` | Marcador de posición de texto |
+| Color 5 | `--tt-red` | `#BF4646` | Rojo Director (ver nota de nomenclatura abajo) |
+| Color 6 | `--tt-red-d` | `#A33B3B` | Rojo Hover |
+| Color 7 | `--tt-txt2` | `#3a3a3c` | Texto secundario |
+| Color 8 | `--tt-txt` | `#1d1d1f` | Texto Principal |
 
-Una vez configurado así, Hna C puede seleccionar "Color 1" en cualquier botón de Avada y siempre obtiene el rojo de marca correcto — sin depender de código.
+⚠️ **Nomenclatura confusa dentro del propio Avada:** el panel llama "Rojo Director" al rojo principal de marca (Color 5) — no es un nombre intuitivo, no es un color especial de "director". Se recomienda renombrarlo a "Rojo Principal" en el propio panel de Avada si hay ocasión, para no confundirlo con "Rojo Hover" (Color 6).
+
+🔲 **Colores 9-13 (`--tt-red-bg`, `--tt-txt3`, `--tt-green`, `--tt-orange`, `--tt-alert`) siguen sin cargar** a fecha de la última verificación (11 agosto 2026) — se añaden progresivamente según necesidad. Mientras tanto, cualquier snippet o panel que necesite uno de estos 5 colores debe usar hex directo, con una nota explícita de qué variable `--tt-*` sustituye, para poder cambiarlo a `Var(--awb-colorN)` en cuanto se cargue.
+
+Una vez completado, Hna C puede seleccionar "Color 1" en cualquier botón de Avada y siempre obtiene el color de marca correcto — sin depender de código.
 
 ### 4.2 Tipografía (Avada → Global Options → Typography)
 
@@ -308,18 +322,26 @@ Padding de secciones por defecto y margen entre elementos por tipo, definidos un
 
 ### 4.4 Rendimiento (Avada → Global Options → Advanced → Performance)
 
+⚠️ **Aviso importante (11 agosto 2026):** el panel real de Performance es considerablemente más grande de lo que documentaba la tabla original de esta sección — esa tabla cubría solo una fracción de las opciones reales. La tabla de abajo incorpora ahora los ajustes confirmados con capturas reales del panel completo.
+
 Activar en la web nueva desde el primer día:
 
 | Opción | Activar | Nota |
 |---|---|---|
 | Lazy Load Images | ✅ Sí | Imágenes cargan cuando se necesitan |
 | Lazy Load Iframes | ✅ Sí | Para vídeos embebidos |
-| Remove jQuery Migrate | ✅ Sí | Script de compatibilidad innecesario |
+| Remove jQuery Migrate | ✅ Sí | Script de compatibilidad innecesario — nota: esto es lo que mantiene "Elastic Slider" desactivado, ver Sección 9 |
 | Disable Emojis | ✅ Sí | WordPress carga scripts de emoji por defecto |
 | Container Lazy Loading | ✅ Sí | Secciones Avada en diferido |
 | Google Fonts Loading | `swap` | Evita texto invisible mientras carga |
-| Critical CSS | Evaluar | Probar en Local — puede interferir con LiteSpeed Cache en producción |
+| Font Face Rendering | ✅ **Block → Swap Non-Icon Fonts** (confirmado 11 agosto 2026) | Evita pantalla en blanco mientras carga "Yeah Papa" |
+| Preload Key Fonts | ✅ **Icon Fonts → All** (confirmado 11 agosto 2026) | Precarga también la tipografía real, no solo iconos |
+| Enable Video Facade | ✅ **Off → On** (confirmado 11 agosto 2026) | Carga solo la miniatura de YouTube hasta que se pulsa play — relevante para Rincón de Nico, Charlas de la Biblia y vídeos de seminarios |
+| Optimize Offscreen Rendering | ✅ **Off → On** (confirmado 11 agosto 2026) | Mejora de rendimiento en páginas largas (Hombres de Dios, listados), con exención automática del contenido de apertura |
+| Critical CSS | Evaluar | Reservado a Fase 4 — ver Sección 4.5 |
 | Preload Resources | Evaluar | Útil para la fuente "Yeah Papa" |
+
+🔲 **Aviso técnico sin resolver, no bloqueante (11 agosto 2026):** apareció el mensaje "JS Compiler is disabled. File does not exist or access is restricted" aunque el interruptor correspondiente esté en On — puede ser un estado desactualizado del panel. Recomendado probar "Reset Avada Caches" (Avada → Maintenance) y comprobar si el aviso desaparece.
 
 ### 4.5 ⚠️ Avada Performance Wizard — existe, pero NO ahora
 
@@ -398,7 +420,8 @@ rama de este árbol, la prioridad es **usar el menor código posible.** Antes de
 "Code Snippets: shortcode parametrizable", intenta primero si un elemento nativo de Avada
 (Sección 9) combinado con ACF (Dynamic Content) resuelve lo mismo sin escribir una sola
 línea de PHP o JS nuevo. El código es el último recurso del árbol, no un punto de partida
-igual de válido que los demás.
+igual de válido que los demás. Para saber qué elemento nativo encaja con una necesidad
+concreta, empieza por `CATALOGO_ELEMENTOS_AVADA.md` antes de recorrer este árbol de cero.
 
 ### 8.1 La corrección
 
@@ -414,7 +437,7 @@ Lo que sí varía por instancia es un elemento **Guardado (no-global)**: se inse
 ANTES DE CONSTRUIR NADA NUEVO
 │
 ├── 1. ¿Lo resuelve un elemento NATIVO de Fusion Builder, solo o combinado
-│      con ACF (Dynamic Content)? (Sección 9)
+│      con ACF (Dynamic Content)? (Sección 9, o CATALOGO_ELEMENTOS_AVADA.md)
 │      → SÍ: úsalo. No hay snippet que mantener. ESTA ES LA OPCIÓN
 │        PREFERIDA — mínimo código posible (ver principio de fondo arriba).
 │      → NO: sigue.
@@ -520,10 +543,18 @@ problema de este ajuste global, no del Container o Columna concretos.
 Avada → Options → Responsive → **Element Responsive Breakpoints** — aquí se define, en
 píxeles, a partir de qué ancho empieza "Medium" y a partir de cuál "Small".
 
-🔲 **Pendiente de verificar en Local:** que estos breakpoints coincidan con `1024/768/480px`,
-el estándar que ya usa el código de los snippets (`00_CORE.md` Sección 7) — si no coinciden,
-el diseño visual de Avada y el comportamiento del código pueden cambiar de "modo móvil" en
-puntos distintos de la pantalla, generando una zona intermedia inconsistente.
+✅ **Confirmado en Local (11 agosto 2026) — ya no es un pendiente.** Los 5 breakpoints reales
+de Avada (Small/Medium del panel de Elementos, Header/Site Content/Sidebar, Grid) partían de
+valores de fábrica distintos entre sí (480/768, 800×3, 1000) y se subieron todos a
+**~1024px**, alineados con el estándar `1024/768/480px` ya usado por el código de los
+snippets (`00_CORE.md` Sección 7). Verificado con capturas reales antes y después, en varios
+anchos de pantalla, sin ningún síntoma de rotura en ningún punto probado. El punto de
+entrada a "modo escritorio completo" se movió correctamente al lugar esperado. **Único
+matiz sin cerrar del todo:** el comportamiento específico del header en la franja
+800-1024px no se pudo confirmar del todo por separado — en todas las capturas disponibles
+el header ya aparecía en su versión compacta en todos los anchos probados. Si el header de
+Tiritaito usa un único diseño sin importar el ancho (lo más probable dado el diseño
+"Studio" ya elegido), esto no tiene relevancia práctica.
 
 *Nota aparte: el punto de quiebre del Header tiene su propio ajuste independiente (Header
 Responsive Breakpoint, por defecto 800px) — distinto de los otros tres. Revisar también.*
@@ -613,6 +644,8 @@ Tiritaito, Biblioteca, Hombres de Dios, y cualquier sección futura.
 
 ## 9. Elementos nativos de Fusion Builder — tabla verificada
 
+⚠️ **Esta tabla se mantiene deliberadamente corta — cubre solo los elementos con relación directa a la mecánica de Avada/Local que documenta este archivo.** Para el catálogo completo de qué elemento de Avada resuelve cada necesidad de contenido de Tiritaito, con nivel de certeza por entrada (confirmado en Local / documentado, sin probar), ver `CATALOGO_ELEMENTOS_AVADA.md` — no se duplica aquí para no mantener la misma información en dos sitios.
+
 | Necesidad | Solución custom actual | Elemento nativo de Avada | Estado |
 |---|---|---|---|
 | Menú móvil / navegación | HTML/CSS/JS a mano | Ver Sección 9.1 — **corrección importante** | ⚠️ Ver abajo |
@@ -621,6 +654,7 @@ Tiritaito, Biblioteca, Hombres de Dios, y cualquier sección futura.
 | Accordion desplegable | `toggle-ios` custom | **Toggles Element** — modo Toggle (uno abierto) o Accordion (varios abiertos) | ✅ Confirmado |
 | Modal / vídeo al clic | Modal custom | **Lightbox Element** (imagen/vídeo en overlay) o **Modal Element** (contenido libre) | ✅ Ambos confirmados |
 | Listado con diseño de tarjeta | — | **Post Cards** (Avada Library) | ✅ Confirmado en Local (piloto de Novedades, 22-23 julio 2026): ordena de forma nativa por Custom Field ACF (ej. fecha). ❌ NO filtra por valor de campo de forma nativa — decisión de equipo (26 julio 2026): no se construye el filtro; el listado de Novedades muestra todas las entradas, activas u ocultas, sin distinción. El campo `activo` queda como control interno del editor en la app, sin efecto en la web pública. Si en el futuro "Seminarios pasados" u otra sección sí necesitan filtrar de verdad, ahí haría falta el hook `fusion_post_cards_shortcode_query_override` |
+| Rotar entre entradas distintas (ej. los 9 santos) | — | **Post Slider** — no confundir con "Slideshows" (Options), que solo controla varias imágenes dentro de UNA misma entrada, no rotación entre entradas distintas | 🔲 Identificado como el elemento correcto, confirmado de forma independiente por dos sesiones de trabajo (11 agosto 2026) — sin configurar ni probar todavía en Local. Ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 |
 | Reproductor de audio | 3 sistemas distintos (`.pp-*`, `.mp-*`, `.hmds-*`) | No es un elemento Avada — consolidación de snippets propios | Ver `METODOLOGIA_CONSTRUCCION.md` |
 
 ### 9.1 ⚠️ Corrección — menú móvil: Flyout Menu es método legacy
@@ -630,10 +664,14 @@ La investigación anterior recomendaba el **Flyout Menu clásico** (Avada → Op
 ✅ **Confirmado (documentación oficial, actualizada):**
 - El Flyout Menu clásico (vía Global Options → Menú Móvil, o nativo en Header Layout 6) **sigue existiendo y funcionando**, pero la propia documentación de Avada lo marca explícitamente como **"legacy method"**, remitiendo a un método actualizado.
 - El **método actual recomendado por Avada es el Off Canvas Builder**: se construye el menú como contenido dentro de un Off Canvas (popup o barra deslizante), y se dispara desde un icono en el Header con Dynamic Content → "Open Off Canvas". Da más control de diseño (imagen, botones, tipografía) que el Flyout clásico.
-- **La limitación de submenús se mantiene en ambos métodos:** ni el Flyout clásico ni el Off Canvas resuelven de forma nativa un menú con varios niveles — "Flyout menus don't work well with menus with submenu items" está confirmado en la documentación oficial. Existen workarounds documentados por la comunidad (CSS + JS para forzar apertura de submenú en el móvil), pero no es una solución "gratis" de Avada.
+- **La limitación de submenús se mantiene en ambos métodos:** ni el Flyout clásico ni el Off Canvas resuelven de forma nativa un menú con varios niveles — "Flyout menus don't work well with menus with submenu items" está confirmado en la documentación oficial. Existen workarounds documentados por la comunidad (CSS + JS para forzar apertura de submenú en el móvil), pero no es una solución "gratis" de Avada. **Sigue sin confirmar (11 agosto 2026) si el menú de Tiritaito lleva submenús desplegables** — ver pregunta abierta #1 más abajo.
 
-**Recomendación actualizada:** antes de construir el menú, confirmar la pregunta ya abierta en `METODOLOGIA_WEB_NUEVA_v2` — **¿el menú de Tiritaito tiene submenús desplegables?**
-- Si NO tiene submenús → Off Canvas Builder (método actual, mejor control de diseño que el Flyout clásico).
+⚠️ **Estado real de la construcción, no solo de la decisión (actualizado 11 agosto 2026):** existe ya un Off-Canvas creado en Local con el nombre "Menu Movil" (confirmado por captura), pero con sus Conditions desactivadas — es decir, registrado como borrador, no publicado. No hay evidencia todavía de que esté diseñado por dentro (menú real de WordPress asignado, estilos aplicados) ni probado en pantalla. No confundir "existe una entrada con ese nombre" con "está construido y funcionando".
+
+**Para la guía completa de configuración del Off Canvas Builder** — los dos tipos (Popup / Sliding Bar), pasos de configuración, triggers, accesibilidad, hooks para el caso raro en que haga falta código, y tabla de problemas comunes — ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 3. No se repite aquí para no duplicar mantenimiento; esta sección se queda solo con la decisión de fondo (Off Canvas sobre Flyout) y su estado real de construcción.
+
+**Recomendación actualizada:** antes de dar el menú móvil por construido, confirmar la pregunta ya abierta — **¿el menú de Tiritaito tiene submenús desplegables?**
+- Si NO tiene submenús → Off Canvas Builder (método actual, mejor control de diseño que el Flyout clásico), tal como ya se decidió.
 - Si SÍ tiene submenús → ninguno de los dos métodos nativos los resuelve limpiamente; evaluar en Local si el menú "Classic" o "Modern" (sin Flyout) del Menú Móvil estándar cubre el caso mejor que forzar un Flyout con workaround.
 
 *Fuentes: avada.com/documentation/flyout-menu/ · avada.com/documentation/mobile-menu-settings/ · avada.com/documentation/how-to-make-a-flyout-menu-with-the-off-canvas-builder/ · avada.com/documentation/global-option-header-layouts/*
@@ -676,7 +714,8 @@ El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código
 ¿Es visual y se puede configurar en Avada Theme Options, el Builder, o con ACF+Dynamic
 Content?
     → Avada + ACF. No toques código. Esta es la opción por defecto (ver Sección 8,
-      principio de mínimo código).
+      principio de mínimo código, y CATALOGO_ELEMENTOS_AVADA.md para identificar el
+      elemento concreto).
 
 ¿Es lógica de servidor (PHP), datos dinámicos del REST API, o un shortcode?
     → Code Snippets PHP — solo si de verdad no hay forma nativa.
@@ -724,7 +763,7 @@ if (document.getElementById('mi-modulo-root')) {
 ```
 
 - Los módulos nunca redefinen variables del Global ni tocan elementos genéricos.
-- `border-radius: 25px` en cards/botones/contenedores — firma visual Tiritaito.
+- `border-radius: 25px` en cards/botones/contenedores — firma visual Tiritaito. ⚠️ Ver Sección 9 (Toggles) y `CATALOGO_ELEMENTOS_AVADA.md` Sección 13.1: apareció un segundo valor, `10px`, en dos elementos interactivos distintos (Toggles y Forms), ambos por decisión de Hna C — sin confirmar todavía si es un cuarto token real o dos excepciones puntuales. No sustituir `25px` por `10px` en ningún sitio nuevo sin esa confirmación explícita.
 - Nomenclatura de snippets PHP: `TT [Función] — [Descripción breve]` (ej. `TT Podcast — Shortcode y CSS`).
 - Nomenclatura de snippets HTML: `TT Módulo — [Nombre]` (ej. `TT Módulo — Widget Devocional`).
 
@@ -747,6 +786,7 @@ if (document.getElementById('mi-modulo-root')) {
 | Construir una sección directamente en Avada sin ver antes 2-3 opciones de boceto | Pedir a Claude (Proyecto 3) que proponga bocetos visuales antes de empezar a construir, salvo ajustes menores (Sección 8.4-bis) |
 | Escribir un snippet nuevo sin comprobar antes si ACF + un elemento nativo ya lo resuelve | El árbol de decisión (Sección 8) empieza siempre por la opción nativa — código es el último recurso, no el primero (reforzado 26 julio 2026) |
 | Trabajar con dos ordenadores sin seguir el procedimiento de la Sección 2.1 | Local no sincroniza nada entre ordenadores por sí solo — improvisar sin backup previo puede dejar el segundo ordenador con un WordPress vacío o hacer perder trabajo real (Sección 2.1) |
+| Confundir "Slideshows" (Options) con "Post Slider" (Builder Element) | Slideshows solo controla varias imágenes DENTRO de una misma entrada; para rotar entre entradas distintas (ej. los 9 santos) hace falta Post Slider — confusión ya cometida y corregida dos veces de forma independiente (11 agosto 2026) |
 
 ---
 
@@ -776,7 +816,7 @@ if (document.getElementById('mi-modulo-root')) {
 
 ## 16. Checklist maestro — antes de dar una plantilla por cerrada
 
-- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (Sección 9) — esta pregunta va SIEMPRE primero
+- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (Sección 9, o `CATALOGO_ELEMENTOS_AVADA.md`) — esta pregunta va SIEMPRE primero
 - [ ] ¿Ya existe un snippet global de Tiritaito equivalente?
 - [ ] Si se construye desde cero: ¿pensado para reutilizarse — parámetros, no contenido fijo?
 - [ ] Si es candidato a Avada Library: ¿Guardado o Global? (Sección 8 — no son intercambiables)
@@ -825,6 +865,8 @@ if (document.getElementById('mi-modulo-root')) {
 - **26 julio 2026: confirmado el header real de autenticación de la app — `X-TT-Token`, no `Authorization: Bearer`.**
 - **31 julio 2026: confirmado que Local no ofrece ninguna forma de sincronización automática o en tiempo real entre dos instalaciones en ordenadores distintos — investigado explícitamente, incluyendo foros oficiales de Local y documentación de localwp.com. El mecanismo más cercano disponible es Local Cloud Backups, restaurable bajo demanda (Sección 2.1).**
 - **31 julio 2026: confirmada y resuelta la causa del error `insufficient authentication scopes` / `Error 403: Insufficient Permission` al conectar Cloud Backups con Google Drive — desconectar y reconectar la cuenta, completando el consentimiento de Google hasta el final, según lo confirmado por soporte oficial de Local (community.localwp.com) y verificado en la práctica por el equipo (Sección 2.1).**
+- **28 julio – 10 agosto 2026: ronda completa de configuración de Avada Global Options en Local, repartida en tres cuentas de trabajo — resultado íntegro en `CATALOGO_ELEMENTOS_AVADA.md`. Resuelve formalmente: orden real de los 8 colores del Wizard (Sección 4.1), breakpoints responsive ya alineados a ~1024px (Sección 8.4), Portfolio confirmado desactivado, panel de Performance documentado por primera vez en su tamaño real (Sección 4.4), y la distinción Slideshows/Post Slider (Sección 9).**
+- **11 agosto 2026: mecanismo de tres capas de "Default Page Template = 100% Width" documentado con evidencia directa (Sección 4.0.3) — no fuerza pantalla completa, solo la habilita por Container.**
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
@@ -832,10 +874,11 @@ if (document.getElementById('mi-modulo-root')) {
 - Si "Yeah Papa" se registra correctamente en Avada → Typography → Custom Fonts, o si hace falta volver a subir el `.woff2` ahí específicamente.
 - Si la barra negra superior del header "Studio" es una fila del Header Builder o el Top Bar legacy de Global Options.
 - Si el título "Studio" del header es el Site Title de WordPress o un elemento de Título suelto.
-- **Si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` del código (Sección 8.4).**
-- **Qué valor tiene actualmente "Responsive Typography Sensitivity" (Sección 8.4).**
+- Qué valor tiene actualmente "Responsive Typography Sensitivity" (Sección 8.4).
 - **El patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro) — pendiente de que Carlitos comparta la referencia visual correcta con Hno C (Sección 8.4-bis; la primera captura compartida en esta sesión era del hero/slider, no del bloque de noticias, y no se usó como referencia).**
 - Si Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" — el listado + orden por fecha sí funciona nativo (piloto 22-23 julio), pero si esas dos secciones necesitan filtrar de verdad (a diferencia de Novedades, que decidió no filtrar), esa pieza sigue sin construir.
+- **Si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, más allá de existir como entrada con Conditions desactivadas (Sección 9.1).**
+- **Si 10px sustituye a 25px como radio estándar del sitio, convive como cuarto token, o queda solo en Toggles/Forms (Sección 13, `CATALOGO_ELEMENTOS_AVADA.md` Sección 13.1) — decisión de Hna C pendiente de formalizar.**
 
 ---
 
@@ -867,23 +910,22 @@ if (document.getElementById('mi-modulo-root')) {
 - Piloto ACF Options Page + CPT (Sección 8.4, 9, 17): sesión real en Local, 22-23 julio 2026, y reconstrucción del backend, 26 julio 2026 — decisiones y hallazgos de equipo, no documentación oficial de Avada
 - Local Cloud Backups — documentación oficial: localwp.com/help-docs/local-features/local-cloud-backups/
 - Error "insufficient authentication scopes" en Cloud Backups + Google Drive — hilo oficial de soporte de Local (abril 2026), solución confirmada: community.localwp.com/t/creating-backup-to-google-drive-is-not-working/52070
+- Ronda de tres cuentas de Global Options y catálogo de elementos (28 julio – 11 agosto 2026): trabajo real del equipo en Local, ver `CATALOGO_ELEMENTOS_AVADA.md` para el detalle completo y sus propias fuentes
 
 ---
 
 ## 19. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Hno A: añadir los 5 colores restantes de la paleta `--tt-*` en Global Options → Colors (Sección 4.0.1)
-2. Hno A: registrar "Yeah Papa" en Typography → Custom Fonts y confirmar si el `.woff2` ya subido sirve o hay que resubirlo
-3. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
-4. Hno A + Carlitos: decidir si se desactiva "Portafolio" en Características, ya que no hay contenido planeado
-5. Hno A: actualizar la URL configurada en la app Tiritaito for Creators de `.../blog/wp-json` a `https://tiritaito-real.local/wp-json`
-6. Hno A: verificar si "Element Responsive Breakpoints" de Avada coincide con `1024/768/480px` (Sección 8.4)
-7. Hno A: revisar el valor actual de "Responsive Typography Sensitivity" — si está en 0, el texto nunca se reduce en pantallas pequeñas (Sección 8.4)
-8. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)
-9. Hno A: pegar el bloque `0.2` de previsualización y `0.3`/`0.4` de ACF/verificación en las Instrucciones personalizadas del Proyecto 3 en claude.ai (ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) — subir este documento a GitHub no actualiza las instrucciones solas
-10. Cuando se llegue a construir el menú: decidir Off Canvas vs Flyout según la pregunta de submenús (abajo)
-11. Carlitos + Hno A: si vuelve a hacer falta trabajar con dos ordenadores, seguir el procedimiento de la Sección 2.1 — backup previo en el principal, restaurar en el segundo, y al terminar reaplicar a mano los cambios del segundo sobre el principal, usando una tabla de registro de configuración como guía
+1. Hno A: registrar "Yeah Papa" en Typography → Custom Fonts y confirmar si el `.woff2` ya subido sirve o hay que resubirlo
+2. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
+3. Hno A + Carlitos: decidir si se desactiva "Portafolio" en Características, ya que no hay contenido planeado
+4. Hno A: actualizar la URL configurada en la app Tiritaito for Creators de `.../blog/wp-json` a `https://tiritaito-real.local/wp-json`
+5. Hno A: revisar el valor actual de "Responsive Typography Sensitivity" — si está en 0, el texto nunca se reduce en pantallas pequeñas (Sección 8.4)
+6. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)
+7. Cuando se llegue a construir el menú: confirmar con el equipo si lleva submenús desplegables, y si el Off-Canvas "Menu Movil" ya existente se termina de diseñar y se publica (Sección 9.1)
+8. Hna C / equipo: decidir si 10px sustituye a 25px como radio estándar, convive como cuarto token, o queda solo en Toggles/Forms (Sección 13)
+9. Carlitos + Hno A: si vuelve a hacer falta trabajar con dos ordenadores, seguir el procedimiento de la Sección 2.1
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -892,12 +934,11 @@ if (document.getElementById('mi-modulo-root')) {
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
 | 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica. A diferencia de Novedades, si estas dos necesitan filtrar de verdad, sí haría falta el hook de la Sección 9 |
 | 3 | ¿Se desactiva "Portafolio"? | Sigue activo sin caso de uso — riesgo de repetir el Patrón B de deuda técnica si se deja así |
-| 5 | ¿Se confirma en Local que los breakpoints de Avada y del código (`1024/768/480px`) coinciden? | Sección 8.4 — si no coinciden, puede haber una zona intermedia donde el diseño visual y el código no cambian de "modo móvil" en el mismo punto |
-| 6 | ¿Cuál es el patrón visual exacto de Novedades? | Sección 8.4-bis — sin la referencia correcta compartida todavía, no se puede cerrar |
-| 7 | ¿Se fija como regla formal el criterio "sección = 1 página si todo cabe en un solo lugar, sección = varias entradas si cada apartado tiene personalidad propia"? | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 |
-| 8 | ¿Con qué frecuencia se espera que haga falta el mecanismo de dos ordenadores (Sección 2.1)? | Si va a ser habitual, puede merecer la pena evaluar en algún momento herramientas externas de sincronización más cercanas al tiempo real, con su propio análisis de riesgo — si es puntual, el procedimiento manual actual basta |
+| 4 | ¿10px sustituye a 25px, convive como cuarto token, o queda solo en Toggles/Forms? | Apareció dos veces de forma independiente, en dos elementos distintos, por decisión de Hna C (Sección 13) — bloquea el border-radius de Tabs, Testimonials y Audio, dejados en 0px a propósito mientras no se resuelva |
+| 5 | ¿Se confirma que la copia de `GUIA_AVADA_LOCAL.md` que maneja cada cuenta/Proyecto está al día? | La Sección 4.0.3 se añadió porque una sesión de trabajo citó un pasaje sobre "Default Page Template" que no se localizó en la versión disponible en ese momento — puede ser síntoma de una sincronización desactualizada en algún Proyecto |
+| 6 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 |
 
-**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · **discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026)** · **Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026)** · **principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026)** · **mecanismo de trabajo con dos ordenadores documentado, apoyado en Local Cloud Backups, con el error típico de conexión a Google Drive ya resuelto (31 julio 2026)**.
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026) · Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026) · principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026) · mecanismo de trabajo con dos ordenadores documentado, apoyado en Local Cloud Backups, con el error típico de conexión a Google Drive ya resuelto (31 julio 2026) · **breakpoints responsive confirmados y alineados a ~1024px (11 agosto 2026)** · **orden real de los 13 colores confirmado en Local, tabla de la Sección 4.1 corregida (11 agosto 2026)** · **mecanismo de "Default Page Template = 100% Width" documentado (Sección 4.0.3, 11 agosto 2026)** · **distinción Slideshows/Post Slider incorporada (Sección 9, 11 agosto 2026)** · **CATALOGO_ELEMENTOS_AVADA.md creado como referencia complementaria de "qué elemento sirve para qué necesidad" (11 agosto 2026)**.
 
 ---
 
