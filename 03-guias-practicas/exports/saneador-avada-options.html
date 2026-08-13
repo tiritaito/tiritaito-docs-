@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saneador de Avada Global Options — Tiritaito</title>
+<style>
+  :root {
+    --bg: #F7F6F3;
+    --surface: #FFFFFF;
+    --ink: #1C1D1F;
+    --ink-2: #52565C;
+    --ink-3: #85888E;
+    --line: #DDDAD3;
+    --teal: #0E6E5C;
+    --teal-bg: #E6F2EF;
+    --amber: #A5670D;
+    --amber-bg: #FBF1DE;
+    --brick: #A3392F;
+    --brick-bg: #F8E9E7;
+    --radius: 16px;
+    --radius-sm: 9px;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    padding: 40px 20px 80px;
+  }
+
+  .wrap { max-width: 740px; margin: 0 auto; }
+
+  header.tool-header { margin-bottom: 32px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  h1 { font-size: 26px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .subtitle { color: var(--ink-2); font-size: 15px; max-width: 56ch; }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .drop-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 620px) {
+    .drop-grid { grid-template-columns: 1fr; }
+  }
+
+  .dropzone {
+    border: 1.5px dashed var(--line);
+    border-radius: var(--radius-sm);
+    padding: 22px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    background: #FCFBF9;
+  }
+  .dropzone:hover, .dropzone.drag-over { border-color: var(--teal); background: var(--teal-bg); }
+  .dropzone.filled { border-style: solid; border-color: var(--teal); background: var(--teal-bg); }
+  .dropzone input { display: none; }
+  .dz-label { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  .dz-req { color: var(--brick); font-family: var(--mono); font-size: 11px; }
+  .dz-opt { color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
+  .dz-hint { color: var(--ink-3); font-size: 12.5px; margin-top: 6px; }
+  .dz-filename { font-family: var(--mono); font-size: 12.5px; color: var(--teal); margin-top: 8px; word-break: break-all; }
+
+  .btn {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.15s;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-primary { background: var(--ink); color: #fff; }
+  .btn-primary:not(:disabled):hover { background: #000; }
+  .btn-line {
+    background: transparent;
+    color: var(--ink-2);
+    border: 1px solid var(--line);
+  }
+  .btn-line:hover { border-color: var(--ink-2); }
+
+  .actions-row { display: flex; gap: 10px; margin-top: 20px; align-items: center; flex-wrap: wrap; }
+  .error-msg {
+    display: none;
+    background: var(--brick-bg);
+    color: var(--brick);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13.5px;
+    margin-top: 14px;
+  }
+
+  /* ---- Resultados ---- */
+  #resultados { display: none; }
+
+  .veredicto {
+    display: inline-block;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: 2.5px solid currentColor;
+    transform: rotate(-2.5deg);
+    margin-bottom: 22px;
+  }
+  .veredicto.ok { color: var(--teal); background: var(--teal-bg); }
+  .veredicto.revisar { color: var(--amber); background: var(--amber-bg); }
+
+  .lanes {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 620px) {
+    .lanes { grid-template-columns: 1fr; }
+  }
+  .lane {
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    border: 1px solid var(--line);
+  }
+  .lane.vaciados { border-color: var(--brick); background: var(--brick-bg); }
+  .lane.avisos { border-color: var(--amber); background: var(--amber-bg); }
+  .lane.nuevas { border-color: var(--teal); background: var(--teal-bg); }
+  .lane-count { font-size: 26px; font-weight: 700; font-family: var(--mono); line-height: 1; }
+  .lane-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin: 6px 0 10px; color: var(--ink-2); }
+  .lane ul { list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: 12px; }
+  .lane li { padding: 3px 0; word-break: break-all; }
+  .lane-empty { font-size: 12.5px; color: var(--ink-3); font-style: italic; }
+
+  .nota-privacidad {
+    font-size: 12.5px;
+    color: var(--ink-3);
+    margin-top: 26px;
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+  .nota-privacidad strong { color: var(--ink-2); }
+
+  footer {
+    text-align: center;
+    color: var(--ink-3);
+    font-size: 12px;
+    margin-top: 36px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="tool-header">
+    <div class="eyebrow">tiritaito-docs · herramienta interna</div>
+    <h1>Saneador de Avada Global Options</h1>
+    <p class="subtitle">Sube el export descargado de Avada → Options → Import/Export, y este archivo lo limpia antes de que llegue a git. Todo ocurre en tu navegador — nada se sube a ningún sitio.</p>
+  </header>
+
+  <div class="panel" id="panel-entrada">
+    <div class="drop-grid">
+      <div class="dropzone" id="dz-export" tabindex="0">
+        <div class="dz-label">Export nuevo</div>
+        <div class="dz-req">obligatorio</div>
+        <div class="dz-hint">El .json que acabas de descargar de Avada</div>
+        <div class="dz-filename" id="fn-export"></div>
+        <input type="file" id="input-export" accept=".json,application/json">
+      </div>
+      <div class="dropzone" id="dz-baseline" tabindex="0">
+        <div class="dz-label">claves_conocidas.json</div>
+        <div class="dz-opt">opcional</div>
+        <div class="dz-hint">El del repositorio, si ya existe uno de una vez anterior</div>
+        <div class="dz-filename" id="fn-baseline"></div>
+        <input type="file" id="input-baseline" accept=".json,application/json">
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-primary" id="btn-procesar" disabled>Procesar export</button>
+      <button class="btn btn-line" id="btn-reiniciar" style="display:none">Empezar de nuevo</button>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+  </div>
+
+  <div class="panel" id="resultados">
+    <div id="veredicto-wrap"></div>
+
+    <div class="lanes">
+      <div class="lane vaciados">
+        <div class="lane-count" id="count-vaciados">0</div>
+        <div class="lane-title">Vaciados</div>
+        <div id="lista-vaciados"></div>
+      </div>
+      <div class="lane avisos">
+        <div class="lane-count" id="count-avisos">0</div>
+        <div class="lane-title">A revisar</div>
+        <div id="lista-avisos"></div>
+      </div>
+      <div class="lane nuevas">
+        <div class="lane-count" id="count-nuevas">0</div>
+        <div class="lane-title" id="titulo-nuevas">Claves nuevas</div>
+        <div id="lista-nuevas"></div>
+      </div>
+    </div>
+
+    <div class="actions-row">
+      <button class="btn btn-primary" id="btn-descargar-json">Descargar JSON limpio</button>
+      <button class="btn btn-line" id="btn-descargar-claves">Descargar claves_conocidas.json</button>
+    </div>
+
+    <p class="nota-privacidad">
+      <strong>Ningún valor real se muestra aquí</strong>, ni en los campos vaciados ni en los avisos — solo el nombre del campo. Si algo en "A revisar" resulta ser una credencial real, ábrela directamente en el archivo descargado, nunca la pegues en ningún chat.
+    </p>
+  </div>
+
+  <footer>Para la mayor gloria de Dios · tiritaito.com</footer>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   1. LOGICA DE SANEADO — misma logica que sanitizar_avada_export.py
+   Cualquier cambio en las listas de abajo debe aplicarse tambien
+   en ese script (o, mejor: usar solo uno de los dos como fuente
+   de verdad -- ver nota en la conversacion donde se genero esto).
+   ════════════════════════════════════════════════════════ */
+const CAMPOS_A_VACIAR = [
+  "turnstile_site_key", "turnstile_secret_key",
+  "recaptcha_public", "recaptcha_private",
+  "hubspot_key", "mailchimp_key",
+  "gmap_api", "openstreetmap_mapbox_access_token",
+  "stripe_button_test_secret_key", "stripe_button_live_secret_key",
+  "cache_server_ip",
+];
+
+const CAMPOS_CONFIRMADOS_INOFENSIVOS = new Set([
+  "hubspot_api", "mailchimp_api", "gmap_api_type", "google_map_api_type",
+  "stripe_button_api_mode", "stripe_button_validate_test_sk", "stripe_button_validate_live_sk",
+  "recaptcha_version", "recaptcha_score",
+  "auth_pages_login_page", "auth_pages_registration_page", "auth_pages_lost_password_page",
+  "auth_pages_reset_password_page", "auth_pages_custom_redirect", "auth_pages_custom_redirect_page",
+  "auth_pages_bypass_param", "author_info", "post_meta_author", "portfolio_author",
+  "current_post_visitors_count_real_hash", "disable_rich_snippet_author",
+]);
+
+const PATRON_SOSPECHOSO = /(key|token|secret|api|password|pass|credential|auth|private|license|hash)/i;
+
+function recolectarClaves(obj, claves, ruta = "") {
+  if (obj !== null && typeof obj === "object" && !Array.isArray(obj)) {
+    for (const k of Object.keys(obj)) recolectarClaves(obj[k], claves, ruta ? `${ruta}.${k}` : k);
+  } else if (Array.isArray(obj)) {
+    obj.forEach((v, i) => recolectarClaves(v, claves, `${ruta}[${i}]`));
+  } else {
+    claves[ruta] = obj;
+  }
+}
+
+function sanitizarExport(data, clavesPrevias) {
+  const dataLimpia = JSON.parse(JSON.stringify(data));
+  const forzados = [];
+  for (const campo of CAMPOS_A_VACIAR) {
+    if (Object.prototype.hasOwnProperty.call(dataLimpia, campo)) {
+      const v = dataLimpia[campo];
+      if (v !== "" && v !== null && v !== undefined) forzados.push(campo);
+      dataLimpia[campo] = "";
+    }
+  }
+  const todasLasClaves = {};
+  recolectarClaves(dataLimpia, todasLasClaves);
+
+  const avisos = [];
+  for (const [ruta, valor] of Object.entries(todasLasClaves)) {
+    const partes = ruta.split(".");
+    const nombreCampo = partes[partes.length - 1].split("[")[0];
+    if (CAMPOS_A_VACIAR.includes(nombreCampo) || CAMPOS_CONFIRMADOS_INOFENSIVOS.has(nombreCampo)) continue;
+    if (PATRON_SOSPECHOSO.test(nombreCampo) && typeof valor === "string" && valor.trim() !== "") {
+      avisos.push({ ruta, nombre: nombreCampo });
+    }
+  }
+
+  const clavesActuales = Object.keys(todasLasClaves).sort();
+  let clavesNuevas = [];
+  const primeraEjecucion = clavesPrevias === null || clavesPrevias === undefined;
+  if (!primeraEjecucion) {
+    const previasSet = new Set(clavesPrevias);
+    clavesNuevas = clavesActuales.filter((c) => !previasSet.has(c));
+  }
+  return { dataLimpia, forzados, avisos, clavesNuevas, clavesActuales, primeraEjecucion };
+}
+
+/* ════════════════════════════════════════════════════════
+   2. ESTADO Y MANEJO DE ARCHIVOS
+   ════════════════════════════════════════════════════════ */
+const estado = { export: null, baseline: null };
+
+function leerArchivoComoTexto(file) {
+  return new Promise((resolve, reject) => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result);
+    r.onerror = () => reject(new Error("No se pudo leer el archivo."));
+    r.readAsText(file);
+  });
+}
+
+function mostrarError(msg) {
+  const el = document.getElementById("error-msg");
+  el.textContent = msg;
+  el.style.display = msg ? "block" : "none";
+}
+
+function actualizarBotonProcesar() {
+  document.getElementById("btn-procesar").disabled = !estado.export;
+}
+
+async function manejarArchivo(file, tipo) {
+  mostrarError("");
+  try {
+    const texto = await leerArchivoComoTexto(file);
+    const data = JSON.parse(texto);
+    if (tipo === "export") {
+      if (typeof data !== "object" || data === null || Array.isArray(data)) {
+        throw new Error("El export no es un objeto JSON de nivel superior. Revisa que sea el archivo correcto (Avada → Options → Import/Export → Download Data File).");
+      }
+      estado.export = data;
+      document.getElementById("fn-export").textContent = file.name;
+      document.getElementById("dz-export").classList.add("filled");
+    } else {
+      if (!Array.isArray(data)) {
+        throw new Error("claves_conocidas.json debería ser una lista de nombres de campo. Este archivo no tiene ese formato — revísalo, o simplemente no lo subas si no lo tienes todavía.");
+      }
+      estado.baseline = data;
+      document.getElementById("fn-baseline").textContent = file.name;
+      document.getElementById("dz-baseline").classList.add("filled");
+    }
+  } catch (e) {
+    mostrarError(e.message.includes("JSON") ? "Ese archivo no es un JSON válido. Comprueba que sea el export descargado directamente de Avada, sin editar." : e.message);
+  }
+  actualizarBotonProcesar();
+}
+
+function conectarDropzone(zonaId, inputId, tipo) {
+  const zona = document.getElementById(zonaId);
+  const input = document.getElementById(inputId);
+  zona.addEventListener("click", () => input.click());
+  zona.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") input.click(); });
+  input.addEventListener("change", (e) => { if (e.target.files[0]) manejarArchivo(e.target.files[0], tipo); });
+  zona.addEventListener("dragover", (e) => { e.preventDefault(); zona.classList.add("drag-over"); });
+  zona.addEventListener("dragleave", () => zona.classList.remove("drag-over"));
+  zona.addEventListener("drop", (e) => {
+    e.preventDefault();
+    zona.classList.remove("drag-over");
+    if (e.dataTransfer.files[0]) manejarArchivo(e.dataTransfer.files[0], tipo);
+  });
+}
+conectarDropzone("dz-export", "input-export", "export");
+conectarDropzone("dz-baseline", "input-baseline", "baseline");
+
+/* ════════════════════════════════════════════════════════
+   3. PROCESAR Y RENDERIZAR RESULTADOS
+   ════════════════════════════════════════════════════════ */
+let resultadoActual = null;
+
+function renderLista(idLista, items, vacioTexto) {
+  const el = document.getElementById(idLista);
+  if (!items.length) {
+    el.innerHTML = `<div class="lane-empty">${vacioTexto}</div>`;
+    return;
+  }
+  el.innerHTML = "<ul>" + items.map((x) => `<li>${x}</li>`).join("") + "</ul>";
+}
+
+document.getElementById("btn-procesar").addEventListener("click", () => {
+  const r = sanitizarExport(estado.export, estado.baseline);
+  resultadoActual = r;
+
+  document.getElementById("count-vaciados").textContent = r.forzados.length;
+  document.getElementById("count-avisos").textContent = r.avisos.length;
+  document.getElementById("count-nuevas").textContent = r.primeraEjecucion ? "—" : r.clavesNuevas.length;
+  document.getElementById("titulo-nuevas").textContent = r.primeraEjecucion ? "Línea base" : "Claves nuevas";
+
+  renderLista("lista-vaciados", r.forzados, "Ninguno — todos los campos de la lista fija ya estaban vacíos.");
+  renderLista("lista-avisos", r.avisos.map((a) => a.ruta), "Ninguno.");
+  if (r.primeraEjecucion) {
+    document.getElementById("lista-nuevas").innerHTML =
+      '<div class="lane-empty">No subiste una línea base anterior — esta ejecución crea la primera. Descarga claves_conocidas.json y súbelo al repo junto al export.</div>';
+  } else {
+    renderLista("lista-nuevas", r.clavesNuevas, "Ninguna — Avada no ha añadido ajustes nuevos desde el último export conocido.");
+  }
+
+  const hayAvisos = r.avisos.length > 0 || (!r.primeraEjecucion && r.clavesNuevas.length > 0);
+  const vWrap = document.getElementById("veredicto-wrap");
+  vWrap.innerHTML = hayAvisos
+    ? '<span class="veredicto revisar">Revisar antes de subir</span>'
+    : '<span class="veredicto ok">Listo para subir</span>';
+
+  document.getElementById("resultados").style.display = "block";
+  document.getElementById("btn-reiniciar").style.display = "inline-block";
+  document.getElementById("btn-procesar").disabled = true;
+  document.getElementById("resultados").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+function descargarJSON(objeto, nombreArchivo) {
+  const blob = new Blob([JSON.stringify(objeto, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nombreArchivo;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("btn-descargar-json").addEventListener("click", () => {
+  if (resultadoActual) descargarJSON(resultadoActual.dataLimpia, "avada-global-options.json");
+});
+document.getElementById("btn-descargar-claves").addEventListener("click", () => {
+  if (resultadoActual) descargarJSON(resultadoActual.clavesActuales, "claves_conocidas.json");
+});
+
+document.getElementById("btn-reiniciar").addEventListener("click", () => location.reload());
+</script>
+</body>
+</html>
