@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Metodología de Construcción
 **Diagnóstico heredado, inventario de consolidación y aplicación práctica a cada sección real de la web nueva**
-*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF*
+*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md`*
 *Audiencia: Hno A (aplicación técnica) · Hna C (para entender el porqué de cada decisión)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -15,6 +15,7 @@ decidida en `ALCANCE_WEB_NUEVA.md` — ¿dónde y cómo la construyo?"**
 | Si necesitas... | Ve a este documento en su lugar |
 |---|---|
 | Cómo funciona Avada mecánicamente (Header Builder, Layouts, Global vs Guardado) | `GUIA_AVADA_LOCAL.md` — **este documento no repite ese árbol de decisión, lo aplica** |
+| Qué elemento concreto de Avada resuelve una necesidad de contenido, con su nivel de certeza | `CATALOGO_ELEMENTOS_AVADA.md` — **este documento tampoco repite esa información; dice dónde vive cada pieza ya decidida, no qué elemento usar para construirla en general** |
 | Qué secciones tiene la web y con qué prioridad | `ALCANCE_WEB_NUEVA.md` |
 | Qué contenido de la web vieja migrar, y cómo | `MIGRACION_CONTENIDO.md` |
 | **Para una sección concreta ya decidida: dónde construirla y con qué patrón** | **Este documento** |
@@ -22,7 +23,9 @@ decidida en `ALCANCE_WEB_NUEVA.md` — ¿dónde y cómo la construyo?"**
 **Regla de uso:** antes de construir cualquier pieza nueva, aplica primero el árbol de
 decisión completo de `GUIA_AVADA_LOCAL.md` Sección 8 — que empieza siempre preguntando si
 un elemento nativo de Avada, solo o combinado con ACF, ya resuelve la necesidad, antes de
-pasar a código. Este documento asume ese árbol ya conocido y solo lo aplica caso por caso.
+pasar a código. Para identificar ese elemento nativo, consulta `CATALOGO_ELEMENTOS_AVADA.md`
+antes de decidir de memoria. Este documento asume ese árbol ya conocido y solo lo aplica
+caso por caso.
 
 ---
 
@@ -73,7 +76,8 @@ página, reinventando CSS/JS cada vez, en vez de construir snippets globales reu
 o usar los elementos nativos de Fusion Builder. No es un problema de Avada — es un
 problema de disciplina de componentización. **El mismo patrón C es el motivo por el que,
 desde el 26 de julio de 2026, el equipo prioriza explícitamente ACF + elementos nativos de
-Avada sobre código nuevo — ver `GUIA_AVADA_LOCAL.md` Sección 8.**
+Avada sobre código nuevo — ver `GUIA_AVADA_LOCAL.md` Sección 8, y `CATALOGO_ELEMENTOS_AVADA.md`
+para identificar rápido qué elemento nativo aplica en cada caso.**
 
 ---
 
@@ -85,7 +89,7 @@ Avada sobre código nuevo — ver `GUIA_AVADA_LOCAL.md` Sección 8.**
 | "Tiritaito Music" (con cola) | `.mp-*` | Ejército de Intercesores | Evaluar si `[tt_podcast]` cubre el caso; si necesita cola/playlist, mantenerlo pero como snippet global reutilizable |
 | Mini reproductor de un track | `.hmds-*` | Ejército de Intercesores | **Eliminar** — sustituir por `[tt_podcast]` de un solo episodio |
 | Accordion "¿Qué es X?" + vídeo | `toggle-ios` | Ejército de Intercesores, Rincón de Nico | **Guardado (no-global)** o `[tt_accordion]`, **nunca Global** (`GUIA_AVADA_LOCAL.md` Sección 8) — en la web nueva aplica a la "Introducción" del Ejército (Sección 3) |
-| Menú hamburguesa custom | (sin prefijo `tt-`) | Al menos Ejército de Intercesores | Sustituir por Off Canvas Builder nativo (`GUIA_AVADA_LOCAL.md` Sección 9.1) |
+| Menú hamburguesa custom | (sin prefijo `tt-`) | Al menos Ejército de Intercesores | Sustituir por Off Canvas Builder nativo (`GUIA_AVADA_LOCAL.md` Sección 9.1, `CATALOGO_ELEMENTOS_AVADA.md` Sección 3) |
 | Sistema de Santos | `.tiritaito-santo` | Global, Hombres de Dios | Mantener el CSS, pero cargarlo solo donde se usa — nunca "Run everywhere". Ahora se combina con el método de Guardados de la Sección 4 |
 | Sistema de Biblioteca | `.tiritaito-libros` | Global, sin páginas reales en la web vieja | ⚠️ **Actualizado:** en la web nueva, Biblioteca (Libros/Películas/Oraciones) ya es prioridad de v1 (`ALCANCE_WEB_NUEVA.md`) — este CSS deja de ser hipotético. Sigue aplicando la regla de cargarlo solo donde se usa |
 | Carrusel Swiper (`unpkg.com`) | — | Varias páginas | Sustituir por Image Carousel / Avada Slider nativo |
@@ -149,6 +153,12 @@ Charlas de la Biblia pueden tener tono/estilo propio, pero el formato del reprod
 ser el mismo — ya resuelto técnicamente por el patrón `[tt_podcast]`, no hace falta nada
 nuevo.
 
+🔲 **Nota añadida 11 agosto 2026:** para "rotar entre los 9 santos" (sección de Hombres de
+Dios, más abajo) y para cualquier necesidad futura de rotar entre varias entradas distintas
+(no confundir con varias imágenes dentro de una misma entrada), el elemento identificado es
+**Post Slider**, no "Slideshows" — ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 y
+`GUIA_AVADA_LOCAL.md` Sección 9 para el detalle completo de esta distinción.
+
 ### Biblioteca
 
 | Pieza | Dónde vive | Nota |
@@ -161,8 +171,8 @@ nuevo.
 
 | Pieza | Dónde vive | Nota |
 |---|---|---|
-| Menú / header | Off Canvas Builder nativo (`GUIA_AVADA_LOCAL.md` Sección 9.1) | Pendiente confirmar si hay submenús |
-| Próximos eventos | 🔲 Sin resolver | Candidato: feature "Eventos" de Avada, ya activada en el Setup Wizard (`GUIA_AVADA_LOCAL.md` Sección 4.0.1) |
+| Menú / header | Off Canvas Builder nativo (`GUIA_AVADA_LOCAL.md` Sección 9.1, `CATALOGO_ELEMENTOS_AVADA.md` Sección 3) | Pendiente confirmar si hay submenús. ⚠️ Existe ya un Off-Canvas "Menu Movil" creado en Local, pero registrado con Conditions desactivadas — sin confirmar todavía si está diseñado y probado por dentro |
+| Próximos eventos | ✅ Resuelto (11 agosto 2026) — la feature "Eventos" de Avada es perfectamente utilizable tal cual, sin construir nada desde cero (ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5) | Ya activada en el Setup Wizard (`GUIA_AVADA_LOCAL.md` Sección 4.0.1). Pendiente de montaje real, no de decisión de elemento |
 
 ---
 
@@ -198,6 +208,7 @@ bien ahí.
 | ¿Posts normales con categoría, o Custom Post Type? | Con Guardados en vez de Dynamic Content, la razón principal para un CPT+ACF (automatizar campos) ya no aplica con la misma fuerza — puede que Posts con categoría baste |
 | ¿Qué elementos Guardados se preparan de antemano como piezas reutilizables? | P.ej. "bloque de biografía", "bloque de audio", "bloque de discursos" — cada santo elige y edita los que le apliquen |
 | Confirmar en Local que el Layout + Guardados funciona como se espera visualmente | 🔲 Pendiente de prueba práctica, no de documentación |
+| ¿Post Slider sirve para la portada/listado que rota entre los 9 santos? | 🔲 Identificado como el elemento correcto (ver Sección 3 más arriba y `CATALOGO_ELEMENTOS_AVADA.md` Sección 4) — sin configurar ni probar todavía |
 
 ---
 
@@ -205,7 +216,7 @@ bien ahí.
 
 ### Antes de crear un módulo nuevo
 
-- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (`GUIA_AVADA_LOCAL.md` Sección 9) — pregunta siempre primero, es la opción de mínimo código
+- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (`GUIA_AVADA_LOCAL.md` Sección 9, `CATALOGO_ELEMENTOS_AVADA.md`) — pregunta siempre primero, es la opción de mínimo código
 - [ ] ¿Ya existe un snippet global de Tiritaito con funcionalidad equivalente? (Sección 2 de este documento)
 - [ ] Si se construye desde cero: ¿está pensado para reutilizarse — parámetros, no contenido fijo?
 - [ ] Si es candidato a Avada Library: ¿Guardado o Global? (`GUIA_AVADA_LOCAL.md` Sección 8 — no son intercambiables)
@@ -215,6 +226,7 @@ bien ahí.
 - [ ] ¿Se ha probado en consola del navegador que no hay errores de elementos inexistentes?
 - [ ] Si toca `wp_options`, ACF o el contrato de datos de la PWA Creators: ¿se ha coordinado con el equipo antes? (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6)
 - [ ] Si el contenido lo va a gestionar el equipo desde Tiritaito for Creators: ¿se preparó el prompt completo para el Proyecto 5?
+- [ ] **¿Esto lo va a necesitar también la app (WPMobile.app) algún día? (añadido 11 agosto 2026)** — si es probable, cuanto más estructurado esté ahora (Posts, CPT) más fácil será que aparezca bien en la app más adelante (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7.2)
 
 ### Antes de marcar un snippet "Run everywhere"
 
@@ -227,10 +239,11 @@ bien ahí.
 ## 6. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Hno A: validar en Local, en este orden — Off Canvas Builder (menú) → Toggles (Introducción del Ejército) → Layout + Guardados para Hombres de Dios → Dynamic Content para Novedades y Devocional → snippets nuevos de "Batalla de cada día/semana" del Ejército de Intercesores (evaluando primero si ACF+nativo lo resuelve, ver Sección 3)
+1. Hno A: validar en Local, en este orden — Off Canvas Builder (menú) → Toggles (Introducción del Ejército) → Layout + Guardados para Hombres de Dios → Dynamic Content para Novedades y Devocional → Post Slider para Hombres de Dios y Novedades (nuevo, 11 agosto) → snippets nuevos de "Batalla de cada día/semana" del Ejército de Intercesores (evaluando primero si ACF+nativo lo resuelve, ver Sección 3)
 2. Coordinar con el equipo antes de crear las claves nuevas de `wp_options` o campos ACF que probablemente necesite la Batalla de cada día/semana del Ejército de Intercesores
 3. Proyecto 5: retirar la UI de "Tip del día" de la app (ver Sección 2) — pendiente confirmado el 26 de julio 2026
 4. Cuando se resuelvan las preguntas abiertas de `ALCANCE_WEB_NUEVA.md` sobre Biblioteca (PWA de libros, estructura de Oraciones), completar las filas correspondientes de la Sección 3 de este documento
+5. Confirmar en Local si el Off-Canvas "Menu Movil" ya existente está diseñado y probado por dentro, o solo registrado como borrador (Sección 3, "Menú y Próximos eventos")
 
 **Preguntas abiertas propias de este documento:**
 
@@ -243,12 +256,18 @@ bien ahí.
 **Heredadas de `ALCANCE_WEB_NUEVA.md` (no se repiten aquí en detalle, solo se enlazan):**
 Salmo del día dentro de Misa, ubicación de "Habla por la palabra" y "Elige tu santo",
 integración de vídeos de seminarios pasados, "Canción del Ejército", naturaleza de la PWA
-de libros, estructura de Oraciones, feature Eventos de Avada.
+de libros, estructura de Oraciones.
 
 **Resuelto en esta revisión (26 julio 2026):** Novedades migrado a CPT+ACF, backend
 confirmado y probado · Devocional migrado parcialmente a ACF Options Page · Tip eliminado
 por decisión (pendiente solo de aplicarse en la app) · principio de mínimo código
 reforzado en toda la sección 3 y en los checklists.
+
+**Resuelto en esta revisión (11 agosto 2026):** feature Eventos de Avada confirmada usable
+tal cual para "Próximos eventos", sin construir nada desde cero · elemento correcto para
+rotar entre los 9 santos y otras entradas distintas identificado (Post Slider, no
+Slideshows) · `CATALOGO_ELEMENTOS_AVADA.md` incorporado como referencia complementaria en
+toda la Sección 3 y en el checklist de la Sección 5.
 
 ---
 
