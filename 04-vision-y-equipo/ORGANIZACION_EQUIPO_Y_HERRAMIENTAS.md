@@ -263,7 +263,8 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 | Cambio en el texto de instrucciones de un Proyecto | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | Quien lo edite directamente en claude.ai debe traerlo de vuelta aquí en la siguiente sesión de Proyecto 2 (ver Sección 11.7) |
 | Patrón visual confirmado tras ver bocetos (ej. Novedades) | `ALCANCE_WEB_NUEVA.md` (Sección 4/5) y `GUIA_AVADA_LOCAL.md` (Sección 8.4-bis) | Hno C, a partir del resumen de Hno A |
 | Decisión sobre si algo se aplica ya en la app o queda pendiente | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Quien confirme contra el HTML real — nunca asumir |
-| Cambio en el sistema de colaboración externa (nuevo colaborador, nuevo archivo sensible, cambio de protocolo) | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 11 | Carlitos, con quien haya detectado el cambio |
+| Cambio en el sistema de colaboración externa (nuevo colaborador, nuevo archivo sensible, cambio de protocolo) | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 11 | Carlitos, con quien haya detectado el cambio | 
+| Cambio en cualquier ajuste de Avada Global Options que se guarde de verdad (no solo probado y revertido) | `03-guias-practicas/exports/avada-global-options.json` + `claves_conocidas.json` (si aparecen claves nuevas) | Quien haga el cambio en Avada — no limitado a un rol fijo. Descarga el nuevo export (Avada → Options → Import/Export → Download Data File), lo pasa por `saneador-avada-options.html` antes de subirlo, y sube ambos archivos. Se da por hecho que está actualizado — sin verificación adicional |
 
 ---
 
