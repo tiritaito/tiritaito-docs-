@@ -41,6 +41,16 @@ construcción real, en vez de a bulto o por intuición.
 | Qué secciones tiene la web y con qué prioridad | `ALCANCE_WEB_NUEVA.md` |
 | **Qué elemento de Avada resuelve una necesidad de contenido concreta, y con qué certeza** | **Este documento** |
 
+**Nota añadida 14 agosto 2026 — nueva fuente de evidencia:** desde esta fecha
+existe también un export real y saneado de Avada Global Options en
+`03-guias-practicas/exports/avada-global-options.json` (línea base de claves
+en `claves_conocidas.json`). Cuando una entrada de este catálogo pueda
+contrastarse directamente contra ese archivo, es la evidencia más fuerte
+disponible — el valor tal cual está guardado, no una reconstrucción por
+captura o cruce de pistas. Los tres informes de sesión (Cuenta 1/2/3) siguen
+siendo la fuente de las decisiones de producto/diseño detrás de cada valor;
+el export es la fuente del dato técnico exacto.
+
 **Alcance actual:** los tres informes de Global Options revisaron con profundidad real
 unos 24 elementos de Avada Builder Elements (más los sistemas de Options relacionados:
 Blog, Portfolio, Slideshows, Lightbox, Forms, Events, Page Title Bar, Breadcrumbs, Search,
@@ -1052,7 +1062,13 @@ Resuelto con confianza alta en este catálogo (Sección 8.1) — ahora con evide
 `GUIA_AVADA_LOCAL.md` yo mismo — queda anotado aquí para que Proyecto 2 reconcilie ambas
 secciones, probablemente sustituyendo el Color 1-8 de la Sección 4.1 por el orden ya
 confirmado, dejando Colores 9-13 como pendientes de cargar (siguen sin estar, confirmado por
-Cuenta 3).
+Cuenta 3). **Actualización 14 agosto 2026, Proyecto 2:** reconciliado. La copia de
+`GUIA_AVADA_LOCAL.md` Sección 4.1 disponible en esta sesión ya refleja el
+orden correcto (Color 1 = Fondo Blanco...), coincidiendo con este catálogo y
+con el export real. La discrepancia que motivó esta nota parece haberse
+corregido ya en algún momento entre el cierre de esta ronda (11 agosto) y
+esta sesión (14 agosto) — no se necesita ninguna acción adicional sobre
+`GUIA_AVADA_LOCAL.md` en este punto.
 
 ### 13.3 "Default Page Template = 100% Width" — explicación de tres capas
 
@@ -1070,7 +1086,12 @@ que puede que sea una versión distinta a la que Cuenta 3 tenía delante. Lo que
 porque lo confirman dos cuentas de forma independiente (Cuenta 2 en su informe de Layout y
 Cuenta 3 en su aviso cruzado), es que el valor real y actual en Local es **100% Width**.
 Proyecto 2 debería confirmar y anotar el motivo del cambio, no solo el valor final, para que
-la próxima persona que lea el documento sepa si confiar en él.
+la próxima persona que lea el documento sepa si confiar en él. **Aclaración 14 agosto 2026, Proyecto 2:** el pasaje sobre "Default Page
+Template = 100% Width" sí existe en `GUIA_AVADA_LOCAL.md` — vive en la
+**Sección 4.0.3**, no en la 4.0.1 como se cita aquí. Parece un desliz de
+numeración del informe de Cuenta 3, no un vacío real del documento. El
+contenido de esa sección coincide con el mecanismo de tres capas descrito
+en este catálogo.
 
 ### 13.4 Slideshows ≠ Post Slider
 
