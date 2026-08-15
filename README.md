@@ -30,7 +30,11 @@ tiritaito-docs/
 │   └── MIGRACION_CONTENIDO.md
 ├── 03-guias-practicas/
 │   ├── GUIA_AVADA_LOCAL.md
-│   └── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026
+│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026
+│   └── exports/                             ← nuevo, 14 agosto 2026
+│       ├── avada-global-options.json        (export saneado, sin credenciales)
+│       ├── claves_conocidas.json            (línea base de claves para detectar drift)
+│       └── saneador-avada-options.html      (herramienta de saneado, corre en el navegador)
 ├── 04-vision-y-equipo/
 │   ├── ARQUITECTURA_Y_ROADMAP.md
 │   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md
@@ -75,6 +79,13 @@ tiritaito-docs/
 **`historico/`** — documentos superados, conservados como referencia de cómo evolucionaron las decisiones. No se editan ni se usan como fuente de verdad; si algo de ahí sigue siendo válido, ya está incorporado en la versión activa correspondiente.
 
 **`apps/`** — código fuente de Tiritaito for Creators (HTML autocontenido), su changelog y, desde el 26 de julio de 2026, el snippet PHP del endpoint central que lo sirve — los tres juntos en `v1/` (web vieja, solo mantenimiento) y `v2/` (web nueva, desarrollo activo). Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` para el detalle de cada versión.
+
+**`03-guias-practicas/exports/`** — export real y saneado de Avada Global
+Options (`avada-global-options.json`), su línea base de claves para detectar
+cambios (`claves_conocidas.json`), y la herramienta que genera ambos
+(`saneador-avada-options.html`, corre en el navegador). Se regenera cada vez
+que alguien cambia y guarda un ajuste de Avada Global Options — ver
+`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6.1.
 
 ---
 
