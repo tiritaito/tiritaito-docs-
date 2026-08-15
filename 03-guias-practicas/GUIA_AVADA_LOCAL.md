@@ -18,6 +18,7 @@ Este documento responde una sola pregunta: **¿cómo configuro y construyo con A
 | Dónde construir una pieza concreta de contenido ya decidida (Global vs Guardado vs Snippet) | `METODOLOGIA_CONSTRUCCION.md` |
 | Qué contenido de la web vieja migrar y cómo | `MIGRACION_CONTENIDO.md` |
 | Qué elemento de Avada resuelve una necesidad de contenido concreta, y con qué certeza | `CATALOGO_ELEMENTOS_AVADA.md` |
+| El valor real y actual de un ajuste concreto de Global Options, sin depender de que las tablas de este documento estén al día | `03-guias-practicas/exports/avada-global-options.json` |
 | **Cómo configurar Avada y Local paso a paso, y qué puede hacer Avada de fondo** | **Este documento** |
 
 Este documento no repite el mapa de qué-va-dónde por sección (eso vive en `METODOLOGIA_CONSTRUCCION.md`) — se centra en la mecánica de Avada y Local en sí. Tampoco repite, elemento por elemento, qué sirve para qué necesidad de contenido — eso vive en `CATALOGO_ELEMENTOS_AVADA.md`.
@@ -97,6 +98,12 @@ APP_PIN  = 1234   ⚠️ cambiar antes de lanzar
 - [ ] Si el código incluye una URL o credencial, verificar que viene de este documento o de `04_ENTORNO_LOCAL.md` actualizado — nunca de producción
 - [ ] Si el Local se ha recreado recientemente: verificar que el snippet PHP, el CPT `novedades` y la Options Page de ACF siguen existiendo — no darlos por hecho
 - [ ] Si esta sesión va a trabajar con dos ordenadores a la vez: seguir el procedimiento de la Sección 2.1, no improvisar
+- [ ] Si hay duda sobre el valor real de un ajuste de Global Options — o si algo
+  se ha roto y se sospecha de un cambio de configuración — consultar
+  directamente `03-guias-practicas/exports/avada-global-options.json` antes de
+  asumir el valor de cualquier tabla de este documento. Las tablas de aquí
+  pueden quedar desactualizadas si alguien cambia un ajuste sin documentarlo;
+  el export es la fuente más fresca sin necesidad de abrir Local.
 
 ---
 
@@ -263,7 +270,7 @@ Las Características (Features) se revisaron una por una, no en bloque:
 | Eventos | ✅ Activada | Candidata a evaluar para "Seminarios — próximos" |
 | Formas (Forms) | ✅ Activada | Para formularios de contacto/oración |
 | Off Canvas | ✅ Activada | Coincide con el método de menú móvil recomendado en Sección 9.1 |
-| Portafolio | ✅ Activada | ⚠️ Marcada para reconsiderar — no hay contenido de portafolio planeado; activa CPT + plantillas Single/Archive innecesarias, exactamente el Patrón B de deuda técnica que `METODOLOGIA_CONSTRUCCION.md` ya advierte evitar |
+| Portafolio | ❌ Desactivada (confirmado 14 agosto 2026 contra `status_fusion_portfolio` en el export real) | Ya no es "a reconsiderar" — la decisión ya se tomó y se aplicó (ver también `CATALOGO_ELEMENTOS_AVADA.md` Sección 11). Quedan valores de estilo no-de-fábrica en los campos de Portfolio (columnas=1, slug reescrito a mano en español, permalink activado) de una edición anterior al desactivarlo — sin efecto real mientras el CPT esté apagado |
 | Herramientas de desarrollo (ACF) | ✅ Activada | Confirmado: ACF Pro viene incluido gratis con la licencia de Avada, con soporte nativo en Avada Dynamic Content. Ya en uso real (Novedades, Devocional — ver `METODOLOGIA_CONSTRUCCION.md`) |
 | Modo de mantenimiento, Gestión de medios | ✅ Activadas | Sin objeción |
 | Comprar, Foro, Marca personalizada, Chat en vivo | ☐ Sin activar | Correcto — sin caso de uso documentado en Tiritaito |
@@ -537,6 +544,12 @@ Responsive:
 
 Si un texto se ve desbordado o cortado en móvil, esto es lo primero a revisar — puede ser un
 problema de este ajuste global, no del Container o Columna concretos.
+✅ **Valor real confirmado (14 agosto 2026), contra `03-guias-practicas/exports/avada-global-options.json`:**
+`typography_sensitivity = 0.30` (no está en 0 — el texto SÍ se reduce de forma
+automática en pantallas pequeñas). Deja de ser un valor desconocido: si algún
+texto se ve desbordado en móvil, la pregunta ya no es "¿está activo este
+ajuste?" sino "¿es 0.30 la intensidad correcta, o hay que subirla o bajarla?".
+`typography_factor` (el campo relacionado) está en `1.50`.
 
 ### Dónde se decide el punto exacto de cambio de pantalla
 
@@ -558,6 +571,11 @@ Tiritaito usa un único diseño sin importar el ancho (lo más probable dado el 
 
 *Nota aparte: el punto de quiebre del Header tiene su propio ajuste independiente (Header
 Responsive Breakpoint, por defecto 800px) — distinto de los otros tres. Revisar también.*
+*Nota (14 agosto 2026): el valor `768px` que usa el código de los snippets
+(`00_CORE.md` Sección 7) es una convención propia del proyecto, no un campo
+de Avada. Confirmado contra el export real: los ajustes de breakpoint de
+Avada usan `1024` (varios campos) y `480` (`visibility_small`) — no busques
+un `768` dentro del panel de Avada, porque no existe ahí.*
 
 ### Cómo se revisa — nunca por Live Link
 
@@ -919,13 +937,14 @@ if (document.getElementById('mi-modulo-root')) {
 **Próximos pasos:**
 1. Hno A: registrar "Yeah Papa" en Typography → Custom Fonts y confirmar si el `.woff2` ya subido sirve o hay que resubirlo
 2. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
-3. Hno A + Carlitos: decidir si se desactiva "Portafolio" en Características, ya que no hay contenido planeado
+3. ✅ **Resuelto (14 agosto 2026):** Portafolio confirmado desactivado contra el export real — no hace falta decidirlo, ya está aplicado.
 4. Hno A: actualizar la URL configurada en la app Tiritaito for Creators de `.../blog/wp-json` a `https://tiritaito-real.local/wp-json`
-5. Hno A: revisar el valor actual de "Responsive Typography Sensitivity" — si está en 0, el texto nunca se reduce en pantallas pequeñas (Sección 8.4)
+5. ✅ **Resuelto (14 agosto 2026):** Responsive Typography Sensitivity confirmado en 0.30 contra el export real (no en 0).
 6. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)
 7. Cuando se llegue a construir el menú: confirmar con el equipo si lleva submenús desplegables, y si el Off-Canvas "Menu Movil" ya existente se termina de diseñar y se publica (Sección 9.1)
 8. Hna C / equipo: decidir si 10px sustituye a 25px como radio estándar, convive como cuarto token, o queda solo en Toggles/Forms (Sección 13)
 9. Carlitos + Hno A: si vuelve a hacer falta trabajar con dos ordenadores, seguir el procedimiento de la Sección 2.1
+10. Barrer el export completo y corregir en Avada todos los campos con la unidad inválida "píxeles" (debe ser "px", sin espacio) — muestra ya encontrada: page_title_font_size, text_column_min_width, slider_arrow_size, header_sticky_nav_font_size, nav_dropdown_font_size, snav_font_size, megamenu_title_size, es_title_font_size, y varios countdown_*/ec_sep_heading_font_size. La lista de arriba no es completa — falta el barrido de los campos que no entraron en la revisión de esta sesión.
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -933,12 +952,13 @@ if (document.getElementById('mi-modulo-root')) {
 |---|---|---|
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
 | 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica. A diferencia de Novedades, si estas dos necesitan filtrar de verdad, sí haría falta el hook de la Sección 9 |
-| 3 | ¿Se desactiva "Portafolio"? | Sigue activo sin caso de uso — riesgo de repetir el Patrón B de deuda técnica si se deja así |
+| 3 | ~~¿Se desactiva "Portafolio"?~~ **Resuelto 14 agosto 2026** — confirmado desactivado contra el export real, ver Sección 4.0.1. | — |
 | 4 | ¿10px sustituye a 25px, convive como cuarto token, o queda solo en Toggles/Forms? | Apareció dos veces de forma independiente, en dos elementos distintos, por decisión de Hna C (Sección 13) — bloquea el border-radius de Tabs, Testimonials y Audio, dejados en 0px a propósito mientras no se resuelva |
 | 5 | ¿Se confirma que la copia de `GUIA_AVADA_LOCAL.md` que maneja cada cuenta/Proyecto está al día? | La Sección 4.0.3 se añadió porque una sesión de trabajo citó un pasaje sobre "Default Page Template" que no se localizó en la versión disponible en ese momento — puede ser síntoma de una sincronización desactualizada en algún Proyecto |
 | 6 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 |
 
-**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026) · Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026) · principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026) · mecanismo de trabajo con dos ordenadores documentado, apoyado en Local Cloud Backups, con el error típico de conexión a Google Drive ya resuelto (31 julio 2026) · **breakpoints responsive confirmados y alineados a ~1024px (11 agosto 2026)** · **orden real de los 13 colores confirmado en Local, tabla de la Sección 4.1 corregida (11 agosto 2026)** · **mecanismo de "Default Page Template = 100% Width" documentado (Sección 4.0.3, 11 agosto 2026)** · **distinción Slideshows/Post Slider incorporada (Sección 9, 11 agosto 2026)** · **CATALOGO_ELEMENTOS_AVADA.md creado como referencia complementaria de "qué elemento sirve para qué necesidad" (11 agosto 2026)**.
+**Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026) · Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026) · principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026) · mecanismo de trabajo con dos ordenadores documentado, apoyado en Local Cloud Backups, con el error típico de conexión a Google Drive ya resuelto (31 julio 2026) · **breakpoints responsive confirmados y alineados a ~1024px (11 agosto 2026)** · **orden real de los 13 colores confirmado en Local, tabla de la Sección 4.1 corregida (11 agosto 2026)** · **mecanismo de "Default Page Template = 100% Width" documentado (Sección 4.0.3, 11 agosto 2026)** · **distinción Slideshows/Post Slider incorporada (Sección 9, 11 agosto 2026)** · **CATALOGO_ELEMENTOS_AVADA.md creado como referencia complementaria de "qué elemento sirve para qué necesidad" (11 agosto 2026)** · **Portafolio confirmado desactivado contra el export real (14 agosto 2026)**
+· **Responsive Typography Sensitivity confirmado en 0.30 contra el export real (14 agosto 2026)** ·.
 
 ---
 
