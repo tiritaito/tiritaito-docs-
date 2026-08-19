@@ -1,0 +1,26 @@
+{
+  "name": "Tiritaito for Creators",
+  "short_name": "Creators",
+  "description": "Panel de publicación de contenido para el equipo de Tiritaito.com",
+  "start_url": "https://www.tiritaito.com/blog/Tiritaito%20for%20Creators/App/tiritaito-creators-v1-01.html",
+  "scope": "https://www.tiritaito.com/blog/Tiritaito%20for%20Creators/App/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "https://www.tiritaito.com/blog/wp-content/uploads/2026/06/IMAGE-2026-06-19-10-47-20_resultado.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www.tiritaito.com/blog/wp-content/uploads/2026/06/IMAGE-2026-06-19-10-47-20_resultado.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ]
+}
