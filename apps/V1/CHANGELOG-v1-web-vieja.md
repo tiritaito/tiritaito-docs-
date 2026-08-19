@@ -17,6 +17,27 @@ viceversa.
 
 ---
 
+## v1-10 · Agosto 2026 — Corrección de la instalación PWA + botón de instalar
+ 
+- ⚠️ **Bug corregido — la app no se ofrecía como instalable, solo como acceso directo.** Causa raíz: `manifest.json` y `sw.js` de la entrega v1-09 apuntaban a una ruta de servidor incorrecta. Se asumió `TiritaitoforCreators/App/` y el nombre `tiritaito-creators-v1-09.html`; la ruta real, confirmada contra el servidor en vivo, es `Tiritaito for Creators/App/` (con espacios, codificados como `%20` en la URL) y el nombre de archivo es **fijo**: `tiritaito-creators-v1-01.html`, sobrescrito en cada entrega — el navegador no encontraba el manifest (404 real, verificado), así que nunca llegaba a considerar la app instalable
+- ✅ **Confirmado en producción (agosto 2026): V1 SÍ usa nombre de archivo fijo**, igual que V2 — contradice lo que documenta `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 1 y 2 ("V1 — un archivo nuevo por versión, como siempre"). Verificado leyendo el HTML real servido en `tiritaito-creators-v1-01.html`, que mostraba el footer "v1-08" (versión anterior a esta). ⚠️ **Pendiente de decisión de equipo**: corregir esa sección del documento para reflejar la práctica real, tal como ya se hizo para V2 el 26 de julio — no se toca aquí porque ese documento es propiedad de Hno A y excede el ámbito de esta sesión
+- **Consecuencia práctica para todas las entregas futuras de V1 con PWA**: `manifest.json` y `sw.js` ya no necesitan cambiar su `start_url`/`scope`/rutas de assets en cada versión nueva, porque el nombre de archivo del HTML nunca cambia. Lo único que hay que actualizar en cada entrega es `CACHE_NAME` dentro de `sw.js` (ver más abajo)
+- `manifest.json` corregido: `start_url` y `scope` ahora apuntan a la ruta real con espacios codificados
+- `sw.js` corregido: ruta de `tiritaito-creators-v1-01.html` en `ASSETS_ESTATICOS`, y `CACHE_NAME` incrementado a `tt-creators-v1-10` (necesario para que los móviles que ya intentaron cachear la versión rota descarten esa caché fallida)
+- **Nuevo: botón "Instalar app en este móvil"**, en la pestaña Ayuda, arriba de las preguntas frecuentes
+  - Aparece únicamente cuando el navegador confirma que la app es instalable (evento `beforeinstallprompt` de Chrome/Android) y la app no está ya instalada
+  - Al pulsarlo, lanza el diálogo nativo de instalación del navegador
+  - Desaparece automáticamente en cuanto la instalación se completa (`appinstalled`), y no vuelve a aparecer en esa sesión
+  - En iPhone/Safari el botón no aparece — Apple no dispara ese evento; la FAQ actualizada explica el camino manual ("Compartir → Añadir a pantalla de inicio") para ese caso
+- FAQ de instalación actualizada para explicar el nuevo botón y diferenciar el comportamiento Android/iPhone
+- ▪️ No tocado en esta versión: Devocional, Novedades, Biblioteca de Medios, Recursos, PIN, navegación — sin cambios funcionales de fondo
+### Lección para el protocolo de sesión, de cara al futuro
+ 
+Antes de dar por buena cualquier ruta de servidor que no esté ya verificada en un documento de la base de conocimiento, hay que confirmarla contra el servidor real (`web_fetch`) en lugar de asumir el texto que se transcribe en el chat — en este caso el espacio en el nombre de la carpeta se perdió al repetir la ruta de memoria en un mensaje anterior, y ese único carácter fue la causa completa del fallo.
+ 
+
+---
+
 ## v1-08 · Agosto 2026 — Módulo Novedades para el ticker de la home
 
 - **Nueva pestaña Novedades** en la navegación inferior (2.º tab, icono de estrella)
