@@ -637,17 +637,16 @@ sesión de investigación correspondía al hero/slider principal de la web de re
 al bloque de noticias/novedades — no se toma como válida para este criterio; se decide
 cuando se comparta la referencia correcta y se construya la home de verdad.
 
-### Previsualización con bocetos — dónde vive esta capacidad
-
-Antes de construir una sección nueva o rediseñar una existente, el Proyecto 3 (Web Nueva,
-cuenta de Hno A) debe proponer 2-3 bocetos visuales (mockups) de opciones distintas,
-respetando el ADN visual de Tiritaito, para elegir antes de construir en Avada — en vez de
-construir y luego rehacer si la elección no convence. El detalle completo de este criterio
-vive en las Instrucciones personalizadas de ese Proyecto (Sección 0.2, ver
-`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) — no se repite aquí para no duplicar
-mantenimiento; este documento solo señala que existe y por qué conecta con el principio de
-altura de sección de arriba: decidir bien el boceto ayuda a decidir con criterio cuánto alto
-necesita realmente la sección, en vez de heredar un `100vh` por defecto sin pensarlo.
+**Previsualización con bocetos (cambio de responsable, 1 de septiembre de 2026):** antes
+de construir cualquier sección nueva (no solo en la home), Hna C (Carlota) propone 2-3
+bocetos visuales en el Proyecto 4 — Diseño, Avada y Bocetos, respetando el ADN de
+Tiritaito. El Proyecto 3 (Hno A) ya NO propone bocetos — recibe el elegido y lo construye
+igual (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 0.2 del Proyecto 3). El detalle completo
+del criterio de bocetos vive en `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 4 — no se
+repite aquí para no duplicar mantenimiento; este documento solo señala que existe y por qué
+conecta con el principio de altura de sección de arriba: decidir bien el boceto ayuda a
+decidir con criterio cuánto alto necesita realmente la sección, en vez de heredar un
+`100vh` por defecto sin pensarlo.
 
 **Nota técnica:** esto es una capacidad de Claude (generación de imágenes/bocetos dentro de
 la conversación), no una función de Avada — no hay ningún ajuste de Avada que "genere
