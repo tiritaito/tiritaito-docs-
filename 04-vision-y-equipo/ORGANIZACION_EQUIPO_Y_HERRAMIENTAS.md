@@ -46,13 +46,12 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 | Persona | Rol | Responsabilidad principal | No toca |
 |---|---|---|---|
-| Carlitos | Coordinador del sistema técnico | Vela porque el sistema técnico del proyecto (cuentas de Claude, GitHub, documentación, infraestructura) funcione bien y de forma coherente. Mantiene el README actualizado | Decisiones de producto |
-| Hno A | Desarrollador principal | PHP, JS, REST API, snippets complejos, Avada/Local, Tiritaito for Creators | Decisiones de contenido |
-| Hno C | Investigación y documentación | Investiga, documenta, valida conceptos | Código en producción |
-| Hna C | Cerebro del equipo — dirección, diseño y coordinación | Coordina al equipo en el día a día, define alcance, criterio visual, decisiones de producto, Avada visual. Con acceso técnico para decidir bien | Código en desarrollo |
+| Carlitos (Hno C) | Coordinador del sistema técnico + investigación | Vela porque el sistema técnico del proyecto (cuentas de Claude, GitHub, documentación, infraestructura) funcione bien y de forma coherente. Mantiene el README actualizado. Desde el 1 de septiembre de 2026, investiga también los bloqueos técnicos de construcción que le escala Álvaro (Proyecto 9) | Decisiones de producto |
+| Hno A (Álvaro) | Construcción en Avada | Construye en Live Builder exactamente lo que Hna C diseña en boceto — ya no propone bocetos propios. PHP, JS, REST API, snippets complejos, Tiritaito for Creators | Decisiones de diseño ni de contenido |
+| Hna C (Carlota) | Diseño, producto, coordinación y bocetos | Coordina al equipo en el día a día, define alcance y criterio visual. Desde el 1 de septiembre de 2026, hace TODOS los bocetos visuales de páginas y entradas de la web nueva | Código en desarrollo |
 | Hna MF | Datos y métricas | Google Search Console, análisis de uso, propone mejoras basadas en datos | — |
 | Editores (4) | Contenido | Subir/editar su contenido en sus secciones | Todo lo demás |
-| Matt | Colaborador externo | Trabaja con Codex (IA de OpenAI) directamente sobre `tiritaito-docs`, sobre archivos sin dato sensible y sobre las copias `.matt.*` de los sensibles. Ver Sección 11 | Archivos oficiales sensibles — nunca los ve ni los edita |
+| Matt | Colaborador externo | Trabaja con Codex directamente sobre `tiritaito-docs`, sobre archivos sin dato sensible y sobre las copias `.matt.*` de los sensibles. Ver Sección 11 | Archivos oficiales sensibles — nunca los ve ni los edita |
 
 **✅ Actualización directa de Carlitos (julio 2026), a petición de Hna C:** la coordinación se divide en dos capas — Carlitos coordina que el *sistema* funcione (herramientas, cuentas, documentación), Hna C coordina al *equipo* (personas, decisiones, trabajo del día a día). Esto no cambia la autoridad de Carlitos sobre la arquitectura de documentación — mantener el README actualizado es, en la práctica, la forma concreta en la que ejerce esa autoridad — es una división de qué se coordina, no una cesión de esa autoridad concreta.
 
@@ -66,14 +65,15 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 | # | Proyecto | Cuenta | Rol | Estado | Instrucciones |
 |---|---|---|---|---|---|
-| 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado — ver nota de cierre en Sección 2.1 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 1 |
-| 2 | Investigación | Hno C | Documentos y diagramas claros para el equipo | ✅ Activo — es este proyecto | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 2 |
-| 3 | **Web Nueva** (fusión de Backend+Snippets y Maquetación+Avada) | Hno A | Construcción técnica y visual completa en Local, incluida la recomendación de elementos de Avada a partir de `CATALOGO_ELEMENTOS_AVADA.md` (ampliado 11 agosto 2026, ver Sección 3) | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3 |
-| 4 | Diseño y Avada | Hna C | Decisiones de producto y visión visual, sin código | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 4 |
-| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 (web vieja) y V2 (web nueva). Ver Sección 2.2 para el límite exacto de su ámbito frente al Proyecto 3 | ✅ Configurado — actualizado con V1/V2 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 5 |
-| 6 | Web Nueva — Repuesto A (copia idéntica del Proyecto 3) | Cuenta de repuesto | Continuidad si la cuenta principal de Hno A agota su límite | ✅ Creada y configurada (26 julio 2026) | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 6 |
-| 7 | Web Nueva — Repuesto B (copia idéntica del Proyecto 3) | Cuenta de repuesto | Segunda continuidad — 🔲 motivo de tener dos repuestos en vez de uno sin documentar, preguntar a Carlitos si hace falta anotarlo | ✅ Creada y configurada (26 julio 2026) | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 7 |
-| 8 | WPMobile.app | Sin asignar | Desarrollo de la app cuando se active | 🔵 Pendiente | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 8 (sin redactar) |
+| 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 1 |
+| 2 | Investigación | Hno C | Documentos, coordinación del sistema, memoria del proyecto | ✅ Activo — es este proyecto | Sección 2 |
+| 3 | **Construcción en Avada** | Hno A | Construye en Live Builder exactamente lo que Carlota diseña en boceto | ✅ Reescrito 1 sept 2026 | Sección 3 |
+| 4 | **Diseño, Avada y Bocetos** | Hna C | Decisiones de producto + TODOS los bocetos visuales de la web nueva | ✅ Ampliado 1 sept 2026 | Sección 4 |
+| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 y V2 | ✅ Configurado | Sección 5 |
+| 6 | **Bocetos — 2ª cuenta de Carlota** | Hna C | Mismas instrucciones que Proyecto 4 | ✅ Reasignado 1 sept 2026 (antes repuesto de Proyecto 3) | Sección 6 |
+| 7 | **Construcción — 2ª cuenta de Álvaro** | Hno A | Mismas instrucciones que Proyecto 3 | ✅ Configurado | Sección 7 |
+| 8 | WPMobile.app | Sin asignar | Desarrollo de la app cuando se active | 🔵 Pendiente | Sección 8 (sin redactar) |
+| 9 | **Apoyo Técnico a Construcción** | Hno C | Investigación rápida de bloqueos técnicos que le escala Álvaro | 🔵 Por crear | Sección 9 |
 
 **~~Datos y Métricas (Hna MF)~~ — cancelado, no se va a crear como proyecto de Claude.** Si Hna MF necesita el checklist de Search Console, ver Sección 8 — queda como referencia sin un proyecto dedicado.
 
@@ -90,6 +90,19 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 ### 2.2 Proyecto 3 vs Proyecto 5 — dónde termina uno y empieza el otro
 
 Con el snippet PHP del endpoint central viviendo ahora dentro de `apps/v2/` (Sección 5.4) y con el protocolo de traspaso de prompts entre proyectos (`INSTRUCCIONES_PROYECTOS_CLAUDE.md`, Proyecto 3 punto 0.3), conviene dejar el límite explícito, no implícito:
+
+## 2.3 El flujo de trabajo — Boceto → Construcción → Investigación
+
+Desde el 1 de septiembre de 2026, la fase de construcción sigue un
+bucle de tres pasos, cada uno en su propio rol:
+CARLOTA — bocetos (Proyectos 4 y 6) │ │ boceto aprobado + HTML + explicación ▼ ÁLVARO — construcción en Live Builder (Proyectos 3 y 7) │ ├── queda igual que el boceto → publicado ✅ │ └── no lo resuelve nativo (código / ACF / no sabe) │ ▼ CARLITOS — investigación (Proyecto 9) │ │ solución o hallazgo ▼ vuelve a ÁLVARO para aplicarlo
+
+Carlota no construye en Avada. Álvaro no diseña ni propone bocetos.
+Carlitos no construye ni diseña — investiga en paralelo lo que Álvaro
+no puede resolver con Avada nativo. Cada rol tiene un límite claro;
+si una tarea no encaja claramente en ninguno de los tres, es señal de
+pararse y preguntar antes de que dos personas construyan soluciones
+distintas para lo mismo.
 
 | | Proyecto 3 (Web Nueva) | Proyecto 5 (Tiritaito for Creators) |
 |---|---|---|
@@ -328,6 +341,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | **`CATALOGO_ELEMENTOS_AVADA.md`** | ✅ Creado (11 agosto 2026) — resultado de la ronda de tres cuentas de Avada Global Options (28/07-10/08) más el material de Off-Canvas. Organizado por necesidad de contenido, con nivel de certeza por entrada. 🔲 Pendiente completar el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar |
 | **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`** | ✅ Creado (2 agosto 2026) — texto literal de todos los Proyectos extraído de este documento. Ampliado (11 agosto 2026) con las Secciones 0.5-0.6 del Proyecto 3 |
 | **Sistema de colaboración externa (Matt/Codex)** | ✅ Diseñado y con 5 archivos `.matt.*` generados (2 agosto 2026) — pendiente de subir a GitHub y dar acceso a Matt. Ver Sección 11 |
+| Reorganización del equipo (1 sept 2026) | Carlota pasa a hacer todos los bocetos (Proyectos 4 y 6); Álvaro se dedica solo a construcción (Proyectos 3 y 7); Carlitos suma investigación técnica rápida (Proyecto 9, por crear). Detalle completo en Sección 2.3 |
 
 ---
 
@@ -346,6 +360,10 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 10. Ver Sección 11.8 para los próximos pasos específicos del sistema de colaboración externa
 11. Confirmar el tipo de plan (gratuito/pago) de la cuenta que reciba el catálogo ampliado, antes de seguir haciéndolo crecer (Sección 2, Sección 4)
 12. Hna C / equipo: decidir si `10px` se formaliza como cuarto token de radio (Sección 6, punto 9)
+13. Carlitos: crear la cuenta del Proyecto 9 y pegar sus instrucciones (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 9)
+14. Carlitos: reconfigurar el conector de GitHub de los Proyectos 6 y 7 según su nueva función (Sección 2.2)
+15. Hna C: repegar las instrucciones ampliadas del Proyecto 4 en claude.ai, y en el Proyecto 6
+16. Hno A: repegar las instrucciones reescritas del Proyecto 3 en claude.ai, y en el Proyecto 7
 
 **Preguntas abiertas:**
 
