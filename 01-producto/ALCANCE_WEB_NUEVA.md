@@ -323,11 +323,12 @@ aproximadamente "media pantalla", con una referencia visual externa (estilo a de
 que Carlitos compartirá con Hno C en foto — 🔲 sin cerrar todavía el patrón exacto. Se
 decide cuando se construya la home, no en este documento.
 
-**Previsualización con bocetos:** antes de construir cualquier sección nueva (no solo en
-la home), el Proyecto 3 debe proponer 2-3 opciones visuales para elegir, respetando el ADN
-de Tiritaito. El detalle completo del criterio vive en las Instrucciones del Proyecto 3
-(`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 3) y en `GUIA_AVADA_LOCAL.md` Sección
-8.4-bis — no se repite aquí para no duplicar mantenimiento.
+**Previsualización con bocetos (cambio de responsable, 1 de septiembre de 2026):** antes
+de construir cualquier sección nueva (no solo en la home), Hna C (Carlota) propone 2-3
+opciones visuales en el Proyecto 4 — Diseño, Avada y Bocetos, respetando el ADN de
+Tiritaito. El detalle completo del criterio vive en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`
+Sección 4 y en `GUIA_AVADA_LOCAL.md` Sección 8.4-bis — no se repite aquí para no duplicar
+mantenimiento.
 
 ---
 
