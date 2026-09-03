@@ -278,6 +278,7 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 | Decisión sobre si algo se aplica ya en la app o queda pendiente | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Quien confirme contra el HTML real — nunca asumir |
 | Cambio en el sistema de colaboración externa (nuevo colaborador, nuevo archivo sensible, cambio de protocolo) | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 11 | Carlitos, con quien haya detectado el cambio | 
 | Cambio en cualquier ajuste de Avada Global Options que se guarde de verdad (no solo probado y revertido) | `03-guias-practicas/exports/avada-global-options.json` + `claves_conocidas.json` (si aparecen claves nuevas) | Quien haga el cambio en Avada — no limitado a un rol fijo. Descarga el nuevo export (Avada → Options → Import/Export → Download Data File), lo pasa por `saneador-avada-options.html` antes de subirlo, y sube ambos archivos. Se da por hecho que está actualizado — sin verificación adicional |
+| Un hallazgo del Cuaderno del Constructor madura y se confirma reutilizable | `CATALOGO_ELEMENTOS_AVADA.md`, `GUIA_AVADA_LOCAL.md`, o `00_CORE.md` según el tipo, y se retira de `CUADERNO_DEL_CONSTRUCTOR.md` | Hno C (aquí), a partir de la propuesta de las cuentas de Álvaro o de Proyecto 9 |
 
 ---
 
@@ -341,7 +342,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | **`CATALOGO_ELEMENTOS_AVADA.md`** | ✅ Creado (11 agosto 2026) — resultado de la ronda de tres cuentas de Avada Global Options (28/07-10/08) más el material de Off-Canvas. Organizado por necesidad de contenido, con nivel de certeza por entrada. 🔲 Pendiente completar el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar |
 | **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`** | ✅ Creado (2 agosto 2026) — texto literal de todos los Proyectos extraído de este documento. Ampliado (11 agosto 2026) con las Secciones 0.5-0.6 del Proyecto 3 |
 | **Sistema de colaboración externa (Matt/Codex)** | ✅ Diseñado y con 5 archivos `.matt.*` generados (2 agosto 2026) — pendiente de subir a GitHub y dar acceso a Matt. Ver Sección 11 |
-| Reorganización del equipo (1 sept 2026) | Carlota pasa a hacer todos los bocetos (Proyectos 4 y 6); Álvaro se dedica solo a construcción (Proyectos 3 y 7); Carlitos suma investigación técnica rápida (Proyecto 9, por crear). Detalle completo en Sección 2.3 |
+| Reorganización del equipo (1 sept 2026) | Carlota pasa a hacer todos los bocetos (Proyectos 4 y 6); Álvaro se dedica solo a construcción (Proyectos 3 y 7); Carlitos suma investigación técnica rápida (Proyecto 9, por crear) y el Cuaderno del Constructor como memoria compartida entre sus cuentas. Detalle completo en Sección 3.3 |
 
 ---
 
@@ -361,9 +362,11 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 11. Confirmar el tipo de plan (gratuito/pago) de la cuenta que reciba el catálogo ampliado, antes de seguir haciéndolo crecer (Sección 2, Sección 4)
 12. Hna C / equipo: decidir si `10px` se formaliza como cuarto token de radio (Sección 6, punto 9)
 13. Carlitos: crear la cuenta del Proyecto 9 y pegar sus instrucciones (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 9)
-14. Carlitos: reconfigurar el conector de GitHub de los Proyectos 6 y 7 según su nueva función (Sección 2.2)
+14. Carlitos: reconfigurar el conector de GitHub de los Proyectos 6 y 7 según su nueva función (Sección 3.2)
 15. Hna C: repegar las instrucciones ampliadas del Proyecto 4 en claude.ai, y en el Proyecto 6
 16. Hno A: repegar las instrucciones reescritas del Proyecto 3 en claude.ai, y en el Proyecto 7
+17. Hno A: repegar las instrucciones reescritas del Proyecto 3 también incluyen la Sección 0.8 (Cuaderno del Constructor) — confirmar que llegó completa al repegar
+18. Carlitos: revisar `CUADERNO_DEL_CONSTRUCTOR.md` con alguna cadencia (a definir con el uso real) para reconciliar entradas maduras hacia los documentos oficiales
 
 **Preguntas abiertas:**
 
