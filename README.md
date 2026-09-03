@@ -31,7 +31,8 @@ tiritaito-docs/
 ├── 03-guias-practicas/
 │   ├── GUIA_AVADA_LOCAL.md
 │   ├── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026
-│   └── exports/                             ← nuevo, 14 agosto 2026
+│   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
+│   └── exports/                             ← nuevo, 14 agosto 2026                            
 │       ├── avada-global-options.json        (export saneado, sin credenciales)
 │       ├── claves_conocidas.json            (línea base de claves para detectar drift)
 │       └── saneador-avada-options.html      (herramienta de saneado, corre en el navegador)
@@ -72,6 +73,7 @@ tiritaito-docs/
 | `MIGRACION_CONTENIDO.md` | `02-metodologia/` | Qué contenido de la web vieja migrar, cuál recrear, plan de SEO | Hna C, Hno A, Carlitos | Hno C (investigación) | Media — vivo mientras avanza la revisión de contenido |
 | `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, ACF, principio de Responsive y de mínimo código | Hno A | Hno C (investigación) | Baja una vez estabilizada |
 | `CATALOGO_ELEMENTOS_AVADA.md` | `03-guias-practicas/` | Qué elemento de Avada resuelve una necesidad de contenido concreta, con su nivel de certeza (confirmado en Local / documentado sin probar) — organizado por necesidad, no por nombre de elemento | Hno A (lo consulta Proyecto 3 antes de recomendar) | Hno A construye, Hno C (investigación) reconcilia contra el resto de `tiritaito-docs` | Media — crece según se van revisando más elementos y se construyen más secciones reales |
+| `CUADERNO_DEL_CONSTRUCTOR.md` | `03-guias-practicas/` | Borrador de campo de lo que Álvaro descubre al construir (funciona / da problemas / se investigó y esto lo resuelve), antes de pasar en limpio a los documentos oficiales | Hno A (lo alimentan sus 2 cuentas de construcción y el Proyecto 9) | Hno C (investigación) reconcilia las entradas maduras hacia su documento de destino | Alta al principio, según ritmo real de construcción |
 | `ARQUITECTURA_Y_ROADMAP.md` | `04-vision-y-equipo/` | FODA, política sobre la web vieja (incluida su fecha de caducidad), fases del proyecto, glosario | Carlitos | Hno C (investigación) | Baja |
 | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | `04-vision-y-equipo/` | Roles, mapa de Proyectos de Claude, ámbito de cada uno, GitHub, WPMobile.app, Search Console | Carlitos | Hno C (investigación) | Media — cambia cuando cambia la organización del equipo |
 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | `04-vision-y-equipo/` | Texto exacto a copiar en las Instrucciones personalizadas de cada Proyecto de Claude en claude.ai | Todos los dueños de cuenta | Hno C (investigación), con quien edite directamente en claude.ai | Media — cada vez que cambia el criterio de trabajo de algún Proyecto |
