@@ -17,6 +17,34 @@ viceversa.
 
 ---
 
+## v1-11 — 2026-09-02
+
+✅ Generadores YouTube (Música/Vía Crucis/Seminarios): el catch de
+   generarYPublicar() ya no oculta el error real de la API de YouTube
+   detrás del toast genérico "Sin conexión...". Ahora distingue: API
+   Key inválida (mensaje ya existente), falta de API Key configurada,
+   mensaje real de la API de Google ("❌ Error de YouTube: <mensaje>"
+   — cubre playlistNotFound, quotaExceeded, key inválida, etc.), y
+   error de red genuino del navegador (sigue cayendo en el toast
+   genérico, sin cambios). mensajeError() no se tocó — el cambio
+   está aislado a este catch, sin efecto en otros módulos
+⚠️ Verificación: node --check sobre el bloque <script> extraído (sin
+   errores). Lógica de clasificación de errores probada contra 8
+   casos reales (formatos exactos de wpFetch, subirArchivo y
+   getPlaylistItems) — confirmado que cada mensaje cae en la rama
+   correcta, incluida la exclusión explícita de errores nativos de
+   red ("Failed to fetch"/NetworkError) para que no se muestren como
+   si fueran un error de YouTube
+🔲 Pendiente: con este cambio, la próxima vez que "Todas" u otra
+   playlist falle al generar, el toast mostrará el motivo real —
+   usar ese mensaje para diagnosticar de raíz por qué viene fallando
+   (playlist privada real, cuota agotada, u otra causa) en vez de
+   seguir descartando hipótesis a ciegas
+▪️ No tocado en esta versión: Devocional, Novedades, Biblioteca de
+   Medios, Lecturas, Lectura del santo, PIN, navegación — sin cambios
+
+---
+
 ## v1-10 · Agosto 2026 — Corrección de la instalación PWA + botón de instalar
  
 - ⚠️ **Bug corregido — la app no se ofrecía como instalable, solo como acceso directo.** Causa raíz: `manifest.json` y `sw.js` de la entrega v1-09 apuntaban a una ruta de servidor incorrecta. Se asumió `TiritaitoforCreators/App/` y el nombre `tiritaito-creators-v1-09.html`; la ruta real, confirmada contra el servidor en vivo, es `Tiritaito for Creators/App/` (con espacios, codificados como `%20` en la URL) y el nombre de archivo es **fijo**: `tiritaito-creators-v1-01.html`, sobrescrito en cada entrega — el navegador no encontraba el manifest (404 real, verificado), así que nunca llegaba a considerar la app instalable
