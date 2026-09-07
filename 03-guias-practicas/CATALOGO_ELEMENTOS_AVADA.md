@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Catálogo de Elementos de Avada
 **De "tengo esta necesidad de contenido" a "este es el elemento que la resuelve, y así de seguro estoy"**
-*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026*
+*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026 · Ampliado con la Sección 5 bis (efectos visuales sin Clase CSS) — 6 de septiembre de 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -40,6 +40,7 @@ construcción real, en vez de a bulto o por intuición.
 | Dónde construir una pieza de contenido ya decidida en `ALCANCE_WEB_NUEVA.md` | `METODOLOGIA_CONSTRUCCION.md` |
 | Qué secciones tiene la web y con qué prioridad | `ALCANCE_WEB_NUEVA.md` |
 | **Qué elemento de Avada resuelve una necesidad de contenido concreta, y con qué certeza** | **Este documento** |
+| **Qué efecto visual concreto (borde, sombra, degradado, hover...) se logra sin código, y en qué pestaña exacta** | **Este documento, Sección 5 bis** |
 
 **Nota añadida 14 agosto 2026 — nueva fuente de evidencia:** desde esta fecha
 existe también un export real y saneado de Avada Global Options en
@@ -681,6 +682,109 @@ puntual) — **⚠️ son dos superficies de configuración relacionadas pero di
 
 ---
 
+## 5 bis. Necesito un efecto visual (no una pieza de contenido) — antes de pensar en código
+
+*Añadido 6 de septiembre de 2026, tras la decisión de equipo de prohibir el campo Clase CSS
+en bocetos y construcción — ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1 y Sección
+6. Verificado contra documentación oficial de avada.com, no reconstruido de memoria.*
+
+Todas las entradas anteriores de este catálogo resuelven "necesito esta pieza de contenido →
+qué elemento la construye". Esta sección resuelve un eje distinto: **"quiero este efecto
+visual concreto (un borde, una sombra, un degradado, un hover...) → ¿dónde vive ya, sin
+tocar código, dentro del propio elemento?"** — el tipo de pregunta que antes se resolvía
+metiendo algo en el campo Clase CSS, y que desde el 6 de septiembre de 2026 ya no se puede
+resolver así.
+
+### Qué queda prohibido y qué no (decisión de equipo, 6 de septiembre de 2026 — por ahora, revisable)
+
+- ❌ **Prohibido:** el campo "Clase CSS" (pestaña Diseño) de cualquier elemento, columna o
+  container, tanto en los bocetos de Carlota como en la construcción de Álvaro.
+- ⚠️ **Permitido, bajo vigilancia:** el panel global Custom CSS de Avada (`Avada → Options →
+  Advanced → Custom CSS`) — es donde vive hoy el radio de 10px de los Toggles (ver más
+  abajo). Si empieza a dar problemas, se prohíbe también, sin retirar lo que ya funciona.
+- 🔲 **Sin decidir:** el campo de clase CSS a nivel de página entera (Page Options,
+  `GUIA_AVADA_LOCAL.md` Sección 10) — distinto del de elemento/columna/container, no
+  mencionado explícitamente en la decisión del equipo. No usarlo sin confirmar antes.
+- No cambia nada de lo ya establecido para lo que Avada genuinamente no resuelve de ninguna
+  manera (el consumo de JSON de Seminarios/Música/Vía Crucis, el sistema REST de Devocional/
+  Novedades) — eso sigue siendo Code Snippets completos dentro de un Code Block, diseñados
+  por Carlitos (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1).
+
+### La conclusión de fondo
+
+**Avada resuelve de forma nativa muchos más efectos "de aspecto elaborado" de lo que el
+equipo asumía — el problema no era que Avada no pudiera, era que no sabíamos en qué pestaña
+buscar.** El efecto de "cristal esmerilado" (fondo difuminado, muy de moda ahora) parece
+justo el tipo de cosa que "seguro necesita CSS" — pues no, Avada lo trae integrado en
+Container y Columna, pestaña Extras → Filtros de Fondo. Un degradado de color EN EL TEXTO
+también es nativo, vía el elemento Título o el elemento Highlight. Y un botón con diez
+transiciones de hover distintas ya viene de fábrica, sin escribir nada. La pregunta correcta
+nunca es "¿hace falta un plugin o CSS para esto?" — es **"¿en qué pestaña del propio
+elemento vive esto?"**
+
+### El proceso, antes de mirar la tabla
+
+1. Revisa TODAS las pestañas del elemento/columna/container, no solo la primera. Muchos
+   efectos avanzados (sombras, degradados, desenfoque) viven en una pestaña llamada "Extras"
+   o "Fondo", no en "Diseño", que es donde se suele mirar primero.
+2. Si es un color, busca el círculo pequeño junto al selector — activa el estado "Hover"
+   para ese mismo campo, sin campo aparte ni código.
+3. Si el elemento que tenías en mente no lo tiene, prueba si el efecto encaja mejor en OTRO
+   elemento pensado para eso — un degradado en texto, por ejemplo, no vive en el Bloque de
+   Texto normal, vive en el elemento Título o en el elemento Highlight.
+4. Solo si, de verdad, tras mirar esto no está — ahí, y no antes, se anota como candidato a
+   módulo propio de Carlitos (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1), nunca como
+   Clase CSS.
+
+### Mapa de efectos — verificado contra documentación oficial
+
+| Necesito... | Dónde vive (nativo, sin código) | Certeza | Fuente |
+|---|---|---|---|
+| Bordes redondeados en un Container o Columna | Pestaña Diseño → Border Radius | ✅ Confirmado | avada.com/documentation/container-element/ |
+| Sombra (box-shadow) en un Container o Columna | Pestaña Diseño/Extras → Box Shadow (posición, difuminado, extensión, color) | ✅ Confirmado | avada.com/blog/how-to-use-the-avada-container-element/ |
+| Fondo con degradado de color | Pestaña Fondo → sub-pestaña Degradado (colores, posiciones, tipo, ángulo, opacidad) | ✅ Confirmado | avada.com/documentation/how-to-use-the-container-column-background-options/ |
+| Efecto "cristal esmerilado" / desenfoque de lo que hay detrás | Container y Columna (incluidas columnas anidadas) → pestaña Extras → Filtros de Fondo, con estado Normal y Hover independientes | ✅ Confirmado — función reciente; **confirmar que la versión de Avada del Local ya la incluye antes de prometérsela a Carlota** | avada.com/documentation/backdrop-filters-on-containers-and-columns/ |
+| Degradado de color EN el texto | Elemento Título (tipo Texto) → Gradient Font Color; o elemento Highlight sobre una porción de texto | ✅ Confirmado | avada.com/documentation/highlight-element/ |
+| Texto con sombra o contorno | Elemento Título → Text Shadow, Text Stroke | ✅ Confirmado | avada.com/documentation/how-to-use-the-title-element-title-types/ |
+| Texto animado (aparece al hacer scroll, se desplaza, rota entre frases) | Elemento Título → tipos "Scroll Reveal", "Marquee", "Rotating" | ✅ Confirmado | avada.com/documentation/how-to-use-the-title-element-title-types/ |
+| Radio, degradado y tipo de borde en un botón | Elemento Botón → Border Radius, Gradient Color, Button Type (Flat/3D), Border | ✅ Confirmado | avada.com/element/button/ |
+| Efecto al pasar el ratón sobre un botón | Elemento Botón → 10 transiciones nativas (texto deslizante arriba/abajo, subrayado, icono deslizante, fondo deslizante izq/dcha, borde girando con o sin brillo...) | ✅ Confirmado | avada.com/documentation/button-hover-transitions/ |
+| Un color distinto solo al pasar el ratón (casi cualquier campo de color) | El círculo pequeño junto al selector de color activa el estado "Hover" — patrón repetido en la mayoría de elementos de Avada | ✅ Confirmado, patrón general | avada.com/faq-items/how-can-i-change-the-hover-state-styling-for-avada-elements/ |
+| Alineación flexible de columnas dentro de un Container (no en fila simple) | Container → pestaña General → Row Alignment, Column Alignment, Column Justification (Flexbox nativo) | ✅ Confirmado | avada.com/documentation/flexbox-for-containers-and-columns/ |
+| Espaciado o márgenes distintos en móvil/tablet/escritorio | Icono "Responsive" en Container, Columna, Botón, Imagen, Bloque de texto, Título | ✅ Ya probado en nuestro propio Local (13 julio 2026) | `GUIA_AVADA_LOCAL.md` Sección 8.4 |
+| Animación de aparición al hacer scroll (fade/slide al entrar en pantalla) | Elemento/panel Animations — ya en uso en el proyecto | ✅ Ya documentado | Sección 5 de este catálogo |
+
+### Lo que probablemente SÍ sigue necesitando algo más
+
+Por honestidad — no todo es nativo, y está bien que no lo sea siempre que se haya
+comprobado primero:
+
+| Necesito... | Estado | Nota |
+|---|---|---|
+| Recortar una imagen en una forma libre ("blob", no rectangular ni circular) | ❌ No encontrado en el núcleo de Avada — existe como función de un plugin de pago de terceros, no de ThemeFusion | Antes de asumir que hace falta, probar si un Border Radius alto (óvalos o círculos) ya cubre la necesidad real |
+| Cursor personalizado sobre una zona concreta | 🔲 No encontrado en la documentación revisada, ni a favor ni en contra | No asumir que existe ni que no existe — si aparece la necesidad real, se investiga puntualmente antes de descartar lo nativo |
+| Interacciones muy específicas (arrastrar y soltar, lógica condicional a medida) | 🔲 Depende del caso — Toggles, Tabs, Popover y Modal ya cubren mucha interacción sin código | Agotar primero esos elementos (Secciones 5 y 9 de este catálogo) antes de asumir que hace falta módulo propio |
+
+### Nuestro propio caso donde el CSS sí estaba justificado
+
+Para que quede claro que esto no es "nunca jamás Custom CSS", sino "agotar primero lo
+nativo, y solo entonces sí": los Toggles no exponen un campo de Border Radius en su propio
+panel (Sección 5) — por eso el radio de 10px vive en el panel global de Custom CSS de
+Avada, que sigue permitido (ver "Qué queda prohibido y qué no", arriba), y no en la Clase
+CSS del elemento, que es lo que queda cerrado. Se llegó ahí después de comprobar que el
+propio panel del elemento no lo tenía — no como primer recurso.
+
+### Cómo aplica esto a Carlota y a Álvaro
+
+- Carlota (Proyectos 4 y 6): antes de dar un efecto por imposible en un boceto, sigue el
+  proceso de arriba y explora varias combinaciones nativas, explicándolas de forma sencilla.
+- Álvaro (Proyectos 3 y 7): si el boceto pide algo que no aparece aquí, consulta esta
+  sección antes de asumir que hace falta código — y si de verdad no está, se escala a
+  Carlitos (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, punto 0.7), nunca se resuelve con
+  Clase CSS.
+
+---
+
 ## 6. Formularios, contacto, mapa y búsqueda
 
 ### Necesito que todos los formularios del sitio tengan estilo de marca
@@ -1151,6 +1255,7 @@ Proyecto 2 los tenga también:
 | 6 | Reconfirmar por captura: Navigation Arrow Size 14px (Slideshows) | Baja | 4 |
 | 7 | Probar "Reset Avada Caches" para el aviso de "JS Compiler is disabled" | Baja | 9 |
 | 8 | Añadir los 5 colores restantes (Colores 9-13) cuando haga falta un color de la paleta que todavía no esté cargado | Media, según necesidad | 8.1 |
+| 9 | Confirmar en Local que la versión de Avada instalada incluye Filtros de Fondo (Backdrop Filters) antes de que Carlota cuente con el efecto en un boceto | Media — bloquea cualquier boceto con "cristal esmerilado" | 5 bis |
 
 ### Preguntas que necesitan decisión de Hna C / Carlitos / el equipo
 
@@ -1166,6 +1271,7 @@ Proyecto 2 los tenga también:
 | 8 | ¿"Avada Builder Elements → Events" y "Options → Events Calendar" son el mismo panel o dos paneles distintos? | Cierre real de "Próximos Eventos" | 4, 13 |
 | 9 | ¿El menú de la web nueva lleva submenús desplegables? | Si el Off Canvas Builder basta o hace falta un workaround adicional | 3 |
 | 10 | ¿Se confirma que el panel lateral de menú móvil ya está construido y probado en Local, más allá de la decisión y las instrucciones ya dadas? | Cierre real de la pieza de navegación móvil | 3 |
+| 11 | El Custom CSS global de los Toggles/Forms (10px) sigue "permitido bajo vigilancia" desde el 6 de septiembre de 2026 — ¿en qué momento se considera que "ha dado problemas" y toca prohibirlo también? | Determina si ese panel pasa de vigilado a cerrado, igual que la Clase CSS | 5 bis |
 
 **Heredadas de otros documentos, ya conocidas, no se repiten en detalle aquí:** la decisión
 3.1 (CPT vs Posts para Hombres de Dios) bloquea, además de lo ya documentado en
