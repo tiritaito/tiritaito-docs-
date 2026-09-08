@@ -17,6 +17,45 @@ viceversa.
 
 ---
 
+## v1-12 — 2026-09-08
+
+✅ Subida de archivos (`subirYGuardarCampo()` — compartida por Lenguas
+   de Hoy, Homilía-audio, Tip 1 y Tip 2): si tras 1.5s no ha llegado
+   ningún evento de progreso medible del navegador (`e.lengthComputable`
+   nunca es `true`, ya sea por buffering del propio navegador o de un
+   proxy intermedio), el texto de estado de la tarjeta cambia a
+   "⏳ Subiendo… puede tardar varios minutos con archivos grandes, no
+   cierres la app." — en vez de dejar la barra de progreso en blanco sin
+   ningún contexto. El estado vuelve a su texto original si la subida
+   falla, para no dejar un mensaje de "subiendo" congelado tras un error
+✅ Si la subida se completa con éxito pero nunca llegó a reportar
+   progreso medible, queda un aviso en la consola del navegador
+   (`console.warn`) con el prefijo del campo afectado — ayuda a
+   diagnosticar si el patrón se repite, sin necesidad de adivinar
+⚠️ Diagnóstico en curso, no resuelto en esta versión: se reportó que el
+   vídeo de Lenguas de Hoy no aparece de inmediato ni en la app ni en la
+   web pública tras subirlo, aunque WordPress y la Biblioteca de Medios
+   sí lo reciben correctamente poco después. La app confirma
+   "✅ Publicado" con el enlace correcto en cuanto el servidor responde
+   — es decir, el guardado en `tt_lenguas_url` sí se completa al
+   momento. El retraso ocurre en algún punto posterior (posible
+   procesamiento del archivo en el servidor, o caché de la página
+   pública) que no se puede diagnosticar ni corregir desde este HTML.
+   Pendiente: medir el tiempo real del retraso para acotar la causa
+▪️ No tocado en esta versión: Devocional (Virgen, Brisa, Homilía-texto),
+   Novedades, Biblioteca de Medios, Recursos, Generadores YouTube, PIN,
+   navegación — sin cambios
+⚠️ Verificación realizada antes de entregar: `node --check` sobre el
+   bloque `<script>` extraído (sin errores), audit Python de
+   `getElementById` vs `id=` (sin referencias colgantes nuevas — los 5
+   "faltantes" restantes son los modales dinámicos ya documentados como
+   esperados: `tt-modal-confirm`, `tt-modal-medio`, `tt-modal-novedad`,
+   `tt-modal-subida`, y el literal `${id}` de una plantilla), y balance
+   de `<div>`/`<section>` en todo el archivo (181/181 y 5/5 — sin
+   cambios respecto a v1-11, ya que el cambio fue solo de JS)
+
+---
+
 ## v1-11 — 2026-09-02
 
 ✅ Generadores YouTube (Música/Vía Crucis/Seminarios): el catch de
