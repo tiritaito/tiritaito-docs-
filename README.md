@@ -30,7 +30,7 @@ tiritaito-docs/
 │   └── MIGRACION_CONTENIDO.md
 ├── 03-guias-practicas/
 │   ├── GUIA_AVADA_LOCAL.md
-│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026
+│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← ampliado 6 septiembre 2026 (Sección 5 bis)
 │   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
 │   └── exports/                             ← nuevo, 14 agosto 2026                            
 │       ├── avada-global-options.json        (export saneado, sin credenciales)
@@ -71,8 +71,8 @@ tiritaito-docs/
 | `ALCANCE_WEB_NUEVA.md` | `01-producto/` | Qué secciones tiene la web nueva y con qué prioridad | Hna C | Hna C | Alta mientras se decide el alcance |
 | `METODOLOGIA_CONSTRUCCION.md` | `02-metodologia/` | Diagnóstico técnico heredado + dónde construir cada pieza de contenido ya decidida | Hno A, Hna C | Hno C (investigación) | Media |
 | `MIGRACION_CONTENIDO.md` | `02-metodologia/` | Qué contenido de la web vieja migrar, cuál recrear, plan de SEO | Hna C, Hno A, Carlitos | Hno C (investigación) | Media — vivo mientras avanza la revisión de contenido |
-| `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, ACF, principio de Responsive y de mínimo código | Hno A | Hno C (investigación) | Baja una vez estabilizada |
-| `CATALOGO_ELEMENTOS_AVADA.md` | `03-guias-practicas/` | Qué elemento de Avada resuelve una necesidad de contenido concreta, con su nivel de certeza (confirmado en Local / documentado sin probar) — organizado por necesidad, no por nombre de elemento | Hno A (lo consulta Proyecto 3 antes de recomendar) | Hno A construye, Hno C (investigación) reconcilia contra el resto de `tiritaito-docs` | Media — crece según se van revisando más elementos y se construyen más secciones reales |
+| `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, ACF, principio de Responsive y de mínimo código | Hno A | Hno C (investigación) | Media — actualizada 6/09/2026 con la prohibición del campo Clase CSS |
+| `CATALOGO_ELEMENTOS_AVADA.md` | `03-guias-practicas/` | Qué elemento de Avada resuelve una necesidad de contenido concreta, con su nivel de certeza (confirmado en Local / documentado sin probar) — organizado por necesidad, no por nombre de elemento. Desde el 6/09/2026 incluye también (Sección 5 bis) qué efecto visual ya es nativo sin código | Hno A (lo consulta Proyecto 3 antes de recomendar), Hna C (lo consulta antes de dar un boceto por imposible) | Hno A construye, Hno C (investigación) reconcilia contra el resto de `tiritaito-docs` | Media — crece según se van revisando más elementos y se construyen más secciones reales |
 | `CUADERNO_DEL_CONSTRUCTOR.md` | `03-guias-practicas/` | Borrador de campo de lo que Álvaro descubre al construir (funciona / da problemas / se investigó y esto lo resuelve), antes de pasar en limpio a los documentos oficiales | Hno A (lo alimentan sus 2 cuentas de construcción y el Proyecto 9) | Hno C (investigación) reconcilia las entradas maduras hacia su documento de destino | Alta al principio, según ritmo real de construcción |
 | `ARQUITECTURA_Y_ROADMAP.md` | `04-vision-y-equipo/` | FODA, política sobre la web vieja (incluida su fecha de caducidad), fases del proyecto, glosario | Carlitos | Hno C (investigación) | Baja |
 | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | `04-vision-y-equipo/` | Roles, mapa de Proyectos de Claude, ámbito de cada uno, GitHub, WPMobile.app, Search Console | Carlitos | Hno C (investigación) | Media — cambia cuando cambia la organización del equipo |
@@ -99,6 +99,7 @@ que alguien cambia y guarda un ajuste de Avada Global Options — ver
 | Hno A, sesión de código en Local | `00_CORE.md` + `04_ENTORNO_LOCAL.md` + el documento específico de tu tarea |
 | Hno A, sesión de Avada/maquetación | `GUIA_AVADA_LOCAL.md` + `CATALOGO_ELEMENTOS_AVADA.md` + `METODOLOGIA_CONSTRUCCION.md` |
 | Hno A, sesión de Tiritaito for Creators (V1 o V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` |
+| Hna C, boceto de una sección nueva | `CATALOGO_ELEMENTOS_AVADA.md` (incluida la Sección 5 bis, efectos visuales sin código) + `GUIA_AVADA_LOCAL.md` |
 | Hna C, decisión de producto | `ALCANCE_WEB_NUEVA.md` |
 | Hna C, revisando qué migrar | `MIGRACION_CONTENIDO.md` |
 | Carlitos, coordinación | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` |
@@ -111,6 +112,10 @@ que alguien cambia y guarda un ajuste de Avada Global Options — ver
 
 | Pendiente | Dónde se resuelve | Bloquea a |
 |---|---|---|
+| **Repegar en claude.ai las instrucciones actualizadas de los Proyectos 2, 3, 4, 6, 7 y 9 con la prohibición del campo Clase CSS (decisión de equipo, 6/09/2026)** | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | Que Carlota y Álvaro trabajen de verdad con el criterio nuevo — subir a GitHub no lo aplica solo |
+| Confirmar en Local que la versión de Avada instalada incluye Filtros de Fondo (Backdrop Filters) antes de que Carlota cuente con ese efecto en un boceto | `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis | Cualquier boceto con efecto "cristal esmerilado" |
+| Decidir si el panel Custom CSS global (10px de Toggles/Forms) sigue "permitido bajo vigilancia" o se prohíbe también | `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis · `GUIA_AVADA_LOCAL.md` Sección 8 | Border-radius de Tabs, Testimonials, Audio |
+| Decidir si el campo de clase CSS a nivel de página entera (Page Options) entra en la prohibición del 6/09/2026 | `GUIA_AVADA_LOCAL.md` Sección 10 | Uso de ese campo concreto |
 | Revisión final de `ALCANCE_WEB_NUEVA.md` con Hna C | `ALCANCE_WEB_NUEVA.md` | Fase 2 de `ARQUITECTURA_Y_ROADMAP.md`; método definitivo de `MIGRACION_CONTENIDO.md` |
 | ✅ Snippet PHP real y completo del endpoint central — obtenido y subido a `apps/v2/` (26/07/2026) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6-7 | — |
 | Confirmar con Hno A tres avisos del PHP real: sin límite de peticiones, sin validación de tipo/tamaño en subidas, sin Biblioteca ni gestión de entradas | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 | Decidir si se restauran o si el sistema se queda así a propósito |
@@ -124,7 +129,7 @@ que alguien cambia y guarda un ajuste de Avada Global Options — ver
 | Crear la cuenta de Repuesto y conectar GitHub | ✅ Resuelto (26/07/2026) — dos cuentas de repuesto ya creadas y configuradas para el Proyecto 3, ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2 | — |
 | Política de licencia de WPMobile.app en sitio de desarrollo | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 | Cualquier prueba de la app contra el entorno Local |
 | Alcance completo de V2 de Tiritaito for Creators (solo Novedades y Devocional parcial confirmados por ahora) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Construcción de cualquier módulo nuevo más allá de esos dos |
-| Instrucciones actualizadas del Proyecto 3 (ACF, mínimo código, verificación antes de asumir, catálogo de elementos y construcción por niveles — Secciones 0.3 a 0.6, ampliadas por última vez 11/08/2026) pendientes de repegar a mano en claude.ai | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3 | Que Hno A reciba de verdad el nuevo criterio — subir el documento a GitHub actualiza la base de conocimiento del Proyecto, pero **no** las instrucciones personalizadas, que solo se actualizan si alguien las repega a mano en la configuración del Proyecto en claude.ai |
+| Instrucciones actualizadas del Proyecto 3 (ACF, mínimo código, verificación antes de asumir, catálogo de elementos, construcción por niveles y prohibición de la Clase CSS) pendientes de repegar a mano en claude.ai | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3 | Que Hno A reciba de verdad el nuevo criterio — subir el documento a GitHub actualiza la base de conocimiento del Proyecto, pero **no** las instrucciones personalizadas, que solo se actualizan si alguien las repega a mano en la configuración del Proyecto en claude.ai |
 | Dar acceso de GitHub a `apps/v2/` completa (HTML + PHP + changelog) a los Proyectos 2, 3 y 5, cada uno con el nivel de acceso que le corresponde | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.2 y 3 | Que cada proyecto pueda verificar el estado real sin depender de que alguien pegue el archivo a mano |
 | Confirmar si `01_CREATORS_APP.md` tenía contenido real en GitHub que no llegara a este Proyecto de Investigación antes de darlo por eliminado | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 0 | Eliminación definitiva de ese archivo del repositorio |
 | V1 desaparece en cuanto la Web Nueva sea oficial — sin fecha todavía | `ARQUITECTURA_Y_ROADMAP.md` · `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.1 · `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 1 | Archivado del Proyecto 1 y de la mitad V1 del Proyecto 5, el día que llegue |
