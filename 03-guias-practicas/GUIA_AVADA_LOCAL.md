@@ -422,13 +422,25 @@ Ejemplo práctico: "Rincón de Nico" con un header más colorido, sin el menú p
 
 **Esto es lo más importante que corrige la investigación anterior. Léelo antes de construir cualquier componente reutilizable.**
 
-**Principio de fondo que gobierna todo este árbol (reforzado 26 julio 2026):** en cualquier
-rama de este árbol, la prioridad es **usar el menor código posible.** Antes de llegar a
-"Code Snippets: shortcode parametrizable", intenta primero si un elemento nativo de Avada
-(Sección 9) combinado con ACF (Dynamic Content) resuelve lo mismo sin escribir una sola
-línea de PHP o JS nuevo. El código es el último recurso del árbol, no un punto de partida
-igual de válido que los demás. Para saber qué elemento nativo encaja con una necesidad
-concreta, empieza por `CATALOGO_ELEMENTOS_AVADA.md` antes de recorrer este árbol de cero.
+**Principio de fondo que gobierna todo este árbol (reforzado 26 julio 2026, y de nuevo el 6
+de septiembre de 2026):** en cualquier rama de este árbol, la prioridad es **usar el menor
+código posible.** Antes de llegar a "Code Snippets: shortcode parametrizable", intenta
+primero si un elemento nativo de Avada (Sección 9) combinado con ACF (Dynamic Content)
+resuelve lo mismo sin escribir una sola línea de PHP o JS nuevo. El código es el último
+recurso del árbol, no un punto de partida igual de válido que los demás. Para saber qué
+elemento nativo encaja con una necesidad concreta, empieza por
+`CATALOGO_ELEMENTOS_AVADA.md` antes de recorrer este árbol de cero.
+
+⚠️ **Distinción importante desde el 6 de septiembre de 2026 (decisión de equipo, por
+ahora, revisable):** dentro de "Code Snippets" en este árbol, hay una vía que queda
+CERRADA — el campo "Clase CSS" (pestaña Diseño) de un elemento, columna o container — y
+otra que sigue abierta — un Code Snippet completo (PHP o HTML) dentro de un Code Block
+aparte, para funcionalidad que Avada genuinamente no tiene de ninguna manera. La Clase CSS
+nunca fue realmente parte de este árbol como opción válida (era un atajo que se colaba por
+fuera de él, no una de las cuatro ramas de la Sección 8.3) — se anota aquí explícitamente
+porque en la práctica se estaba usando así. Ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis
+para el mapa completo de qué efectos visuales ya son nativos sin necesidad de llegar a
+ninguna de las dos vías de código.
 
 ### 8.1 La corrección
 
@@ -444,7 +456,8 @@ Lo que sí varía por instancia es un elemento **Guardado (no-global)**: se inse
 ANTES DE CONSTRUIR NADA NUEVO
 │
 ├── 1. ¿Lo resuelve un elemento NATIVO de Fusion Builder, solo o combinado
-│      con ACF (Dynamic Content)? (Sección 9, o CATALOGO_ELEMENTOS_AVADA.md)
+│      con ACF (Dynamic Content)? (Sección 9, o CATALOGO_ELEMENTOS_AVADA.md,
+│      incluida su Sección 5 bis para efectos visuales)
 │      → SÍ: úsalo. No hay snippet que mantener. ESTA ES LA OPCIÓN
 │        PREFERIDA — mínimo código posible (ver principio de fondo arriba).
 │      → NO: sigue.
@@ -465,7 +478,9 @@ ANTES DE CONSTRUIR NADA NUEVO
        │                            parametrizable (patrón [tt_podcast], ya probado) — ÚLTIMO RECURSO
        │
        └── En cualquier caso: constrúyelo pensando en el siguiente santo, el siguiente
-           seminario, el siguiente "Rincón de X" — con parámetros, no contenido fijo.
+           seminario, el siguiente "Rincón de X" — con parámetros, no contenido fijo. Y en
+           NINGÚN punto de esta rama 3 se usa el campo Clase CSS de ningún elemento,
+           columna o container — eso queda fuera del árbol desde el 6 de septiembre de 2026.
 ```
 
 **Nota de conexión con la Sección 8.3 (Responsive):** este árbol decide *dónde vive* una pieza. Una vez decidido eso, la Sección 8.3 aplica siempre, sin excepción, sobre cualquiera de las cuatro ramas de salida — Global, Guardado, shortcode o Code Block.
@@ -640,8 +655,11 @@ cuando se comparta la referencia correcta y se construya la home de verdad.
 **Previsualización con bocetos (cambio de responsable, 1 de septiembre de 2026):** antes
 de construir cualquier sección nueva (no solo en la home), Hna C (Carlota) propone 2-3
 bocetos visuales en el Proyecto 4 — Diseño, Avada y Bocetos, respetando el ADN de
-Tiritaito. El Proyecto 3 (Hno A) ya NO propone bocetos — recibe el elegido y lo construye
-igual (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 0.2 del Proyecto 3). El detalle completo
+Tiritaito, y usando siempre elementos nativos de Avada (nunca la Clase CSS de un elemento,
+columna o container — decisión de equipo del 6 de septiembre de 2026, ver Sección 8 de este
+documento y `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis). El Proyecto 3 (Hno A) ya NO
+propone bocetos — recibe el elegido y lo construye igual
+(`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 0.2 del Proyecto 3). El detalle completo
 del criterio de bocetos vive en `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 4 — no se
 repite aquí para no duplicar mantenimiento; este documento solo señala que existe y por qué
 conecta con el principio de altura de sección de arriba: decidir bien el boceto ayuda a
@@ -661,7 +679,7 @@ Tiritaito, Biblioteca, Hombres de Dios, y cualquier sección futura.
 
 ## 9. Elementos nativos de Fusion Builder — tabla verificada
 
-⚠️ **Esta tabla se mantiene deliberadamente corta — cubre solo los elementos con relación directa a la mecánica de Avada/Local que documenta este archivo.** Para el catálogo completo de qué elemento de Avada resuelve cada necesidad de contenido de Tiritaito, con nivel de certeza por entrada (confirmado en Local / documentado, sin probar), ver `CATALOGO_ELEMENTOS_AVADA.md` — no se duplica aquí para no mantener la misma información en dos sitios.
+⚠️ **Esta tabla se mantiene deliberadamente corta — cubre solo los elementos con relación directa a la mecánica de Avada/Local que documenta este archivo.** Para el catálogo completo de qué elemento de Avada resuelve cada necesidad de contenido de Tiritaito, con nivel de certeza por entrada (confirmado en Local / documentado, sin probar) — incluidos los efectos visuales que antes se resolvían con la Clase CSS, ahora en la Sección 5 bis — ver `CATALOGO_ELEMENTOS_AVADA.md` — no se duplica aquí para no mantener la misma información en dos sitios.
 
 | Necesidad | Solución custom actual | Elemento nativo de Avada | Estado |
 |---|---|---|---|
@@ -673,6 +691,7 @@ Tiritaito, Biblioteca, Hombres de Dios, y cualquier sección futura.
 | Listado con diseño de tarjeta | — | **Post Cards** (Avada Library) | ✅ Confirmado en Local (piloto de Novedades, 22-23 julio 2026): ordena de forma nativa por Custom Field ACF (ej. fecha). ❌ NO filtra por valor de campo de forma nativa — decisión de equipo (26 julio 2026): no se construye el filtro; el listado de Novedades muestra todas las entradas, activas u ocultas, sin distinción. El campo `activo` queda como control interno del editor en la app, sin efecto en la web pública. Si en el futuro "Seminarios pasados" u otra sección sí necesitan filtrar de verdad, ahí haría falta el hook `fusion_post_cards_shortcode_query_override` |
 | Rotar entre entradas distintas (ej. los 9 santos) | — | **Post Slider** — no confundir con "Slideshows" (Options), que solo controla varias imágenes dentro de UNA misma entrada, no rotación entre entradas distintas | 🔲 Identificado como el elemento correcto, confirmado de forma independiente por dos sesiones de trabajo (11 agosto 2026) — sin configurar ni probar todavía en Local. Ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 |
 | Reproductor de audio | 3 sistemas distintos (`.pp-*`, `.mp-*`, `.hmds-*`) | No es un elemento Avada — consolidación de snippets propios | Ver `METODOLOGIA_CONSTRUCCION.md` |
+| Borde redondeado, sombra, degradado, "cristal esmerilado", texto con degradado, hover de botón | Antes: campo Clase CSS del elemento (❌ ya no permitido) | Ya nativo en Container/Columna/Botón/Título/Highlight — pestañas Diseño/Fondo/Extras | ✅ Ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis (añadida 6 septiembre 2026) |
 
 ### 9.1 ⚠️ Corrección — menú móvil: Flyout Menu es método legacy
 
@@ -705,6 +724,8 @@ Cada página/entrada tiene un panel "Avada Page Options" que permite, sin códig
 
 El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código — en la web nueva, se hace desde aquí, sin CSS.
 
+⚠️ **Nota añadida 6 de septiembre de 2026:** este campo de clase CSS a nivel de PÁGINA es distinto del campo de Clase CSS de un elemento/columna/container (Sección 8, prohibido desde hoy). No está incluido explícitamente en la decisión del equipo — queda sin usar hasta que se confirme si también entra en la prohibición (`CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis).
+
 ---
 
 ## 11. Avada Studio y Dynamic Content — mención breve
@@ -732,7 +753,7 @@ El `.page-id-XXXX` del CSS de la web vieja es exactamente esto hecho con código
 Content?
     → Avada + ACF. No toques código. Esta es la opción por defecto (ver Sección 8,
       principio de mínimo código, y CATALOGO_ELEMENTOS_AVADA.md para identificar el
-      elemento concreto).
+      elemento concreto, incluida su Sección 5 bis para efectos visuales).
 
 ¿Es lógica de servidor (PHP), datos dinámicos del REST API, o un shortcode?
     → Code Snippets PHP — solo si de verdad no hay forma nativa.
@@ -741,10 +762,17 @@ Content?
     → Code Snippets HTML (con <style> + <script> integrados).
 
 ¿Es CSS que afecta a TODA la web y no tiene opción en Avada?
-    → Avada Custom CSS (máximo 30 líneas, bien comentadas).
+    → Avada Custom CSS (máximo 30 líneas, bien comentadas) — permitido bajo vigilancia
+      desde el 6 de septiembre de 2026, ver Sección 8 y CATALOGO_ELEMENTOS_AVADA.md
+      Sección 5 bis. Si empieza a dar problemas, se prohíbe también.
 
 ¿Es CSS de un módulo específico?
     → Dentro del propio snippet HTML del módulo. Nunca en Custom CSS global.
+
+⚠️ Lo que NUNCA es la respuesta, desde el 6 de septiembre de 2026: el campo "Clase CSS"
+   (pestaña Diseño) de un elemento, columna o container. Si algo parece necesitar eso,
+   vuelve a la Sección 8.2 desde el paso 1 — probablemente ya sea nativo (ver
+   CATALOGO_ELEMENTOS_AVADA.md Sección 5 bis) antes de asumir que hace falta código.
 ```
 
 **Recordatorio de responsive (Sección 8.4):** esta regla decide *dónde* vive el código. Si la
@@ -783,6 +811,7 @@ if (document.getElementById('mi-modulo-root')) {
 - `border-radius: 25px` en cards/botones/contenedores — firma visual Tiritaito. ⚠️ Ver Sección 9 (Toggles) y `CATALOGO_ELEMENTOS_AVADA.md` Sección 13.1: apareció un segundo valor, `10px`, en dos elementos interactivos distintos (Toggles y Forms), ambos por decisión de Hna C — sin confirmar todavía si es un cuarto token real o dos excepciones puntuales. No sustituir `25px` por `10px` en ningún sitio nuevo sin esa confirmación explícita.
 - Nomenclatura de snippets PHP: `TT [Función] — [Descripción breve]` (ej. `TT Podcast — Shortcode y CSS`).
 - Nomenclatura de snippets HTML: `TT Módulo — [Nombre]` (ej. `TT Módulo — Widget Devocional`).
+- ⚠️ **Regla añadida 6 de septiembre de 2026:** ninguna convención de esta sección autoriza el campo Clase CSS de un elemento/columna/container de Avada — esa vía queda cerrada (Sección 8). Estas convenciones aplican a Code Snippets completos (PHP/HTML en su propio Code Block), nunca a texto metido en el campo de clase de un elemento del Builder.
 
 ---
 
@@ -800,10 +829,11 @@ if (document.getElementById('mi-modulo-root')) {
 | Confiar en Live Link para revisar tipografía/CSS | No es fiable para eso — usar DevTools responsive directamente sobre `tiritaito-real.local` (ver Sección 2) |
 | Dar una sección por cerrada solo revisándola en Desktop | Confirmado con un caso real (13 julio 2026): un bloque con imagen sin cargar y texto placeholder pasó desapercibido hasta revisar Desktop porque no se había comprobado explícitamente en las 3 vistas — revisar siempre Desktop/Medium/Small antes de cerrar (Sección 8.4) |
 | Dejar que una sección ocupe `min-height: 100vh` por defecto sin decidirlo conscientemente | Revisar siempre si la sección necesita de verdad ocupar toda la pantalla, o si con la altura de su contenido basta (Sección 8.4-bis) |
-| Construir una sección directamente en Avada sin ver antes 2-3 opciones de boceto | Pedir a Claude (Proyecto 3) que proponga bocetos visuales antes de empezar a construir, salvo ajustes menores (Sección 8.4-bis) |
-| Escribir un snippet nuevo sin comprobar antes si ACF + un elemento nativo ya lo resuelve | El árbol de decisión (Sección 8) empieza siempre por la opción nativa — código es el último recurso, no el primero (reforzado 26 julio 2026) |
+| Construir una sección directamente en Avada sin ver antes 2-3 opciones de boceto | Pedir a Claude (Proyecto 4) que proponga bocetos visuales antes de empezar a construir, salvo ajustes menores (Sección 8.4-bis) |
+| Escribir un snippet nuevo sin comprobar antes si ACF + un elemento nativo ya lo resuelve | El árbol de decisión (Sección 8) empieza siempre por la opción nativa — código es el último recurso, no el primero (reforzado 26 julio 2026 y 6 septiembre 2026) |
 | Trabajar con dos ordenadores sin seguir el procedimiento de la Sección 2.1 | Local no sincroniza nada entre ordenadores por sí solo — improvisar sin backup previo puede dejar el segundo ordenador con un WordPress vacío o hacer perder trabajo real (Sección 2.1) |
 | Confundir "Slideshows" (Options) con "Post Slider" (Builder Element) | Slideshows solo controla varias imágenes DENTRO de una misma entrada; para rotar entre entradas distintas (ej. los 9 santos) hace falta Post Slider — confusión ya cometida y corregida dos veces de forma independiente (11 agosto 2026) |
+| Meter código en el campo "Clase CSS" de un elemento, columna o container para lograr un efecto visual | Prohibido desde el 6 de septiembre de 2026 — casi siempre hay una pestaña nativa (Diseño/Fondo/Extras) que ya lo resuelve; consultar `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis antes de asumir lo contrario (Sección 8) |
 
 ---
 
@@ -833,7 +863,7 @@ if (document.getElementById('mi-modulo-root')) {
 
 ## 16. Checklist maestro — antes de dar una plantilla por cerrada
 
-- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (Sección 9, o `CATALOGO_ELEMENTOS_AVADA.md`) — esta pregunta va SIEMPRE primero
+- [ ] ¿Ya existe un elemento nativo de Fusion Builder (solo o con ACF) que resuelva esto? (Sección 9, o `CATALOGO_ELEMENTOS_AVADA.md`, incluida su Sección 5 bis) — esta pregunta va SIEMPRE primero
 - [ ] ¿Ya existe un snippet global de Tiritaito equivalente?
 - [ ] Si se construye desde cero: ¿pensado para reutilizarse — parámetros, no contenido fijo?
 - [ ] Si es candidato a Avada Library: ¿Guardado o Global? (Sección 8 — no son intercambiables)
@@ -850,6 +880,7 @@ if (document.getElementById('mi-modulo-root')) {
 - [ ] **¿Se ha probado además en un móvil real o DevTools responsive, no solo el editor o Live Link?**
 - [ ] **¿Se propusieron 2-3 bocetos visuales antes de construir esta sección, o fue un ajuste menor que no lo necesitaba? (Sección 8.4-bis)**
 - [ ] **¿La sección ocupa aproximadamente lo que su contenido necesita, o hereda un `min-height: 100vh` sin haberlo decidido conscientemente? (Sección 8.4-bis)**
+- [ ] **¿Se ha comprobado que nada de lo construido usa el campo Clase CSS de ningún elemento, columna o container? (Sección 8, desde 6 septiembre 2026)**
 
 ---
 
@@ -866,6 +897,7 @@ if (document.getElementById('mi-modulo-root')) {
 - **Responsive Option Sets permite configurar ancho, orden, márgenes, padding y fondo de forma independiente por pantalla en Container/Columna, y alineación en Botón/Imagen/Texto/Título (Sección 8.4).**
 - **Responsive Typography Sensitivity y Minimum Font Size Factor controlan si y cómo se reduce el tamaño de letra en pantallas pequeñas (Sección 8.4).**
 - **Local Cloud Backups (v10+) permite restaurar el mismo backup en otro ordenador conectado a la misma cuenta de nube — no es sincronización en tiempo real, es un mecanismo de "restaurar bajo demanda" (Sección 2.1).**
+- **Container, Columna, Botón y Título tienen controles nativos de borde, sombra, degradado, filtros de fondo (desenfoque) y hover en su propio panel, sin necesidad de la Clase CSS (Sección 8, `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis, 6 septiembre 2026).**
 
 **✅ Confirmado en sesiones reales en Local:**
 - 7 julio 2026: el dominio correcto del Local es `tiritaito-real.local`; el Setup Wizard solo admite 8 de los 13 colores y no admite fuentes propias; Off Canvas y Eventos ya activados, Portafolio activo sin caso de uso.
@@ -884,6 +916,7 @@ if (document.getElementById('mi-modulo-root')) {
 - **31 julio 2026: confirmada y resuelta la causa del error `insufficient authentication scopes` / `Error 403: Insufficient Permission` al conectar Cloud Backups con Google Drive — desconectar y reconectar la cuenta, completando el consentimiento de Google hasta el final, según lo confirmado por soporte oficial de Local (community.localwp.com) y verificado en la práctica por el equipo (Sección 2.1).**
 - **28 julio – 10 agosto 2026: ronda completa de configuración de Avada Global Options en Local, repartida en tres cuentas de trabajo — resultado íntegro en `CATALOGO_ELEMENTOS_AVADA.md`. Resuelve formalmente: orden real de los 8 colores del Wizard (Sección 4.1), breakpoints responsive ya alineados a ~1024px (Sección 8.4), Portfolio confirmado desactivado, panel de Performance documentado por primera vez en su tamaño real (Sección 4.4), y la distinción Slideshows/Post Slider (Sección 9).**
 - **11 agosto 2026: mecanismo de tres capas de "Default Page Template = 100% Width" documentado con evidencia directa (Sección 4.0.3) — no fuerza pantalla completa, solo la habilita por Container.**
+- **6 de septiembre de 2026: verificado contra documentación oficial de avada.com (no de memoria) que Container y Columna tienen nativamente border-radius, box-shadow, degradado de fondo y filtros de desenfoque (backdrop filters); que el elemento Botón trae 10 transiciones de hover de fábrica; y que el degradado de color en texto es nativo vía el elemento Título o Highlight — ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis para el detalle completo y las fuentes.**
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
@@ -896,6 +929,7 @@ if (document.getElementById('mi-modulo-root')) {
 - Si Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" — el listado + orden por fecha sí funciona nativo (piloto 22-23 julio), pero si esas dos secciones necesitan filtrar de verdad (a diferencia de Novedades, que decidió no filtrar), esa pieza sigue sin construir.
 - **Si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, más allá de existir como entrada con Conditions desactivadas (Sección 9.1).**
 - **Si 10px sustituye a 25px como radio estándar del sitio, convive como cuarto token, o queda solo en Toggles/Forms (Sección 13, `CATALOGO_ELEMENTOS_AVADA.md` Sección 13.1) — decisión de Hna C pendiente de formalizar.**
+- **Si la versión de Avada instalada en el Local incluye ya la función de Filtros de Fondo (Backdrop Filters, `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis) — es una función reciente de Avada, confirmar antes de que Carlota cuente con ella en un boceto.**
 
 ---
 
@@ -928,6 +962,7 @@ if (document.getElementById('mi-modulo-root')) {
 - Local Cloud Backups — documentación oficial: localwp.com/help-docs/local-features/local-cloud-backups/
 - Error "insufficient authentication scopes" en Cloud Backups + Google Drive — hilo oficial de soporte de Local (abril 2026), solución confirmada: community.localwp.com/t/creating-backup-to-google-drive-is-not-working/52070
 - Ronda de tres cuentas de Global Options y catálogo de elementos (28 julio – 11 agosto 2026): trabajo real del equipo en Local, ver `CATALOGO_ELEMENTOS_AVADA.md` para el detalle completo y sus propias fuentes
+- Prohibición del campo Clase CSS y estudio de alternativas nativas (Sección 8, 12, 6 septiembre 2026): decisión de equipo tras tres días de construcción intensa, verificado contra documentación oficial de avada.com — ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis para el listado completo de fuentes individuales (container-element, backdrop-filters-on-containers-and-columns, highlight-element, button-hover-transitions, entre otras)
 
 ---
 
@@ -944,6 +979,8 @@ if (document.getElementById('mi-modulo-root')) {
 8. Hna C / equipo: decidir si 10px sustituye a 25px como radio estándar, convive como cuarto token, o queda solo en Toggles/Forms (Sección 13)
 9. Carlitos + Hno A: si vuelve a hacer falta trabajar con dos ordenadores, seguir el procedimiento de la Sección 2.1
 10. Barrer el export completo y corregir en Avada todos los campos con la unidad inválida "píxeles" (debe ser "px", sin espacio) — muestra ya encontrada: page_title_font_size, text_column_min_width, slider_arrow_size, header_sticky_nav_font_size, nav_dropdown_font_size, snav_font_size, megamenu_title_size, es_title_font_size, y varios countdown_*/ec_sep_heading_font_size. La lista de arriba no es completa — falta el barrido de los campos que no entraron en la revisión de esta sesión.
+11. **Nuevo, 6 de septiembre de 2026:** Álvaro — confirmar en Local que la versión de Avada instalada incluye Filtros de Fondo (Backdrop Filters) antes de que Carlota cuente con el efecto en un boceto (Sección 9, `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis).
+12. **Nuevo, 6 de septiembre de 2026:** decidir si el campo de clase CSS a nivel de página entera (Page Options, Sección 10) entra también en la prohibición del campo Clase CSS de elemento/columna/container, o queda fuera a propósito.
 
 **Preguntas abiertas que necesitan decisión del equipo:**
 
@@ -955,9 +992,11 @@ if (document.getElementById('mi-modulo-root')) {
 | 4 | ¿10px sustituye a 25px, convive como cuarto token, o queda solo en Toggles/Forms? | Apareció dos veces de forma independiente, en dos elementos distintos, por decisión de Hna C (Sección 13) — bloquea el border-radius de Tabs, Testimonials y Audio, dejados en 0px a propósito mientras no se resuelva |
 | 5 | ¿Se confirma que la copia de `GUIA_AVADA_LOCAL.md` que maneja cada cuenta/Proyecto está al día? | La Sección 4.0.3 se añadió porque una sesión de trabajo citó un pasaje sobre "Default Page Template" que no se localizó en la versión disponible en ese momento — puede ser síntoma de una sincronización desactualizada en algún Proyecto |
 | 6 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | Pendiente de discutir con el equipo — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #8 |
+| 7 | ¿El panel global Custom CSS (donde vive el radio de 10px de Toggles/Forms) sigue "permitido bajo vigilancia", o ha llegado el momento de prohibirlo también, igual que la Clase CSS? | Determina si la Sección 8 y `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis pasan de "vigilado" a "cerrado" |
+| 8 | ¿El campo de clase CSS a nivel de página entera (Page Options, Sección 10) entra en la prohibición del 6 de septiembre de 2026, o queda fuera? | No mencionado explícitamente en la decisión de equipo — sin usar mientras no se confirme |
 
 **Resuelto desde la última versión:** autenticación de Tiritaito for Creators — es token propio (`TT_WRITE_TOKEN`) vía header `X-TT-Token`, definitivo, Application Password descartado, confirmado contra el HTML real (26 julio) · dominio real del Local corregido a `tiritaito-real.local` · el Local NO usa `/blog/`, vive en la raíz · certificado SSL necesita "Trust" manual · Live Link confirmado no fiable para QA visual · ACF Pro y FileBird Pro confirmados incluidos gratis con Avada · principio de Responsive (Sección 8.4) y de altura de sección/previsualización (Sección 8.4-bis) incorporados al proceso de construcción · discrepancia de tokens resuelta — vive en `define()`, decisión final (26 julio 2026) · Post Cards de Novedades: decisión de equipo de no filtrar por `activo`, no se construye el hook (26 julio 2026) · principio de "mínimo código posible, ACF + nativo antes que Code Snippets" reforzado explícitamente en el árbol de decisión de la Sección 8 (26 julio 2026) · mecanismo de trabajo con dos ordenadores documentado, apoyado en Local Cloud Backups, con el error típico de conexión a Google Drive ya resuelto (31 julio 2026) · **breakpoints responsive confirmados y alineados a ~1024px (11 agosto 2026)** · **orden real de los 13 colores confirmado en Local, tabla de la Sección 4.1 corregida (11 agosto 2026)** · **mecanismo de "Default Page Template = 100% Width" documentado (Sección 4.0.3, 11 agosto 2026)** · **distinción Slideshows/Post Slider incorporada (Sección 9, 11 agosto 2026)** · **CATALOGO_ELEMENTOS_AVADA.md creado como referencia complementaria de "qué elemento sirve para qué necesidad" (11 agosto 2026)** · **Portafolio confirmado desactivado contra el export real (14 agosto 2026)**
-· **Responsive Typography Sensitivity confirmado en 0.30 contra el export real (14 agosto 2026)** ·.
+· **Responsive Typography Sensitivity confirmado en 0.30 contra el export real (14 agosto 2026)** · **campo Clase CSS de elemento/columna/container prohibido por decisión de equipo, panel Custom CSS global permitido bajo vigilancia, y Sección 5 bis de `CATALOGO_ELEMENTOS_AVADA.md` creada con el mapa de efectos visuales ya nativos (6 de septiembre de 2026)**.
 
 ---
 
