@@ -46,9 +46,9 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 | Persona | Rol | Responsabilidad principal | No toca |
 |---|---|---|---|
-| Carlitos (Hno C) | Coordinador del sistema técnico + investigación | Vela porque el sistema técnico del proyecto (cuentas de Claude, GitHub, documentación, infraestructura) funcione bien y de forma coherente. Mantiene el README actualizado. Desde el 1 de septiembre de 2026, investiga también los bloqueos técnicos de construcción que le escala Álvaro (Proyecto 9) | Decisiones de producto |
-| Hno A (Álvaro) | Construcción en Avada | Construye en Live Builder exactamente lo que Hna C diseña en boceto — ya no propone bocetos propios. PHP, JS, REST API, snippets complejos, Tiritaito for Creators | Decisiones de diseño ni de contenido |
-| Hna C (Carlota) | Diseño, producto, coordinación y bocetos | Coordina al equipo en el día a día, define alcance y criterio visual. Desde el 1 de septiembre de 2026, hace TODOS los bocetos visuales de páginas y entradas de la web nueva | Código en desarrollo |
+| Carlitos (Hno C) | Coordinador del sistema técnico + investigación | Vela porque el sistema técnico del proyecto (cuentas de Claude, GitHub, documentación, infraestructura) funcione bien y de forma coherente. Mantiene el README actualizado. Desde el 1 de septiembre de 2026, investiga también los bloqueos técnicos de construcción que le escala Álvaro (Proyecto 9). Desde el 6 de septiembre de 2026, es también quien diseña y construye el código completo para las secciones de la web que Avada genuinamente no puede resolver de forma nativa (ej. consumo de JSON de Seminarios/Música/Vía Crucis) — con el apoyo de Proyecto 2 y Proyecto 9 para analizar seguridad y estabilidad, y sin pasar por Álvaro en la fase de diseño (Sección 2.3) | Decisiones de producto |
+| Hno A (Álvaro) | Construcción en Avada | Construye en Live Builder exactamente lo que Hna C diseña en boceto — ya no propone bocetos propios. Desde el 6 de septiembre de 2026, construye únicamente con elementos nativos de Avada — nunca con el campo Clase CSS de un elemento, columna o container (ver Sección 6, punto 9). PHP, JS, REST API, snippets complejos ya existentes, Tiritaito for Creators | Decisiones de diseño ni de contenido; código nuevo para lo que Avada no resuelve nativo (eso pasa a Carlitos) |
+| Hna C (Carlota) | Diseño, producto, coordinación y bocetos | Coordina al equipo en el día a día, define alcance y criterio visual. Desde el 1 de septiembre de 2026, hace TODOS los bocetos visuales de páginas y entradas de la web nueva — siempre con elementos nativos de Avada, nunca con el campo Clase CSS (Sección 6, punto 9) | Código en desarrollo |
 | Hna MF | Datos y métricas | Google Search Console, análisis de uso, propone mejoras basadas en datos | — |
 | Editores (4) | Contenido | Subir/editar su contenido en sus secciones | Todo lo demás |
 | Matt | Colaborador externo | Trabaja con Codex directamente sobre `tiritaito-docs`, sobre archivos sin dato sensible y sobre las copias `.matt.*` de los sensibles. Ver Sección 11 | Archivos oficiales sensibles — nunca los ve ni los edita |
@@ -95,25 +95,84 @@ Con el snippet PHP del endpoint central viviendo ahora dentro de `apps/v2/` (Sec
 
 Desde el 1 de septiembre de 2026, la fase de construcción sigue un
 bucle de tres pasos, cada uno en su propio rol:
-CARLOTA — bocetos (Proyectos 4 y 6) │ │ boceto aprobado + HTML + explicación ▼ ÁLVARO — construcción en Live Builder (Proyectos 3 y 7) │ ├── queda igual que el boceto → publicado ✅ │ └── no lo resuelve nativo (código / ACF / no sabe) │ ▼ CARLITOS — investigación (Proyecto 9) │ │ solución o hallazgo ▼ vuelve a ÁLVARO para aplicarlo
+CARLOTA — bocetos (Proyectos 4 y 6), siempre con elementos nativos de
+Avada, nunca con la Clase CSS (Sección 6, punto 9) │ │ boceto aprobado
++ HTML + explicación ▼ ÁLVARO — construcción en Live Builder (Proyectos
+3 y 7), igual de nativa │ ├── queda igual que el boceto → publicado ✅
+│ └── no lo resuelve nativo (código / ACF / no sabe) │ ▼ CARLITOS —
+investigación (Proyecto 9) │ │ solución o hallazgo ▼ vuelve a ÁLVARO
+para aplicarlo
 
-Carlota no construye en Avada. Álvaro no diseña ni propone bocetos.
-Carlitos no construye ni diseña — investiga en paralelo lo que Álvaro
-no puede resolver con Avada nativo. Cada rol tiene un límite claro;
-si una tarea no encaja claramente en ninguno de los tres, es señal de
-pararse y preguntar antes de que dos personas construyan soluciones
-distintas para lo mismo.
+Carlota no construye en Avada. Álvaro no diseña ni propone bocetos, y
+desde el 6 de septiembre de 2026 tampoco resuelve con código nada que
+Avada no traiga nativo — eso se escala siempre a Carlitos. Carlitos no
+construye ni diseña en Avada — investiga en paralelo lo que Álvaro no
+puede resolver con Avada nativo, y diseña el código completo para lo
+que Avada genuinamente no ofrece de ninguna manera (Sección 1). Cada
+rol tiene un límite claro; si una tarea no encaja claramente en
+ninguno de los tres, es señal de pararse y preguntar antes de que dos
+personas construyan soluciones distintas para lo mismo.
 
-| | Proyecto 3 (Web Nueva) | Proyecto 5 (Tiritaito for Creators) |
-|---|---|---|
-| Construye/edita el snippet PHP del endpoint central | ✅ Sí, es el único que lo toca | ❌ Nunca — ni siquiera para depurar un bug de la app |
-| Construye/edita el HTML de la app | ❌ Nunca | ✅ Sí, es el único que lo toca |
-| Decide qué campos ACF existen y de qué tipo | ✅ Sí | ❌ No — recibe la decisión ya tomada |
-| Si la app necesita un dato nuevo del servidor | Recibe la petición y construye el endpoint | Describe qué necesita (campo, tipo, verbo REST) y lo traslada a Proyecto 3 — nunca inventa el PHP por su cuenta |
-| Construye en Avada (Fusion Builder, Dynamic Content) | ✅ Sí | ❌ Nunca |
-| Recomienda qué elemento de Avada usar para una necesidad | ✅ Sí, a partir de `CATALOGO_ELEMENTOS_AVADA.md` | ❌ No aplica — no trabaja con Avada |
+### 2.3.1 ⭐ Circuito aparte — cómo se actualizan las instrucciones de Carlota (añadido 6 de septiembre de 2026)
 
-Si en algún momento una tarea no encaja claramente en ninguna de las dos filas, es señal de pararse y preguntar antes de que cada proyecto construya una solución distinta para el mismo problema.
+Distinto del flujo de contenido de arriba: cuando lo que cambia no es una pieza de la web,
+sino **lo que Carlota puede o no puede proponer en Avada** (ej. la prohibición del campo
+Clase CSS), el circuito es más corto y no pasa por Álvaro en ningún punto:
+
+```
+CARLITOS decide restringir/ampliar algo de Avada
+        │
+        ▼
+PROYECTO 2 (Investigación) estudia contra documentación oficial de
+avada.com — nunca de memoria — y prepara un análisis
+        │
+        ▼
+CARLITOS revisa y confirma el análisis
+        │
+        ▼
+PROYECTO 2 redacta el bloque de instrucciones definitivo para
+Proyecto 4/6 (Carlota) — y, si aplica, también para Proyecto 3/7 (Álvaro)
+        │
+        ▼
+Se fusiona en CATALOGO_ELEMENTOS_AVADA.md como referencia permanente
+```
+
+Álvaro no interviene en este circuito aunque el resultado final también le afecte a él (ej.
+la misma prohibición de la Clase CSS se aplica igual en sus instrucciones de construcción) —
+recibe el resultado ya terminado, igual que Carlota. El primer caso real de este circuito es
+la prohibición del campo Clase CSS del 6 de septiembre de 2026, documentada en
+`CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis.
+
+## 2.4 Cuando algo del boceto no se puede construir nativo — a quién le toca resolverlo
+
+**Regla de fondo, decidida el 6 de septiembre de 2026, tras tres días de construcción
+intensa donde el equipo detectó que muchos bocetos de Carlota pedían efectos que Álvaro solo
+sabía lograr metiendo código en el campo Clase CSS de un elemento — y ese código, al no
+dominar Avada a fondo, casi nunca funcionaba bien y hacía perder mucho tiempo intentando
+arreglarlo.**
+
+A partir de ahora, ni Carlota ni Álvaro usan el campo Clase CSS bajo ninguna circunstancia
+(ver Sección 6, punto 9, y `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis para el detalle
+técnico completo, incluidas las fuentes oficiales verificadas). El equipo se ciñe a lo que
+Avada ofrece de forma nativa — y cuando algo de verdad no es nativo:
+
+- Si es un **efecto visual o de estilo** (borde, sombra, degradado, hover, comportamiento
+  responsive) que un boceto pide y ningún elemento nativo logra tras agotar el proceso de
+  `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis: Álvaro lo documenta y lo escala a Carlitos
+  (Proyecto 9), como cualquier otro bloqueo de construcción (Sección 2.3 de arriba). NUNCA
+  se resuelve con la Clase CSS, ni como parche puntual.
+- Si es **funcionalidad real** que Avada no tiene de ninguna manera (no un ajuste de estilo,
+  sino algo que falta del todo — el ejemplo ya conocido es el consumo de JSON externo de
+  Seminarios/Música/Vía Crucis): Carlitos diseña y construye el código completo, con Proyecto
+  2 y Proyecto 9 ayudándole a analizar que sea seguro, estable y sin chapuzas, enseñándole
+  los conceptos técnicos de base que hagan falta según vayan saliendo. El código resultante
+  va dentro de un Code Block de Avada, entregado a Álvaro ya terminado para pegarlo — Álvaro
+  no diseña este código, solo lo aplica.
+
+**Lo que esto NO cambia:** lo que Avada ya resolvía nativo sigue exactamente igual, y los
+Code Snippets ya existentes y probados (`[tt_podcast]`, el endpoint REST de Devocional/
+Novedades) no se tocan por esta decisión — siguen siendo responsabilidad de Álvaro
+(Proyecto 3) mantenerlos, porque ya están construidos, probados y estables.
 
 ---
 
@@ -125,7 +184,14 @@ Si en algún momento una tarea no encaja claramente en ninguna de las dos filas,
 
 Este documento conserva, para cada Proyecto: la cuenta que usa, su rol, su base de conocimiento, y cualquier decisión de coordinación que lo afecte — pero no el texto de instrucciones en sí. Consulta la tabla de la Sección 2 para el enlace directo a la sección correspondiente de `INSTRUCCIONES_PROYECTOS_CLAUDE.md`.
 
-⚠️ **Ampliación pendiente de repegar (11 agosto 2026):** tras el cierre de la ronda de Avada Global Options, el bloque del Proyecto 3 en `INSTRUCCIONES_PROYECTOS_CLAUDE.md` creció con las Secciones 0.5 (consulta obligatoria de `CATALOGO_ELEMENTOS_AVADA.md` antes de recomendar) y 0.6 (construcción en los distintos niveles de Avada Live Builder — elemento, columna, container/sección, entrada, página — y cuándo preguntar por código en vez de decidirlo en silencio). Esto **no está aplicado todavía en claude.ai** — sigue el mismo patrón de siempre: subir el documento a GitHub actualiza la base de conocimiento, pero las instrucciones personalizadas solo cambian si alguien las repega a mano.
+⚠️ **Ampliación pendiente de repegar (6 de septiembre de 2026):** tras la decisión de equipo
+de prohibir el campo Clase CSS, los bloques de los Proyectos 2, 3, 4, 6, 7 y 9 en
+`INSTRUCCIONES_PROYECTOS_CLAUDE.md` crecieron con esa prohibición y la referencia a
+`CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis. **Esto no está aplicado todavía en claude.ai**
+— sigue el mismo patrón de siempre: subir el documento a GitHub actualiza la base de
+conocimiento, pero las instrucciones personalizadas solo cambian si alguien las repega a
+mano. Ver también la ampliación pendiente anterior, del 11 de agosto de 2026, sobre las
+Secciones 0.5 y 0.6 del Proyecto 3 — sigue siendo válida y sigue pendiente además de esta.
 
 ---
 
@@ -196,7 +262,12 @@ tiritaito-docs/
 │   └── MIGRACION_CONTENIDO.md
 ├── 03-guias-practicas/
 │   ├── GUIA_AVADA_LOCAL.md
-│   └── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026, sin dato sensible
+│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026, sin dato sensible
+│   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
+│   └── exports/
+│       ├── avada-global-options.json
+│       ├── claves_conocidas.json
+│       └── saneador-avada-options.html
 ├── 04-vision-y-equipo/
 │   ├── ARQUITECTURA_Y_ROADMAP.md
 │   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
@@ -249,6 +320,7 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 7. Cambiar la convención de nombres de archivo de la app en GitHub (ver Sección 5.3 — ya cambió una vez sin decisión formal previa)
 8. Dar acceso de escritura sobre el repositorio a un nuevo colaborador externo, o cambiar el alcance de lo que puede ver/editar (ver Sección 11)
 9. Formalizar `10px` como cuarto token de radio en `00_CORE.md` Sección 5, en vez de dejarlo como excepción puntual de Toggles/Forms (añadido 11 agosto 2026, ver Sección 6.1)
+10. **Restringir o ampliar qué herramientas de Avada puede usar Carlota o Álvaro (ej. la prohibición del campo Clase CSS, 6 de septiembre de 2026)** — sigue el circuito de la Sección 2.3.1, nunca se decide informalmente en una sesión de construcción
 
 ---
 
@@ -279,6 +351,7 @@ Decisiones que, si las toma una sola persona sin comunicarlo, rompen el trabajo 
 | Cambio en el sistema de colaboración externa (nuevo colaborador, nuevo archivo sensible, cambio de protocolo) | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 11 | Carlitos, con quien haya detectado el cambio | 
 | Cambio en cualquier ajuste de Avada Global Options que se guarde de verdad (no solo probado y revertido) | `03-guias-practicas/exports/avada-global-options.json` + `claves_conocidas.json` (si aparecen claves nuevas) | Quien haga el cambio en Avada — no limitado a un rol fijo. Descarga el nuevo export (Avada → Options → Import/Export → Download Data File), lo pasa por `saneador-avada-options.html` antes de subirlo, y sube ambos archivos. Se da por hecho que está actualizado — sin verificación adicional |
 | Un hallazgo del Cuaderno del Constructor madura y se confirma reutilizable | `CATALOGO_ELEMENTOS_AVADA.md`, `GUIA_AVADA_LOCAL.md`, o `00_CORE.md` según el tipo, y se retira de `CUADERNO_DEL_CONSTRUCTOR.md` | Hno C (aquí), a partir de la propuesta de las cuentas de Álvaro o de Proyecto 9 |
+| Restricción o ampliación de qué puede usar Carlota o Álvaro en Avada (ej. la prohibición de la Clase CSS) | `CATALOGO_ELEMENTOS_AVADA.md` (nueva sección o ampliación) + `INSTRUCCIONES_PROYECTOS_CLAUDE.md` (bloques afectados) | Proyecto 2, siguiendo el circuito de la Sección 2.3.1 — nunca Álvaro |
 
 ---
 
@@ -318,19 +391,20 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 
 ---
 
-## 9. Estado actual — julio/agosto 2026
+## 9. Estado actual — julio/agosto/septiembre 2026
 
 | Elemento | Estado real |
 |---|---|
 | Proyecto 1 (Web Vieja) | ✅ Configurado |
-| Proyecto 2 (Investigación) | ✅ Activo — es este mismo proyecto |
-| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — instrucciones ampliadas 26 julio 2026 (ACF 0.3, verificación 0.4) y 2 agosto 2026 (`.matt.php`, Sección 9) — **y de nuevo el 11 de agosto de 2026 con las Secciones 0.5 (catálogo de elementos) y 0.6 (construcción por niveles + pregunta de código)** — pendiente de que Hno A repegue el bloque completo actualizado en claude.ai |
-| Proyecto 4 (Diseño y Avada) | ✅ Configurado |
+| Proyecto 2 (Investigación) | ✅ Activo — es este mismo proyecto. Desde el 6 de septiembre de 2026, responsable también de estudiar y redactar las restricciones/ampliaciones de Avada para Carlota (Sección 2.3.1) |
+| Proyecto 3 (Web Nueva, fusionado) | ✅ Configurado — instrucciones ampliadas 26 julio 2026 (ACF 0.3, verificación 0.4), 2 agosto 2026 (`.matt.php`, Sección 9), 11 de agosto de 2026 (Secciones 0.5-0.6) — **y de nuevo el 6 de septiembre de 2026 con la prohibición del campo Clase CSS (Sección 0.6 reescrita)** — pendiente de que Hno A repegue el bloque completo actualizado en claude.ai |
+| Proyecto 4 (Diseño y Avada) | ✅ Configurado — **ampliado el 6 de septiembre de 2026 con la prohibición del campo Clase CSS** — pendiente de repegar |
 | Proyecto 5 (Tiritaito for Creators) | ✅ Configurado — actualizado con V1/V2, la regla de nombre de archivo fijo para V2, y la generación de copia `.matt.html` (2 agosto 2026) |
-| Proyecto 6 y 7 (Web Nueva — Repuesto A y B) | ✅ Creadas y configuradas (26 julio 2026) — corrige el conteo de "7 cuentas" a 8, ver Sección 2. Pendiente confirmar que su conector de GitHub incluye `CATALOGO_ELEMENTOS_AVADA.md` (Sección 3) |
+| Proyecto 6 y 7 (Web Nueva — Repuesto A y B) | ✅ Creadas y configuradas (26 julio 2026) — corrige el conteo de "7 cuentas" a 8, ver Sección 2. Pendiente confirmar que su conector de GitHub incluye `CATALOGO_ELEMENTOS_AVADA.md` (Sección 3), y que reciben la misma actualización de Clase CSS que sus cuentas principales |
 | Proyecto 8 (WPMobile.app) | 🔵 Sin definir todavía |
+| Proyecto 9 (Apoyo Técnico a Construcción) | 🔵 Por crear — instrucciones ya redactadas en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`, incluida la prohibición de la Clase CSS desde su primera versión |
 | ~~Datos y Métricas~~ | ❌ Cancelado |
-| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista, PHP del endpoint pasa a vivir dentro de `apps/v2/` (26 julio 2026), archivos `.matt.*` incorporados (2 agosto 2026), `CATALOGO_ELEMENTOS_AVADA.md` incorporado en `03-guias-practicas/` (11 agosto 2026) |
+| Repositorio de GitHub `tiritaito-docs` | ✅ Creado — estructura con `apps/` (V1 y V2) lista, PHP del endpoint pasa a vivir dentro de `apps/v2/` (26 julio 2026), archivos `.matt.*` incorporados (2 agosto 2026), `CATALOGO_ELEMENTOS_AVADA.md` incorporado en `03-guias-practicas/` (11 agosto 2026), ampliado con la Sección 5 bis (6 de septiembre de 2026) |
 | `01_CREATORS_APP.md` | ❌ Retirado (26 julio 2026) — fusionado en `TIRITAITO_FOR_CREATORS_VERSIONS.md`, sin contenido propio que se perdiera |
 | Documento de versiones de Tiritaito for Creators | ✅ `TIRITAITO_FOR_CREATORS_VERSIONS.md` — actualizado 26 julio 2026 con la política de nombre de archivo fijo para V2 y absorbe `01_CREATORS_APP.md` |
 | Snippet PHP del endpoint central | ✅ Real y completo, obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026) — confirma todo lo reportado por Hno A (Novedades, ACF, Tip eliminado). ⚠️ Tres avisos abiertos sin confirmar con Hno A: sin rate limit, sin validación de subida de archivos, sin Biblioteca ni gestión de entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 |
@@ -338,11 +412,12 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | Módulo Novedades (V2) | ✅ Backend confirmado y probado — 🔲 falta título en la app, falta montar Post Cards en Avada |
 | Módulo Devocional (V2) | 🔄 Migración parcial a ACF — 🔲 falta quitar fecha de Homilía-texto en la app, falta Dynamic Content en Avada |
 | Tip del día | ❌ Decisión: eliminado — 🔲 todavía construido en la app, pendiente de retirar |
-| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (Responsive), 8.4-bis (altura/previsualización), la decisión de no filtrar Post Cards por `activo` (Sección 9), y — **11 agosto 2026** — orden real de colores (4.1), mecanismo de Default Page Template (4.0.3), panel de Performance completo (4.4), breakpoints confirmados (8.4) y distinción Slideshows/Post Slider (9) |
-| **`CATALOGO_ELEMENTOS_AVADA.md`** | ✅ Creado (11 agosto 2026) — resultado de la ronda de tres cuentas de Avada Global Options (28/07-10/08) más el material de Off-Canvas. Organizado por necesidad de contenido, con nivel de certeza por entrada. 🔲 Pendiente completar el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar |
-| **`INSTRUCCIONES_PROYECTOS_CLAUDE.md`** | ✅ Creado (2 agosto 2026) — texto literal de todos los Proyectos extraído de este documento. Ampliado (11 agosto 2026) con las Secciones 0.5-0.6 del Proyecto 3 |
+| `GUIA_AVADA_LOCAL.md` | ✅ Ampliado con Sección 8.4 (Responsive), 8.4-bis (altura/previsualización), la decisión de no filtrar Post Cards por `activo` (Sección 9), 11 de agosto de 2026 (orden de colores, Default Page Template, Performance, Slideshows/Post Slider) — **y 6 de septiembre de 2026 con la prohibición del campo Clase CSS aplicada en las Secciones 8, 12, 13, 14 y 16** |
+| `CATALOGO_ELEMENTOS_AVADA.md` | ✅ Creado (11 agosto 2026) — resultado de la ronda de tres cuentas de Avada Global Options (28/07-10/08) más el material de Off-Canvas. Organizado por necesidad de contenido, con nivel de certeza por entrada. **Ampliado (6 de septiembre de 2026) con la Sección 5 bis — efectos visuales que ya son nativos en Avada sin necesidad de la Clase CSS, verificado contra documentación oficial de avada.com.** 🔲 Pendiente completar el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar |
+| `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | ✅ Creado (2 agosto 2026) — texto literal de todos los Proyectos extraído de este documento. Ampliado (11 agosto 2026) con las Secciones 0.5-0.6 del Proyecto 3, y de nuevo (6 de septiembre de 2026) con la prohibición del campo Clase CSS en los Proyectos 2, 3, 4, 6, 7 y 9 |
 | **Sistema de colaboración externa (Matt/Codex)** | ✅ Diseñado y con 5 archivos `.matt.*` generados (2 agosto 2026) — pendiente de subir a GitHub y dar acceso a Matt. Ver Sección 11 |
 | Reorganización del equipo (1 sept 2026) | Carlota pasa a hacer todos los bocetos (Proyectos 4 y 6); Álvaro se dedica solo a construcción (Proyectos 3 y 7); Carlitos suma investigación técnica rápida (Proyecto 9, por crear) y el Cuaderno del Constructor como memoria compartida entre sus cuentas. Detalle completo en Sección 3.3 |
+| **Prohibición del campo Clase CSS (6 sept 2026)** | ✅ Decidida por el equipo tras tres días de construcción intensa — Carlota y Álvaro se ciñen a elementos nativos de Avada; Carlitos asume el diseño de código propio para lo que Avada no resuelve nativo, con apoyo de Proyecto 2 y 9. Documentado en `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis, `GUIA_AVADA_LOCAL.md` (varias secciones) y `INSTRUCCIONES_PROYECTOS_CLAUDE.md` (Proyectos 2, 3, 4, 6, 7, 9). Pendiente: repegar en claude.ai |
 
 ---
 
@@ -352,7 +427,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 1. Carlitos: subir todos los documentos actualizados a GitHub (ver README.md para el listado completo) y eliminar `01_CREATORS_APP.md` (con la salvedad de la Sección 5.4)
 2. ✅ Snippet PHP completo y real obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026)
 3. Hno A: confirmar los tres avisos abiertos sobre el backend actual (sin rate limit, sin validación de subidas, sin Biblioteca/entradas — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1)
-4. Hno A: repegar las instrucciones actualizadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, incluidas las Secciones 0.5-0.6 sobre el catálogo de elementos y la construcción por niveles) — subir a GitHub no las aplica solas
+4. Hno A: repegar las instrucciones actualizadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, incluidas las Secciones 0.5-0.6 sobre el catálogo de elementos y la construcción por niveles, y la prohibición de la Clase CSS del 6 de septiembre) — subir a GitHub no las aplica solas
 5. Hno A: dar acceso de GitHub al Proyecto 3 y al Proyecto 5 sobre la carpeta `apps/v2/` completa, y confirmar que el Proyecto 3 (y sus Repuestos) tienen acceso a `03-guias-practicas/CATALOGO_ELEMENTOS_AVADA.md`
 6. Hno C: dar acceso de GitHub a este Proyecto (2) sobre `apps/v2/` también, para poder verificar el estado real sin depender de que se pegue el archivo a mano
 7. Proyecto 5: aplicar las tres tareas pendientes de la app (quitar Tip, quitar fecha de Homilía-texto, añadir input de título a Novedades) — ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8
@@ -367,6 +442,8 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 16. Hno A: repegar las instrucciones reescritas del Proyecto 3 en claude.ai, y en el Proyecto 7
 17. Hno A: repegar las instrucciones reescritas del Proyecto 3 también incluyen la Sección 0.8 (Cuaderno del Constructor) — confirmar que llegó completa al repegar
 18. Carlitos: revisar `CUADERNO_DEL_CONSTRUCTOR.md` con alguna cadencia (a definir con el uso real) para reconciliar entradas maduras hacia los documentos oficiales
+19. **Nuevo, 6 de septiembre de 2026 — repegar en claude.ai los bloques actualizados de los Proyectos 2, 3, 4, 6, 7 y 9** con la prohibición del campo Clase CSS (Sección 3, Sección 9 de este documento)
+20. **Nuevo, 6 de septiembre de 2026:** confirmar en Local que la versión de Avada instalada incluye Filtros de Fondo (Backdrop Filters) antes de que Carlota cuente con ese efecto en un boceto — ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis
 
 **Preguntas abiertas:**
 
@@ -378,6 +455,7 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | 4 | ¿La regla de nombre de archivo fijo (Sección 5.3) se extiende a V1, o se queda solo en V2? | Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8, pregunta 1 |
 | 5 | ¿`01_CREATORS_APP.md` tenía contenido real en GitHub que no llegó a este Proyecto? | Antes de confirmar su eliminación definitiva, ver nota de Sección 5.4 |
 | 6 | ¿Es de pago la cuenta que participó en la ronda de Avada Global Options y que aparece en una captura como Plan gratuito? | Determina si el plan de ampliar `CATALOGO_ELEMENTOS_AVADA.md` progresivamente es viable tal cual, o si hace falta gestionar el tamaño de la base de conocimiento con más cuidado (Sección 2, Sección 4) |
+| 7 | ¿En qué momento se considera que el panel Custom CSS global (donde vive el radio de 10px de Toggles/Forms) "ha dado problemas" y debe prohibirse también, igual que la Clase CSS? | Determina si esa vía pasa de "permitida bajo vigilancia" a cerrada (`CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis) |
 
 ---
 
@@ -489,7 +567,10 @@ si se aplica al archivo oficial.
 
 Antes de proponer un snippet de código nuevo, este equipo prioriza
 siempre la opción nativa de Avada/WordPress + ACF si existe una — el
-código a medida es el último recurso, no el primero.
+código a medida es el último recurso, no el primero. Desde el 6 de
+septiembre de 2026, el equipo ya no usa el campo "Clase CSS" de ningún
+elemento de Avada bajo ninguna circunstancia — si tu trabajo llega a
+tocar esa parte del proyecto en algún momento, ten esto presente.
 
 Ad maiorem Dei gloriam · tiritaito.com
 ```
@@ -508,7 +589,7 @@ El resultado: dos versiones distintas de las instrucciones del Proyecto 2 coexis
 
 **Regla fijada a partir de este episodio** (ya incluida en `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 0): si alguna vez se edita el texto de instrucciones de un Proyecto directamente en claude.ai sin pasar primero por ese documento, debe traerse de vuelta al documento en la siguiente sesión de Proyecto 2 — no puede quedar una versión "solo en claude.ai" sin su equivalente en el repositorio, ni al revés.
 
-⚠️ **Recordatorio de que este riesgo sigue vivo, no solo histórico (11 agosto 2026):** la ampliación de las Secciones 0.5-0.6 del Proyecto 3 (Sección 3 de este documento, y Sección 9) es, ahora mismo, exactamente este mismo escenario — ya está en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`, pendiente de repegarse en claude.ai. Mientras no se repegue, existe la misma discrepancia que motivó esta corrección.
+⚠️ **Recordatorio de que este riesgo sigue vivo, no solo histórico (6 de septiembre de 2026):** la prohibición del campo Clase CSS y la ampliación consiguiente de los bloques de los Proyectos 2, 3, 4, 6, 7 y 9 (Sección 3 de este documento, y Sección 9) es, ahora mismo, exactamente este mismo escenario — ya está en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`, pendiente de repegarse en claude.ai. Mientras no se repegue, existe la misma discrepancia que motivó esta corrección. Esto ya era cierto también desde el 11 de agosto de 2026 con las Secciones 0.5-0.6 del Proyecto 3, que siguen sin confirmarse como repegadas.
 
 ### 11.8 Próximos pasos y preguntas abiertas (específicas de colaboración externa)
 
@@ -516,7 +597,7 @@ El resultado: dos versiones distintas de las instrucciones del Proyecto 2 coexis
 1. Carlitos: subir los 5 archivos `.matt.*` ya generados a sus carpetas correspondientes en GitHub
 2. Carlitos: subir `INSTRUCCIONES_PROYECTOS_CLAUDE.md` y este documento actualizado a `04-vision-y-equipo/` en GitHub, y retirar `COLABORACION_EXTERNA_CODEX.md` del repositorio (su contenido ya vive aquí completo)
 3. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 5 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 5)
-4. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, con las Secciones 0.5-0.6 nuevas y la Sección 9 de generación de copia `.matt.php`)
+4. Hno A: repegar el bloque de instrucciones ampliadas del Proyecto 3 en claude.ai (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, con las Secciones 0.5-0.6, la Sección 9 de generación de copia `.matt.php`, y la prohibición de la Clase CSS del 6 de septiembre)
 5. Carlitos: confirmar que el bloque ya pegado en el Proyecto 2 coincide exactamente con `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 2 — verificado al redactar este documento, pero conviene una comprobación visual final
 6. Confirmar con Matt su nivel de plan de OpenAI (Free/Business) y, si es Free, pedirle que desactive el entrenamiento de modelos en su configuración de ChatGPT antes de conectar el repositorio
 7. Dar a Matt acceso de colaborador al repositorio `tiritaito-docs` en GitHub, con permisos de escritura
