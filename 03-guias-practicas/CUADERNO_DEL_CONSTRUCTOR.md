@@ -44,6 +44,33 @@ No son pasos de un proceso — cualquiera puede darse en cualquier momento:
 
 ## 3. Anotaciones activas
 
+---
+
+# Anotaciones para CUADERNO_DEL_CONSTRUCTOR.md — 2 de septiembre de 2026
+Caso: Novedades no se veía en Post Cards — sesión de diagnóstico y cierre
+
+---
+
+## Para la sección "🔲→✅ Se investigado y esto lo resuelve"
+
+| # | Hallazgo | Estado | Fecha |
+|---|---|---|---|
+| 2 | Novedades no se veía en Post Cards — dos causas distintas, ambas resueltas: (1) el CPT novedades (public => false) no aparecía en ningún selector de tipo de contenido de Avada (Post Type de Post Cards, View Dynamic Data As). Fix: añadir show_in_nav_menus => true al register_post_type(), sin tocar public, sin abrir páginas públicas nuevas. (2) Tras la reconstrucción del Local (26 julio), el grupo ACF de Novedades se recreó con un campo imagen (tipo Imagen) en vez de tipo + media_url (tipo Texto) que el endpoint PHP real seguía usando. El dato nunca se perdió — solo era invisible para Avada. Fix: declarar tipo y media_url en ACF con esos nombres exactos, tipo Texto; los datos ya existentes se "adoptan" solos. Las 2 novedades sin ese dato (creadas antes del incidente) se rellenaron a mano con wp post meta update, usando wp_get_attachment_url() sobre el ID del campo viejo imagen. | ✅ Confirmado — las 4 novedades ya muestran imagen con el molde real | 2 septiembre 2026 |
+
+## Para la sección "✅ Esto funciona así"
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| 1 | Patrón App → ACF → Avada, verificado de extremo a extremo. Cuando una app externa escribe en un CPT vía update_field() y Avada lo pinta con Post Cards + Dynamic Content, hay 3 capas a comprobar por separado — el síntoma ("se ve en blanco") es igual para las tres, pero el arreglo es distinto: (1) ¿El CPT es visible para Avada? (selectores Post Type / View Dynamic Data As → public/show_in_nav_menus). (2) ¿ACF tiene los campos con el nombre exacto del backend? (verificar con wp post meta list <id> contra un registro real, no fiarse del panel a simple vista). (3) ¿El molde de Avada apunta al campo correcto, con la condición correcta? (revisar Contenido Dinámico elemento por elemento, sobre todo tras reconstrucciones de entorno). | Descubierto arreglando Novedades — aplicable a cualquier CPT futuro (Hombres de Dios, etc.) | 2 septiembre 2026 |
+
+## Para la sección "⚠️ Cuidado con esto"
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| 1 | No se pudo confirmar el camino del vídeo en Novedades de extremo a extremo — al intentar subir una novedad de prueba con tipo=video desde la app, la subida falló. Sin diagnosticar todavía: puede ser el mismo elemento Vídeo "huérfano" en el molde de Avada (mismo patrón que Imagen, ver entrada #2 de arriba), o puede ser un fallo distinto en la app/endpoint al crear el registro. No dar el soporte de vídeo por confirmado hasta que esto se investigue. | Sesión de cierre del arreglo de Novedades | 2 septiembre 2026 |
+
+---
+
 ### ✅ Esto funciona así
 
 | # | Hallazgo | Contexto | Fecha |
