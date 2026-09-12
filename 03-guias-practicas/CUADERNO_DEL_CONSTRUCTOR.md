@@ -46,6 +46,14 @@ No son pasos de un proceso — cualquiera puede darse en cualquier momento:
 
 ---
 
+### 🔲→✅ Se investigó y esto lo resuelve
+
+| # | Hallazgo | Estado | Fecha |
+|---|---|---|---|
+| 3 | Para un carrusel de verdad (swipe táctil) con tarjetas de contenido libre (imagen+título+texto+botón), sin usar Portfolio: Post Cards Element, Content Source = Pages, Layout = Carousel. Confirmado en documentación oficial que Post Cards admite explícitamente "posts, pages, products, or custom post types" como fuente, y que "Carousel" es uno de sus layouts nativos (junto a Grid, Masonry, Marquee, Coverflow, Stacking Cards, Slider). Descarta la necesidad de reactivar Portfolio (status_fusion_portfolio: "0" en el export, desactivado a propósito el 14 agosto) para conseguir un carrusel deslizable — Post Cards ya lo hace con el mismo motor, sobre páginas normales de WordPress, sin arrastrar la configuración sucia heredada de Portfolio (columnas=1, slug a mano). Corrección importante tras segunda vuelta de investigación: Post Cards NO tiene un selector nativo de "elige estas páginas concretas por nombre" — WordPress no da categorías/etiquetas a las Páginas de forma nativa, a diferencia de los Posts. La vía confirmada sin plugins ni código es: poner Orden (1, 2, 3, 4...) en Atributos de Página de cada página candidata (100% nativo de WordPress, pestaña "Atributos de página"), y en Post Cards configurar Posts By: All + Number Of Posts exacto + Order By: Menu Order + Order: Ascending. ⚠️ Riesgo a vigilar: si se crea una página nueva con un número de Orden bajo, puede colarse en el listado desplazando a una de las páginas buenas — válido mientras el sitio tenga pocas páginas; revisar si el sitio crece mucho. Caso de uso: apartado "Tiritaito" en la home (Rincón de Nico, Music, Charlas de la Biblia, Ejército de Intercesores). | ✅ Confirmado por documentación oficial — pendiente que Álvaro lo pruebe en Local y confirme resultado visual | 11 septiembre 2026 |
+
+---
+
 # Anotaciones para CUADERNO_DEL_CONSTRUCTOR.md — 2 de septiembre de 2026
 Caso: Novedades no se veía en Post Cards — sesión de diagnóstico y cierre
 
