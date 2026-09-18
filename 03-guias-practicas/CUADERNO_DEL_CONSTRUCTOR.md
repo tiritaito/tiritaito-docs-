@@ -92,11 +92,17 @@ Caso: Novedades no se veía en Post Cards — sesión de diagnóstico y cierre
 |---|---|---|---|
 | — | *(vacío por ahora)* | | |
 
-### ⚠️ Cuidado con esto
+### ✅ Esto funciona así
 
 | # | Hallazgo | Contexto | Fecha |
 |---|---|---|---|
 | — | *(vacío por ahora)* | | |
+
+### ⚠️ Cuidado con esto
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| 2 | El agrupamiento por temporadas de `[tt_podcast]` depende del tag `<itunes:season>` del feed, no del código. Si el canal publica todo como temporada 1, el atributo `seasons` del shortcode no sirve de nada — hay que etiquetar las temporadas en Spotify for Podcasters primero. Confirmado contra el feed real de San Serafín (36 capítulos, todos temporada 1, con tres bloques de contenido claramente distintos por su descripción). | Investigación del podcast — ver `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` Sección 3.5 | 16 septiembre 2026 |
 
 ### 🔲→✅ Se investigó y esto lo resuelve
 
