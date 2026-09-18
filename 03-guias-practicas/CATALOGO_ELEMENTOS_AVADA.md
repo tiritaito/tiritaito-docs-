@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Catálogo de Elementos de Avada
 **De "tengo esta necesidad de contenido" a "este es el elemento que la resuelve, y así de seguro estoy"**
-*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026 · Ampliado con la Sección 5 bis (efectos visuales sin Clase CSS) — 6 de septiembre de 2026*
+*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026 · Ampliado con la Sección 5 bis (efectos visuales sin Clase CSS) — 6 de septiembre de 2026 · Ampliado con Modal Element, Conditional Rendering Logic y el reproductor de podcast — 17 de septiembre de 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -344,14 +344,20 @@ de Avada, sin código. Para el caso excepcional en que no baste:
   extremo.
 - ✅ Ordena de forma nativa por Custom Field ACF (ej. fecha) — confirmado en el piloto de
   Novedades (22-23 julio 2026).
-- ❌ **No filtra de forma nativa por valor de campo.** Si hiciera falta filtrar de verdad
-  (a diferencia de Novedades, que decidió no filtrar), requiere el hook
-  `fusion_post_cards_shortcode_query_override`. Decisión de equipo: no se construyó ese hook
-  para Novedades (26 julio 2026) — el listado muestra todas las entradas, activas u ocultas.
+- ⚠️ **En duda si de verdad "no filtra de forma nativa por valor de campo".** Esta entrada
+  decía ❌ desde julio, con el hook `fusion_post_cards_shortcode_query_override` como única
+  vía. Dos investigaciones independientes (16 de septiembre de 2026, sobre Tiritaito Music y
+  sobre Seminarios) revisaron la documentación oficial del elemento y encontraron, en su
+  pestaña General, tres campos que dicen lo contrario: `Custom Field - Name`,
+  `Custom Field - Value Comparison` y `Custom Field - Value`, sin restricción a productos.
+  No sube a ✅ sin una prueba real en Local — pueden ser campos añadidos después de julio, o
+  no comportarse como su nombre sugiere — pero deja de ser un ❌ tranquilo: bloquea el
+  listado de Novedades sin filtrar por `activo`, el de "Seminarios pasados", y ahora también
+  el filtro por tipo de seminario de la nueva entrada de vídeos. Prueba de 15 minutos
+  pendiente.
 - 🔲 Sin confirmar todavía si Post Cards cubre bien el listado de "Seminarios pasados" y la
-  portada de "Hombres de Dios" — a diferencia de Novedades, si esas dos secciones necesitan
-  filtrar de verdad, ahí sí haría falta el hook (`GUIA_AVADA_LOCAL.md` Sección 19, pregunta
-  abierta #2).
+  portada de "Hombres de Dios" — depende directamente del punto anterior
+  (`GUIA_AVADA_LOCAL.md` Sección 19, pregunta abierta #2).
 
 ### Necesito rotar entre varias entradas distintas (ej. los 9 santos de Hombres de Dios, un listado de Novedades destacadas)
 
@@ -407,6 +413,26 @@ solapamiento entre dos paneles distintos, abajo
   gobernando el archivo/calendario completo, otro gobernando el estilo de la tarjeta de
   evento como elemento suelto). Antes de dar "Próximos Eventos" por cerrado del todo,
   recomiendo confirmar esto en Local y resolver la pregunta de "Events Text Display".
+
+### Necesito un reproductor de podcast con lista de episodios, agrupados por temporada
+
+→ **Elemento:** ninguno nativo — Code Snippet propio `[tt_podcast]` dentro de un Code Block
+
+- ✅ **Confirmado (16 septiembre 2026):** es uno de los casos donde Avada genuinamente no
+  ofrece nada equivalente — consume un feed RSS externo en el servidor (con caché, vía
+  `fetch_feed()` nativo de WordPress) y construye una lista con estado de reproducción. El
+  elemento **Audio** de Avada (Sección 5 de este catálogo) solo sirve para un audio suelto
+  autoalojado y **no gobierna este reproductor**.
+- ⚠️ **Alcance real mayor de lo documentado hasta ahora:** el shortcode `[tt_podcast]` no
+  vive solo en Rincón de Nico y Charlas de la Biblia — el propio comentario del código lo
+  describe como compartido por "los 12 canales", y al menos una ficha de Hombres de Dios
+  (San Serafín de Sarov) lo usa también, con un feed real de 36 episodios. Ver
+  `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` para el detalle completo —
+  **pendiente confirmar la lista exacta de los 12 canales** antes de corregir
+  `ALCANCE_WEB_NUEVA.md` y `METODOLOGIA_CONSTRUCCION.md` en consecuencia.
+- 🔲 Diagnóstico técnico completo (rendimiento, accesibilidad, SEO) en el documento de
+  investigación citado arriba — pendiente de trasladar aquí en detalle una vez se localice
+  el bloque `<script>` que falta en el código compartido y se confirme el alcance real.
 
 ### Necesito la vista clásica de archivo del blog de WordPress
 
@@ -534,6 +560,34 @@ puntual) — **⚠️ son dos superficies de configuración relacionadas pero di
   es solo imagen/vídeo.
 - 🔲 **Estilo por defecto sin revisar** — aparece explícitamente en la lista de "elementos
   todavía sin revisar" del informe de Cuenta 1 (Avada Builder Elements).
+- ⚠️ **Primer caso de uso real decidido (17 septiembre 2026):** el panel de "Más
+  información" de cada uno de los 5 seminarios (`ALCANCE_WEB_NUEVA.md` Sección 4.C) — el
+  equipo lo prefirió sobre Off-Canvas porque este último no respetaba el diseño. **Aviso
+  para quien lo construya:** el Modal de Avada se abre centrado sobre todo el viewport, no
+  como un velo que cubra solo el bloque de origen — el boceto original dibujaba lo segundo;
+  el equipo aceptó la diferencia al elegir Modal. Sin confirmar todavía en Local si un
+  Lightbox (para las miniaturas de vídeo) funciona anidado dentro de este Modal — ver
+  `METODOLOGIA_CONSTRUCCION.md` Sección 3.
+
+### Necesito que un bloque entero desaparezca (sin dejar hueco) si no tiene contenido que mostrar
+
+→ **Elemento:** Conditional Rendering Logic (pestaña Extras, confirmada en YouTube Element y
+Post Cards Element; documentada de forma genérica también para Container/Columna)
+
+- ✅ **Confirmado contra documentación oficial (17 septiembre 2026):** el propio Avada
+  documenta esta opción como *"Add conditional rendering logic for the element. The element
+  will only be part of the post / page contents, if the set conditions are met."* — es
+  decir, cuando la condición no se cumple, el elemento **no forma parte del HTML de la
+  página**, no es solo un `display:none` visual. Resuelve de forma nativa la necesidad de
+  "ocultar del todo, sin hueco vacío", en vez de mostrar un contenedor vacío o un mensaje de
+  "no hay resultados".
+- ⚠️ El propio panel de Avada avisa: *"NOTE: Server cache can interfere with results"* — si
+  el sitio usa caché de página completa (LiteSpeed Cache, ya en uso en Tiritaito), conviene
+  probarlo con la caché activa antes de confiar en él para contenido que cambia a menudo.
+- 🔲 Caso de uso real, sin construir todavía: la sección de vídeos del panel de "Más
+  información" de cada seminario debe desaparecer entera si ese tipo de seminario no tiene
+  vídeos (`METODOLOGIA_CONSTRUCCION.md` Sección 3) — condición sobre un recuento de vídeos o
+  la presencia de al menos un ID de vídeo en el CPT correspondiente.
 
 ### Necesito un carrusel de imágenes
 
@@ -764,6 +818,7 @@ comprobado primero:
 | Recortar una imagen en una forma libre ("blob", no rectangular ni circular) | ❌ No encontrado en el núcleo de Avada — existe como función de un plugin de pago de terceros, no de ThemeFusion | Antes de asumir que hace falta, probar si un Border Radius alto (óvalos o círculos) ya cubre la necesidad real |
 | Cursor personalizado sobre una zona concreta | 🔲 No encontrado en la documentación revisada, ni a favor ni en contra | No asumir que existe ni que no existe — si aparece la necesidad real, se investiga puntualmente antes de descartar lo nativo |
 | Interacciones muy específicas (arrastrar y soltar, lógica condicional a medida) | 🔲 Depende del caso — Toggles, Tabs, Popover y Modal ya cubren mucha interacción sin código | Agotar primero esos elementos (Secciones 5 y 9 de este catálogo) antes de asumir que hace falta módulo propio |
+| Que uno de los puntos (dots) de un carrusel/slider se alargue para marcar cuál está activo | ❌ **No encontrado en Post Cards** — confirmado el 17 de septiembre de 2026 contra la lista completa de opciones de navegación del elemento: `Dots Position`, `Dots Spacing`, `Dots Margin`, `Dots Alignment`, `Dots Styling`, `Dots Size` y `Dots Color`. Ninguno distingue el punto activo del resto por forma o tamaño — como mucho, por color | Responde el Problema 4 del informe de Álvaro sobre Novedades (15 sept 2026): no es que no lo encontrara, no está. Si el efecto se quiere de verdad, no se resuelve con Clase CSS — o se acepta la diferencia solo por color, o se escala a Carlitos para el panel global de Custom CSS |
 
 ### Nuestro propio caso donde el CSS sí estaba justificado
 
@@ -943,7 +998,13 @@ propio panel del elemento no lo tenía — no como primer recurso.
   esta calibración, aunque el detalle exacto de esa nota interna no está en el texto
   disponible para este catálogo). **Recomendación de Cuenta 1, sin aplicar todavía:**
   incorporar esta nota a `00_CORE.md` Sección 6, para que cualquier título nuevo en Yeah Papa
-  se calibre con esto en mente desde el principio. Ver Sección 13.4.
+se calibre con esto en mente desde el principio. Ver Sección 13.4.
+- 🔲 **Comprobar (16 septiembre 2026):** el export real usa tres grafías distintas para el
+  mismo par de fuentes — `custom_fonts.name` registra `"Helvetica Nueva"` y `"YEAH-PAPA"`,
+  mientras `h1_typography.font-family` usa `"Yeah-Papa"` y `body_typography.font-family` usa
+  `"Helvetica Neue"`. Puede ser irrelevante (Avada normaliza internamente) o puede explicar
+  que alguna fuente no cargue en algún sitio concreto. Merece una comprobación visual rápida
+  en Local, no una corrección de este documento todavía.
 
 ### Necesito el logo en el header, en sticky y en móvil
 
@@ -1144,17 +1205,7 @@ que Hno C (Proyecto 2) necesita aplicar en los documentos oficiales.
 
 ### 13.1 Border-radius 10px — ¿un cuarto token real?
 
-Aparece **dos veces de forma independiente**, en Toggles (Sección 5) y en Form Border Radius
-(Sección 6), las dos por decisión de Hna C. Podría ser un cuarto token real ("elementos
-interactivos pequeños = 10px, contenedores grandes = 25px") en vez de dos excepciones
-sueltas sin relación. La evidencia está documentada tal cual en las dos entradas
-correspondientes de este catálogo — la decisión de si se formaliza como token nuevo en
-`00_CORE.md` Sección 5 no es mía. Relacionado: el propio Custom CSS (Sección 8) ya no está
-vacío por esta misma razón (la regla de Toggles vive ahí), y la pregunta abierta de Cuenta 1
-sigue sin responder: ¿10px sustituye a 25px como estándar global, convive como valor nuevo, o
-queda solo en estos dos casos? Mientras no se resuelva, Tabs, Testimonials y Audio se
-quedaron con border-radius en 0px a propósito, para no rellenar un valor que pueda tener que
-deshacerse.
+Aparece **dos veces de forma independiente**, quiero border-radius 10px. decisión tomada por el equipo. cualquier cosa se cambia en el caso concreto, pero 10px es la medida estándar
 
 ### 13.2 Orden real de los 8 colores del Wizard — contradice la tabla de GUIA_AVADA_LOCAL.md 4.1
 
