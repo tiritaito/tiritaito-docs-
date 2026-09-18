@@ -27,12 +27,16 @@ tiritaito-docs/
 │   └── ALCANCE_WEB_NUEVA.md
 ├── 02-metodologia/
 │   ├── METODOLOGIA_CONSTRUCCION.md
-│   └── MIGRACION_CONTENIDO.md
+│   ├── MIGRACION_CONTENIDO.md
+│   └── investigaciones/                     ← nueva, 17 septiembre 2026 — informes de
+│       ├── TIRITAITO_MUSIC_WEB_NUEVA.md         investigación previos a una decisión de
+│       ├── SEMINARIOS_VIDEOS_WEB_NUEVA.md       arquitectura, no documentos de referencia
+│       └── INVESTIGACION_PODCAST.md             viva — se consultan, no se editan
 ├── 03-guias-practicas/
 │   ├── GUIA_AVADA_LOCAL.md
-│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← ampliado 6 septiembre 2026 (Sección 5 bis)
+│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← ampliado 17 septiembre 2026
 │   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
-│   └── exports/                             ← nuevo, 14 agosto 2026                            
+│   └── exports/                             ← nuevo, 14 agosto 2026                         
 │       ├── avada-global-options.json        (export saneado, sin credenciales)
 │       ├── claves_conocidas.json            (línea base de claves para detectar drift)
 │       └── saneador-avada-options.html      (herramienta de saneado, corre en el navegador)
@@ -89,6 +93,14 @@ cambios (`claves_conocidas.json`), y la herramienta que genera ambos
 que alguien cambia y guarda un ajuste de Avada Global Options — ver
 `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6.1.
 
+**`02-metodologia/investigaciones/`** — informes de investigación de Proyecto 2 sobre una
+pieza concreta antes de que el equipo decida su arquitectura (Tiritaito Music, vídeos de
+Seminarios, el podcast). Son una fotografía del momento en que se escribieron, no un
+documento vivo — cuando una decisión ya tomada aquí se aplica a los documentos de
+referencia (`ALCANCE_WEB_NUEVA.md`, `METODOLOGIA_CONSTRUCCION.md`,
+`CATALOGO_ELEMENTOS_AVADA.md`), el informe se queda igual como constancia de cómo se llegó
+a esa decisión.
+
 ---
 
 ## Cómo empezar, según quién seas
@@ -135,7 +147,10 @@ que alguien cambia y guarda un ajuste de Avada Global Options — ver
 | V1 desaparece en cuanto la Web Nueva sea oficial — sin fecha todavía | `ARQUITECTURA_Y_ROADMAP.md` · `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.1 · `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 1 | Archivado del Proyecto 1 y de la mitad V1 del Proyecto 5, el día que llegue |
 | ✅ Ronda completa de Avada Global Options cerrada en tres cuentas de trabajo (28/07-10/08/2026), síntesis en `CATALOGO_ELEMENTOS_AVADA.md` (11/08/2026) | `GUIA_AVADA_LOCAL.md` · `CATALOGO_ELEMENTOS_AVADA.md` | Desbloquea la construcción de páginas reales con criterio Avada-first |
 | Formalizar si `10px` es un cuarto token de radio (junto a `25/14/8px`) o queda como excepción en Toggles/Forms | `00_CORE.md` Sección 5 · `GUIA_AVADA_LOCAL.md` Sección 13 | Bordes de Tabs, Testimonials, Audio y cualquier elemento nuevo — dejados a propósito sin decidir mientras tanto |
-| Confirmar si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, o solo registrado como borrador | `GUIA_AVADA_LOCAL.md` Sección 9.1 | Cierre real del menú móvil — uno de los tres bloqueantes de Fase 1 |
+| Confirmar en Local si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, o solo registrado como borrador | `GUIA_AVADA_LOCAL.md` Sección 9.1 | Cierre real del menú móvil — uno de los tres bloqueantes de Fase 1 |
+| **Vídeos de seminarios:** decidido el panel de "Más información" (Modal + 2 vídeos recientes vía Lightbox, siempre YouTube) — pendiente definir la estructura (CPT/ACF) de la nueva entrada "Vídeos de los Seminarios" y probar en Local si el Lightbox funciona anidado dentro de un Modal | `METODOLOGIA_CONSTRUCCION.md` Sección 3 · `ALCANCE_WEB_NUEVA.md` Sección 4.C | Construcción del Boceto J v5 y de la nueva entrada |
+| **Podcast:** el alcance documentado (2 programas) no coincide con el código real (el propio snippet dice "los 12 canales", y al menos una ficha de Hombres de Dios usa el mismo reproductor) — pendiente confirmar la lista exacta de los 12 canales y localizar el bloque `<script>` del reproductor, que falta en el código compartido | `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` | Corrección de `ALCANCE_WEB_NUEVA.md` 4.E/4.H y `METODOLOGIA_CONSTRUCCION.md`; boceto de Carlota para el podcast |
+| **Tiritaito Music:** confirmado que `[tt_podcast]` no cubre el caso (cola, mini-reproductor, enlace profundo); sigue sin decidir dónde viven los datos — aplazado a propósito hasta que se construya esa entrada | `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` | Boceto de Carlota y construcción de la entrada Tiritaito Music |
 | Completar en `CATALOGO_ELEMENTOS_AVADA.md` el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar ni por nombre | `CATALOGO_ELEMENTOS_AVADA.md` Sección 12 | Que el catálogo cubra el listado completo de elementos activos, no solo los ~24-50 ya revisados a fondo |
 
 ---
