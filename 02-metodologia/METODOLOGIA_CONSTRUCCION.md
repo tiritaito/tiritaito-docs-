@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Metodología de Construcción
 **Diagnóstico heredado, inventario de consolidación y aplicación práctica a cada sección real de la web nueva**
-*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md`*
+*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md` · Actualizado 17 de septiembre de 2026 con las decisiones de vídeos de Seminarios y el cierre de la evaluación de Tiritaito Music*
 *Audiencia: Hno A (aplicación técnica) · Hna C (para entender el porqué de cada decisión)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -86,7 +86,7 @@ para identificar rápido qué elemento nativo aplica en cada caso.**
 | Componente actual | Prefijo | Dónde se ha visto (web vieja) | Acción propuesta |
 |---|---|---|---|
 | Reproductor de podcast (RSS) | `.pp-*` | Global, `[tt_podcast]` | **Mantener** — funciona bien, es el patrón de referencia para todo lo nuevo |
-| "Tiritaito Music" (con cola) | `.mp-*` | Ejército de Intercesores | Evaluar si `[tt_podcast]` cubre el caso; si necesita cola/playlist, mantenerlo pero como snippet global reutilizable |
+| "Tiritaito Music" (con cola) | `.mp-*` | Ejército de Intercesores | ✅ **Evaluación resuelta (16 sept 2026):** `[tt_podcast]` NO cubre el caso — el módulo real tiene cola, búsqueda, mini-reproductor persistente, enlace profundo `?mp_play=` y pestañas por playlist; nada de eso lo hace un lector de RSS. Arquitectura de construcción sin decidir (ver `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md`) — aplazada a propósito hasta que se construya esa entrada |
 | Mini reproductor de un track | `.hmds-*` | Ejército de Intercesores | **Eliminar** — sustituir por `[tt_podcast]` de un solo episodio |
 | Accordion "¿Qué es X?" + vídeo | `toggle-ios` | Ejército de Intercesores, Rincón de Nico | **Guardado (no-global)** o `[tt_accordion]`, **nunca Global** (`GUIA_AVADA_LOCAL.md` Sección 8) — en la web nueva aplica a la "Introducción" del Ejército (Sección 3) |
 | Menú hamburguesa custom | (sin prefijo `tt-`) | Al menos Ejército de Intercesores | Sustituir por Off Canvas Builder nativo (`GUIA_AVADA_LOCAL.md` Sección 9.1, `CATALOGO_ELEMENTOS_AVADA.md` Sección 3) |
@@ -116,8 +116,9 @@ ya decidida.
 
 | Pieza | Dónde vive | Nota |
 |---|---|---|
-| Seminarios — próximos | Página Avada estática (Fusion Builder) | 🔲 Pendiente el rediseño de carteles (más visual) y si se unifican con las fechas |
-| Seminarios — vídeos pasados | Snippet ya existente (JSON/playlist, `tt_seminarios_json_url`) | 🔲 Método de integración con el nuevo formato visual sin definir — ver `ALCANCE_WEB_NUEVA.md` pregunta abierta #3 |
+| Seminarios — próximos + panel "Más información" | Página Avada estática (Fusion Builder) — boceto vigente "Boceto J — Seminarios v5" | 🔲 Pendiente el rediseño de carteles (más visual) y si se unifican con las fechas. **Panel de "Más información" de cada uno de los 5 bloques: elemento Modal de Avada** (decisión de equipo, 17 sept 2026 — preferido sobre Off-Canvas porque no respetaba el diseño). ⚠️ Nota de construcción: el Modal de Avada cubre el viewport completo y centrado — no replica exactamente el "velo solo sobre el bloque" que dibuja el boceto; el equipo aceptó esa adaptación al elegir Modal |
+| Seminarios — 2 vídeos más recientes (dentro del Modal) | Post Cards (u otro elemento equivalente) leyendo del CPT del modelo híbrido de la fila de abajo, filtrado por tipo de seminario, límite 2, orden por fecha descendente. Cada miniatura abre el vídeo en **Lightbox**, siempre alojado en YouTube (Columna con `Link Target = Lightbox`, o Lightbox Element de tipo Vídeo) | ✅ Decidido (17 sept 2026): 2 vídeos más recientes por defecto — abierto a sustituir uno por un vídeo elegido a mano como "el más evangelizador" (requeriría un futuro campo ACF tipo "destacado", sin construir todavía). Los 5 bloques, también en móvil, llevan esta sección. **Si el seminario no tiene vídeos, la sección se oculta entera** — no un hueco vacío — vía Conditional Rendering Logic (nativo en la pestaña Extras de varios elementos de Avada, ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5). 🔲 Pendiente probar en Local que el Lightbox funciona anidado dentro de un Modal |
+| Seminarios — "Vídeos de los Seminarios" (nueva entrada, catálogo completo) | 🔲 Sin construir. Arquitectura decidida: **modelo híbrido** — un snippet PHP nuevo sincroniza `Seminarios.json` (que la app sigue generando igual que hoy) a un CPT de WordPress; desde ahí Avada pinta todo de forma nativa (Post Cards con filtros por tipo de seminario — probablemente el mismo elemento que alimenta la fila de arriba) | ✅ Decisión de arquitectura (17 sept 2026) — 🔲 falta decidir la estructura exacta (nombre del CPT, campos ACF) y si el mismo snippet importador sirve también a Tiritaito Music y Vía Crucis cuando se construyan (mismo envoltorio `playlists[].tracks[]` en los tres JSON — ver `02-metodologia/investigaciones/`). El código del módulo de vídeos de la web vieja se ha perdido; no se considera necesario recuperarlo |
 | Grupo de alabanza | Fusion Builder puro | Contenido informativo, sin snippets |
 | Día de familias | Fusion Builder puro | Contenido informativo, sin snippets — sección nueva, sin precedente técnico en la web vieja |
 
@@ -244,6 +245,7 @@ bien ahí.
 3. Proyecto 5: retirar la UI de "Tip del día" de la app (ver Sección 2) — pendiente confirmado el 26 de julio 2026
 4. Cuando se resuelvan las preguntas abiertas de `ALCANCE_WEB_NUEVA.md` sobre Biblioteca (PWA de libros, estructura de Oraciones), completar las filas correspondientes de la Sección 3 de este documento
 5. Confirmar en Local si el Off-Canvas "Menu Movil" ya existente está diseñado y probado por dentro, o solo registrado como borrador (Sección 3, "Menú y Próximos eventos")
+6. Probar en Local si el Lightbox de Avada funciona anidado dentro de un Modal (necesario para el panel de "Más información" de Seminarios, Sección 3) y definir la estructura (CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"
 
 **Preguntas abiertas propias de este documento:**
 
@@ -252,11 +254,11 @@ bien ahí.
 | 1 | ¿Se mantiene el teaser individual de "Ejército de Intercesores" en la home, o desaparece al agruparse bajo Tiritaito? | Sección 2 |
 | 2 | ¿Qué elementos Guardados conviene preparar de antemano para Hombres de Dios (biografía, audio, discursos...)? | Sección 4.2 |
 | 3 | ¿Testimonios de intercesión: volumen aproximado, para decidir Post Cards vs contenido estático? | Sección 3, Tiritaito |
+| 4 | ¿Estructura exacta (nombre del CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador sirve también a Tiritaito Music y Vía Crucis cuando se construyan? | Sección 3, Qué hacemos |
 
 **Heredadas de `ALCANCE_WEB_NUEVA.md` (no se repiten aquí en detalle, solo se enlazan):**
 Salmo del día dentro de Misa, ubicación de "Habla por la palabra" y "Elige tu santo",
-integración de vídeos de seminarios pasados, "Canción del Ejército", naturaleza de la PWA
-de libros, estructura de Oraciones.
+"Canción del Ejército", naturaleza de la PWA de libros, estructura de Oraciones.
 
 **Resuelto en esta revisión (26 julio 2026):** Novedades migrado a CPT+ACF, backend
 confirmado y probado · Devocional migrado parcialmente a ACF Options Page · Tip eliminado
@@ -268,6 +270,13 @@ tal cual para "Próximos eventos", sin construir nada desde cero · elemento cor
 rotar entre los 9 santos y otras entradas distintas identificado (Post Slider, no
 Slideshows) · `CATALOGO_ELEMENTOS_AVADA.md` incorporado como referencia complementaria en
 toda la Sección 3 y en el checklist de la Sección 5.
+
+**Resuelto en esta revisión (17 de septiembre de 2026):** decisiones de equipo sobre los
+vídeos de seminarios — panel de "Más información" con Modal de Avada, 2 vídeos más
+recientes por defecto vía Lightbox (siempre YouTube), ocultar la sección si no hay vídeos,
+y arquitectura híbrida (JSON → CPT) para la nueva entrada con el catálogo completo · fila de
+"Tiritaito Music" cerrada respecto a si `[tt_podcast]` la cubre (no la cubre; arquitectura de
+construcción sigue pendiente, se decide al construir esa entrada).
 
 ---
 
