@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Alcance de la Web Nueva
 **Estructura de la web nueva: páginas, secciones internas, prioridades y método de trabajo**
-*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades*
+*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades · Actualizado 17 de septiembre de 2026 con las decisiones de equipo sobre los vídeos de seminarios (Sección 4.C)*
 *Aprobación: Hna C · Redacción: Hno C*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -175,9 +175,25 @@ Tres apartados jerarquizados por importancia:
 - Fechas — 🔲 posible unificación con los carteles rediseñados, para no duplicar
   información (se decide al ver el rediseño)
 - Información práctica: precio, contacto, cómo llegar
-- Vídeos de seminarios anteriores — 🔲 existe ya en la web vieja un sistema de reproductor
-  de playlist + generador de JSON de YouTube (el mismo patrón de `tt_seminarios_json_url`
-  de `00_CORE.md`); falta definir cómo se integra con el nuevo formato visual
+- Vídeos de seminarios anteriores — ✅ **Decisión de equipo (17 septiembre 2026)**, sobre
+  el boceto vigente "Boceto J — Seminarios v5": dentro del panel de "Más información" de
+  cada uno de los 5 seminarios (construido con el elemento **Modal** de Avada — preferido
+  sobre Off-Canvas porque este no respetaba el diseño), se muestran los **2 vídeos más
+  recientes** de ese tipo de seminario (abierto a sustituir uno por un vídeo elegido a mano
+  como "el más evangelizador" — sin construir todavía). Cada miniatura abre el vídeo en
+  **Lightbox**, siempre alojado en YouTube. Los 5 bloques, también en móvil, llevan esta
+  sección. **Si un seminario no tiene vídeos, la sección se oculta entera**, sin hueco
+  vacío. El enlace "Ver todos los vídeos →" lleva a una **entrada nueva** (nombre por
+  decidir) con el catálogo completo de vídeos de todos los seminarios — ver más abajo y
+  `METODOLOGIA_CONSTRUCCION.md` Sección 3. El código del antiguo módulo de vídeos de la web
+  vieja se ha perdido; el equipo no lo considera necesario recuperar, se construye desde
+  cero
+- 🔲 **Nueva pieza, sin construir — "Vídeos de los Seminarios" (nombre provisional):**
+  entrada que reúne el catálogo completo de vídeos de todos los tipos de seminario.
+  Arquitectura decidida: **modelo híbrido** — la app sigue generando `Seminarios.json`
+  exactamente igual que hoy; un snippet PHP nuevo lo sincroniza a un Custom Post Type de
+  WordPress; desde ahí Avada pinta todo de forma nativa (Post Cards con filtro por tipo de
+  seminario). Detalle técnico en `METODOLOGIA_CONSTRUCCION.md` Sección 3
 
 **Grupo de alabanza y Día de familias:** contenido informativo, sin funcionalidad
 adicional confirmada por ahora.
@@ -353,13 +369,14 @@ día, que ya tienen lo esencial definido):
 |---|---|---|
 | 1 | ¿Salmo del día vive dentro de Misa, o mantiene apartado propio? | D |
 | 2 | ¿Dónde viven "Habla por la palabra" y "Elige tu santo"? | D |
-| 3 | ¿Cómo se integra el sistema de vídeos de seminarios pasados con el nuevo formato de carteles? | C |
+| 3 | ~~¿Cómo se integra el sistema de vídeos de seminarios pasados con el nuevo formato de carteles?~~ **Resuelto en parte (17 septiembre 2026)** — ver Sección 4.C: los 2 vídeos del panel de "Más información" ya están decididos. Sigue abierta la arquitectura exacta de la nueva entrada con el catálogo completo (pregunta #10) | C |
 | 4 | ¿"Canción del Ejército" se mantiene? | F |
 | 5 | ¿La PWA de biblioteca de libros es Tiritaito for Creators, un módulo suyo, u otra cosa? | G |
 | 6 | ¿Oraciones es una entrada única densa o necesita estructura distinta? | G |
 | 7 | ¿Se usa la feature Eventos de Avada tal cual, o se personaliza? | I |
 | 8 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | 5.0, E |
 | 9 | ¿Cuál es el patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro)? Pendiente de referencia visual correcta compartida por Carlitos | B, 5.1 |
+| 10 | ¿Cuál es la estructura exacta (nombre del CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador puede servir también a Tiritaito Music y a Vía Crucis cuando se construyan esas piezas (ver `02-metodologia/investigaciones/`)? | C |
 
 ---
 
