@@ -321,6 +321,15 @@ Una vez completado, Hna C puede seleccionar "Color 1" en cualquier botón de Ava
 - Tamaños/pesos/interlineado configurables por tipo de elemento, con valores responsive distintos en móvil/escritorio, sin CSS.
 - **Ninguna fuente de Google Fonts debería aparecer** — su presencia en el sitio actual (vía `@import` en el CSS del podcast) es deuda técnica a no replicar.
 
+✅ **Confirmado contra el código real del snippet (16 de septiembre de 2026):** el `@import`
+de Google Fonts que este apartado señalaba como deuda técnica existe literalmente en el CSS
+del reproductor de podcast — carga la fuente "Inter" desde `fonts.googleapis.com` y se
+ejecuta en **todas** las páginas del sitio vía `wp_head`, tengan o no reproductor. La fuente
+ni siquiera se usa en el titular del reproductor, que tiene su propia pila de fuentes de
+sistema — sustituirla por Helvetica Neue y borrar el `@import` es un cambio de una línea que
+no cambia nada visible. Detalle completo en
+`02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` Sección 3.1.
+
 ✅ **Confirmado 12 julio 2026:** el desbordamiento de texto visto inicialmente en los botones de "Qué hacemos" (Seminarios / Grupo de alabanza / Día de familias) vía Live Link **no era un fallo de maquetación real** — era "Yeah Papa" fallando al cargar por la limitación de Live Link con fuentes (ver tabla de Live Link en Sección 2). Accediendo directamente a `tiritaito-real.local`, el diseño se ve correcto, con la fuente cargando bien y sin desbordamiento. No requiere ninguna corrección en Avada — queda cerrado, no es un pendiente de diseño abierto.
 
 ### 4.3 Espaciado global
@@ -934,6 +943,16 @@ if (document.getElementById('mi-modulo-root')) {
 ---
 
 ## 18. Fuentes verificadas
+
+⚠️ **Nota añadida 17 de septiembre de 2026, confirmada de forma independiente en dos
+sesiones el día anterior:** buena parte de las URLs `avada.com/documentation/...` de esta
+lista redirigen hoy a `classic.avada.com`, con un aviso de que ese es el nuevo hogar de la
+documentación de **Avada Classic** (la línea 7.15/7.16 que usa Tiritaito). Según el blog
+oficial de ThemeFusion, Avada Classic sigue recibiendo mantenimiento y correcciones de
+seguridad sin plan de discontinuarse — **no cambia nada operativo hoy** — pero las páginas
+de `classic.avada.com` llevan `meta-robots: noindex, nofollow`, así que con el tiempo pueden
+dejar de ser fáciles de encontrar buscando en Google. No se reescriben las URLs de abajo de
+golpe; se actualizan la próxima vez que se verifique cada una.
 
 - Avada Registration and Licensing FAQ — patrones de staging: avada.com/documentation/avada-registration-and-licensing-faq/ (act. 5 feb 2026)
 - How To Set Up An Avada Staging Site: avada.com/documentation/how-to-set-up-an-avada-staging-site/
