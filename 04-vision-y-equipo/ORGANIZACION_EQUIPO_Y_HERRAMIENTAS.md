@@ -59,6 +59,25 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 ## 2. Mapa de Proyectos de Claude — versión resuelta (actualizada 26 julio 2026)
 
+### 2.0 Corrección de conteo — de 8 a 9 cuentas (22 de septiembre de 2026)
+
+A raíz del estudio de consumo de uso de Claude (ver `04-vision-y-equipo/CONSUMO_USO_CLAUDE_EQUIPO.md`),
+se confirma que Álvaro y Carlota trabajan con **cuentas gratuitas** —
+sin RAG y con una ventana de contexto que no es fija ("varía según la
+demanda"), lo que hace que cargar el repositorio completo en cada
+mensaje agote su uso en muy pocas interacciones.
+
+**Decisión de Carlitos:** Álvaro pasa a tener una tercera cuenta de
+construcción. Proyecto 3 y Proyecto 7 se quedan **ligeros** — cargan
+solo `CHULETA_ALVARO.md` en vez del repositorio completo — y se crea
+**Proyecto 10 — Consulta Técnica Profunda**, con el repositorio
+entero, para lo que la chuleta no cubra. Carlota sigue con Proyecto 4
+y Proyecto 6, también aligerados, con `CHULETA_CARLOTA.md` +
+`ALCANCE_WEB_NUEVA.md` en vez del listado anterior.
+
+El total de cuentas numeradas pasa de 8 a **9** (más el Proyecto 8,
+sin asignar, reservado para WPMobile.app).
+
 **Regla confirmada:** cada proyecto vive en su propia cuenta — no se comparten cuentas entre proyectos.
 
 ⚠️ **Corrección de conteo (26 julio 2026):** este documento decía "7 cuentas, una por rol", asumiendo una sola cuenta de repuesto. Carlitos confirma que **ya hay dos cuentas de repuesto creadas y configuradas para el Proyecto 3** — no una. El total pasa de 7 a **8 cuentas**. No es un error de este documento tan grave como para reescribir toda la lógica (la regla "una cuenta = un proyecto" se mantiene; simplemente el proyecto "Web Nueva" tiene ahora dos copias de repuesto en vez de una), pero el número había quedado escrito como si fuera fijo y ya no lo es — queda corregido aquí.
@@ -67,17 +86,18 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 |---|---|---|---|---|---|
 | 1 | Web Vieja (Mantenimiento) | Hno A | Solo bugs críticos, modo supervivencia | ✅ Configurado | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 1 |
 | 2 | Investigación | Hno C | Documentos, coordinación del sistema, memoria del proyecto | ✅ Activo — es este proyecto | Sección 2 |
-| 3 | **Construcción en Avada** | Hno A | Construye en Live Builder exactamente lo que Carlota diseña en boceto | ✅ Reescrito 1 sept 2026 | Sección 3 |
-| 4 | **Diseño, Avada y Bocetos** | Hna C | Decisiones de producto + TODOS los bocetos visuales de la web nueva | ✅ Ampliado 1 sept 2026 | Sección 4 |
-| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 y V2 | ✅ Configurado | Sección 5 |
-| 6 | **Bocetos — 2ª cuenta de Carlota** | Hna C | Mismas instrucciones que Proyecto 4 | ✅ Reasignado 1 sept 2026 (antes repuesto de Proyecto 3) | Sección 6 |
-| 7 | **Construcción — 2ª cuenta de Álvaro** | Hno A | Mismas instrucciones que Proyecto 3 | ✅ Configurado | Sección 7 |
+| 3 | **Construcción en Avada — ligera** | Hno A | Construye en Live Builder exactamente lo que Carlota diseña en boceto | ⚠️ Aligerada 22 sept 2026 — solo `CHULETA_ALVARO.md` | Sección 3 |
+| 4 | **Diseño, Avada y Bocetos — ligera** | Hna C | Decisiones de producto + TODOS los bocetos visuales de la web nueva | ⚠️ Aligerada 22 sept 2026 — solo `CHULETA_CARLOTA.md` + `ALCANCE_WEB_NUEVA.md` | Sección 4 |
+| 5 | Tiritaito for Creators | Hno A | PWA de editores — V1 y V2 | ✅ Configurado — sin copias `.matt.*` desde 22 sept 2026 | Sección 5 |
+| 6 | **Bocetos — 2ª cuenta de Carlota, ligera** | Hna C | Mismas instrucciones que Proyecto 4 | ⚠️ Aligerada 22 sept 2026 | Sección 6 |
+| 7 | **Construcción — 2ª cuenta de Álvaro, ligera** | Hno A | Mismas instrucciones que Proyecto 3 | ⚠️ Aligerada 22 sept 2026 | Sección 7 |
 | 8 | WPMobile.app | Sin asignar | Desarrollo de la app cuando se active | 🔵 Pendiente | Sección 8 (sin redactar) |
 | 9 | **Apoyo Técnico a Construcción** | Hno C | Investigación rápida de bloqueos técnicos que le escala Álvaro | 🔵 Por crear | Sección 9 |
+| 10 | **Consulta Técnica Profunda** | Hno A | Repositorio completo — para lo que las cuentas ligeras (3 y 7) no cubran | 🆕 Nueva, 22 sept 2026 | Sección 10 |
 
 **~~Datos y Métricas (Hna MF)~~ — cancelado, no se va a crear como proyecto de Claude.** Si Hna MF necesita el checklist de Search Console, ver Sección 8 — queda como referencia sin un proyecto dedicado.
 
-**Cuentas usadas:** 7 de 8 configuradas y en uso. Queda 1 pendiente (WPMobile.app).
+**Cuentas usadas:** 8 de 9 numeradas y en uso (incluida la nueva Proyecto 10). Queda 1 pendiente (Proyecto 8, WPMobile.app).
 
 **Nota sobre Matt:** Matt no tiene una cuenta de Claude ni un Proyecto propio en este mapa — trabaja con Codex, su propia herramienta, directamente sobre el repositorio de GitHub. No aplica el sistema de "una cuenta por proyecto" de esta sección. Ver Sección 11.
 
@@ -195,27 +215,60 @@ Secciones 0.5 y 0.6 del Proyecto 3 — sigue siendo válida y sigue pendiente ad
 
 ---
 
-## 4. Economía de tokens en cuentas gratuitas — verificado
+## 4. Economía de tokens y uso de Claude — verificado (actualizado 22 septiembre 2026)
 
-✅ **Confirmado en support.claude.com (julio 2026):** las cuentas gratuitas pueden crear un máximo de **5 Proyectos**. La expansión automática de memoria (RAG) **solo está disponible en planes de pago** — en cuentas gratuitas, cuando el contenido del Proyecto se acerca al límite de contexto, no se expande solo; hay que quitar documentos o crear un Proyecto nuevo.
+⚠️ **Esta sección quedó desactualizada y se reescribe entera** tras confirmarse
+que Álvaro y Carlota trabajan con **cuentas gratuitas** — el análisis completo,
+con fuentes oficiales, vive en `04-vision-y-equipo/CONSUMO_USO_CLAUDE_EQUIPO.md`.
+Aquí solo el resumen operativo.
 
-*Fuente: support.claude.com/en/articles/9517075-what-are-projects*
+### 4.1 Lo confirmado sobre el plan gratuito
 
-⚠️ **Relevancia directa, añadida 11 agosto 2026:** con `CATALOGO_ELEMENTOS_AVADA.md` sumándose a la base de conocimiento ya cargada del Proyecto 3 (`00_CORE.md`, `04_ENTORNO_LOCAL.md`, `GUIA_AVADA_LOCAL.md`, `METODOLOGIA_CONSTRUCCION.md`, `ALCANCE_WEB_NUEVA.md`, `TIRITAITO_FOR_CREATORS_VERSIONS.md`, la carpeta `apps/v2/` completa), y con la intención declarada de ampliar el catálogo con el tiempo hasta cubrir los casi 100 elementos activos de Avada (no solo los ~24-50 ya revisados), esta limitación deja de ser teórica si la cuenta que lo recibe resulta ser gratuita — ver el aviso de la Sección 2.
+✅ **El plan gratuito no tiene RAG bajo ninguna circunstancia** — la base de
+conocimiento completa de un Proyecto se manda entera en cada mensaje, nunca
+solo lo relevante. RAG solo existe en Pro, Max, Team y Enterprise.
 
-**Reglas de economía de tokens (prácticas oficiales, ya aplicadas por el equipo):**
+✅ **La ventana de contexto del plan gratuito no es un número fijo** — "varía
+según la demanda", puede encogerse en horas de mucho tráfico.
 
-| Práctica | Por qué funciona | Ya lo hace el equipo |
-|---|---|---|
-| Subir documentos base una sola vez al Proyecto | El contenido queda cacheado — reutilizarlo cuesta mucho menos que repetirlo | ✅ Con los documentos de `tiritaito-docs` |
-| Instrucciones del Proyecto cortas y generales | El detalle específico va en el chat, o se remite a un documento | ✅ Aplicado — además, ahora el texto literal vive en un documento dedicado (Sección 3). Principio reforzado en las Secciones 0.5-0.6 del Proyecto 3: el detalle de "qué elemento sirve para qué" vive en `CATALOGO_ELEMENTOS_AVADA.md` (se sincroniza solo por GitHub), las instrucciones solo dicen cómo usarlo |
-| Agrupar varias preguntas en un solo mensaje | Cada mensaje nuevo reprocesa toda la conversación anterior | Mejorable |
-| Empezar una conversación nueva cada cierto número de intercambios | Una conversación larga es más cara por mensaje nuevo que una recién empezada | ✅ Ya se hace |
-| Pedir un resumen y pegarlo como primer mensaje de un chat nuevo | Evita cargar todo el historial viejo | ✅ Es el protocolo de sesión de Tiritaito for Creators |
-| Eliminar archivos obsoletos de la base de conocimiento | Los archivos viejos compiten por el mismo espacio fijo | Aplicar al migrar a `tiritaito-docs` — retirar duplicados |
+✅ **El conector de GitHub no filtra contenido en el plan gratuito** — lo que
+esté conectado se manda íntegro, igual que el resto de la base.
 
----
+✅ **Existe un selector de esfuerzo junto al modelo — Bajo/Medio/Alto/Máximo**
+— Anthropic advierte explícitamente que un esfuerzo más alto "usa más
+tokens, así que agotas el límite de uso más rápido." Máximo está pensado
+para tareas difíciles, no para consultas puntuales ni bocetos exploratorios.
 
+✅ **El plan gratuito no da acceso a Opus ni a Fable** — solo Sonnet y Haiku.
+
+### 4.2 Qué se hizo al respecto (22 sept 2026)
+
+Álvaro y Carlota pasan a trabajar con una **chuleta compacta** en vez del
+repositorio completo, en sus cuentas de uso diario (Proyecto 3, 4, 6, 7) —
+ver `03-guias-practicas/CHULETA_ALVARO.md` y `CHULETA_CARLOTA.md`. Álvaro
+suma una cuenta pesada nueva (Proyecto 10) para lo que la chuleta no cubra.
+Detalle completo del reparto en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`
+Secciones 3, 4, 6, 7 y 10.
+
+### 4.3 Reglas de uso eficiente — para todo el equipo, no solo cuentas gratuitas
+
+| Práctica | Por qué |
+|---|---|
+| Esfuerzo Bajo/Medio salvo tarea difícil | Máximo multiplica el coste sin necesidad en el 90% de los casos |
+| Un chat por tarea/boceto/consulta | Cada turno reenvía todo el historial anterior |
+| Agrupar preguntas en un solo mensaje | Cada mensaje nuevo recarga todo el contexto |
+| Pedir "solo el trozo que cambia" en vez del archivo entero | La salida (tokens de respuesta) es lo más caro por token |
+| Base de conocimiento mínima para la cuenta ligera; repositorio completo solo en la cuenta pesada | Ver Sección 4.2 |
+
+### 4.4 Matt — sistema de colaboración externa, en pausa
+
+Los archivos `.matt.*` se retiran de la base de conocimiento de **todos**
+los Proyectos (no se borran del repositorio, solo se desconectan) — Matt
+todavía no se ha incorporado al equipo, así que nadie necesita cargarlos.
+Se pausa también la instrucción de generar copias `.matt.*` nuevas en
+Proyecto 2 y Proyecto 5. Detalle completo en Sección 11.8.
+
+*Fuentes oficiales completas, con enlaces, en `CONSUMO_USO_CLAUDE_EQUIPO.md`.*
 ## 5. GitHub — el porqué, la estructura y el paso a paso
 
 ### 5.1 El porqué
@@ -264,14 +317,16 @@ tiritaito-docs/
 │   ├── GUIA_AVADA_LOCAL.md
 │   ├── CATALOGO_ELEMENTOS_AVADA.md          ← nuevo, 11 agosto 2026, sin dato sensible
 │   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
+│   ├── CHULETA_ALVARO.md                    ← nuevo, 22 sept 2026 — base de Proyecto 3 y 7
+│   ├── CHULETA_CARLOTA.md                   ← nuevo, 22 sept 2026 — base de Proyecto 4 y 6
 │   └── exports/
 │       ├── avada-global-options.json
 │       ├── claves_conocidas.json
 │       └── saneador-avada-options.html
 ├── 04-vision-y-equipo/
-│   ├── ARQUITECTURA_Y_ROADMAP.md
 │   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
-│   └── INSTRUCCIONES_PROYECTOS_CLAUDE.md       ← nuevo, 2 agosto 2026
+│   ├── INSTRUCCIONES_PROYECTOS_CLAUDE.md       ← nuevo, 2 agosto 2026
+│   └── CONSUMO_USO_CLAUDE_EQUIPO.md            ← nuevo, 22 sept 2026
 ├── apps/
 │   ├── v1/
 │   │   ├── tiritaito-creators-v1-XX.html
@@ -418,6 +473,11 @@ Solo funciona si el móvil está en la misma red que el ordenador, salvo que se 
 | **Sistema de colaboración externa (Matt/Codex)** | ✅ Diseñado y con 5 archivos `.matt.*` generados (2 agosto 2026) — pendiente de subir a GitHub y dar acceso a Matt. Ver Sección 11 |
 | Reorganización del equipo (1 sept 2026) | Carlota pasa a hacer todos los bocetos (Proyectos 4 y 6); Álvaro se dedica solo a construcción (Proyectos 3 y 7); Carlitos suma investigación técnica rápida (Proyecto 9, por crear) y el Cuaderno del Constructor como memoria compartida entre sus cuentas. Detalle completo en Sección 3.3 |
 | **Prohibición del campo Clase CSS (6 sept 2026)** | ✅ Decidida por el equipo tras tres días de construcción intensa — Carlota y Álvaro se ciñen a elementos nativos de Avada; Carlitos asume el diseño de código propio para lo que Avada no resuelve nativo, con apoyo de Proyecto 2 y 9. Documentado en `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis, `GUIA_AVADA_LOCAL.md` (varias secciones) y `INSTRUCCIONES_PROYECTOS_CLAUDE.md` (Proyectos 2, 3, 4, 6, 7, 9). Pendiente: repegar en claude.ai |
+| **Consumo de uso de Claude (22 sept 2026)** | ✅ Diagnosticado — Álvaro y Carlota confirmados en cuentas gratuitas, sin RAG, ventana de contexto variable. Ver `CONSUMO_USO_CLAUDE_EQUIPO.md` |
+| Proyecto 3 y 7 (Construcción) | ⚠️ Aligeradas 22 sept 2026 — cargan `CHULETA_ALVARO.md` en vez del repositorio completo |
+| Proyecto 4 y 6 (Bocetos) | ⚠️ Aligeradas 22 sept 2026 — cargan `CHULETA_CARLOTA.md` + `ALCANCE_WEB_NUEVA.md` |
+| Proyecto 10 (Consulta Técnica Profunda) | 🆕 Nueva, 22 sept 2026 — pendiente de crear la cuenta y pegar sus instrucciones |
+| Sistema de colaboración externa (Matt/Codex) | ⏸️ En pausa, 22 sept 2026 — archivos `.matt.*` retirados de todas las bases de conocimiento (siguen en el repositorio); generación de copias nuevas pausada en Proyecto 2 y 5 |
 
 ---
 
@@ -472,6 +532,18 @@ Matt se suma al equipo como colaborador externo, usando Codex (de OpenAI) para t
 
 La solución adoptada: **archivos-copia con datos ficticios (placeholder)**, que conviven en la misma carpeta que el archivo oficial, con el sufijo `.matt.` en el nombre. Matt lee y escribe únicamente sobre esas copias. El resto del repositorio (documentos sin dato sensible, incluido `CATALOGO_ELEMENTOS_AVADA.md`) lo edita directamente sobre el archivo real.
 
+⏸️ **En pausa desde el 22 de septiembre de 2026:** Matt todavía no se ha
+incorporado al equipo. El diseño de este sistema sigue vigente y no se
+retira, pero mientras tanto: (1) los archivos `.matt.*` ya existentes se
+quedan en el repositorio, sin cambios; (2) se retiran de la base de
+conocimiento conectada de todos los Proyectos — nadie los necesita hoy y
+solo consumen contexto; (3) se pausa la instrucción de generar copias
+nuevas en Proyecto 2 y Proyecto 5. Si Matt se incorpora, se retoma este
+apartado desde el principio, y entonces vale la pena reconsiderar generar
+las copias `.matt.*` con un script en vez de con Claude — ver
+`CONSUMO_USO_CLAUDE_EQUIPO.md` Sección 8.2, que explica por qué sería más
+fiel y no cuesta tokens.
+
 ### 11.2 Decisiones tomadas y por qué (registro de la conversación del 2 de agosto de 2026)
 
 | Decisión | Alternativa descartada | Por qué |
@@ -525,6 +597,9 @@ Si Proyecto 2 (Investigación), Proyecto 3 (Web Nueva, para el PHP), o Proyecto 
 Esta regla vive en `INSTRUCCIONES_PROYECTOS_CLAUDE.md`, dentro del bloque de cada Proyecto afectado — no como una automatización externa, se aplica cada vez que alguien pide un cambio dentro de una sesión de trabajo real con esos Proyectos.
 
 ⚠️ **Límite honesto de este mecanismo:** si un cambio se aplica al archivo oficial *fuera* de una sesión con esos Proyectos (por ejemplo, editado directamente en GitHub a mano), la copia `.matt.*` no se actualiza sola — alguien tiene que pedir explícitamente, en la siguiente sesión, que se regenere la copia a partir del archivo oficial actualizado.
+
+⏸️ **Este mecanismo completo está en pausa desde el 22 de septiembre de
+2026** — ver Sección 11.1 y Sección 4.4.
 
 #### 11.5.2 Cuando Matt edita una copia `.matt.*`
 
@@ -601,6 +676,12 @@ El resultado: dos versiones distintas de las instrucciones del Proyecto 2 coexis
 5. Carlitos: confirmar que el bloque ya pegado en el Proyecto 2 coincide exactamente con `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 2 — verificado al redactar este documento, pero conviene una comprobación visual final
 6. Confirmar con Matt su nivel de plan de OpenAI (Free/Business) y, si es Free, pedirle que desactive el entrenamiento de modelos en su configuración de ChatGPT antes de conectar el repositorio
 7. Dar a Matt acceso de colaborador al repositorio `tiritaito-docs` en GitHub, con permisos de escritura
+8. Carlitos: crear la cuenta del Proyecto 10 y pegar sus instrucciones (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 10)
+9. Carlitos/Álvaro: reconfigurar el conector de GitHub de Proyecto 3 y 7 para que solo lean `CHULETA_ALVARO.md` — quitar el resto de archivos conectados
+10. Carlitos/Álvaro: configurar el conector de GitHub de Proyecto 10 con el repositorio completo (lo que hoy tiene Proyecto 3)
+11. Carlitos/Carlota: reconfigurar el conector de GitHub de Proyecto 4 y 6 para que solo lean `CHULETA_CARLOTA.md` + `ALCANCE_WEB_NUEVA.md`
+12. Carlitos: quitar los 5 archivos `.matt.*` de la selección de GitHub conectada a Proyecto 2 y Proyecto 5
+13. Todos: confirmar en Settings > Usage de cada cuenta si el consumo mejora tras el cambio — si no, valorar Pro para Álvaro y Carlota (ver `CONSUMO_USO_CLAUDE_EQUIPO.md` Sección 8.3)
 
 ### 11.9 Preguntas abiertas (específicas de colaboración externa)
 
