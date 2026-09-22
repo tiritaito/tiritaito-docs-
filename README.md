@@ -36,14 +36,17 @@ tiritaito-docs/
 │   ├── GUIA_AVADA_LOCAL.md
 │   ├── CATALOGO_ELEMENTOS_AVADA.md          ← ampliado 17 septiembre 2026
 │   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
-│   └── exports/                             ← nuevo, 14 agosto 2026                         
+│   ├── CHULETA_ALVARO.md                    ← nuevo, 22 sept 2026 — base de Proyecto 3 y 7
+│   ├── CHULETA_CARLOTA.md                   ← nuevo, 22 sept 2026 — base de Proyecto 4 y 6
+│   └── exports/                     
 │       ├── avada-global-options.json        (export saneado, sin credenciales)
 │       ├── claves_conocidas.json            (línea base de claves para detectar drift)
 │       └── saneador-avada-options.html      (herramienta de saneado, corre en el navegador)
 ├── 04-vision-y-equipo/
 │   ├── ARQUITECTURA_Y_ROADMAP.md
-│   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md
-│   └── INSTRUCCIONES_PROYECTOS_CLAUDE.md
+│   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
+│   ├── INSTRUCCIONES_PROYECTOS_CLAUDE.md       ← nuevo, 2 agosto 2026
+│   └── CONSUMO_USO_CLAUDE_EQUIPO.md            ← nuevo, 22 sept 2026
 ├── apps/
 │   ├── v1/
 │   │   ├── tiritaito-creators-v1-07.html
@@ -78,9 +81,12 @@ tiritaito-docs/
 | `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, ACF, principio de Responsive y de mínimo código | Hno A | Hno C (investigación) | Media — actualizada 6/09/2026 con la prohibición del campo Clase CSS |
 | `CATALOGO_ELEMENTOS_AVADA.md` | `03-guias-practicas/` | Qué elemento de Avada resuelve una necesidad de contenido concreta, con su nivel de certeza (confirmado en Local / documentado sin probar) — organizado por necesidad, no por nombre de elemento. Desde el 6/09/2026 incluye también (Sección 5 bis) qué efecto visual ya es nativo sin código | Hno A (lo consulta Proyecto 3 antes de recomendar), Hna C (lo consulta antes de dar un boceto por imposible) | Hno A construye, Hno C (investigación) reconcilia contra el resto de `tiritaito-docs` | Media — crece según se van revisando más elementos y se construyen más secciones reales |
 | `CUADERNO_DEL_CONSTRUCTOR.md` | `03-guias-practicas/` | Borrador de campo de lo que Álvaro descubre al construir (funciona / da problemas / se investigó y esto lo resuelve), antes de pasar en limpio a los documentos oficiales | Hno A (lo alimentan sus 2 cuentas de construcción y el Proyecto 9) | Hno C (investigación) reconcilia las entradas maduras hacia su documento de destino | Alta al principio, según ritmo real de construcción |
+| `CHULETA_ALVARO.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de construcción (Proyecto 3 y 7) — sustituye al repositorio completo en el día a día | Hno A | Hno C (investigación), a partir de lo que madure en `CUADERNO_DEL_CONSTRUCTOR.md` o en Proyecto 10 | Baja — solo cuando algo operativo cambia de verdad |
+| `CHULETA_CARLOTA.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de bocetos (Proyecto 4 y 6) | Hna C | Hno C (investigación) | Baja |
 | `ARQUITECTURA_Y_ROADMAP.md` | `04-vision-y-equipo/` | FODA, política sobre la web vieja (incluida su fecha de caducidad), fases del proyecto, glosario | Carlitos | Hno C (investigación) | Baja |
 | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | `04-vision-y-equipo/` | Roles, mapa de Proyectos de Claude, ámbito de cada uno, GitHub, WPMobile.app, Search Console | Carlitos | Hno C (investigación) | Media — cambia cuando cambia la organización del equipo |
 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | `04-vision-y-equipo/` | Texto exacto a copiar en las Instrucciones personalizadas de cada Proyecto de Claude en claude.ai | Todos los dueños de cuenta | Hno C (investigación), con quien edite directamente en claude.ai | Media — cada vez que cambia el criterio de trabajo de algún Proyecto |
+| `CONSUMO_USO_CLAUDE_EQUIPO.md` | `04-vision-y-equipo/` | Por qué se agota el uso de Claude en cuentas gratuitas, y cómo se mitiga | Carlitos | Hno C (investigación) | Baja — solo si cambian los planes o el uso real |
 
 **`historico/`** — documentos superados, conservados como referencia de cómo evolucionaron las decisiones. No se editan ni se usan como fuente de verdad; si algo de ahí sigue siendo válido, ya está incorporado en la versión activa correspondiente.
 
@@ -152,6 +158,7 @@ a esa decisión.
 | **Podcast:** el alcance documentado (2 programas) no coincide con el código real (el propio snippet dice "los 12 canales", y al menos una ficha de Hombres de Dios usa el mismo reproductor) — pendiente confirmar la lista exacta de los 12 canales y localizar el bloque `<script>` del reproductor, que falta en el código compartido | `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` | Corrección de `ALCANCE_WEB_NUEVA.md` 4.E/4.H y `METODOLOGIA_CONSTRUCCION.md`; boceto de Carlota para el podcast |
 | **Tiritaito Music:** confirmado que `[tt_podcast]` no cubre el caso (cola, mini-reproductor, enlace profundo); sigue sin decidir dónde viven los datos — aplazado a propósito hasta que se construya esa entrada | `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` | Boceto de Carlota y construcción de la entrada Tiritaito Music |
 | Completar en `CATALOGO_ELEMENTOS_AVADA.md` el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar ni por nombre | `CATALOGO_ELEMENTOS_AVADA.md` Sección 12 | Que el catálogo cubra el listado completo de elementos activos, no solo los ~24-50 ya revisados a fondo |
+| Crear la cuenta del Proyecto 10 y repegar sus instrucciones; reconfigurar los conectores de GitHub de Proyecto 3, 4, 6 y 7 a sus chuletas respectivas; quitar los archivos `.matt.*` de Proyecto 2 y 5 | `CONSUMO_USO_CLAUDE_EQUIPO.md` · `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Secciones 3, 4, 6, 7, 10 | Que el consumo de uso mejore de verdad, no solo en el papel |
 
 ---
 
