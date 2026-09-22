@@ -324,6 +324,7 @@ tiritaito-docs/
 │       ├── claves_conocidas.json
 │       └── saneador-avada-options.html
 ├── 04-vision-y-equipo/
+│   ├── ARQUITECTURA_Y_ROADMAP.md
 │   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
 │   ├── INSTRUCCIONES_PROYECTOS_CLAUDE.md       ← nuevo, 2 agosto 2026
 │   └── CONSUMO_USO_CLAUDE_EQUIPO.md            ← nuevo, 22 sept 2026
