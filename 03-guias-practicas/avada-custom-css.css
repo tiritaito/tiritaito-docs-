@@ -1,0 +1,307 @@
+/* ════════════════════════════════════════════════════════════════
+   TIRITAITO.COM — Custom CSS de Avada (archivo maestro)
+   Este archivo MANDA. Lo de Avada → Options → Custom CSS es la copia
+   desplegada: debe ser idéntica, empezando por esta misma línea de sello.
+
+   TT-CSS · v001 · 2026-09-24 · Avada 7.16.1
+   ════════════════════════════════════════════════════════════════
+
+   CÓMO SE USA ESTE ARCHIVO (léelo antes de tocar nada)
+   ─────────────────────────────────────────────────────────────────
+   - Cada mejora es un bloque con su propia ficha (el comentario grande
+     encima). La ficha ES el registro: no hay índice aparte.
+   - La línea "Cómo se usa" de cada ficha dice si el bloque es GLOBAL
+     (se aplica solo, sin nada que escribir en Avada) o si hace falta
+     poner una CLASE en el campo "CSS Class" del elemento — y cuál.
+   - Nunca se usa un ID como gancho. Solo clases, y solo las que
+     aparecen en una ficha de este archivo.
+   - Nadie edita este CSS a mano directamente en Avada. Todo cambio
+     pasa por la cuenta de Código (Proyecto 11) y por este archivo.
+   - Al terminar un cambio: se sube este archivo a GitHub (reemplazando
+     el anterior) Y se pega el mismo contenido en Avada → Options →
+     Custom CSS, para que las dos copias vuelvan a ser idénticas.
+   - Aviso de tamaño: si este archivo supera ~600 líneas o 15 mejoras,
+     la cuenta de Código avisa a Carlitos para valorar dividirlo.
+
+   TOKEN DE RADIO — norma general de la web nueva (decisión 24/09/2026)
+   ───────────────────────────────────────────────────────────────── */
+:root {
+  --tt-r-web: 15px; /* radio general de la web nueva; cambiable aquí para toda la web, o puntualmente dentro de un bloque concreto */
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   TT-MEJORA · Toggles con esquinas redondeadas
+   Cómo se usa:  GLOBAL — no lleva clase. Se aplica sola a todos los
+                 Toggles que tengan activado "Boxed Mode" en su panel.
+   Qué hace:     redondea cada toggle y las imágenes/vídeos/iframes que
+                 haya dentro de su contenido.
+   Ajustable:    --tt-r-web (arriba). Hoy usa el valor fijo 10px porque
+                 así se creó (29 julio 2026, antes de fijar la norma de
+                 15px) — pendiente decidir si se sube a --tt-r-web o se
+                 deja así a propósito (uno de los "tres casos").
+   Depende de:   Toggles con Boxed Mode activado · clases internas de
+                 Avada .fusion-panel.fusion-toggle-boxed-mode y
+                 .fusion-toggle-content (no son API pública, pueden
+                 cambiar con una actualización de Avada).
+   Usado en:     Todos los Toggles del sitio con Boxed Mode.
+   Probado con:  Avada 7.16.1 · sin fecha de prueba explícita registrada
+                 · pendiente confirmar en las 3 pantallas.
+   Origen:       CSS pegado por Carlitos el 23/09/2026, con fecha
+                 interna "Actualizado: 29 julio 2026 — radio unificado
+                 a 10px". Trasladado tal cual a este archivo, sin
+                 arreglos, el 24/09/2026.
+   ══════════════════════════════════════════════════════════════ */
+.fusion-panel.fusion-toggle-boxed-mode {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fusion-panel.fusion-toggle-boxed-mode .fusion-toggle-content img,
+.fusion-panel.fusion-toggle-boxed-mode .fusion-toggle-content video,
+.fusion-panel.fusion-toggle-boxed-mode .fusion-toggle-content iframe {
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   TT-MEJORA · «Conecta cada día» — Tabs con imagen de fondo por pestaña
+   Cómo se usa:  VARIANTE — pon la clase  tt-conecta-tabs  en el campo
+                 "CSS Class" del elemento Tabs (el padre, no cada hijo:
+                 las pestañas hijas de Avada no tienen campo de clase).
+   Qué hace:     da a cada pestaña (Hora de la brisa / Mensaje de la
+                 Virgen / salmo / Lenguas / La Santa Misa / Tip / Cita
+                 bíblica) su propia imagen de fondo con velo oscuro para
+                 legibilidad, y tipografía/color por defecto del texto.
+                 Avada no ofrece imagen de fondo por pestaña de forma
+                 nativa (confirmado contra la documentación de Avada
+                 7.16, que sí añadió color de fondo y radio del CONTENT
+                 pero no imagen de fondo por pestaña individual).
+   Ajustable:    color de texto (hoy #3a3a3c, "Color 7"), opacidad del
+                 velo (hoy 0.35), URL de imagen de cada pestaña.
+   Depende de:   estructura interna de Tabs .tab-pane / .tab-content /
+                 .awb-tab-pane-inner, seleccionadas por POSICIÓN
+                 (nth-of-type) porque las pestañas hijas no tienen ID ni
+                 clase propios — Avada les da un ID aleatorio que cambia
+                 en cada guardado. Avada 7.16 reconstruyó el elemento
+                 Tabs: revisar este bloque con prioridad tras cualquier
+                 actualización de Avada.
+   Pendiente:    4 de las 7 imágenes son placeholders sin URL real
+                 (URL_LENGUAS, URL_MISA, URL_TIP, URL_CITA); las 3 URLs
+                 reales usan el dominio del Local
+                 (tiritaito-real.local), que hay que revisar al migrar
+                 a producción; la pestaña "Tip" puede sobrar si se
+                 confirma su eliminación (26/07/2026). Este bloque es
+                 uno de los "tres casos concretos" pendientes de la
+                 cuenta de Código — no tocar sin pasar antes por ella.
+   Usado en:     Home — apartado "Conecta cada día".
+   Probado con:  Avada 7.16.1 · sin fecha de prueba explícita
+                 registrada · sin confirmar en modo móvil (Tabs pasa a
+                 acordeón por debajo de 1024px).
+   Origen:       CSS pegado por Carlitos el 23/09/2026. Trasladado tal
+                 cual a este archivo, sin arreglos, el 24/09/2026.
+   ══════════════════════════════════════════════════════════════ */
+
+/* --- Estructura base de cada panel: relativo + ancho completo de pantalla --- */
+#tt-conecta-tabs .tab-pane {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* --- Oscurecido para legibilidad sobre la foto de fondo --- */
+#tt-conecta-tabs .tab-pane::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 0;
+}
+#tt-conecta-tabs .tab-pane .awb-tab-pane-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Fondo distinto por pestaña, por POSICIÓN (no por ID generado al azar) --- */
+#tt-conecta-tabs .tab-content > .tab-pane:nth-of-type(1) { background-image: url('https://tiritaito-real.local/wp-content/uploads/2026/09/Libros-1.webp'); }
+#tt-conecta-tabs .tab-content > .tab-pane:nth-of-type(2) { background-image: url('https://tiritaito-real.local/wp-content/uploads/2026/09/Movies.webp'); }
+#tt-conecta-tabs .tab-content > .tab-pane:nth-of-type(3) { background-image: url('https://tiritaito-real.local/wp-content/uploads/2026/09/photo_2026-09-21-13.13.19.webp'); }
+#tt-conecta-tabs .tab-content > .tab-pane:nth-of-type(4) { background-image: url('URL_LENGUAS'); }
+#tt-conecta-tabs .tab-content > .tab-pane:nth-of-type(5) { background-image: url('URL_MISA'); }
+#tt-conecta-tabs .tab-content > .tab-pane:nth-of-type(6) { background-image: url('URL_TIP'); }
+#tt-conecta-tabs .tab-content > .tab-pane:nth-of-type(7) { background-image: url('URL_CITA'); }
+
+/* --- Tipografía y color por defecto de TODO el contenido (se hereda hasta
+   los <span> de Contenido Dinámico, no hace falta apuntar a "p") --- */
+#tt-conecta-tabs .awb-tab-pane-inner {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  color: #3a3a3c; /* Color 7 · Texto secundario — oscuro, no el más oscuro (#1d1d1f) */
+}
+
+/* --- Solo lo que marques a mano en modo Texto con <span class="tt-yeahpapa">.
+   !important porque Avada mete font-family en línea sobre los spans de
+   Contenido Dinámico, y una clase normal no le gana. Se apunta también a los
+   spans internos (.awb-dd, .awb-dd-params) por si el texto real vive ahí
+   dentro y no directamente en .tt-yeahpapa --- */
+#tt-conecta-tabs .tt-yeahpapa,
+#tt-conecta-tabs .tt-yeahpapa .awb-dd,
+#tt-conecta-tabs .tt-yeahpapa .awb-dd-params {
+  font-family: 'Poppins', sans-serif, 'Yeah-Papa', sans-serif !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   TT-MEJORA · Toggle de introducción — vídeo + texto 50/50
+   Cómo se usa:  VARIANTE — pon la clase  tt-toggle-intro  en el campo
+                 "CSS Class" del elemento Toggles (el padre).
+   Qué hace:     dentro de un único toggle, coloca un vídeo de YouTube y
+                 un bloque de texto en dos columnas iguales en
+                 escritorio (una debajo de otra en móvil), con un botón
+                 de reproducción a medida (círculo blanco, triángulo
+                 rojo de marca, que se invierte en hover).
+   ⚠️ Esqueleto HTML obligatorio: este bloque NO funciona solo con la
+      clase. Dentro del contenido del toggle (en el editor de texto,
+      no en un campo de Avada) tiene que existir esta estructura:
+        <div class="tt-intro-toggle">
+          <div class="tt-intro-toggle__video">...vídeo de YouTube...</div>
+          <div class="tt-intro-toggle__texto">...texto...</div>
+        </div>
+      Si alguien reescribe el contenido del toggle sin conservar estas
+      3 clases, el diseño se pierde sin avisar.
+   Ajustable:    radio del vídeo (hoy fijo en 15px, ya alineado con
+                 --tt-r-web), tamaño del botón de play (64px).
+   Depende de:   Avada → Options → Performance → "Enable Video Facade"
+                 debe estar en On (confirmado así en el export del 14
+                 agosto 2026: video_facade=on). Si se apaga, no existe
+                 la etiqueta <lite-youtube> y el botón de play deja de
+                 aplicar. También depende de las clases internas
+                 .fusion-video / .fusion-youtube / .video-shortcode y
+                 del componente de terceros lite-youtube.
+   Pendiente:    revisar si de los 24 !important de este bloque todos
+                 son necesarios (con selectores de clase, la mayoría
+                 probablemente sobra) — prueba de "quitar y mirar" caso
+                 por caso; el SVG del botón está codificado a mano en
+                 vez de leer la paleta con variable CSS; var(--tt-txt2)
+                 no lleva valor de respaldo. Este bloque es uno de los
+                 "tres casos concretos" pendientes de la cuenta de
+                 Código — no tocar sin pasar antes por ella.
+   Usado en:     Toggle de introducción (dónde exactamente, sin
+                 confirmar en este documento).
+   Probado con:  Avada 7.16.1 · sin fecha de prueba explícita
+                 registrada.
+   Origen:       CSS pegado por Carlitos el 23/09/2026. Trasladado tal
+                 cual a este archivo, sin arreglos, el 24/09/2026.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Layout: dos columnas iguales en escritorio */
+#tt-toggle-intro .tt-intro-toggle {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+#tt-toggle-intro .tt-intro-toggle__video {
+  flex: 1 1 50%;
+  min-width: 0;
+  order: 1;
+}
+#tt-toggle-intro .tt-intro-toggle__texto {
+  flex: 1 1 50%;
+  min-width: 0;
+  order: 2;
+}
+/* Texto: Poppins 400, 15px, centrado */
+#tt-toggle-intro .tt-intro-toggle__texto,
+#tt-toggle-intro .tt-intro-toggle__texto p {
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 400 !important;
+  font-size: 15px !important;
+  text-align: center !important;
+  color: var(--tt-txt2);
+  margin: 0;
+}
+
+/* Vídeo: ancho completo, proporción 16/9 y radio --tt-r-web (15px) */
+#tt-toggle-intro .fusion-video,
+#tt-toggle-intro .fusion-youtube,
+#tt-toggle-intro .video-shortcode {
+  width: 100% !important;
+  max-width: 100% !important;
+  border-radius: var(--tt-r-web) !important;
+  overflow: hidden !important;
+}
+#tt-toggle-intro lite-youtube {
+  display: block;
+  width: 100%;
+  max-width: 100% !important;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--tt-r-web) !important;
+  overflow: hidden;
+}
+
+/* Botón play estilo iOS: círculo blanco con triángulo rojo */
+#tt-toggle-intro .lty-playbtn {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23BF4646' d='M9 6.5v11l9-5.5z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: 55% 50% !important;
+  background-size: 34px 34px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  filter: none !important;
+  transition: background-color .2s ease, box-shadow .2s ease;
+}
+/* Anulo los pseudo-elementos propios del facade para evitar el cuadrado negro */
+#tt-toggle-intro .lty-playbtn::before,
+#tt-toggle-intro .lty-playbtn::after {
+  display: none !important;
+  content: none !important;
+}
+/* Hover: fondo rojo Tiritaito y triángulo blanco, sin escalado */
+#tt-toggle-intro lite-youtube:hover .lty-playbtn {
+  background-color: #BF4646 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' d='M9 6.5v11l9-5.5z'/%3E%3C/svg%3E") !important;
+  box-shadow: 0 6px 20px rgba(191, 70, 70, 0.35);
+}
+
+/* Móvil: una columna, vídeo arriba, texto debajo */
+@media (max-width: 1024px) {
+  #tt-toggle-intro .tt-intro-toggle {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  #tt-toggle-intro .tt-intro-toggle__video,
+  #tt-toggle-intro .tt-intro-toggle__texto {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   FIN DEL ARCHIVO — 3 mejoras registradas · v001 · 2026-09-24
+
+   NOTA IMPORTANTE SOBRE ESTA PRIMERA VERSIÓN (v001):
+   Los selectores #tt-conecta-tabs y #tt-toggle-intro de arriba son
+   IDs, heredados del CSS anterior al 24/09/2026. La regla nueva del
+   equipo (24/09/2026) es que el gancho SIEMPRE es una CLASE, nunca un
+   ID — ver INSTRUCCIONES del Proyecto 11. Se han dejado tal cual en
+   esta v001 porque el encargo era trasladar el CSS "sin arreglos", y
+   cambiar el selector aquí sin cambiar a la vez el campo real en Avada
+   rompería las 2 mejoras. La primera vez que la cuenta de Código
+   trabaje sobre "Conecta cada día" o el "Toggle de introducción" (los
+   dos casos concretos pendientes), debe proponer el cambio de ID a
+   clase (tt-conecta-tabs, tt-toggle-intro) como parte de esa misma
+   tarea, coordinando el cambio en Avada y en este archivo a la vez.
+   ══════════════════════════════════════════════════════════════ */
