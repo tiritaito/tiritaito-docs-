@@ -496,9 +496,9 @@ Hombres de Dios**
   reales por Cuenta 1: Boxed Mode On · fondo Superficie secundaria · Padding 24px ·
   Título Yeah Papa 30px (ajustado desde 16px por el efecto de calibración de tamaño, ver
   Sección 8.2) color Rojo · Contenido Helvetica Neue 16px · Icono 20px con caja propia.
-- ⚠️ **Border-radius resuelto a 10px vía Custom CSS** (el elemento no lo expone nativamente
-  en su panel), verificado funcionando visualmente — pero abre la pregunta de si 10px es un
-  cuarto token de diseño real; ver Sección 13.1.
+- ⚠️ **Border-radius resuelto a 10px vía CSS** (el elemento no lo expone nativamente en su
+  panel), verificado funcionando visualmente — pendiente de subir a 15px, la norma general
+  decidida el 24/09/2026 para Avada; ver Sección 5 ter y Sección 13.1 (ya resuelta).
 - ⚠️ Dos notas menores sin resolver, no bloqueantes: "Toggle Icon Color" dice Fondo Blanco
   pero el icono se ve en rojo en la práctica (probablemente otro campo gobierna el color
   real, sin identificar cuál); "Toggle Active Accent Color" quedó vacío, sin decidir si debía
@@ -637,7 +637,8 @@ Post Cards Element; documentada de forma genérica también para Container/Colum
   sitio (`TT Podcast`, prefijo `.pp-*`), que sigue siendo un snippet custom aparte,
   documentado como deuda técnica intencional sin migrar (`00_CORE.md` Sección 10). Este
   elemento solo afecta a audios nativos insertados directamente vía Builder.
-- ⚠️ Border Radius en 0px, pendiente de la decisión general de radio (Sección 13.1).
+- ⚠️ Border Radius en 0px — la norma general para Avada ya está decidida (15px, Sección
+  13.1), pendiente solo de aplicarla aquí si se quiere que este elemento la siga.
 
 ### Necesito mostrar testimonios (ej. testimonios de intercesión del Ejército de Intercesores)
 
@@ -645,7 +646,8 @@ Post Cards Element; documentada de forma genérica también para Container/Colum
 
 - ✅ Configurado por Cuenta 1: Background Superficie secundaria · Text Color Texto Principal
   · Speed 4000ms · Random Order Off.
-- ⚠️ Border Radius en 0px, misma nota pendiente que Toggles/Audio (Sección 13.1).
+- ⚠️ Border Radius en 0px, mismo estado que Toggles/Audio: norma ya decidida (15px, Sección
+  13.1), pendiente de aplicarla aquí.
 - 🔲 **Conexión directa con contenido real, sin resolver:**
   `METODOLOGIA_CONSTRUCCION.md` deja abierta la pregunta de si "Testimonios" del Ejército de
   Intercesores se construye con Post Cards (si son muchos) o contenido estático (si son
@@ -740,7 +742,10 @@ Post Cards Element; documentada de forma genérica también para Container/Colum
 
 *Añadido 6 de septiembre de 2026, tras la decisión de equipo de prohibir el campo Clase CSS
 en bocetos y construcción — ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1 y Sección
-6. Verificado contra documentación oficial de avada.com, no reconstruido de memoria.*
+6. Verificado contra documentación oficial de avada.com, no reconstruido de memoria. **Bloque
+"Qué queda prohibido y qué no" reescrito el 24 de septiembre de 2026** tras crearse un
+sistema de código dedicado en Avada (Proyecto 11) — ver Sección 5 ter para el detalle
+completo del sistema; aquí queda solo la regla, no duplicada.*
 
 Todas las entradas anteriores de este catálogo resuelven "necesito esta pieza de contenido →
 qué elemento la construye". Esta sección resuelve un eje distinto: **"quiero este efecto
@@ -749,20 +754,31 @@ tocar código, dentro del propio elemento?"** — el tipo de pregunta que antes 
 metiendo algo en el campo Clase CSS, y que desde el 6 de septiembre de 2026 ya no se puede
 resolver así.
 
-### Qué queda prohibido y qué no (decisión de equipo, 6 de septiembre de 2026 — por ahora, revisable)
+### Qué queda prohibido y qué no (decisión de equipo, 6 de septiembre de 2026 — actualizada el 24 de septiembre de 2026)
 
-- ❌ **Prohibido:** el campo "Clase CSS" (pestaña Diseño) de cualquier elemento, columna o
-  container, tanto en los bocetos de Carlota como en la construcción de Álvaro.
-- ⚠️ **Permitido, bajo vigilancia:** el panel global Custom CSS de Avada (`Avada → Options →
-  Advanced → Custom CSS`) — es donde vive hoy el radio de 10px de los Toggles (ver más
-  abajo). Si empieza a dar problemas, se prohíbe también, sin retirar lo que ya funciona.
+- ❌ **Prohibido para Carlota y para Álvaro:** inventar o escribir por su cuenta nada en el
+  campo "Clase CSS" (pestaña Diseño) de cualquier elemento, columna o container. Esto no ha
+  cambiado desde el 6 de septiembre de 2026.
+- ✅ **Única excepción, desde el 24 de septiembre de 2026:** una clase con prefijo `tt-`,
+  registrada con su propia ficha en `03-guias-practicas/avada-custom-css.css`, escrita por
+  la cuenta de Código en Avada (Proyecto 11). Álvaro puede escribir esa clase exacta, tal
+  cual se la den, en el campo Clase CSS del elemento que corresponda — nunca una clase que
+  invente él. Ver Sección 5 ter para el sistema completo.
+- ❌ **El ID nunca es gancho de estilo.** Ni Carlota ni Álvaro ni la propia cuenta de Código
+  usan un ID para dirigir CSS — el único gancho válido es la clase de la línea anterior.
+- ✅ **El Custom CSS global de Avada deja de ser el sitio donde vive el CSS "suelto".**
+  Desde el 24 de septiembre de 2026 hay un único archivo maestro
+  (`avada-custom-css.css`, en GitHub) que manda; lo de Avada → Options → Custom CSS es su
+  copia desplegada, siempre idéntica. Ningún cambio se hace ya directamente en Avada sin
+  pasar por ese archivo — ver Sección 5 ter.
 - 🔲 **Sin decidir:** el campo de clase CSS a nivel de página entera (Page Options,
   `GUIA_AVADA_LOCAL.md` Sección 10) — distinto del de elemento/columna/container, no
   mencionado explícitamente en la decisión del equipo. No usarlo sin confirmar antes.
 - No cambia nada de lo ya establecido para lo que Avada genuinamente no resuelve de ninguna
   manera (el consumo de JSON de Seminarios/Música/Vía Crucis, el sistema REST de Devocional/
   Novedades) — eso sigue siendo Code Snippets completos dentro de un Code Block, diseñados
-  por Carlitos (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1).
+  por Carlitos (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1), y nunca pasa por la
+  cuenta de Código en Avada (Proyecto 11), que no toca PHP ni servidor.
 
 ### La conclusión de fondo
 
@@ -818,25 +834,76 @@ comprobado primero:
 | Recortar una imagen en una forma libre ("blob", no rectangular ni circular) | ❌ No encontrado en el núcleo de Avada — existe como función de un plugin de pago de terceros, no de ThemeFusion | Antes de asumir que hace falta, probar si un Border Radius alto (óvalos o círculos) ya cubre la necesidad real |
 | Cursor personalizado sobre una zona concreta | 🔲 No encontrado en la documentación revisada, ni a favor ni en contra | No asumir que existe ni que no existe — si aparece la necesidad real, se investiga puntualmente antes de descartar lo nativo |
 | Interacciones muy específicas (arrastrar y soltar, lógica condicional a medida) | 🔲 Depende del caso — Toggles, Tabs, Popover y Modal ya cubren mucha interacción sin código | Agotar primero esos elementos (Secciones 5 y 9 de este catálogo) antes de asumir que hace falta módulo propio |
-| Que uno de los puntos (dots) de un carrusel/slider se alargue para marcar cuál está activo | ❌ **No encontrado en Post Cards** — confirmado el 17 de septiembre de 2026 contra la lista completa de opciones de navegación del elemento: `Dots Position`, `Dots Spacing`, `Dots Margin`, `Dots Alignment`, `Dots Styling`, `Dots Size` y `Dots Color`. Ninguno distingue el punto activo del resto por forma o tamaño — como mucho, por color | Responde el Problema 4 del informe de Álvaro sobre Novedades (15 sept 2026): no es que no lo encontrara, no está. Si el efecto se quiere de verdad, no se resuelve con Clase CSS — o se acepta la diferencia solo por color, o se escala a Carlitos para el panel global de Custom CSS |
+| Que uno de los puntos (dots) de un carrusel/slider se alargue para marcar cuál está activo | ❌ **No encontrado en Post Cards** — confirmado el 17 de septiembre de 2026 contra la lista completa de opciones de navegación del elemento: `Dots Position`, `Dots Spacing`, `Dots Margin`, `Dots Alignment`, `Dots Styling`, `Dots Size` y `Dots Color`. Ninguno distingue el punto activo del resto por forma o tamaño — como mucho, por color | Responde el Problema 4 del informe de Álvaro sobre Novedades (15 sept 2026): no es que no lo encontrara, no está. Si el efecto se quiere de verdad, no se resuelve escribiendo la Clase CSS por su cuenta — se genera un TRASPASO a Proyecto 11 (Sección 5 ter), o se acepta la diferencia solo por color |
 
 ### Nuestro propio caso donde el CSS sí estaba justificado
 
-Para que quede claro que esto no es "nunca jamás Custom CSS", sino "agotar primero lo
-nativo, y solo entonces sí": los Toggles no exponen un campo de Border Radius en su propio
-panel (Sección 5) — por eso el radio de 10px vive en el panel global de Custom CSS de
-Avada, que sigue permitido (ver "Qué queda prohibido y qué no", arriba), y no en la Clase
-CSS del elemento, que es lo que queda cerrado. Se llegó ahí después de comprobar que el
-propio panel del elemento no lo tenía — no como primer recurso.
+Para que quede claro que esto no es "nunca jamás CSS", sino "agotar primero lo nativo, y
+solo entonces sí": los Toggles no exponen un campo de Border Radius en su propio panel
+(Sección 5) — por eso el radio vive en `avada-custom-css.css` (Sección 5 ter), aplicado sin
+clase porque afecta a todos los Toggles con Boxed Mode, y no en la Clase CSS del elemento,
+que es lo que queda cerrado. Se llegó ahí después de comprobar que el propio panel del
+elemento no lo tenía — no como primer recurso. El valor que usa hoy ese bloque sigue siendo
+10px, heredado de antes de fijar la norma general de 15px (Sección 13.1) — pendiente de
+alinear, ver Sección 5 ter.
 
-### Cómo aplica esto a Carlota y a Álvaro
+### Cómo aplica esto a Carlota y a Álvaro (actualizado 24 de septiembre de 2026)
 
-- Carlota (Proyectos 4 y 6): antes de dar un efecto por imposible en un boceto, sigue el
-  proceso de arriba y explora varias combinaciones nativas, explicándolas de forma sencilla.
-- Álvaro (Proyectos 3 y 7): si el boceto pide algo que no aparece aquí, consulta esta
-  sección antes de asumir que hace falta código — y si de verdad no está, se escala a
-  Carlitos (`INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3, punto 0.7), nunca se resuelve con
-  Clase CSS.
+- **Carlota** (Proyectos 4 y 6): dibuja libre. Esta sección le sigue siendo útil como
+  referencia de qué es fácil o difícil de construir, pero ya no tiene que confirmar,
+  elemento por elemento, si un efecto es nativo antes de dibujarlo, ni escalar nada si no lo
+  es — eso lo resuelve Álvaro al construir.
+- **Álvaro** (Proyectos 3, 7 y su repuesto): si tras mirar todas las pestañas del elemento
+  de verdad no encuentra el efecto, no lo resuelve él mismo ni lo escala directamente a
+  Carlitos — genera un TRASPASO (formato en su chuleta, Sección 7) y lo lleva a **Proyecto
+  11 — Código en Avada**, la cuenta dedicada a esto. Ver Sección 5 ter para el sistema
+  completo.
+
+---
+
+## 5 ter. El sistema de código en Avada — dónde vive de verdad cada mejora
+
+*Añadido 24 de septiembre de 2026, tras la investigación sobre Custom CSS + gancho y la
+decisión de dedicar una cuenta de Claude en exclusiva a esto (Proyecto 11). Esta sección
+resume el sistema para quien lea el catálogo; el detalle operativo completo — cómo se
+escribe una ficha, el formato del traspaso, el diagnóstico paso a paso — vive en
+`03-guias-practicas/CHULETA_CODIGO_AVADA.md`, y no se repite aquí para no mantener lo mismo
+en dos sitios.*
+
+**Las tres piezas:**
+
+| Pieza | Qué es | Vive en |
+|---|---|---|
+| El archivo maestro | Todo el CSS de mejoras de elementos de Avada, con una ficha por bloque (qué hace, de qué depende, con qué versión se probó) | `03-guias-practicas/avada-custom-css.css` — manda sobre lo que hay pegado en Avada, que es solo su copia desplegada |
+| El manual de trabajo | Reglas firmes, formato de respuesta, diagnóstico, datos fijos del proyecto | `03-guias-practicas/CHULETA_CODIGO_AVADA.md` |
+| La cuenta que lo aplica | Recibe traspasos de Álvaro, escribe y prueba el CSS, diagnostica cuando falla | Proyecto 11 (Hno A) |
+
+**La regla que sustituye a la de antes:** el gancho para dirigir una mejora a un elemento
+concreto es **siempre una clase con prefijo `tt-`**, nunca un ID, y la escribe la cuenta de
+Código con su ficha en el archivo maestro. El campo "Clase CSS" del elemento sigue prohibido
+para Carlota y para Álvaro escribiéndola por su cuenta — la única excepción es pegar tal
+cual la clase que les dé esa cuenta.
+
+**Cómo llega un problema hasta ahí:** Carlota dibuja libre (Sección 5 bis, "Cómo aplica esto
+a Carlota y a Álvaro"). Álvaro construye con lo nativo; si de verdad no puede, genera un
+TRASPASO (formato en su chuleta) y lo lleva al chat de Proyecto 11. Esa cuenta primero
+comprueba si ya existe una mejora que sirva en el archivo maestro; si no, la crea.
+
+**Lo que NO cubre esta cuenta:** PHP, endpoints, nada de servidor. Esos casos puntuales los
+resuelve Carlitos (Proyecto 2) directamente, con el contexto completo del repositorio.
+
+**Radio de la web nueva en Avada — pregunta 13.1 resuelta:** 15px es la norma general,
+decidida el 24 de septiembre de 2026, en la variable `--tt-r-web` definida al principio del
+archivo maestro. Los radios `--tt-r`/`--tt-r-sm`/`--tt-r-xs` (25/14/8px) quedan para la web
+vieja, los snippets ya construidos y la app — no son la referencia dentro de Avada.
+
+**Los tres casos concretos heredados al crear el sistema (radio de Toggles, Tabs "Conecta
+cada día" con imagen de fondo por pestaña, Toggle de introducción con vídeo y texto):**
+se trasladaron tal cual al archivo maestro, con los hallazgos de la investigación previa
+anotados dentro de la ficha de cada uno (URLs de relleno y del entorno Local en Tabs, exceso
+de `!important` en el Toggle de introducción, y ambos con ID en vez de clase, pendiente de
+convertir la primera vez que se toquen). No se han corregido todavía — quedan pendientes de
+que Álvaro los lleve, uno por uno, a Proyecto 11 como una tarea normal.
 
 ---
 
@@ -854,9 +921,9 @@ propio panel del elemento no lo tenía — no como primer recurso.
   importante en formularios como el de inscripción del Ejército de Intercesores · Enable
   Date/Time Picker Localization corregido a On — sin esto, cualquier selector de fecha
   saldría con nombres de mes/día en inglés.
-- ⚠️ **Form Border Radius = 10px, por decisión de Hna C** — no coincide con ningún token
-  `--tt-r-*` documentado hoy (25px/14px/8px). Ver Sección 13.1, conecta directamente con el
-  mismo hallazgo de Toggles.
+- ⚠️ **Form Border Radius = 10px, por decisión de Hna C** — ya resuelto (Sección 13.1): la
+  norma general para Avada es `--tt-r-web` = 15px; este campo queda pendiente de alinearse a
+  ese valor, igual que el de Toggles.
 - 🔲 Sin credenciales todavía, correctamente vacío, no urgente: Cloudflare Turnstile, Google
   reCAPTCHA (Security Score en 0.0 — recordar subirlo cuando se active de verdad), HubSpot,
   Mailchimp.
@@ -1049,10 +1116,10 @@ Sección 19 (#5), ahora resuelta**
 
 → **Panel:** Global Options → Custom CSS
 
-- ⚠️ **Ya no está vacío** — contiene una regla justificada para resolver el border-radius de
-  Toggles (10px, ver Sección 5 y Sección 13.1), dado que ese elemento no expone ese control
-  en su propio panel. Cualquier documento que dé por hecho "Custom CSS sin deuda técnica"
-  necesita actualizarse — ver Sección 14.
+- ✅ **Ya no vive solo aquí.** Desde el 24/09/2026 el CSS de mejoras vive en el archivo
+  maestro `avada-custom-css.css` (Sección 5 ter), que incluye la regla del border-radius de
+  Toggles (heredada en 10px, pendiente de subir a 15px) y las demás mejoras ya conocidas. El
+  campo de Avada es solo su copia desplegada, no la fuente.
 
 ---
 
@@ -1203,9 +1270,16 @@ Ya están resueltas o documentadas donde corresponde dentro de este catálogo. L
 juntas porque tú no editas `GUIA_AVADA_LOCAL.md` ni `00_CORE.md` directamente — esto es lo
 que Hno C (Proyecto 2) necesita aplicar en los documentos oficiales.
 
-### 13.1 Border-radius 10px — ¿un cuarto token real?
+### 13.1 Border-radius 10px — ¿un cuarto token real? — RESUELTO 24 de septiembre de 2026
 
-Aparece **dos veces de forma independiente**, quiero border-radius 10px. decisión tomada por el equipo. cualquier cosa se cambia en el caso concreto, pero 10px es la medida estándar
+Apareció **dos veces de forma independiente** (Toggles y Forms), sin confirmar si era un
+cuarto token real. Decisión tomada por el equipo el 24 de septiembre de 2026: la norma
+general dentro de Avada es **15px**, en la variable `--tt-r-web` (ver Sección 5 ter). No es
+un cuarto token añadido a los tres de la web vieja (25/14/8px) — es la referencia propia de
+la web nueva construida en Avada, y puede cambiarse puntualmente en un caso concreto si así
+se decide. Pendiente de aplicación: los bloques de Toggles y del botón, que hoy siguen en
+10px en el archivo maestro y en el export respectivamente, se alinean a 15px la primera vez
+que se traten en Proyecto 11.
 
 ### 13.2 Orden real de los 8 colores del Wizard — contradice la tabla de GUIA_AVADA_LOCAL.md 4.1
 
@@ -1312,7 +1386,7 @@ Proyecto 2 los tenga también:
 
 | # | Pregunta | Bloquea | Sección |
 |---|---|---|---|
-| 1 | ¿10px sustituye a 25px como radio estándar, convive, o queda solo en Toggles/Forms? | Border-radius de Tabs, Testimonials, Audio | 13.1 |
+| 1 | ~~¿10px sustituye a 25px...?~~ **Resuelto 24 de septiembre de 2026** — ni sustituye ni convive con 25/14/8px: es una referencia distinta, `--tt-r-web` = 15px, propia de la web nueva construida en Avada (Sección 13.1). Pendiente solo la aplicación en Toggles y Forms | Border-radius de Tabs, Testimonials, Audio | 13.1 |
 | 2 | ¿La tarjeta de "Próximos Eventos" debe mostrar texto de contexto, o todo va en el cartel visual (Events Text Display)? | Cierre de "Próximos Eventos" | 4 |
 | 3 | ¿Hay uso real pensado para el Sliding Bar legacy, o se desactiva como Portfolio? | — | 11 |
 | 4 | URLs reales de Instagram/YouTube/Facebook de Tiritaito | Repositorio de Social Media Icons/Links | 7 |
@@ -1322,7 +1396,7 @@ Proyecto 2 los tenga también:
 | 8 | ¿"Avada Builder Elements → Events" y "Options → Events Calendar" son el mismo panel o dos paneles distintos? | Cierre real de "Próximos Eventos" | 4, 13 |
 | 9 | ¿El menú de la web nueva lleva submenús desplegables? | Si el Off Canvas Builder basta o hace falta un workaround adicional | 3 |
 | 10 | ¿Se confirma que el panel lateral de menú móvil ya está construido y probado en Local, más allá de la decisión y las instrucciones ya dadas? | Cierre real de la pieza de navegación móvil | 3 |
-| 11 | El Custom CSS global de los Toggles/Forms (10px) sigue "permitido bajo vigilancia" desde el 6 de septiembre de 2026 — ¿en qué momento se considera que "ha dado problemas" y toca prohibirlo también? | Determina si ese panel pasa de vigilado a cerrado, igual que la Clase CSS | 5 bis |
+| 11 | ~~¿El panel global Custom CSS sigue "permitido bajo vigilancia"...?~~ **Resuelto 24 de septiembre de 2026** — ya no aplica: el CSS de mejoras vive en el archivo maestro `avada-custom-css.css`, gestionado por la cuenta de Código (Proyecto 11), no en el panel de Avada directamente. Ver Sección 5 ter. | — | 5 ter |
 
 **Heredadas de otros documentos, ya conocidas, no se repiten en detalle aquí:** la decisión
 3.1 (CPT vs Posts para Hombres de Dios) bloquea, además de lo ya documentado en

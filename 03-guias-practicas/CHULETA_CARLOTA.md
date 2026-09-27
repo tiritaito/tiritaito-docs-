@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Chuleta rápida de bocetos (Carlota)
 **Referencia compacta para las cuentas de bocetos — Proyecto 4 y Proyecto 6**
-*Destilada de `00_CORE.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude*
+*Destilada de `00_CORE.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude · Sección 3 reescrita el 24 de septiembre de 2026: dibuja libre, la tabla queda como ayuda*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -33,7 +33,7 @@ Certeza tal como está en el documento de origen: ✅ confirmado · ⚠️ con u
 
 **Tipografía:** "Yeah Papa" en títulos, "Helvetica Neue" en cuerpo. ⚠️ "Yeah Papa" necesita un tamaño en px notablemente mayor que Helvetica Neue para el mismo peso visual — confirmado varias veces (ej.: un título se ajustó de 16px a 30px para verse con el mismo peso). Ten esto en cuenta al dibujar títulos: lo que "se ve bien" en px de una tipografía normal se queda pequeño en Yeah Papa.
 
-**Geometría:** 25px es la firma visual de Tiritaito (cards, botones, contenedores grandes). 14px para inputs e items secundarios. 8px para badges e iconos pequeños. ⚠️ **10px** apareció en Toggles y en Forms, decisión tuya, pero sin confirmar todavía si es un cuarto token real o queda solo ahí — no lo generalices a otros elementos en un boceto nuevo sin que se confirme antes.
+**Geometría:** 25px es la firma visual de Tiritaito (cards, botones, contenedores grandes). 14px para inputs e items secundarios. 8px para badges e iconos pequeños. ✅ Dentro de Avada, la norma general decidida el 24 de septiembre de 2026 es **15px** — puedes usarlo con confianza en un boceto pensado para Avada; los 25/14/8px siguen siendo la referencia de la web vieja, los snippets ya construidos y la app.
 
 ---
 
@@ -53,9 +53,11 @@ Certeza tal como está en el documento de origen: ✅ confirmado · ⚠️ con u
 
 ---
 
-## 3. Regla de oro — nunca dibujes pensando en la Clase CSS
+## 3. Dibuja libre — esta tabla es una ayuda, no una obligación
 
-**Desde el 6 de septiembre de 2026, el equipo no usa el campo "Clase CSS" de ningún elemento, columna o container.** Antes de dar un efecto por imposible en un boceto, comprueba si ya es nativo en Avada:
+**Desde el 24 de septiembre de 2026 ya no tienes que comprobar, elemento por elemento, si un efecto es nativo en Avada antes de dibujarlo, ni escalar nada si no lo es.** Esa comprobación la hace Álvaro al construir: tiene su propia chuleta y, si de verdad hace falta código, una cuenta dedicada a resolverlo (Proyecto 11). Tu boceto es libre — dibuja lo que represente mejor la marca Tiritaito.
+
+La tabla de abajo te sigue siendo útil para calibrar qué es fácil de construir y qué puede llevar más trabajo, pero no la uses como un límite: si al construir tu boceto Álvaro descubre que algo necesita algo especial, ya tiene su propio camino para resolverlo.
 
 | Quiero este efecto... | Es nativo en Avada, así |
 |---|---|
@@ -71,7 +73,7 @@ Certeza tal como está en el documento de origen: ✅ confirmado · ⚠️ con u
 
 **Lo que probablemente sí sigue necesitando código** (para que no prometas algo que luego no se puede construir): recortar una imagen en una forma libre no rectangular ("blob"), un cursor personalizado, un punto de navegación de carrusel que se alarga cuando está activo (confirmado que Post Cards no lo tiene, ni por tamaño ni por forma — solo por color).
 
-Si un efecto no aparece aquí: prueba varias combinaciones nativas antes de descartarlo (mira TODAS las pestañas del elemento, no solo "Diseño"). Solo si de verdad no está, dilo con franqueza dentro del propio boceto — eso se lleva a Carlitos, nunca se resuelve con Clase CSS ni se calla en silencio.
+Si un efecto no aparece aquí, dibújalo igual — no es tu trabajo confirmar si Avada lo tiene nativo. Solo si tú misma tienes curiosidad de cómo se construiría, la tabla te da una pista; si no la tienes, sigue dibujando sin más.
 
 ---
 

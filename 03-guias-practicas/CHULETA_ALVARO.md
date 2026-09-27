@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Chuleta rápida de construcción (Álvaro)
 **Referencia compacta para las cuentas ligeras de construcción — Proyecto 3 y Proyecto 7**
-*Destilada de `00_CORE.md`, `04_ENTORNO_LOCAL.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude*
+*Destilada de `00_CORE.md`, `04_ENTORNO_LOCAL.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude · Sección 7 reescrita el 24 de septiembre de 2026 con el sistema de código en Avada (Proyecto 11)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -147,11 +147,12 @@ Endpoint dedicado `tiritaito/v1/novedades` — **nunca** `/wp/v2/posts`.
   --tt-bg:       #FFFFFF;  --tt-surf:     #FFFFFF;  --tt-surf2:    #F5F5F7;  --tt-surf3: #EBEBF0;
   --tt-green:    #34C759;  --tt-green-bg: #F0FAF4;  --tt-orange:   #FF9500;  --tt-alert: #FF3B30;
   --tt-r:        25px;     --tt-r-sm:     14px;     --tt-r-xs:     8px;
+  --tt-r-web:    15px;
   --tt-nav:      68px;
 }
 ```
 
-⚠️ **10px:** apareció en Toggles y en Forms, por decisión de Hna C, sin confirmar todavía si es un cuarto token real o dos excepciones puntuales. **No lo uses en nada nuevo fuera de esos dos sin preguntar primero.**
+✅ **Radio de la web nueva en Avada, decidido el 24 de septiembre de 2026: `--tt-r-web` = 15px**, cambiable puntualmente en un caso concreto. Los radios `--tt-r` / `--tt-r-sm` / `--tt-r-xs` (25/14/8px) son de la web vieja, de snippets ya construidos y de la app — no los uses como referencia dentro de Avada. El 10px que había en Toggles y Forms queda pendiente de alinear a 15px cuando la cuenta de Código (Proyecto 11) trate esos casos.
 
 **Tipografía:** "Yeah Papa" en títulos (`h1` 32px / `h2` 24px / `h3` 20px), "Helvetica Neue" en cuerpo (15px). ⚠️ "Yeah Papa" necesita un tamaño en px notablemente mayor que Helvetica Neue para el mismo peso visual — confirmado varias veces (ej.: el título de Toggles se ajustó de 16px a 30px). Calíbralo así desde el principio, no lo descubras cada vez.
 
@@ -170,19 +171,19 @@ Endpoint dedicado `tiritaito/v1/novedades` — **nunca** `/wp/v2/posts`.
 | Colores 9–13 | 🔲 **Sin cargar todavía** (`--tt-red-bg`, `--tt-txt3`, `--tt-green`, `--tt-orange`, `--tt-alert`) — usa hex directo con nota de qué variable sustituye |
 | Breakpoints responsive | ~**1024px** (Medium) y **480px** (Small) — el `768px` del código es convención propia, no existe como tal en el panel de Avada |
 | Responsive Typography | Sensitivity **0.30**, Factor **1.50** — el texto SÍ se reduce solo en pantallas pequeñas |
-| Radio de botón | El export dice **10px** en las 4 esquinas — ⚠️ **contradice** la nota de `CATALOGO_ELEMENTOS_AVADA.md` de que se corrigió a 25px. No está resuelto cuál manda; verifícalo en el panel real antes de asumir ninguno de los dos |
+| Radio de botón | El export (14 agosto) todavía dice 10px en las 4 esquinas. Ya no es una contradicción: la norma de Avada, decidida el 24/09/2026, es **15px** (`--tt-r-web`) — este campo está pendiente de alinearse a ese valor |
 | Lightbox | Skin **Metro White**, opacidad **0.90**, flechas On, deeplinking On, autoplay Off |
 | Rendimiento | Video Facade **On**, Offscreen Rendering **On**, Font Face Rendering **Swap**, fuentes **no** en CDN de Google (⚠️ el export dice `gfonts_load_method: cdn` — contradice esto último; no lo des por hecho sin comprobar) |
 | Portfolio | ❌ Desactivado, confirmado — no lo reactives sin una decisión de equipo |
-| Custom CSS global | Ya NO está vacío — contiene el radio de 10px de los Toggles |
+| Custom CSS global | Ya NO vive solo aquí: desde el 24/09/2026 el archivo que manda es `03-guias-practicas/avada-custom-css.css` (lo maneja Proyecto 11) — este export queda solo como fotografía histórica de ese campo |
 
 ---
 
-## 7. Regla de oro — nunca el campo "Clase CSS"
+## 7. Regla de oro — el campo "Clase CSS" tiene una sola puerta de entrada
 
-**Desde el 6 de septiembre de 2026, prohibido usar el campo "Clase CSS" (pestaña Diseño) de cualquier elemento, columna o container.** El panel global Custom CSS de Avada sigue permitido mientras no dé problemas.
+**Desde el 6 de septiembre de 2026 sigue prohibido inventar nada en el campo "Clase CSS"** (pestaña Diseño) de cualquier elemento, columna o container. Lo que cambió el 24 de septiembre de 2026 es que ahora existe una única excepción: **escribir, tal cual, una clase que empiece por `tt-` y que venga de una ficha de `avada-custom-css.css` o que te haya dado la cuenta de Código (Proyecto 11).** Nunca un ID como gancho de estilo.
 
-Antes de pedir código para un efecto visual, mira si ya es nativo:
+Antes de pedir nada, mira si ya es nativo:
 
 | Necesito... | Dónde vive, sin código |
 |---|---|
@@ -194,7 +195,18 @@ Antes de pedir código para un efecto visual, mira si ya es nativo:
 | Un color distinto solo al pasar el ratón | El círculo junto al selector de color activa el estado "Hover" — patrón repetido en casi todos los elementos |
 | Alineación flexible de columnas | Container → General → Row/Column Alignment/Justification (Flexbox nativo) |
 
-Si de verdad no está tras mirar todas las pestañas del elemento (no solo "Diseño"): se escala a Carlitos (Proyecto 9), nunca se resuelve con Clase CSS.
+**Si de verdad no está tras mirar todas las pestañas del elemento** (no solo "Diseño"): comprueba primero si ya existe una mejora hecha en `avada-custom-css.css` (te dice qué clase poner). Si no existe, genera un TRASPASO y llévalo tú mismo al chat de Proyecto 11 (Código en Avada):
+
+```
+TRASPASO A CÓDIGO
+Qué quiero conseguir: (una frase)
+Dónde: página · sección · elemento de Avada
+Boceto de Carlota: (nombre o descripción)
+Qué probé sin código y por qué no basta: (1-3 líneas)
+Avada: (versión del sello de avada-custom-css.css)
+```
+
+Proyecto 11 te dará la clase a escribir, o los pasos si hace falta crear algo nuevo. Nunca lo resuelvas tú mismo escribiendo CSS, y nunca inventes una clase por tu cuenta.
 
 ---
 
@@ -270,6 +282,7 @@ if (document.getElementById('mi-modulo-root')) {
 - **Esfuerzo (junto al modelo): Bajo o Medio** para consultas puntuales. Sube a Alto solo si de verdad es una tarea difícil — Máximo casi nunca hace falta para "dame el valor de X" y agota el uso mucho más rápido.
 - **Un chat nuevo por consulta**, no reciclar un hilo largo — cada turno reenvía todo el historial.
 - Si necesitas construir algo grande, verificar un contrato de endpoint que no esté aquí, o leer el HTML/PHP real de la app: pásate a **Proyecto 10 — Consulta Técnica Profunda**.
+- Si lo que necesitas es CSS o un pequeño HTML/JS visual para un elemento de Avada que no se puede nativo: no lo pidas aquí. Genera el TRASPASO de la Sección 7 y llévalo a **Proyecto 11 — Código en Avada**.
 
 ---
 
