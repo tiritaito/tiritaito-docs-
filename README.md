@@ -34,14 +34,23 @@ tiritaito-docs/
 │       └── INVESTIGACION_PODCAST.md             viva — se consultan, no se editan
 ├── 03-guias-practicas/
 │   ├── GUIA_AVADA_LOCAL.md
-│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← ampliado 17 septiembre 2026
+│   ├── CATALOGO_ELEMENTOS_AVADA.md          ← ampliado 24 septiembre 2026
 │   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
-│   ├── CHULETA_ALVARO.md                    ← nuevo, 22 sept 2026 — base de Proyecto 3 y 7
-│   ├── CHULETA_CARLOTA.md                   ← nuevo, 22 sept 2026 — base de Proyecto 4 y 6
+│   ├── CHULETA_ALVARO.md                    ← base de Proyecto 3, 7 y 9 — Sección 7
+│   │                                            reescrita 24 sept 2026
+│   ├── CHULETA_CARLOTA.md                   ← base de Proyecto 4 y 6 — Sección 3
+│   │                                            reescrita 24 sept 2026
+│   ├── CHULETA_CODIGO_AVADA.md              ← nuevo, 24 sept 2026 — base de Proyecto 11
+│   ├── avada-custom-css.css                 ← nuevo, 24 sept 2026 — archivo MAESTRO del CSS
+│   │                                            de mejoras de Avada; manda sobre lo que hay
+│   │                                            pegado en Avada → Options → Custom CSS
 │   └── exports/                     
-│       ├── avada-global-options.json        (export saneado, sin credenciales)
+│       ├── avada-global-options.json        (export saneado, sin credenciales — ya NO
+│       │                                        incluye el CSS de mejoras, ver más abajo)
 │       ├── claves_conocidas.json            (línea base de claves para detectar drift)
-│       └── saneador-avada-options.html      (herramienta de saneado, corre en el navegador)
+│       └── saneador-avada-options.html      (herramienta de saneado, corre en el navegador —
+│                                                pendiente añadir el vaciado del campo
+│                                                custom_css, ver Estado global)
 ├── 04-vision-y-equipo/
 │   ├── ARQUITECTURA_Y_ROADMAP.md
 │   ├── ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md   ← este documento
@@ -78,11 +87,13 @@ tiritaito-docs/
 | `ALCANCE_WEB_NUEVA.md` | `01-producto/` | Qué secciones tiene la web nueva y con qué prioridad | Hna C | Hna C | Alta mientras se decide el alcance |
 | `METODOLOGIA_CONSTRUCCION.md` | `02-metodologia/` | Diagnóstico técnico heredado + dónde construir cada pieza de contenido ya decidida | Hno A, Hna C | Hno C (investigación) | Media |
 | `MIGRACION_CONTENIDO.md` | `02-metodologia/` | Qué contenido de la web vieja migrar, cuál recrear, plan de SEO | Hna C, Hno A, Carlitos | Hno C (investigación) | Media — vivo mientras avanza la revisión de contenido |
-| `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, ACF, principio de Responsive y de mínimo código | Hno A | Hno C (investigación) | Media — actualizada 6/09/2026 con la prohibición del campo Clase CSS |
-| `CATALOGO_ELEMENTOS_AVADA.md` | `03-guias-practicas/` | Qué elemento de Avada resuelve una necesidad de contenido concreta, con su nivel de certeza (confirmado en Local / documentado sin probar) — organizado por necesidad, no por nombre de elemento. Desde el 6/09/2026 incluye también (Sección 5 bis) qué efecto visual ya es nativo sin código | Hno A (lo consulta Proyecto 3 antes de recomendar), Hna C (lo consulta antes de dar un boceto por imposible) | Hno A construye, Hno C (investigación) reconcilia contra el resto de `tiritaito-docs` | Media — crece según se van revisando más elementos y se construyen más secciones reales |
-| `CUADERNO_DEL_CONSTRUCTOR.md` | `03-guias-practicas/` | Borrador de campo de lo que Álvaro descubre al construir (funciona / da problemas / se investigó y esto lo resuelve), antes de pasar en limpio a los documentos oficiales | Hno A (lo alimentan sus 2 cuentas de construcción y el Proyecto 9) | Hno C (investigación) reconcilia las entradas maduras hacia su documento de destino | Alta al principio, según ritmo real de construcción |
-| `CHULETA_ALVARO.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de construcción (Proyecto 3 y 7) — sustituye al repositorio completo en el día a día | Hno A | Hno C (investigación), a partir de lo que madure en `CUADERNO_DEL_CONSTRUCTOR.md` o en Proyecto 10 | Baja — solo cuando algo operativo cambia de verdad |
-| `CHULETA_CARLOTA.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de bocetos (Proyecto 4 y 6) | Hna C | Hno C (investigación) | Baja |
+| `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, ACF, principio de Responsive y de mínimo código | Hno A | Hno C (investigación) | Media — actualizada 6/09/2026 con la prohibición del campo Clase CSS, y 24/09/2026 con el sistema de código en Avada (ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 ter) |
+| `CATALOGO_ELEMENTOS_AVADA.md` | `03-guias-practicas/` | Qué elemento de Avada resuelve una necesidad de contenido concreta, con su nivel de certeza (confirmado en Local / documentado sin probar) — organizado por necesidad, no por nombre de elemento. Desde el 6/09/2026 incluye (Sección 5 bis) qué efecto visual ya es nativo sin código, y desde el 24/09/2026 (Sección 5 ter) el sistema de código en Avada — Proyecto 11, archivo maestro `avada-custom-css.css` | Hno A (lo consulta antes de recomendar), Hna C (referencia opcional para bocetos) | Hno A construye, Hno C (investigación) reconcilia contra el resto de `tiritaito-docs` | Media — crece según se van revisando más elementos y se construyen más secciones reales |
+| `CUADERNO_DEL_CONSTRUCTOR.md` | `03-guias-practicas/` | Borrador de campo de lo que Álvaro descubre al construir (funciona / da problemas / se investigó y esto lo resuelve), antes de pasar en limpio a los documentos oficiales | Hno A (lo alimentan sus 3 cuentas de construcción: Proyecto 3, 7 y 9) | Hno C (investigación) reconcilia las entradas maduras hacia su documento de destino | Alta al principio, según ritmo real de construcción |
+| `CHULETA_ALVARO.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de construcción (Proyecto 3, 7 y 9) — sustituye al repositorio completo en el día a día. Sección 7 reescrita 24/09/2026: la Clase CSS se resuelve pidiendo una clase a Proyecto 11, nunca escribiéndola por cuenta propia | Hno A | Hno C (investigación), a partir de lo que madure en `CUADERNO_DEL_CONSTRUCTOR.md` o en Proyecto 10 | Baja — solo cuando algo operativo cambia de verdad |
+| `CHULETA_CARLOTA.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de bocetos (Proyecto 4 y 6). Sección 3 reescrita 24/09/2026: Carlota dibuja libre, la tabla de "qué es nativo" queda como ayuda, no como obligación | Hna C | Hno C (investigación) | Baja |
+| `CHULETA_CODIGO_AVADA.md` | `03-guias-practicas/` | **Nuevo, 24/09/2026.** Manual único de la cuenta de Código en Avada: reglas firmes, cómo escribir una ficha, formato de respuesta, diagnóstico paso a paso, ritual tras actualizar Avada | Hno A (Proyecto 11) | Hno C (investigación) | Media — se ajusta según el sistema se rode en la práctica |
+| `avada-custom-css.css` | `03-guias-practicas/` | El archivo MAESTRO del CSS de mejoras de elementos de Avada (Toggles, Tabs, Audio...) — con una ficha por bloque. Manda sobre lo que hay pegado en Avada → Options → Custom CSS, que es solo su copia desplegada | Hno A (Proyecto 11 lo escribe y lo mantiene) | Proyecto 11 | Media — cada mejora nueva o corregida |
 | `ARQUITECTURA_Y_ROADMAP.md` | `04-vision-y-equipo/` | FODA, política sobre la web vieja (incluida su fecha de caducidad), fases del proyecto, glosario | Carlitos | Hno C (investigación) | Baja |
 | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | `04-vision-y-equipo/` | Roles, mapa de Proyectos de Claude, ámbito de cada uno, GitHub, WPMobile.app, Search Console | Carlitos | Hno C (investigación) | Media — cambia cuando cambia la organización del equipo |
 | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | `04-vision-y-equipo/` | Texto exacto a copiar en las Instrucciones personalizadas de cada Proyecto de Claude en claude.ai | Todos los dueños de cuenta | Hno C (investigación), con quien edite directamente en claude.ai | Media — cada vez que cambia el criterio de trabajo de algún Proyecto |
@@ -97,7 +108,10 @@ Options (`avada-global-options.json`), su línea base de claves para detectar
 cambios (`claves_conocidas.json`), y la herramienta que genera ambos
 (`saneador-avada-options.html`, corre en el navegador). Se regenera cada vez
 que alguien cambia y guarda un ajuste de Avada Global Options — ver
-`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6.1.
+`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6.1. **Desde el 24/09/2026 el
+CSS de mejoras (campo `custom_css`) ya no vive aquí** — su fuente es
+`03-guias-practicas/avada-custom-css.css`; el saneador debe vaciar ese campo
+del export (pendiente, ver Estado global más abajo).
 
 **`02-metodologia/investigaciones/`** — informes de investigación de Proyecto 2 sobre una
 pieza concreta antes de que el equipo decida su arquitectura (Tiritaito Music, vídeos de
@@ -116,8 +130,9 @@ a esa decisión.
 | Nuevo en el equipo | Este README → `ARQUITECTURA_Y_ROADMAP.md` → `ALCANCE_WEB_NUEVA.md` |
 | Hno A, sesión de código en Local | `00_CORE.md` + `04_ENTORNO_LOCAL.md` + el documento específico de tu tarea |
 | Hno A, sesión de Avada/maquetación | `GUIA_AVADA_LOCAL.md` + `CATALOGO_ELEMENTOS_AVADA.md` + `METODOLOGIA_CONSTRUCCION.md` |
+| Hno A, algo que Avada no ofrece nativo y necesita CSS/código visual | Genera el TRASPASO (formato en `CHULETA_ALVARO.md` Sección 7) y llévalo a **Proyecto 11 — Código en Avada** — nunca lo resuelvas escribiendo la Clase CSS por tu cuenta |
 | Hno A, sesión de Tiritaito for Creators (V1 o V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` |
-| Hna C, boceto de una sección nueva | `CATALOGO_ELEMENTOS_AVADA.md` (incluida la Sección 5 bis, efectos visuales sin código) + `GUIA_AVADA_LOCAL.md` |
+| Hna C, boceto de una sección nueva | Dibuja libre; `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis es una referencia opcional, no un paso obligatorio desde el 24/09/2026 |
 | Hna C, decisión de producto | `ALCANCE_WEB_NUEVA.md` |
 | Hna C, revisando qué migrar | `MIGRACION_CONTENIDO.md` |
 | Carlitos, coordinación | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` |
@@ -130,9 +145,9 @@ a esa decisión.
 
 | Pendiente | Dónde se resuelve | Bloquea a |
 |---|---|---|
-| **Repegar en claude.ai las instrucciones actualizadas de los Proyectos 2, 3, 4, 6, 7 y 9 con la prohibición del campo Clase CSS (decisión de equipo, 6/09/2026)** | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` | Que Carlota y Álvaro trabajen de verdad con el criterio nuevo — subir a GitHub no lo aplica solo |
+| **Repegar en claude.ai las instrucciones actualizadas el 24/09/2026 de los Proyectos 2, 3, 4, 9 y 10, y crear el Proyecto 11 con su bloque** | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 12 | Que el sistema de código en Avada funcione de verdad — subir a GitHub no aplica esto solo |
 | Confirmar en Local que la versión de Avada instalada incluye Filtros de Fondo (Backdrop Filters) antes de que Carlota cuente con ese efecto en un boceto | `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis | Cualquier boceto con efecto "cristal esmerilado" |
-| Decidir si el panel Custom CSS global (10px de Toggles/Forms) sigue "permitido bajo vigilancia" o se prohíbe también | `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis · `GUIA_AVADA_LOCAL.md` Sección 8 | Border-radius de Tabs, Testimonials, Audio |
+| ~~Decidir si el panel Custom CSS global sigue "permitido bajo vigilancia"...~~ **Resuelto 24/09/2026** — el CSS de mejoras vive ahora en `avada-custom-css.css`, gestionado por Proyecto 11 | `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 ter | — |
 | Decidir si el campo de clase CSS a nivel de página entera (Page Options) entra en la prohibición del 6/09/2026 | `GUIA_AVADA_LOCAL.md` Sección 10 | Uso de ese campo concreto |
 | Revisión final de `ALCANCE_WEB_NUEVA.md` con Hna C | `ALCANCE_WEB_NUEVA.md` | Fase 2 de `ARQUITECTURA_Y_ROADMAP.md`; método definitivo de `MIGRACION_CONTENIDO.md` |
 | ✅ Snippet PHP real y completo del endpoint central — obtenido y subido a `apps/v2/` (26/07/2026) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6-7 | — |
@@ -147,12 +162,12 @@ a esa decisión.
 | Crear la cuenta de Repuesto y conectar GitHub | ✅ Resuelto (26/07/2026) — dos cuentas de repuesto ya creadas y configuradas para el Proyecto 3, ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2 | — |
 | Política de licencia de WPMobile.app en sitio de desarrollo | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 | Cualquier prueba de la app contra el entorno Local |
 | Alcance completo de V2 de Tiritaito for Creators (solo Novedades y Devocional parcial confirmados por ahora) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 5 | Construcción de cualquier módulo nuevo más allá de esos dos |
-| Instrucciones actualizadas del Proyecto 3 (ACF, mínimo código, verificación antes de asumir, catálogo de elementos, construcción por niveles y prohibición de la Clase CSS) pendientes de repegar a mano en claude.ai | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 3 | Que Hno A reciba de verdad el nuevo criterio — subir el documento a GitHub actualiza la base de conocimiento del Proyecto, pero **no** las instrucciones personalizadas, que solo se actualizan si alguien las repega a mano en la configuración del Proyecto en claude.ai |
+| Confirmar que el Proyecto 9 quedó reasignado a cuenta de repuesto de construcción (24/09/2026) y no queda ningún resto de su rol anterior en claude.ai | `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Sección 9 | Evitar que la cuenta siga con instrucciones antiguas si alguien no la repegó |
 | Dar acceso de GitHub a `apps/v2/` completa (HTML + PHP + changelog) a los Proyectos 2, 3 y 5, cada uno con el nivel de acceso que le corresponde | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.2 y 3 | Que cada proyecto pueda verificar el estado real sin depender de que alguien pegue el archivo a mano |
 | Confirmar si `01_CREATORS_APP.md` tenía contenido real en GitHub que no llegara a este Proyecto de Investigación antes de darlo por eliminado | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 0 | Eliminación definitiva de ese archivo del repositorio |
 | V1 desaparece en cuanto la Web Nueva sea oficial — sin fecha todavía | `ARQUITECTURA_Y_ROADMAP.md` · `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.1 · `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 1 | Archivado del Proyecto 1 y de la mitad V1 del Proyecto 5, el día que llegue |
 | ✅ Ronda completa de Avada Global Options cerrada en tres cuentas de trabajo (28/07-10/08/2026), síntesis en `CATALOGO_ELEMENTOS_AVADA.md` (11/08/2026) | `GUIA_AVADA_LOCAL.md` · `CATALOGO_ELEMENTOS_AVADA.md` | Desbloquea la construcción de páginas reales con criterio Avada-first |
-| Formalizar si `10px` es un cuarto token de radio (junto a `25/14/8px`) o queda como excepción en Toggles/Forms | `00_CORE.md` Sección 5 · `GUIA_AVADA_LOCAL.md` Sección 13 | Bordes de Tabs, Testimonials, Audio y cualquier elemento nuevo — dejados a propósito sin decidir mientras tanto |
+| ~~Formalizar si `10px` es un cuarto token de radio...~~ **Resuelto 24/09/2026** — norma general para Avada: `--tt-r-web` = 15px, distinta de los 25/14/8px de la web vieja. Pendiente solo aplicarla en Toggles, Forms y el botón, que hoy siguen en 10px | `CATALOGO_ELEMENTOS_AVADA.md` Sección 13.1 | Bordes de Tabs, Testimonials, Audio y cualquier elemento nuevo |
 | Confirmar en Local si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, o solo registrado como borrador | `GUIA_AVADA_LOCAL.md` Sección 9.1 | Cierre real del menú móvil — uno de los tres bloqueantes de Fase 1 |
 | **Vídeos de seminarios:** decidido el panel de "Más información" (Modal + 2 vídeos recientes vía Lightbox, siempre YouTube) — pendiente definir la estructura (CPT/ACF) de la nueva entrada "Vídeos de los Seminarios" y probar en Local si el Lightbox funciona anidado dentro de un Modal | `METODOLOGIA_CONSTRUCCION.md` Sección 3 · `ALCANCE_WEB_NUEVA.md` Sección 4.C | Construcción del Boceto J v5 y de la nueva entrada |
 | **Podcast:** el alcance documentado (2 programas) no coincide con el código real (el propio snippet dice "los 12 canales", y al menos una ficha de Hombres de Dios usa el mismo reproductor) — pendiente confirmar la lista exacta de los 12 canales y localizar el bloque `<script>` del reproductor, que falta en el código compartido | `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` | Corrección de `ALCANCE_WEB_NUEVA.md` 4.E/4.H y `METODOLOGIA_CONSTRUCCION.md`; boceto de Carlota para el podcast |
