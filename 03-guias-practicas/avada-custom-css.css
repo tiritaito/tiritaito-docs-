@@ -26,7 +26,7 @@
    TOKEN DE RADIO — norma general de la web nueva (decisión 24/09/2026)
    ───────────────────────────────────────────────────────────────── */
 :root {
-  --tt-r-web: 15px; /* radio general de la web nueva; cambiable aquí para toda la web, o puntualmente dentro de un bloque concreto */
+  tt-r-web: 15px; /* radio general de la web nueva; cambiable aquí para toda la web, o puntualmente dentro de un bloque concreto */
 }
 
 
@@ -346,7 +346,7 @@
 }
 
 .fusion-tabs.tt-profundiza-tabs .nav-tabs li.active .tab-link {
-  background-color: #1d1d1f;
+  background-color: rgba(58,58,60,0.82);
   border-color: #1d1d1f;
   color: #ffffff;
 }
