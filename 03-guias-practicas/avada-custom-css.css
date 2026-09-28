@@ -3,7 +3,7 @@
    Este archivo MANDA. Lo de Avada → Options → Custom CSS es la copia
    desplegada: debe ser idéntica, empezando por esta misma línea de sello.
 
-   TT-CSS · v001 · 2026-09-24 · Avada 7.16.1
+   TT-CSS · v003 · 2026-09-28 · Avada 7.16.1
    ════════════════════════════════════════════════════════════════
 
    CÓMO SE USA ESTE ARCHIVO (léelo antes de tocar nada)
@@ -290,14 +290,81 @@
 
 
 /* ══════════════════════════════════════════════════════════════
-   FIN DEL ARCHIVO — 3 mejoras registradas · v001 · 2026-09-24
+   TT-MEJORA · Tabs en píldoras con pestaña activa oscura
+   Cómo se usa:  VARIANTE — pon la clase  tt-profundiza-tabs  en el
+                 campo "CSS Class" del elemento Tabs (el padre, no una
+                 pestaña hija). Diseño base: "Clean", con alineación
+                 centrada, padding 9/18, borde 1px, radio 50 y colores
+                 de pestaña inactiva ya puestos en el propio panel de
+                 Avada.
+   Qué hace:     coloca las pestañas en una fila centrada, cada una del
+                 tamaño de su texto y con 8px de separación entre ellas,
+                 y pinta la pestaña ACTIVA con fondo oscuro y texto
+                 blanco. La inactiva se queda como la deja el panel.
+                 Avada no ofrece separación entre pestañas ni color de
+                 fondo/texto de la pestaña activa (solo el color del
+                 borde de acento), y añade la clase nav-justified a la
+                 lista aunque Justify Tabs esté en No, lo que las
+                 estira a todo el ancho.
+   Ajustable:    separación (hoy 4px de margen a cada lado de cada
+                 pestaña = 8px entre ellas), color oscuro de la activa
+                 (hoy #1d1d1f), color del texto activo (hoy #fff).
+                 El color del borde de las pestañas NO se controla
+                 aquí: se cambia en el panel del elemento Tabs.
+   Depende de:   clases internas de Avada .fusion-tabs, .nav-tabs,
+                 .nav-justified, li.active, .tab-link y
+                 .fusion-tab-heading (no son API pública). En modo
+                 mobile-carousel Avada pone la lista en flex con
+                 desplazamiento lateral: este bloque lo respeta, pero
+                 sin verlo aún a anchos de escritorio (ver "Probado").
+   Usado en:     Página Ejército de Intercesores — sección
+                 "Profundiza más".
+   Probado con:  Avada 7.16.1 · 28/09/2026 · móvil (463px): margen y
+                 pestaña activa OK · escritorio y tablet: pendiente de
+                 confirmar tras la v003.
+   Origen:       boceto de Carlota (ejercito-intercesores-v2.html,
+                 zona .extra-tabs). Creado el 28/09/2026; ajustado en
+                 v003 (lista en flex centrada, pestañas de ancho
+                 automático).
+   ══════════════════════════════════════════════════════════════ */
 
-   NOTA IMPORTANTE SOBRE ESTA PRIMERA VERSIÓN (v001):
+/* Lista de pestañas: fila flexible, centrada. "safe center" evita que,
+   si no caben, se corte por la izquierda (así el carrusel móvil sigue
+   pudiendo deslizarse desde la primera pestaña). */
+.fusion-tabs.tt-profundiza-tabs .nav-tabs {
+  display: flex;
+  justify-content: safe center;
+}
+
+/* Cada pestaña: tamaño de su texto (anula el reparto a partes iguales
+   de nav-justified) y separación mediante márgenes */
+.fusion-tabs.mobile-mode-carousel.tt-profundiza-tabs .nav-tabs.nav-justified li,
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li {
+  flex: 0 0 auto;
+  width: auto;
+  margin: 0 4px;
+}
+
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li.active .tab-link {
+  background-color: #1d1d1f;
+  border-color: #1d1d1f;
+  color: #ffffff;
+}
+
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li.active .tab-link .fusion-tab-heading {
+  color: #ffffff;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   FIN DEL ARCHIVO — 4 mejoras registradas · v003 · 2026-09-28
+
+   NOTA IMPORTANTE SOBRE LOS BLOQUES HEREDADOS (v001):
    Los selectores #tt-conecta-tabs y #tt-toggle-intro de arriba son
    IDs, heredados del CSS anterior al 24/09/2026. La regla nueva del
    equipo (24/09/2026) es que el gancho SIEMPRE es una CLASE, nunca un
    ID — ver INSTRUCCIONES del Proyecto 11. Se han dejado tal cual en
-   esta v001 porque el encargo era trasladar el CSS "sin arreglos", y
+   esta v003 porque el encargo era trasladar el CSS "sin arreglos", y
    cambiar el selector aquí sin cambiar a la vez el campo real en Avada
    rompería las 2 mejoras. La primera vez que la cuenta de Código
    trabaje sobre "Conecta cada día" o el "Toggle de introducción" (los
