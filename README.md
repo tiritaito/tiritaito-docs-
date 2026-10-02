@@ -59,7 +59,7 @@ tiritaito-docs/
 ├── apps/
 │   ├── v1/
 │   │   ├── tiritaito-creators-v1-07.html
-│   │   └── CHANGELOG-v1-web-vieja.md
+│   │   ├── CHANGELOG-v1-web-vieja.md
 │   └── v2/
 │       ├── tiritaito-creators-v2-01.html            ← nombre SIEMPRE fijo, se sobreescribe
 │       ├── CHANGELOG-v2-web-nueva.md
