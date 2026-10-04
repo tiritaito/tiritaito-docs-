@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Alcance de la Web Nueva
 **Estructura de la web nueva: páginas, secciones internas, prioridades y método de trabajo**
-*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades · Actualizado 17 de septiembre de 2026 con las decisiones de equipo sobre los vídeos de seminarios (Sección 4.C)*
+*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades · Actualizado 17 de septiembre de 2026 con las decisiones de equipo sobre los vídeos de seminarios (Sección 4.C) · Actualizado 3 de octubre de 2026 con el método de Hombres de Dios (Sección 4.H)*
 *Aprobación: Hna C · Redacción: Hno C*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -93,9 +93,9 @@ PÁGINA DE INICIO
 │     ├── Películas   — plantilla compartida con Libros
 │     └── Oraciones   — 7 tipos, 🔲 ¿entrada única densa o estructura distinta?
 │
-├── HOMBRES DE DIOS (página) — 9 entradas propias
-│     └── Layout compartido + Containers/Columnas/Elementos Guardados
-│         editados por santo (Dynamic Content descartado)
+├── HOMBRES DE DIOS (página) — 9 entradas propias (y llegarán más)
+│     └── CPT hombres_de_dios + campos ACF + Layout único; cada bloque
+│         desaparece si su campo está vacío (Dynamic Content sí)
 │
 └── 🔲 PRÓXIMOS EVENTOS — sin resolver
       Candidato: feature "Eventos" de Avada (ya activada en el Setup Wizard)
@@ -112,7 +112,7 @@ PÁGINA DE INICIO
 | 2 | Conecta cada día | Página | 🔴 Crítica | Backend Devocional en ACF (parcial, 26 julio 2026), 2 piezas sin ubicar, falta Dynamic Content en Avada |
 | 3 | Tiritaito | Página + 4 entradas | 🔴 Crítica | Definido — falta aplicar la unidad de podcast |
 | 4 | Biblioteca | Página + 3 apartados | 🟡 Alta | Libros/Películas definidos, Oraciones con duda estructural |
-| 5 | Hombres de Dios | Página + 9 entradas | 🟡 Alta | Método técnico confirmado (Sección 4.H) |
+| 5 | Hombres de Dios | Página + 9 entradas (y llegarán más) | 🟡 Alta | Método técnico comprobado en Local y en construcción (Sección 4.H) |
 | — | Próximos eventos | Sin decidir | 🟢 Media | Candidato: feature Eventos de Avada |
 
 ---
@@ -277,21 +277,11 @@ compartido entre ambos.
 
 ### H. Hombres de Dios
 
-Mismas 9 entradas de la web actual (Papa Francisco, Papa León, Juan Pablo II, Maximiliano
-Kolbe, Emiliano Tardif, Padre Pío, San Serafín de Sarov, Teresita, Ana Catalina).
+Hoy son **9 santos, y llegarán más**. La web actual tiene 9 entradas (Papa Francisco, Papa León, Juan Pablo II, Maximiliano Kolbe, Emiliano Tardif, Padre Pío, San Serafín de Sarov, Teresita, Ana Catalina), a las que se suman las nuevas hasta los 12 de hoy.
 
-✅ **Método técnico confirmado — reemplaza la decisión anterior:** un Layout único sirve
-de plantilla compartida para todos los santos. Sobre esa plantilla, cada santo combina
-distintos módulos (Containers, columnas, o elementos **Guardados** de la Avada Library),
-editados con el contenido específico de cada uno — porque no todos los santos usan la
-misma combinación de piezas (unos llevan audio, otros discursos, otros solo biografía).
+✅ **Método técnico decidido el 3 de octubre de 2026 — reemplaza la decisión anterior (Layout + Elementos Guardados):** un tipo de contenido propio (CPT `hombres_de_dios`) con campos ACF y un único Layout de Avada que sirve de plantilla para todos los santos. Cada sección es un bloque del Layout que lee los campos del santo que se esté viendo y desaparece entero si ese campo está vacío (Conditional Rendering Logic) — así cada santo muestra solo las secciones que usa (unos llevan audio, otros discursos, otros solo biografía), y un cambio de diseño en un bloque llega a todos a la vez.
 
-**Esto descarta explícitamente el "Layout Content Section + Dynamic Content"** anotado en
-`METODOLOGIA_CONSTRUCCION.md` Sección 4. No es un matiz menor: cambia si conviene un
-Custom Post Type con ACF — con elementos Guardados, el valor de ACF (automatizar campos
-uniformes) pierde sentido, porque los santos no comparten la misma estructura de campos —
-a diferencia de Novedades o Devocional, donde sí comparten estructura y por eso ahí ACF sí
-funciona bien.
+**Esto deja sin efecto la decisión anterior**, que descartaba Dynamic Content por asumir una estructura de campos uniforme: con "mostrar solo si" no hace falta que todos los santos usen las mismas secciones. Un santo nuevo es una entrada nueva, sin tocar la plantilla. Comprobado en Local el 29-30 de septiembre de 2026; en construcción desde el 1 de octubre. Detalle, secciones ya construidas y pendientes: `03-guias-practicas/HOMBRES_DE_DIOS_ESTRUCTURA.md`. El podcast entrará como una sección más de la ficha, diseñada aparte.
 
 ### I. Próximos eventos
 
@@ -353,8 +343,7 @@ mantenimiento.
 **Próximos pasos:**
 1. Confirmar si este Alcance sustituye ya el stub de `01-producto/ALCANCE_WEB_NUEVA.md`,
    o si falta una vuelta más con Hna C
-2. Una vez cerrado: actualizar `METODOLOGIA_CONSTRUCCION.md` Sección 4 (Hombres de Dios,
-   Dynamic Content → Guardados) y su Sección 3 (Ejército de Intercesores ya no es sección
+2. Una vez cerrado: ~~actualizar `METODOLOGIA_CONSTRUCCION.md` Sección 4 (Hombres de Dios, Dynamic Content → Guardados)~~ **hecho el 3 de octubre de 2026 (Hombres de Dios pasa a Layout único + ACF)**, y actualizar su Sección     (Ejército de Intercesores ya no es sección
    suelta; Biblioteca entra en v1; Charlas de la Biblia vive bajo Tiritaito, no Biblioteca)
 3. Revisar si `MIGRACION_CONTENIDO.md` necesita el mismo ajuste en su checklist de
    migración por sección
