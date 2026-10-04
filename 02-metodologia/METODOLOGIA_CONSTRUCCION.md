@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Metodología de Construcción
 **Diagnóstico heredado, inventario de consolidación y aplicación práctica a cada sección real de la web nueva**
-*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md` · Actualizado 17 de septiembre de 2026 con las decisiones de vídeos de Seminarios y el cierre de la evaluación de Tiritaito Music*
+*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md` · Actualizado 17 de septiembre de 2026 con las decisiones de vídeos de Seminarios y el cierre de la evaluación de Tiritaito Music · Actualizado 3 de octubre de 2026 con la nueva decisión de Hombres de Dios (Sección 4)*
 *Audiencia: Hno A (aplicación técnica) · Hna C (para entender el porqué de cada decisión)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -90,7 +90,7 @@ para identificar rápido qué elemento nativo aplica en cada caso.**
 | Mini reproductor de un track | `.hmds-*` | Ejército de Intercesores | **Eliminar** — sustituir por `[tt_podcast]` de un solo episodio |
 | Accordion "¿Qué es X?" + vídeo | `toggle-ios` | Ejército de Intercesores, Rincón de Nico | **Guardado (no-global)** o `[tt_accordion]`, **nunca Global** (`GUIA_AVADA_LOCAL.md` Sección 8) — en la web nueva aplica a la "Introducción" del Ejército (Sección 3) |
 | Menú hamburguesa custom | (sin prefijo `tt-`) | Al menos Ejército de Intercesores | Sustituir por Off Canvas Builder nativo (`GUIA_AVADA_LOCAL.md` Sección 9.1, `CATALOGO_ELEMENTOS_AVADA.md` Sección 3) |
-| Sistema de Santos | `.tiritaito-santo` | Global, Hombres de Dios | Mantener el CSS, pero cargarlo solo donde se usa — nunca "Run everywhere". Ahora se combina con el método de Guardados de la Sección 4 |
+| Sistema de Santos | `.tiritaito-santo` | Global, Hombres de Dios | Mantener el CSS, pero cargarlo solo donde se usa — nunca "Run everywhere". ⚠️ Sin decidir si sigue haciendo falta: la ficha de Hombres de Dios se construye ahora con Layout + ACF y elementos nativos de Avada (Sección 4) — confirmar si este CSS se sigue usando |
 | Sistema de Biblioteca | `.tiritaito-libros` | Global, sin páginas reales en la web vieja | ⚠️ **Actualizado:** en la web nueva, Biblioteca (Libros/Películas/Oraciones) ya es prioridad de v1 (`ALCANCE_WEB_NUEVA.md`) — este CSS deja de ser hipotético. Sigue aplicando la regla de cargarlo solo donde se usa |
 | Carrusel Swiper (`unpkg.com`) | — | Varias páginas | Sustituir por Image Carousel / Avada Slider nativo |
 | "Grupo de alabanza" | Sin confirmar | Home (web vieja) | ⚠️ **Actualizado:** en la web nueva ya no es widget de home — pasa a ser un apartado informativo dentro de **Qué hacemos** (`ALCANCE_WEB_NUEVA.md` Sección 4.C). Sigue sin auditar a nivel de código |
@@ -154,7 +154,7 @@ Charlas de la Biblia pueden tener tono/estilo propio, pero el formato del reprod
 ser el mismo — ya resuelto técnicamente por el patrón `[tt_podcast]`, no hace falta nada
 nuevo.
 
-🔲 **Nota añadida 11 agosto 2026:** para "rotar entre los 9 santos" (sección de Hombres de
+🔲 **Nota añadida 11 agosto 2026:** para "rotar entre los santos" (sección de Hombres de
 Dios, más abajo) y para cualquier necesidad futura de rotar entre varias entradas distintas
 (no confundir con varias imágenes dentro de una misma entrada), el elemento identificado es
 **Post Slider**, no "Slideshows" — ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 y
@@ -177,39 +177,34 @@ Dios, más abajo) y para cualquier necesidad futura de rotar entre varias entrad
 
 ---
 
-## 4. Hombres de Dios — Layout + Elementos Guardados (Dynamic Content descartado)
+## 4. Hombres de Dios — Layout único + CPT + ACF (con "mostrar solo si" en cada bloque)
 
-Un **Layout** único sirve de plantilla compartida — probablemente el envoltorio (Header,
-Page Title Bar, Footer) que Avada aplica automáticamente a todas las entradas de Hombres
-de Dios por condición. Dentro de ese envoltorio, el contenido de cada santo se construye
-combinando **Containers, columnas o elementos Guardados (no-global) de la Avada Library**,
-insertados y editados a mano, con el contenido específico de cada santo.
+*Reescrita el 3 de octubre de 2026: sustituye a la decisión anterior (Layout + Elementos Guardados, con Dynamic Content descartado). El detalle vivo — fichas de cada sección, nombres exactos de las casillas, hallazgos y pendientes — está en `03-guias-practicas/HOMBRES_DE_DIOS_ESTRUCTURA.md`; aquí queda solo la decisión y su porqué.*
 
-**La razón de fondo, no solo el método:** no todos los santos usan la misma combinación de
-piezas — unos llevan audio, otros discursos, otros solo biografía. Dynamic Content asume
-una estructura de campos uniforme (vía ACF) que se rellena igual en todas las instancias;
-aquí la estructura varía santo a santo, así que Dynamic Content no encaja bien con la
-realidad del contenido — a diferencia de Novedades o Devocional, donde todas las entradas
-sí comparten exactamente los mismos campos y por eso ACF + Dynamic Content sí funciona
-bien ahí.
+Un **tipo de contenido propio** (CPT `hombres_de_dios`) con **campos ACF**, y **un único Layout** de Avada que sirve de plantilla para todos los santos (hoy 12, y llegarán más). El Layout tiene un bloque (Container) por sección; cada bloque lee con Dynamic Content los campos del santo que se esté viendo y lleva un interruptor de **Conditional Rendering Logic** ("mostrar solo si"): si el campo está vacío, el bloque entero desaparece, sin hueco ni título.
+
+**La razón del cambio:** el objetivo es diseñar cada sección una vez, que un cambio de diseño llegue a todos los santos a la vez y que cada santo cargue su propio contenido. Un elemento Global sincroniza también el contenido, y uno Guardado no sincroniza el diseño (`GUIA_AVADA_LOCAL.md` Sección 8.1): ninguno cumple las dos cosas. Layout + Dynamic Content sí. La objeción de la versión anterior — que no todos los santos usan las mismas secciones — queda resuelta con el interruptor "mostrar solo si": cada santo rellena solo sus campos y los bloques sin contenido desaparecen. Comprobado en Local el 29-30 de septiembre de 2026 (el bloque vacío no deja rastro en el código de la página).
 
 ### 4.1 El método confirmado
 
-| Aspecto | Con Dynamic Content (descartado) | Con Layout + Guardados (confirmado) |
+| Aspecto | Antes (Layout + Guardados) | Ahora (Layout único + ACF) |
 |---|---|---|
-| Consistencia de campos | Misma estructura para todos los santos | Cada santo puede combinar módulos distintos |
-| Mantenimiento | Automático — cambiar el Layout cambia todos los santos a la vez | Manual — cada instancia se edita por separado si cambia el contenido |
-| Valor de un CPT + ACF | Alto — automatiza el llenado de campos uniformes | Bajo — sin campos uniformes que rellenar automáticamente, ACF pierde buena parte de su utilidad aquí |
-| Post Cards para el listado/portada | Compatible | Sigue siendo compatible — solo necesita Posts o CPT (con o sin ACF) del que tirar |
+| Consistencia de campos | Cada santo combina módulos distintos | Mismos campos para todos; cada santo rellena los suyos y los vacíos se ocultan |
+| Mantenimiento | Manual — cada instancia se edita por separado | Automático — cambiar el diseño de un bloque en el Layout cambia todos los santos a la vez |
+| Valor de un CPT + ACF | Bajo | Alto — es la base del sistema |
+| Añadir un santo | Montar su ficha a mano | Crear una entrada y rellenar sus casillas; la plantilla no se toca |
+| Añadir una sección nueva | Preparar un Guardado y repetirlo | Crear sus casillas y añadir un bloque al Layout (3 pasos, `HOMBRES_DE_DIOS_ESTRUCTURA.md` Sección 9) |
 
-### 4.2 Lo que sigue pendiente de definir en Local
+### 4.2 Estado y lo que sigue pendiente
 
-| Pendiente | Nota |
+| Pieza | Estado |
 |---|---|
-| ¿Posts normales con categoría, o Custom Post Type? | Con Guardados en vez de Dynamic Content, la razón principal para un CPT+ACF (automatizar campos) ya no aplica con la misma fuerza — puede que Posts con categoría baste |
-| ¿Qué elementos Guardados se preparan de antemano como piezas reutilizables? | P.ej. "bloque de biografía", "bloque de audio", "bloque de discursos" — cada santo elige y edita los que le apliquen |
-| Confirmar en Local que el Layout + Guardados funciona como se espera visualmente | 🔲 Pendiente de prueba práctica, no de documentación |
-| ¿Post Slider sirve para la portada/listado que rota entre los 9 santos? | 🔲 Identificado como el elemento correcto (ver Sección 3 más arriba y `CATALOGO_ELEMENTOS_AVADA.md` Sección 4) — sin configurar ni probar todavía |
+| Mecanismo (Layout compartido, Dynamic Content, Post Cards sobre un Repetidor, bloque vacío que desaparece) | ✅ Comprobado en Local, 29-30 sept 2026 |
+| Base construida: CPT `hombres_de_dios`, Layout "TT — HdD — Ficha del santo", grupo ACF con prefijo `hdd_`, santos de prueba | ⚠️ Según Álvaro (1 oct 2026), sin captura revisada |
+| Secciones construidas: Su vida, Discursos, Sus palabras, Vídeos | ⚠️ Según Álvaro (1-3 oct 2026); detalle y diferencias con el boceto en `HOMBRES_DE_DIOS_ESTRUCTURA.md` Sección 4 |
+| Resto de secciones del boceto de Carlota | 🔲 Sin ficha todavía — se registran según se cierren |
+| Podcast como una sección más de la ficha | 🔲 Se diseña aparte, en un chat propio (`HOMBRES_DE_DIOS_ESTRUCTURA.md` Sección 8) |
+| ¿Post Slider / Post Cards para la portada o el listado que rota entre los santos? | 🔲 Identificado como el elemento correcto (ver Sección 3 y `CATALOGO_ELEMENTOS_AVADA.md` Sección 4) — sin configurar ni probar todavía |
 
 ---
 
@@ -240,7 +235,7 @@ bien ahí.
 ## 6. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Hno A: validar en Local, en este orden — Off Canvas Builder (menú) → Toggles (Introducción del Ejército) → Layout + Guardados para Hombres de Dios → Dynamic Content para Novedades y Devocional → Post Slider para Hombres de Dios y Novedades (nuevo, 11 agosto) → snippets nuevos de "Batalla de cada día/semana" del Ejército de Intercesores (evaluando primero si ACF+nativo lo resuelve, ver Sección 3)
+1. Hno A: validar en Local, en este orden — Off Canvas Builder (menú) → Toggles (Introducción del Ejército) → Layout único + ACF para Hombres de Dios (en construcción, ver `HOMBRES_DE_DIOS_ESTRUCTURA.md`) → Dynamic Content para Novedades y Devocional → Post Slider para Hombres de Dios y Novedades (nuevo, 11 agosto) → snippets nuevos de "Batalla de cada día/semana" del Ejército de Intercesores (evaluando primero si ACF+nativo lo resuelve, ver Sección 3)
 2. Coordinar con el equipo antes de crear las claves nuevas de `wp_options` o campos ACF que probablemente necesite la Batalla de cada día/semana del Ejército de Intercesores
 3. Proyecto 5: retirar la UI de "Tip del día" de la app (ver Sección 2) — pendiente confirmado el 26 de julio 2026
 4. Cuando se resuelvan las preguntas abiertas de `ALCANCE_WEB_NUEVA.md` sobre Biblioteca (PWA de libros, estructura de Oraciones), completar las filas correspondientes de la Sección 3 de este documento
@@ -252,7 +247,7 @@ bien ahí.
 | # | Pregunta | Por qué importa |
 |---|---|---|
 | 1 | ¿Se mantiene el teaser individual de "Ejército de Intercesores" en la home, o desaparece al agruparse bajo Tiritaito? | Sección 2 |
-| 2 | ¿Qué elementos Guardados conviene preparar de antemano para Hombres de Dios (biografía, audio, discursos...)? | Sección 4.2 |
+| 2 | ~~¿Qué elementos Guardados conviene preparar de antemano para Hombres de Dios (biografía, audio, discursos...)?~~ **Resuelto 3 de octubre de 2026** — ya no se usan Guardados: cada sección es un bloque del Layout único, descrito con una ficha | `HOMBRES_DE_DIOS_ESTRUCTURA.md` |
 | 3 | ¿Testimonios de intercesión: volumen aproximado, para decidir Post Cards vs contenido estático? | Sección 3, Tiritaito |
 | 4 | ¿Estructura exacta (nombre del CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador sirve también a Tiritaito Music y Vía Crucis cuando se construyan? | Sección 3, Qué hacemos |
 
@@ -277,6 +272,8 @@ recientes por defecto vía Lightbox (siempre YouTube), ocultar la sección si no
 y arquitectura híbrida (JSON → CPT) para la nueva entrada con el catálogo completo · fila de
 "Tiritaito Music" cerrada respecto a si `[tt_podcast]` la cubre (no la cubre; arquitectura de
 construcción sigue pendiente, se decide al construir esa entrada).
+
+**Resuelto en esta revisión (3 de octubre de 2026):** decisión de arquitectura de Hombres de Dios — pasa de "Layout + Elementos Guardados" a Layout único + CPT `hombres_de_dios` + campos ACF + "mostrar solo si" en cada bloque, comprobada en Local (29-30 septiembre) y en construcción (Su vida, Discursos, Sus palabras, Vídeos) · son 12 santos y llegarán más · registro vivo en `03-guias-practicas/HOMBRES_DE_DIOS_ESTRUCTURA.md` · el podcast entrará como una sección más de la ficha, diseñada aparte.
 
 ---
 
