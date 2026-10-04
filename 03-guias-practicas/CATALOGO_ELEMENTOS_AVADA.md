@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Catálogo de Elementos de Avada
 **De "tengo esta necesidad de contenido" a "este es el elemento que la resuelve, y así de seguro estoy"**
-*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026 · Ampliado con la Sección 5 bis (efectos visuales sin Clase CSS) — 6 de septiembre de 2026 · Ampliado con Modal Element, Conditional Rendering Logic y el reproductor de podcast — 17 de septiembre de 2026*
+*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026 · Ampliado con la Sección 5 bis (efectos visuales sin Clase CSS) — 6 de septiembre de 2026 · Ampliado con Modal Element, Conditional Rendering Logic y el reproductor de podcast — 17 de septiembre de 2026 · Ampliado con el patrón de Hombres de Dios (Sección 4) y la resolución de la decisión 3.1 — 3 de octubre de 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -147,9 +147,7 @@ Builder → Page Title Bar Builder (por grupo de páginas)
   los 5 colores que el Wizard todavía no ha cargado en los 13 slots (confirmado por Cuenta 3
   que seguían sin cargar en su sesión). Sustituir por `Var(--awb-colorN)` correspondiente
   cuando se confirme que Colores 9-13 ya están completos.
-- ❌ **Post Categories/Terms en Off, a propósito** — depende de la decisión pendiente 3.1
-  (¿Hombres de Dios usa CPT o Posts con categoría?). Activarlo antes podría mostrar un nivel
-  de categoría vacío o mal etiquetado.
+- ⚠️ **Post Categories/Terms en Off, a propósito** — dependía de la decisión 3.1 (¿Hombres de Dios usa CPT o Posts con categoría?). **Resuelta el 3 de octubre de 2026: CPT `hombres_de_dios`**, sin categorías: ya se puede decidir este ajuste (pendiente de decidirlo y probarlo en Local).
 
 ---
 
@@ -298,10 +296,10 @@ de Avada, sin código. Para el caso excepcional en que no baste:
 - 🔲 **Aplicación posible, sin decidir ni probar todavía:** esto podría encajar con
   **Biblioteca** (vista previa de un libro o película sin salir del listado) o con
   **Hombres de Dios** (vista previa de un santo desde la portada) — mencionado aquí como
-  posibilidad documentada, no como recomendación de construir ahora. Conecta con la
-  arquitectura ya decidida de Hombres de Dios (Layout + Guardados, `METODOLOGIA_CONSTRUCCION.md`
-  Sección 4) solo si en algún momento se quisiera una vista previa desde la portada,
-  adicional a la ficha completa.
+   posibilidad documentada, no como recomendación de construir ahora. Conecta con la
+  arquitectura ya decidida de Hombres de Dios (Layout único + CPT + ACF,
+  `HOMBRES_DE_DIOS_ESTRUCTURA.md`) solo si en algún momento se quisiera una vista previa
+  desde la portada, adicional a la ficha completa.
 
 ### Rendimiento
 
@@ -359,7 +357,7 @@ de Avada, sin código. Para el caso excepcional en que no baste:
   portada de "Hombres de Dios" — depende directamente del punto anterior
   (`GUIA_AVADA_LOCAL.md` Sección 19, pregunta abierta #2).
 
-### Necesito rotar entre varias entradas distintas (ej. los 9 santos de Hombres de Dios, un listado de Novedades destacadas)
+### Necesito rotar entre varias entradas distintas (ej. los santos de Hombres de Dios, un listado de Novedades destacadas)
 
 → **Elemento:** Post Slider (Avada Builder Element)
 
@@ -378,7 +376,7 @@ de Avada, sin código. Para el caso excepcional en que no baste:
   "Slideshows" no rota entre entradas distintas. Controla **Posts Slideshow Images**: cuántas
   imágenes destacadas puede tener una MISMA entrada individual, formando un mini-carrusel
   dentro de esa sola ficha (ej. varias fotos de un mismo santo, deslizables dentro de su
-  propia página). Para "rotar entre los 9 santos" hace falta Post Slider (entrada anterior).
+  propia página). Para "rotar entre los santos" hace falta Post Slider (entrada anterior).
 - ✅ Configurado por Cuenta 2 (se decidió avanzar porque los valores no chocan con ninguna
   decisión pendiente, aunque originalmente solo se pidió explorar): Posts Slideshow Images 5
   · Autoplay On · Smooth Height Off (correcto si las fotos se recortan con ratio
@@ -386,9 +384,9 @@ de Avada, sin código. Para el caso excepcional en que no baste:
   Navigation Box 30px/30px.
 - ⚠️ Navigation Arrow Size corregido a `14px` (antes "14 píxeles", unidad inválida) — sin
   reconfirmar por captura después del cambio.
-- 🔲 Sin confirmar si un CPT nuevo (para Hombres de Dios, si se decide CPT) hereda
+- 🔲 Sin confirmar si el CPT `hombres_de_dios` (decidido el 3 de octubre de 2026) hereda
   automáticamente este número de imágenes igual que Posts/Pages/Portfolio, o si habría que
-  replicarlo con ACF — solo se sabe probándolo en Local cuando se construya la primera ficha.
+  replicarlo con ACF — solo se sabe probándolo en Local con una ficha real.
 
 ### Necesito un listado de próximos eventos
 
@@ -478,10 +476,20 @@ Hombres de Dios**
   un sitio sin equipo de moderación dedicado. No confirmado como hecho.
 - ⚠️ **Nota de arquitectura, importante:** el propio panel de Avada avisa "For more
   flexibility... we recommend using the Live Builder to create a custom Content Layout" —
-  confirma que esta pestaña es el método clásico/heredado. `METODOLOGIA_CONSTRUCCION.md` ya
-  decidió que Hombres de Dios usa Layout + Elementos Guardados, no este sistema. Esta
-  configuración probablemente termine como red de seguridad para contenido futuro que sí sea
-  una entrada clásica, no como la config real de las fichas de santos.
+  confirma que esta pestaña es el método clásico/heredado. Hombres de Dios usa un Layout
+  único con CPT + ACF (decisión del 3 de octubre de 2026, ver `HOMBRES_DE_DIOS_ESTRUCTURA.md`),
+  no este sistema. Esta configuración probablemente termine como red de seguridad para
+  contenido futuro que sí sea una entrada clásica, no como la config real de las fichas de santos.
+
+### Necesito que cada entrada de un mismo tipo (ej. un santo) use un diseño común con su propio contenido, y que las secciones sin contenido desaparezcan
+
+→ **Elementos:** Layout único (Layout Section Builder) + Dynamic Content sobre campos ACF + Conditional Rendering Logic (pestaña Extras) + Post Cards o Toggles para las listas
+
+- ✅ **Comprobado en Local (29-30 septiembre 2026):** un Layout con la condición "All" de un tipo de contenido propio se aplica a todas sus entradas; Text Block con ACF Text y Post Cards con Content Source = ACF Repeater leen los campos de la entrada actual; un Container con Conditional Rendering (ACF Field "no igual a" vacío para un campo sencillo, ACF Repeater Count "mayor que" 0 para una lista) desaparece entero cuando está vacío — en el código fuente de la página no queda rastro.
+- ⚠️ **Construido y probado por Álvaro, sin captura revisada (1-3 octubre 2026)** en las secciones Su vida, Discursos, Sus palabras y Vídeos de Hombres de Dios: Toggles alimentado por un Repetidor, carrusel con autoplay sobre un Repetidor, fondo con la imagen destacada dinámica, parte opcional dentro de una tarjeta (Conditional Rendering dentro del molde), elemento YouTube y Lightbox desde campos, recorte "Ver más" sobre Post Cards.
+- ⚠️ **Trampas ya vividas:** (1) si el nombre de una casilla en la plantilla no coincide exactamente con el de ACF, Avada no avisa y el bloque sale vacío — en el interruptor "mostrar solo si" hay que poner el nombre técnico, no la etiqueta; (2) en un molde sobre un Repetidor, "ACF Text" no lee subcampos y "ACF Repeater Single Value" repite la fila 1: hay que usar "ACF Repeater Sub Field"; (3) el molde de fábrica de Post Cards no lee subcampos: hace falta uno propio; (4) el elemento Título no admite Dynamic Data: usar Text Block.
+- ❌ **Límites conocidos:** el elemento YouTube no tiene Border Radius propio; en el carrusel de Post Cards el punto activo solo se distingue por color.
+- Detalle completo — fichas de cada sección, nombres de casilla y pendientes — en `03-guias-practicas/HOMBRES_DE_DIOS_ESTRUCTURA.md`.
 
 ---
 
@@ -968,8 +976,7 @@ que Álvaro los lleve, uno por uno, a Proyecto 11 como una tarea normal.
   en móvil que la paginación clásica) · Excerpt Length subido de 10 a 20 palabras · Results
   Meta reducido a Date + Read More Link (se quitaron Author — mostraría el usuario técnico
   interno —, Comments y Categories).
-- ❌ **"Limit Search Results Post Types" en Off, a propósito** — atado a la decisión
-  pendiente 3.1 (CPT vs Posts para Hombres de Dios), igual que Breadcrumbs.
+- ⚠️ **"Limit Search Results Post Types" en Off, a propósito** — estaba atado a la decisión 3.1 (CPT vs Posts para Hombres de Dios), igual que Breadcrumbs. **Resuelta el 3 de octubre de 2026: CPT `hombres_de_dios`**; ya se puede decidir este ajuste (pendiente de decidirlo y probarlo en Local).
 
 ---
 
@@ -1399,8 +1406,8 @@ Proyecto 2 los tenga también:
 | 11 | ~~¿El panel global Custom CSS sigue "permitido bajo vigilancia"...?~~ **Resuelto 24 de septiembre de 2026** — ya no aplica: el CSS de mejoras vive en el archivo maestro `avada-custom-css.css`, gestionado por la cuenta de Código (Proyecto 11), no en el panel de Avada directamente. Ver Sección 5 ter. | — | 5 ter |
 
 **Heredadas de otros documentos, ya conocidas, no se repiten en detalle aquí:** la decisión
-3.1 (CPT vs Posts para Hombres de Dios) bloquea, además de lo ya documentado en
-`ALCANCE_WEB_NUEVA.md`, varios campos de este catálogo (Breadcrumbs, Search); la decisión 3.3
+3.1 (CPT vs Posts para Hombres de Dios) quedó resuelta el 3 de octubre de 2026 — CPT
+`hombres_de_dios` — con lo que Breadcrumbs y Search ya se pueden decidir; la decisión 3.3
 (¿página de Contacto?) bloquea Contact Template y parte de Google Map.
 
 ### ¿Cambia esto el índice de `README.md`?
