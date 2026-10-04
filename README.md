@@ -36,6 +36,9 @@ tiritaito-docs/
 │   ├── GUIA_AVADA_LOCAL.md
 │   ├── CATALOGO_ELEMENTOS_AVADA.md          ← ampliado 24 septiembre 2026
 │   ├── CUADERNO_DEL_CONSTRUCTOR.md          ← nuevo, 1 septiembre 2026
+│   ├── HOMBRES_DE_DIOS_ESTRUCTURA.md        ← nuevo, 3 octubre 2026 — registro vivo de la
+│   │                                            ficha de Hombres de Dios (secciones, casillas
+│   │                                            ACF con su nombre exacto, hallazgos, pendientes)
 │   ├── CHULETA_ALVARO.md                    ← base de Proyecto 3, 7 y 9 — Sección 7
 │   │                                            reescrita 24 sept 2026
 │   ├── CHULETA_CARLOTA.md                   ← base de Proyecto 4 y 6 — Sección 3
@@ -90,6 +93,7 @@ tiritaito-docs/
 | `GUIA_AVADA_LOCAL.md` | `03-guias-practicas/` | Referencia completa de Avada + Local: licencia, Global Options, Header/Footer Builder, Layouts, elementos nativos, ACF, principio de Responsive y de mínimo código | Hno A | Hno C (investigación) | Media — actualizada 6/09/2026 con la prohibición del campo Clase CSS, y 24/09/2026 con el sistema de código en Avada (ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 ter) |
 | `CATALOGO_ELEMENTOS_AVADA.md` | `03-guias-practicas/` | Qué elemento de Avada resuelve una necesidad de contenido concreta, con su nivel de certeza (confirmado en Local / documentado sin probar) — organizado por necesidad, no por nombre de elemento. Desde el 6/09/2026 incluye (Sección 5 bis) qué efecto visual ya es nativo sin código, y desde el 24/09/2026 (Sección 5 ter) el sistema de código en Avada — Proyecto 11, archivo maestro `avada-custom-css.css` | Hno A (lo consulta antes de recomendar), Hna C (referencia opcional para bocetos) | Hno A construye, Hno C (investigación) reconcilia contra el resto de `tiritaito-docs` | Media — crece según se van revisando más elementos y se construyen más secciones reales |
 | `CUADERNO_DEL_CONSTRUCTOR.md` | `03-guias-practicas/` | Borrador de campo de lo que Álvaro descubre al construir (funciona / da problemas / se investigó y esto lo resuelve), antes de pasar en limpio a los documentos oficiales | Hno A (lo alimentan sus 3 cuentas de construcción: Proyecto 3, 7 y 9) | Hno C (investigación) reconcilia las entradas maduras hacia su documento de destino | Alta al principio, según ritmo real de construcción |
+| `HOMBRES_DE_DIOS_ESTRUCTURA.md` | `03-guias-practicas/` | **Nuevo, 3/10/2026.** Cómo está montada la ficha de cada santo en Avada (tipo de contenido propio + campos ACF + un Layout único + "mostrar solo si" en cada bloque): registro de secciones con el nombre exacto de cada casilla, hallazgos técnicos, pendientes, hueco reservado para el podcast y los prompts de Carlota y Álvaro | Hno A (construye), Hna C (bocetos) | Hno C (investigación), a partir de las fichas que devuelve Álvaro | Alta mientras se construye la ficha: una entrada nueva por cada sección que se cierre |
 | `CHULETA_ALVARO.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de construcción (Proyecto 3, 7 y 9) — sustituye al repositorio completo en el día a día. Sección 7 reescrita 24/09/2026: la Clase CSS se resuelve pidiendo una clase a Proyecto 11, nunca escribiéndola por cuenta propia | Hno A | Hno C (investigación), a partir de lo que madure en `CUADERNO_DEL_CONSTRUCTOR.md` o en Proyecto 10 | Baja — solo cuando algo operativo cambia de verdad |
 | `CHULETA_CARLOTA.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de bocetos (Proyecto 4 y 6). Sección 3 reescrita 24/09/2026: Carlota dibuja libre, la tabla de "qué es nativo" queda como ayuda, no como obligación | Hna C | Hno C (investigación) | Baja |
 | `CHULETA_CODIGO_AVADA.md` | `03-guias-practicas/` | **Nuevo, 24/09/2026.** Manual único de la cuenta de Código en Avada: reglas firmes, cómo escribir una ficha, formato de respuesta, diagnóstico paso a paso, ritual tras actualizar Avada | Hno A (Proyecto 11) | Hno C (investigación) | Media — se ajusta según el sistema se rode en la práctica |
@@ -129,10 +133,10 @@ a esa decisión.
 |---|---|
 | Nuevo en el equipo | Este README → `ARQUITECTURA_Y_ROADMAP.md` → `ALCANCE_WEB_NUEVA.md` |
 | Hno A, sesión de código en Local | `00_CORE.md` + `04_ENTORNO_LOCAL.md` + el documento específico de tu tarea |
-| Hno A, sesión de Avada/maquetación | `GUIA_AVADA_LOCAL.md` + `CATALOGO_ELEMENTOS_AVADA.md` + `METODOLOGIA_CONSTRUCCION.md` |
+| Hno A, sesión de Avada/maquetación | `GUIA_AVADA_LOCAL.md` + `CATALOGO_ELEMENTOS_AVADA.md` + `METODOLOGIA_CONSTRUCCION.md` (y, si la sesión es de Hombres de Dios, `HOMBRES_DE_DIOS_ESTRUCTURA.md`) |
 | Hno A, algo que Avada no ofrece nativo y necesita CSS/código visual | Genera el TRASPASO (formato en `CHULETA_ALVARO.md` Sección 7) y llévalo a **Proyecto 11 — Código en Avada** — nunca lo resuelvas escribiendo la Clase CSS por tu cuenta |
 | Hno A, sesión de Tiritaito for Creators (V1 o V2) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` |
-| Hna C, boceto de una sección nueva | Dibuja libre; `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis es una referencia opcional, no un paso obligatorio desde el 24/09/2026 |
+| Hna C, boceto de una sección nueva | Dibuja libre; `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis es una referencia opcional, no un paso obligatorio desde el 24/09/2026. Si el boceto es de una sección de la ficha de Hombres de Dios, `HOMBRES_DE_DIOS_ESTRUCTURA.md` (Apéndices A y B) explica el sistema y el formato de ficha |
 | Hna C, decisión de producto | `ALCANCE_WEB_NUEVA.md` |
 | Hna C, revisando qué migrar | `MIGRACION_CONTENIDO.md` |
 | Carlitos, coordinación | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` |
@@ -152,8 +156,10 @@ a esa decisión.
 | Revisión final de `ALCANCE_WEB_NUEVA.md` con Hna C | `ALCANCE_WEB_NUEVA.md` | Fase 2 de `ARQUITECTURA_Y_ROADMAP.md`; método definitivo de `MIGRACION_CONTENIDO.md` |
 | ✅ Snippet PHP real y completo del endpoint central — obtenido y subido a `apps/v2/` (26/07/2026) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6-7 | — |
 | Confirmar con Hno A tres avisos del PHP real: sin límite de peticiones, sin validación de tipo/tamaño en subidas, sin Biblioteca ni gestión de entradas | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 | Decidir si se restauran o si el sistema se queda así a propósito |
-| Confirmar en Local que el método **Layout + Elementos Guardados** funciona visualmente para "Hombres de Dios" | `METODOLOGIA_CONSTRUCCION.md` Sección 4 | Construcción de esa sección |
+| ~~Confirmar en Local que el método **Layout + Elementos Guardados** funciona visualmente para "Hombres de Dios"~~ **Sustituido el 3/10/2026** — el método es ahora Layout único + CPT + ACF + "mostrar solo si", comprobado en Local (29-30/09/2026) y en construcción | `HOMBRES_DE_DIOS_ESTRUCTURA.md` | — |
 | Confirmar en Local si **Post Cards** cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" (a diferencia de Novedades, si necesitan filtrar de verdad, sí haría falta el hook) | `GUIA_AVADA_LOCAL.md` Sección 19, pregunta 2 | Construcción de esas dos piezas |
+| **Hombres de Dios — pendientes de Álvaro:** borrar en ACF las dos subcasillas sin uso de Discursos, confirmar Header y Footer del Layout y "Show in Nav Menus" del tipo de contenido. Pendiente de Carlitos y Carlota: decidir la barra de título de la ficha | `HOMBRES_DE_DIOS_ESTRUCTURA.md` Sección 7 | Cierre de la ficha y carga de contenido real de los santos |
+| **Podcast dentro de Hombres de Dios:** se diseña en un chat aparte como una sección más de la ficha (casillas, bloque, condición), con prompts para Carlota y Álvaro | `HOMBRES_DE_DIOS_ESTRUCTURA.md` Sección 8 | Cierre de la ficha de Hombres de Dios; boceto de Carlota para el podcast |
 | Montar Post Cards + Dynamic Content de **Novedades** en Avada (backend ya confirmado y probado) | `METODOLOGIA_CONSTRUCCION.md` Sección 3 | Que Novedades se vea en la web pública |
 | Montar Dynamic Content de **Devocional** (Virgen, Brisa, Homilía, Lenguas) en Avada (backend ACF ya confirmado parcialmente) | `METODOLOGIA_CONSTRUCCION.md` Sección 3 | Que Conecta cada día se vea en la web pública |
 | Retirar de la app la UI de **"Tip del día"** (eliminado por decisión, 26/07/2026, pero todavía construido en el HTML real) | `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 8 | Que la decisión se refleje de verdad, no solo en los documentos |
