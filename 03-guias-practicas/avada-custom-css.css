@@ -3,7 +3,7 @@
    Este archivo MANDA. Lo de Avada → Options → Custom CSS es la copia
    desplegada: debe ser idéntica, empezando por esta misma línea de sello.
 
-   TT-CSS · v003 · 2026-09-28 · Avada 7.16.1
+   TT-CSS · v007 · 2026-10-08 · Avada 7.16.1
    ════════════════════════════════════════════════════════════════
 
    CÓMO SE USA ESTE ARCHIVO (léelo antes de tocar nada)
@@ -24,9 +24,12 @@
      la cuenta de Código avisa a Carlitos para valorar dividirlo.
 
    TOKEN DE RADIO — norma general de la web nueva (decisión 24/09/2026)
+   v004 (05/10/2026): corregido — faltaban los dos guiones iniciales
+   (estaba escrito "tt-r-web" en vez de "--tt-r-web"), por lo que la
+   variable no existía y los bloques que la usan no recibían el radio.
    ───────────────────────────────────────────────────────────────── */
 :root {
-  tt-r-web: 15px; /* radio general de la web nueva; cambiable aquí para toda la web, o puntualmente dentro de un bloque concreto */
+  --tt-r-web: 15px; /* radio general de la web nueva; cambiable aquí para toda la web, o puntualmente dentro de un bloque concreto */
 }
 
 
@@ -365,9 +368,10 @@
                  Familia, Santos...) en un chip de 108×80px con una
                  imagen de fondo (la misma para todos), esquinas
                  redondeadas, sombra suave y texto centrado. El chip
-                 activo lleva un borde de 2px. En móvil (hasta 480px)
-                 los chips forman una sola fila que se desliza con el
-                 dedo en vez de apilarse.
+                 activo lleva un borde de 2px. En ordenador y tablet
+                 los chips van en fila y, si no caben, bajan a otra
+                 línea. En móvil (hasta 480px) forman una sola fila
+                 que se desliza con el dedo en vez de apilarse.
                  Avada no ofrece fondo, tamaño ni radio por filtro,
                  ni deslizamiento horizontal.
    Ajustable:    --tt-chip-bg (color de reserva mientras carga la
@@ -390,30 +394,36 @@
                  (ruta sin dominio, para que valga en el Local y en
                  producción; si se borra o se sustituye en la
                  biblioteca, los chips vuelven al color de reserva).
-                 ⚠️ Avada tiene una regla propia que a ≤480px fuerza
-                 display:block !important en la lista de filtros (es
-                 lo que apila los botones en móvil); por eso la regla
-                 de móvil de este bloque lleva !important y un
-                 selector más fuerte. Si una actualización de Avada
-                 cambia esa regla, revisar este bloque con prioridad.
-                 La alineación de la fila la sigue decidiendo el
-                 ajuste nativo de alineación de filtros.
+                 ⚠️ Avada tiene una regla propia que, a ≤1024px
+                 (tablet y móvil), fuerza display:block !important en
+                 la lista de filtros (es lo que apila los botones);
+                 por eso la regla de ≤1024px de este bloque lleva
+                 !important y un selector más fuerte. Si una
+                 actualización de Avada cambia esa regla, revisar
+                 este bloque con prioridad. La alineación de la fila
+                 la sigue decidiendo el ajuste nativo de alineación
+                 de filtros.
    Usado en:     Página Biblioteca · Libros — barra de filtros.
-   Probado con:  Avada 7.16.1 · 05/10/2026 · aspecto del chip OK en
-                 móvil emulado (414px) con fondo rosado; imagen de
-                 fondo (v006) y fila deslizable pendientes de
-                 confirmar; escritorio y tablet pendientes.
+                 Se ven también chips con este diseño en una página
+                 de películas (filtros ALL / SANTOS / VALORES): sin
+                 confirmar en este documento si lleva la misma clase.
+   Probado con:  Avada 7.16.1 · 08/10/2026 · ordenador y móvil OK
+                 según Álvaro; iPad fallaba (apilado) antes de la
+                 v007 · pendiente de confirmar el iPad tras la v007.
    Origen:       boceto de Carlota (Biblioteca — Libros, clases
                  .chips y .chip). Creado el 05/10/2026 (v004);
                  v005: regla de móvil con !important contra el
                  display:block de Avada; v006: fondo rosado sustituido
-                 por imagen de la biblioteca de medios.
+                 por imagen de la biblioteca de medios; v007: el
+                 display:flex !important pasa a valer hasta 1024px
+                 (la regla de Avada llega hasta ahí, no hasta 480px),
+                 y el deslizamiento horizontal se queda en ≤480px.
    ══════════════════════════════════════════════════════════════ */
 
 .tt-biblioteca-chips {
-  -tt-chip-bg: #FBF0F0;
-  -tt-chip-velo: transparent;
-  -tt-chip-borde-activo: var(--awb-color3);
+  --tt-chip-bg: #FBF0F0;
+  --tt-chip-velo: transparent;
+  --tt-chip-borde-activo: var(--awb-color3);
 }
 
 /* La lista: chips en fila, con separación; si no caben, bajan a otra línea.
@@ -469,13 +479,19 @@
   border-color: var(--tt-chip-borde-activo);
 }
 
-/* Móvil: una sola fila que se desliza hacia los lados.
-   !important + selector más fuerte porque Avada, a ≤480px, pone
+/* Tablet y móvil (≤1024px): la lista sigue en flex.
+   !important + selector más fuerte porque Avada, a ≤1024px, pone
    display:block !important en .fusion-post-cards .fusion-filters y su
    regla va después de la nuestra en la hoja compilada. */
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .fusion-post-cards.tt-biblioteca-chips ul.fusion-filters {
     display: flex !important;
+  }
+}
+
+/* Móvil (≤480px): una sola fila que se desliza hacia los lados */
+@media (max-width: 480px) {
+  .fusion-post-cards.tt-biblioteca-chips ul.fusion-filters {
     flex-wrap: nowrap;
     overflow-x: auto;
     scrollbar-width: none;
@@ -487,14 +503,14 @@
 
 
 /* ══════════════════════════════════════════════════════════════
-   FIN DEL ARCHIVO — 5 mejoras registradas · v006 · 2026-10-05
+   FIN DEL ARCHIVO — 5 mejoras registradas · v007 · 2026-10-08
 
    NOTA IMPORTANTE SOBRE LOS BLOQUES HEREDADOS (v001):
    Los selectores #tt-conecta-tabs y #tt-toggle-intro de arriba son
    IDs, heredados del CSS anterior al 24/09/2026. La regla nueva del
    equipo (24/09/2026) es que el gancho SIEMPRE es una CLASE, nunca un
    ID — ver INSTRUCCIONES del Proyecto 11. Se han dejado tal cual en
-   esta v006 porque el encargo era trasladar el CSS "sin arreglos", y
+   esta v007 porque el encargo era trasladar el CSS "sin arreglos", y
    cambiar el selector aquí sin cambiar a la vez el campo real en Avada
    rompería las 2 mejoras. La primera vez que la cuenta de Código
    trabaje sobre "Conecta cada día" o el "Toggle de introducción" (los
