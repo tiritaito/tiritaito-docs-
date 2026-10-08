@@ -17,6 +17,73 @@ viceversa.
 
 ---
 
+## v1-13 — 2026-10-08
+
+⚠️ **Excepción al modo mantenimiento de V1**, pedida expresamente por el equipo
+   técnico: V1 solo recibía correcciones críticas y esta versión añade
+   funcionalidad nueva (dos módulos). No se toca ningún otro módulo
+✅ Nueva tarjeta **Promesas de Dios** al final de "Hoy" (tras "Tip del día"):
+   lista con texto recortado a 2 líneas + cita, "Añadir promesa", editar y
+   borrar (con `confirmarEliminar`). Alta/edición en modal: promesa
+   (obligatoria, máx. 600) y cita (opcional, máx. 80). Guarda en `tt_promesas`
+   (string JSON de un array, se reescribe siempre completo). Sin reordenación:
+   la web las muestra al azar
+✅ Nueva tarjeta **Papa León XIV** a continuación, con formulario directo en la
+   tarjeta (no modal): imagen opcional con vista previa, etiqueta (máx. 40),
+   frase destacada (obligatoria, máx. 160), fecha y lugar (máx. 160), texto
+   (máx. 3000, admite saltos de línea) y enlace (vacío o `https://`). Guarda en
+   `tt_papa_leon` (string JSON de un objeto). Si la clave está vacía, el
+   formulario se precarga con la tarjeta actual de la web (`media_id` = null)
+✅ Imagen del Papa: se sube al pulsar "Publicar" (no antes). Al sustituirla se
+   guarda el `media_id` nuevo y se borra la anterior con
+   `DELETE /tiritaito/v1/medio/{media_id}` sin bloquear si falla; si no había
+   `media_id` previo no se borra nada. Solo JPG, PNG, GIF y WebP (los tipos que
+   acepta el servidor)
+✅ Si el servidor devuelve la clave en `rechazadas[]` se lanza el error interno
+   `tt_promesas_rechazada` / `tt_papa_leon_rechazada` y se avisa de que el
+   equipo técnico debe añadirla al snippet PHP. En Promesas el estado local
+   solo cambia si el servidor confirma el guardado
+✅ 2 entradas nuevas en la FAQ de Ayuda (Promesas y Papa León). Footer: v1-13
+▪️ **Añadido sin que estuviera en la petición** (3 detalles pequeños, avisar
+   si se quieren fuera):
+   - "Quitar imagen" en la tarjeta del Papa: sin él, la imagen precargada no
+     se podía dejar vacía y "imagen opcional" no tenía efecto. Al quitarla se
+     borra de la Biblioteca si tenía `media_id`
+   - Si la subida de la imagen funciona pero el servidor responde que NO ha
+     guardado `tt_papa_leon`, la imagen recién subida se borra para no dejar
+     un archivo huérfano (con un error de red no se toca: no se sabe si el
+     guardado llegó a aplicarse)
+   - `S.opcionesOk`: si `GET /datos` falla al arrancar, ambas tarjetas muestran
+     un aviso y bloquean la edición. Sin esto, añadir una promesa con la lista
+     sin cargar habría sobrescrito en el servidor todas las existentes
+✅ `jsonParaServidor()`: el servidor limpia el JSON con `sanitize_textarea_field()`,
+   que borra cualquier `%` seguido de dos caracteres hexadecimales (un enlace con
+   `%C3%B1` llegaba sin esa parte). La app escribe `%` como `\u0025` dentro del
+   JSON (sigue siendo JSON válido; `JSON.parse` devuelve el `%` original)
+⚠️ Límite conocido en el servidor, no resoluble desde la app: el proxy público
+   `dios-te-habla-publico` vuelve a aplicar `sanitize_text_field` /
+   `sanitize_textarea_field` a `texto`, `frase`, `fecha_lugar` y `etiqueta`, y
+   esas funciones borran `%` + 2 hex dentro del TEXTO (p. ej. "100%de…"). Los
+   enlaces (`esc_url_raw`) sí sobreviven. Pendiente para Proyecto 3
+⚠️ Ambas tarjetas reescriben su valor completo: si dos personas editan a la vez,
+   gana el último que guarda (igual que Novedades)
+▪️ `sw.js`: `CACHE_NAME` = `tt-creators-v1-13`
+▪️ No tocado en esta versión: Devocional, Novedades, Biblioteca de Medios,
+   Recursos, Generadores YouTube, PIN, navegación — sin cambios
+⚠️ Verificación realizada antes de entregar: `node --check` sobre el bloque
+   `<script>` extraído (sin errores); audit `getElementById` vs `id=` (los 5
+   modales dinámicos ya documentados + `tt-modal-promesa`, que se crea con
+   `mkSheet()`, y los literales de plantilla — sin referencias colgantes);
+   balance de etiquetas: `<div>` 213/213 (v1-12: 181/181) y `<section>` 5/5;
+   cada `onclick="window.xxx"` tiene su función definida. Además, prueba
+   funcional en jsdom con servidor simulado (22 comprobaciones: alta, edición
+   y borrado de promesas; clave rechazada; publicar con y sin imagen;
+   sustituir y quitar imagen con borrado del anterior; limpieza de subida
+   huérfana; validaciones; `%` en enlaces). Limitación: no se ha probado en un
+   móvil real ni contra el servidor real
+
+---
+
 ## v1-12 — 2026-09-08
 
 ✅ Subida de archivos (`subirYGuardarCampo()` — compartida por Lenguas
