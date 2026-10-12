@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Chuleta rápida de bocetos (Carlota)
 **Referencia compacta para las cuentas de bocetos — Proyecto 4 y Proyecto 6**
-*Destilada de `00_CORE.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude · Sección 3 reescrita el 24 de septiembre de 2026: dibuja libre, la tabla queda como ayuda*
+*Destilada de `00_CORE.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude · Sección 3 reescrita el 24 de septiembre de 2026: dibuja libre, la tabla queda como ayuda · Ampliada el 10 de octubre de 2026 con la Sección 7 (podcast y novenas)* 
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -109,6 +109,12 @@ Si un efecto no aparece aquí, dibújalo igual — no es tu trabajo confirmar si
 - **Un chat por boceto o por idea.** Cada vuelta de un hilo reenvía todo el HTML generado hasta ese momento — un hilo que acumula muchas versiones se vuelve muy pesado muy rápido.
 - **Esfuerzo (junto al modelo): Medio para las primeras rondas de exploración**, cuando lo que hace falta es ver 2-3 direcciones distintas, no perfección. Sube a Alto solo para pulir la dirección ya elegida — no hace falta más exactitud de la que el boceto necesita en cada fase.
 - Si algo de este documento no basta para resolver una duda de si algo es nativo en Avada, dilo — no lo inventes ni lo dejes en el aire.
+
+---
+
+## 7. Podcast y novenas — referencias
+
+- Podcast: límites del diseño en `PODCAST_ESTRUCTURA.md` §15. Novenas: plantilla de ficha en `ORACIONES_ESTRUCTURA.md` §5. Esquinas dentro de Avada: 15 px (no 25).
 
 ---
 
