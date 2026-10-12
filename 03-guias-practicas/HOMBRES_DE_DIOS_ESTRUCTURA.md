@@ -15,7 +15,7 @@ Un **registro vivo**: dice cómo está construida hoy la ficha de "Hombres de Di
 | Qué elemento de Avada resuelve una necesidad de contenido concreta | `CATALOGO_ELEMENTOS_AVADA.md` |
 | Cómo funcionan Avada y Local mecánicamente | `GUIA_AVADA_LOCAL.md` |
 | Algo recién descubierto al construir, sin pasar todavía a un documento oficial | `CUADERNO_DEL_CONSTRUCTOR.md` |
-| La investigación y las pruebas del podcast | `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` y el informe de pruebas en Local |
+| El podcast: casillas, piezas de Avada, importador y pendientes | `PODCAST_ESTRUCTURA.md` (la investigación previa está en `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md`) |
 | **Cómo está montada la ficha del santo, el nombre exacto de cada casilla, y qué falta por construir** | **Este documento** |
 
 **Cómo leer los estados** (cada dato lleva su origen, para poder rastrearlo):
@@ -96,7 +96,7 @@ Fuente: traspaso de Álvaro del 1 de octubre de 2026.
 | Discursos | ESPECIAL (destacado + lista) | `hdd_discurso_ultimo_*` y `hdd_discursos` | título destacado vacío / lista sin filas | ☑ construida y probada (2 oct) |
 | Sus palabras | LISTA | `hdd_frases` | 0 filas | ☑ construida (2 oct) |
 | Vídeos | ESPECIAL (destacado + lista) | `hdd_video_*` y `hdd_videos` | sin vídeo destacado / lista sin filas | ☑ construida (3 oct); 6 diferencias con el boceto por decidir |
-| Podcast | por diseñar | por diseñar | por diseñar | 🔲 Sección 8 |
+| Podcast | ESPECIAL (canal → temporadas → episodios) | `hdd_podcast_feed`, `hdd_podcast_caratula`, `hdd_temporadas`, `hdd_episodios` | campo vacío | ☑ construido; pendiente de pruebas. Ver `PODCAST_ESTRUCTURA.md` §3.4 y §4 |
 | Resto de secciones del boceto | — | — | — | 🔲 sin ficha todavía: se registran según Carlota y Álvaro las cierren |
 
 ### 4.2 FICHA — Su vida
@@ -231,6 +231,8 @@ Descubiertos al construir. Cuando maduren, se trasladan a `CATALOGO_ELEMENTOS_AV
 | 16 | El molde de fábrica "Starter Blog Post Card" pinta el título de la entrada y no lee subcasillas: hace falta molde propio, sin editar el de fábrica | Prueba, 29 sept | ✅ |
 | 17 | En el ACF de Local no hay pestaña "Archivo"; vive en las URLs | Álvaro, 1 oct | ☑ |
 
+**Hallazgos y pendientes del podcast:** `PODCAST_ESTRUCTURA.md` §8 y §9.
+
 ---
 
 ## 7. Qué falta para dar Hombres de Dios por terminado (salvo el podcast)
@@ -244,26 +246,15 @@ Descubiertos al construir. Cuando maduren, se trasladan a `CATALOGO_ELEMENTOS_AV
 | 5 | Diferencias con el boceto de Vídeos (Sección 4.5) y de Sus palabras (Sección 4.4) | Carlota + Álvaro (TRASPASO a Proyecto 11 si hace falta CSS) | Cierre visual de esas dos secciones |
 | 6 | Aspecto de Su vida y Discursos frente al boceto | Álvaro | Cierre visual |
 | 7 | Registrar con ficha el resto de secciones del boceto de Carlota | Carlota + Álvaro | Cierre del alcance de la ficha |
-| 8 | Diseñar la sección Podcast (Sección 8), en un chat aparte | Carlitos | Cierre de la ficha |
+| 8 | ~~Diseñar la sección Podcast~~ **Cerrado el 10 oct 2026**: pendientes de pruebas en `PODCAST_ESTRUCTURA.md` §9 | Carlitos | Cierre de la ficha |
 | 9 | Cargar el contenido real de los 12 santos (y de los que lleguen) | Equipo | Lanzamiento de la sección |
+| 10 | Hallazgos y pendientes del podcast: ver `PODCAST_ESTRUCTURA.md` §8 y §9 | Carlitos | Cierre del podcast |
 
 ---
 
-## 8. Hueco reservado — Podcast
+## 8. Podcast dentro de la ficha
 
-**El podcast es una sección más de la ficha**, pero su estructura **todavía no está diseñada**: se hace en un chat nuevo, partiendo de este documento (plan del 3 de octubre de 2026). Aquí queda solo lo ya averiguado en las pruebas en Local (1-3 octubre), para que ese chat no parta de cero.
-
-| Qué | Dato | Origen |
-|---|---|---|
-| Alcance | 4 canales de santos dentro de Hombres de Dios. Charlas de la Biblia, Rincón de Nico y Oraciones van aparte (la arquitectura de Oraciones está sin determinar) | Equipo, 3 oct |
-| Opción elegida | Catálogo propio de episodios en WordPress (una entrada por episodio, rellenada desde el feed) pintado con Avada nativo. Los episodios los crea un importador propio (Proyecto 2), no un plugin | Decisiones 30 sept - 3 oct |
-| Diseño buscado | El Layout de Hombres de Dios como molde global que lee y presenta el podcast, con el contenido específico de cada santo (y la dirección de su feed) en campos ACF de su propia entrada; el podcast es una sección más, y un campo vacío la oculta | Carlitos, 2-3 oct |
-| Cómo llegan los episodios a la ficha | Un solo Layout con Post Cards (Content Source = **ACF Relationship**, campo "episodios" de tipo Relación en cada santo): Santo Uno 12 + "Cargar más", Santo Dos 3 episodios, Santo Tres (campo vacío) zona en blanco sin error | Prueba P3, 2 oct (resuelta) |
-| Descartado | Content Source = Related: no llega a los episodios | Prueba P3, 1 oct |
-| Vídeo de YouTube de un episodio | Se oculta con lógica condicional cuando el campo está vacío; con facade de Avada reproduce sin error 153 | Pruebas, 2-3 oct |
-| Compartir | Avada genera las etiquetas Open Graph con su opción activada (no hay plugin SEO); un episodio con imagen propia saca su título, descripción e imagen | Pruebas, 2-3 oct |
-
-**Cosas a tener en cuenta al diseñar la sección:** los episodios salen **ordenados por fecha, no por el orden elegido** en la relación; el botón "Cargar más" hay que ponerlo a mano; si se rehace un Post Cards, reconstruirlo desde cero (el antiguo conservó el filtro por canal guardado); pendientes: medir el rendimiento de Santo Uno con un episodio real y probar Open Graph con un episodio real. Transcripciones: por ahora no se hace nada.
+**Cerrado el 10 de octubre de 2026.** El podcast es una sección más de la ficha, para los 4 santos que tienen programa (Santa Teresita, Emiliano Tardif, Ana Catalina Emmerick y San Serafín de Sarov), y tiene su propio registro en `PODCAST_ESTRUCTURA.md` (casillas, piezas de Avada, importador y pendientes). Las casillas del podcast viven en un grupo aparte, «TT — HdD — Podcast», con el mismo prefijo `hdd_`.
 
 ---
 
@@ -326,7 +317,7 @@ Esta decisión cambia lo escrito en otros documentos. **Se actualizan cuando Car
 2. Álvaro: confirmar Header/Footer y "Show in Nav Menus". Carlitos y Carlota: decidir la barra de título.
 3. Carlota + Álvaro: cerrar las diferencias de Vídeos y Sus palabras; registrar con ficha el resto de secciones.
 4. Reconciliar los documentos oficiales (Sección 10) cuando Carlitos lo confirme.
-5. Chat nuevo para el podcast, con este documento actualizado en el repositorio: estructura de la sección Podcast y prompts para Carlota y Álvaro.
+5. Podcast: ejecutar el plan de pruebas y cerrar los pendientes de `PODCAST_ESTRUCTURA.md` §9.
 
 **Preguntas abiertas:**
 
