@@ -286,13 +286,14 @@ if (document.getElementById('mi-modulo-root')) {
 
 ---
 
-## 12. Podcast y novenas — referencias
+## 12. Podcast y novenas — reglas rápidas
 
-- Podcast: `PODCAST_ESTRUCTURA.md`. Novenas: `ORACIONES_ESTRUCTURA.md`.
-- Para contar los elementos de una relación: *Conditional Rendering → ACF Relationship Count*; una sola condición por elemento.
-- Para enlazar un botón a otra entrada: **no** la casilla de entrada; usar la casilla URL que escribe el importador.
-- Si falta el texto completo de una entrada en un Layout: casilla Editor, no *Excerpt*.
+- Contar los elementos de una relación: *Conditional Rendering → ACF Relationship Count* (Equal To, Greater Than…); una sola condición por elemento.
+- Enlazar un botón a otra entrada: **no** la casilla de entrada; usar la casilla URL que escribe el importador.
+- Texto completo de una entrada en un Layout: casilla Editor, no *Excerpt*.
 - Container de una novena de oración única: guardado como **Guardado (no global)**.
+- Nunca Tabs.
+- Si necesitas el detalle (nombres exactos de casillas, pruebas, pendientes): pide que se adjunte al chat `PODCAST_ESTRUCTURA.md` (podcast) u `ORACIONES_ESTRUCTURA.md` (novenas y Oraciones). Solo si ayuda; no frenes el trabajo.
   
 ---
 
