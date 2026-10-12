@@ -20,7 +20,7 @@ tiritaito-docs/
 ├── README.md                              ← este documento
 ├── 00-nucleo-tecnico/
 │   ├── 00_CORE.md
-│   ├── 02_REF_PODCAST.md
+│   ├── 02_REF_PODCAST.md                    (solo el podcast de la web vieja, V1)
 │   ├── 04_ENTORNO_LOCAL.md
 │   └── TIRITAITO_FOR_CREATORS_VERSIONS.md   (absorbe 01_CREATORS_APP.md, retirado 26/07/2026)
 ├── 01-producto/
@@ -44,6 +44,8 @@ tiritaito-docs/
 │   ├── CHULETA_CARLOTA.md                   ← base de Proyecto 4 y 6 — Sección 3
 │   │                                            reescrita 24 sept 2026
 │   ├── CHULETA_CODIGO_AVADA.md              ← nuevo, 24 sept 2026 — base de Proyecto 11
+│   ├── PODCAST_ESTRUCTURA.md                ← nuevo, 10 octubre 2026 — registro vivo del podcast (Canal → Temporada → Episodio)
+│   ├── ORACIONES_ESTRUCTURA.md              ← nuevo, 10 octubre 2026 — registro vivo de Oraciones y de las novenas
 │   ├── avada-custom-css.css                 ← nuevo, 24 sept 2026 — archivo MAESTRO del CSS
 │   │                                            de mejoras de Avada; manda sobre lo que hay
 │   │                                            pegado en Avada → Options → Custom CSS
@@ -68,6 +70,7 @@ tiritaito-docs/
 │       ├── CHANGELOG-v2-web-nueva.md
 │       └── snippet-tt-creators-endpoint-central.php  ← PHP del endpoint (✅ real y
 │                                                         completo, obtenido 26/07/2026)
+│       ├── tt-podcast-importador.php                 ← nuevo, 10 octubre 2026 (v1.1) — importador de feeds del podcast
 └── historico/
     ├── INFORME_ESTRATEGICO_2026_1.md
     ├── INVESTIGACION_HERRAMIENTAS_2026.md
@@ -84,7 +87,7 @@ tiritaito-docs/
 | Documento | Carpeta | Propósito — responde a... | Audiencia principal | Mantiene actualizado | Frecuencia |
 |---|---|---|---|---|---|
 | `00_CORE.md` | `00-nucleo-tecnico/` | Stack técnico, endpoints, convenciones de código, mapa de `wp_options`/ACF/CPT | Hno A | Hno A | Baja — cambia solo si cambia el stack |
-| `02_REF_PODCAST.md` | `00-nucleo-tecnico/` | Arquitectura del sistema de podcast, shortcode `[tt_podcast]` | Hno A | Hno A | Baja |
+| `02_REF_PODCAST.md` | `00-nucleo-tecnico/` | Arquitectura del sistema de podcast, shortcode `[tt_podcast]` **Solo V1.** La web nueva se documenta en `PODCAST_ESTRUCTURA.md`.| Hno A | Hno A | Baja |
 | `04_ENTORNO_LOCAL.md` | `00-nucleo-tecnico/` | Constantes y particularidades del entorno Local (distinto de producción) | Hno A | Hno A | Media — reescrito 26/07/2026 con la auth real confirmada |
 | `TIRITAITO_FOR_CREATORS_VERSIONS.md` | `00-nucleo-tecnico/` | Qué es y cómo funciona la PWA de editores, V1 vs V2, dónde vive cada archivo en GitHub, formato de changelog, alcance confirmado por versión, especificación técnica de cada módulo | Hno A | Hno A | Media — cada versión nueva de la app. Absorbe desde el 26/07/2026 lo que antes cubría `01_CREATORS_APP.md` |
 | `ALCANCE_WEB_NUEVA.md` | `01-producto/` | Qué secciones tiene la web nueva y con qué prioridad | Hna C | Hna C | Alta mientras se decide el alcance |
@@ -97,6 +100,8 @@ tiritaito-docs/
 | `CHULETA_ALVARO.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de construcción (Proyecto 3, 7 y 9) — sustituye al repositorio completo en el día a día. Sección 7 reescrita 24/09/2026: la Clase CSS se resuelve pidiendo una clase a Proyecto 11, nunca escribiéndola por cuenta propia | Hno A | Hno C (investigación), a partir de lo que madure en `CUADERNO_DEL_CONSTRUCTOR.md` o en Proyecto 10 | Baja — solo cuando algo operativo cambia de verdad |
 | `CHULETA_CARLOTA.md` | `03-guias-practicas/` | Referencia compacta para las cuentas ligeras de bocetos (Proyecto 4 y 6). Sección 3 reescrita 24/09/2026: Carlota dibuja libre, la tabla de "qué es nativo" queda como ayuda, no como obligación | Hna C | Hno C (investigación) | Baja |
 | `CHULETA_CODIGO_AVADA.md` | `03-guias-practicas/` | **Nuevo, 24/09/2026.** Manual único de la cuenta de Código en Avada: reglas firmes, cómo escribir una ficha, formato de respuesta, diagnóstico paso a paso, ritual tras actualizar Avada | Hno A (Proyecto 11) | Hno C (investigación) | Media — se ajusta según el sistema se rode en la práctica |
+| `PODCAST_ESTRUCTURA.md` | `03-guias-practicas/` | Cómo está montado el podcast de la web nueva: casillas con nombre exacto, piezas de Avada, importador (instalación, uso y pruebas), canales, hallazgos, pendientes y cómo añadir un canal | Hno A, Hna C | Hno C (investigación), a partir de lo que devuelvan las cuentas | Alta mientras se construye |
+| `ORACIONES_ESTRUCTURA.md` | `03-guias-practicas/` | Cómo está montada la sección Oraciones y las novenas: los siete tipos, los cinco formatos de novena, fichas con nombres exactos, contraste con los prompts, contenido por revisar y pendientes | Hno A, Hna C | Hno C (investigación), a partir de las fichas que devuelva Álvaro | Alta mientras se construye |
 | `avada-custom-css.css` | `03-guias-practicas/` | El archivo MAESTRO del CSS de mejoras de elementos de Avada (Toggles, Tabs, Audio...) — con una ficha por bloque. Manda sobre lo que hay pegado en Avada → Options → Custom CSS, que es solo su copia desplegada | Hno A (Proyecto 11 lo escribe y lo mantiene) | Proyecto 11 | Media — cada mejora nueva o corregida |
 | `ARQUITECTURA_Y_ROADMAP.md` | `04-vision-y-equipo/` | FODA, política sobre la web vieja (incluida su fecha de caducidad), fases del proyecto, glosario | Carlitos | Hno C (investigación) | Baja |
 | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` | `04-vision-y-equipo/` | Roles, mapa de Proyectos de Claude, ámbito de cada uno, GitHub, WPMobile.app, Search Console | Carlitos | Hno C (investigación) | Media — cambia cuando cambia la organización del equipo |
@@ -140,6 +145,10 @@ a esa decisión.
 | Hna C, decisión de producto | `ALCANCE_WEB_NUEVA.md` |
 | Hna C, revisando qué migrar | `MIGRACION_CONTENIDO.md` |
 | Carlitos, coordinación | `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` |
+| Hno A, sesión del podcast | `PODCAST_ESTRUCTURA.md` |
+| Hna C / Carlota, boceto del podcast | `PODCAST_ESTRUCTURA.md` (Secciones 2, 7 y 15) |
+| Hno A, sesión de una novena o de Oraciones | `ORACIONES_ESTRUCTURA.md` + `CATALOGO_ELEMENTOS_AVADA.md` |
+| Hna C / Carlota, boceto de una novena | `ORACIONES_ESTRUCTURA.md` (Secciones 3.3 a 3.6 y plantilla de ficha, Sección 5) |
 
 ---
 
@@ -176,10 +185,20 @@ a esa decisión.
 | ~~Formalizar si `10px` es un cuarto token de radio...~~ **Resuelto 24/09/2026** — norma general para Avada: `--tt-r-web` = 15px, distinta de los 25/14/8px de la web vieja. Pendiente solo aplicarla en Toggles, Forms y el botón, que hoy siguen en 10px | `CATALOGO_ELEMENTOS_AVADA.md` Sección 13.1 | Bordes de Tabs, Testimonials, Audio y cualquier elemento nuevo |
 | Confirmar en Local si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, o solo registrado como borrador | `GUIA_AVADA_LOCAL.md` Sección 9.1 | Cierre real del menú móvil — uno de los tres bloqueantes de Fase 1 |
 | **Vídeos de seminarios:** decidido el panel de "Más información" (Modal + 2 vídeos recientes vía Lightbox, siempre YouTube) — pendiente definir la estructura (CPT/ACF) de la nueva entrada "Vídeos de los Seminarios" y probar en Local si el Lightbox funciona anidado dentro de un Modal | `METODOLOGIA_CONSTRUCCION.md` Sección 3 · `ALCANCE_WEB_NUEVA.md` Sección 4.C | Construcción del Boceto J v5 y de la nueva entrada |
-| **Podcast:** el alcance documentado (2 programas) no coincide con el código real (el propio snippet dice "los 12 canales", y al menos una ficha de Hombres de Dios usa el mismo reproductor) — pendiente confirmar la lista exacta de los 12 canales y localizar el bloque `<script>` del reproductor, que falta en el código compartido | `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` | Corrección de `ALCANCE_WEB_NUEVA.md` 4.E/4.H y `METODOLOGIA_CONSTRUCCION.md`; boceto de Carlota para el podcast |
+| **Podcast:** ✅ estructura y decisiones cerradas (10/10/2026): Canal → Temporada → Episodio, con importador propio. 🔲 Pendientes en `PODCAST_ESTRUCTURA.md` Sección 9 (instalar la v1.1, pruebas, Charlas de la Biblia, prefijo de URLs, orden de episodios) | `PODCAST_ESTRUCTURA.md` | Corrección de `ALCANCE_WEB_NUEVA.md` 4.E/4.G/4.H y cierre del podcast |
 | **Tiritaito Music:** confirmado que `[tt_podcast]` no cubre el caso (cola, mini-reproductor, enlace profundo); sigue sin decidir dónde viven los datos — aplazado a propósito hasta que se construya esa entrada | `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` | Boceto de Carlota y construcción de la entrada Tiritaito Music |
 | Completar en `CATALOGO_ELEMENTOS_AVADA.md` el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar ni por nombre | `CATALOGO_ELEMENTOS_AVADA.md` Sección 12 | Que el catálogo cubra el listado completo de elementos activos, no solo los ~24-50 ya revisados a fondo |
 | Crear la cuenta del Proyecto 10 y repegar sus instrucciones; reconfigurar los conectores de GitHub de Proyecto 3, 4, 6 y 7 a sus chuletas respectivas; quitar los archivos `.matt.*` de Proyecto 2 y 5 | `CONSUMO_USO_CLAUDE_EQUIPO.md` · `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Secciones 3, 4, 6, 7, 10 | Que el consumo de uso mejore de verdad, no solo en el papel |
+| **Podcast — instalar el importador v1.1 en Local y crear las 4 casillas nuevas** (`ep_texto`, `ep_temporada_url`, `tmp_canal_url`, `tmp_canal_nombre`) | `PODCAST_ESTRUCTURA.md` §9 | Las pruebas del importador |
+| **Podcast — plan de pruebas del importador** (solo consta la primera sincronización de Álvaro, v1.0) | `PODCAST_ESTRUCTURA.md` §12 | Paso a producción |
+| **Podcast — Charlas de la Biblia** (grupo `pod_*`, 3 temporadas, ~70 episodios) | `PODCAST_ESTRUCTURA.md` §14 | Primera cuadrícula de temporadas real |
+| **Podcast — prefijo de URLs apagado en `episodio` y `temporada`**: decidir antes de producción | `PODCAST_ESTRUCTURA.md` §9 | Enlaces compartidos |
+| **Podcast — traspasos a Proyecto 11** (botón vídeo/audio, barra del reproductor, Anterior/Siguiente, miniatura en móvil) | `PODCAST_ESTRUCTURA.md` §7 y §9 | Cierre visual de la ficha del episodio |
+| **Podcast — cron real en Raiola** (¿bloquea `wp-cron.php`?) | `PODCAST_ESTRUCTURA.md` §13.2 | Puntualidad de la sincronización |
+| **Novenas — sellar las fichas y los resultados** (faltan Espíritu Santo, Sagrados Corazones y Pentecostés; resultado de P1–P6, Filtros de Fondo y Desktop / Medium / Small) | `ORACIONES_ESTRUCTURA.md` §1 y §4 | Cierre de las novenas |
+| **Novenas — confirmar el formato de la Inmaculada** (ficha: días con carrusel; prompts: lista de YouTube) y los feeds de Santa Teresita y de Novenas | `ORACIONES_ESTRUCTURA.md` §4 | Ficha de la Inmaculada y novenas con podcast |
+| **Novenas — contenido por revisar antes de cargarlo** (títulos «[TÍTULO DEL DÍA N]», tildes, errata «Jn 15, 15») | `ORACIONES_ESTRUCTURA.md` §3.8 | Carga del contenido real |
+| **Oraciones — arquitectura (una entrada por tipo o tipo de contenido único), portal, Rosario y Adoraciones** | `ORACIONES_ESTRUCTURA.md` §2.2 | Toda la sección Oraciones |
 
 ---
 
