@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Guía Avada + Local
 **Referencia técnica completa: licencia, infraestructura, Global Options, Header/Footer Builder, Layouts, elementos nativos y convenciones**
 *Audiencia principal: Hno A · Fusiona y verifica: INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Parte 3-4) + INFORME_ESTRATEGICO_2026_1.md (Parte 2, 5, 8) + METODOLOGIA_WEB_NUEVA_v2.md (Secciones 3-11) + 04_ENTORNO_LOCAL.md*
-*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026 · Ampliado con principio de Responsive — 13 julio 2026 · Ampliado con altura de sección y previsualización — 14 julio 2026 · Ampliado con mecanismo de dos ordenadores (Cloud Backups) — 31 julio 2026 · Ampliado con la rama Layout único + CPT + ACF del árbol de decisión y lo comprobado en Local para Hombres de Dios — 3 de octubre de 2026*
+*Verificado contra documentación oficial de avada.com — julio 2026 · Corregido contra sesión de diagnóstico en Local — 11-12 julio 2026 · Ampliado con principio de Responsive — 13 julio 2026 · Ampliado con altura de sección y previsualización — 14 julio 2026 · Ampliado con mecanismo de dos ordenadores (Cloud Backups) — 31 julio 2026 · Ampliado con la rama Layout único + CPT + ACF del árbol de decisión y lo comprobado en Local para Hombres de Dios — 3 de octubre de 2026 · Ampliado 10 de octubre de 2026 con el sistema del podcast (tipos propios + importador) y las novenas*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -486,6 +486,8 @@ ANTES DE CONSTRUIR NADA NUEVO
        │                ├── SÍ, siempre idéntico → Avada Library: elemento GLOBAL
        │                └── NO, cambia por página, pero la ESTRUCTURA se repite
        │                      ├── El contenido vive en entradas de un CPT con campos ACF y no todas usan las mismas secciones (ej. Hombres de Dios) → Layout ÚNICO + Dynamic Content + "mostrar solo si" (Conditional Rendering). Ver HOMBRES_DE_DIOS_ESTRUCTURA.md
+       │                      ├── El contenido llega de una fuente externa (un feed) y se repite → CPT + casilla Relationship + importador propio (PODCAST_ESTRUCTURA.md). Código de servidor mínimo (el PHP del importador); la parte visual sigue siendo Avada nativo
+       │                      ├── Son varios días o partes del mismo tema (novena) y no hace falta una página por día → tipo de contenido propio + molde de tarjeta + Post Cards en carrusel (ORACIONES_ESTRUCTURA.md §3.3)
        │                      ├── Lo mantiene Hna C/editores, sin código → Avada Library: GUARDADO
        │                      └── Lo mantiene Hno A, con lógica de servidor → Code Snippets: shortcode
        │                            parametrizable (patrón [tt_podcast], ya probado) — ÚLTIMO RECURSO
@@ -507,6 +509,8 @@ ANTES DE CONSTRUIR NADA NUEVO
 | **Global** (Avada Library) | Contenido idéntico en todas partes (footer, CTA fija) | Ninguno — es su propósito |
 | **Guardado / no-global** (Avada Library) | Estructura repetida, contenido distinto, lo mantiene Hna C/editores sin tocar código | Si cambia el diseño, hay que actualizar cada instancia a mano |
 | **Shortcode parametrizable** (Code Snippets) | Estructura repetida, contenido distinto, lo mantiene Hno A, y ninguna opción nativa lo resuelve | El diseño se actualiza en un solo sitio y se propaga automáticamente — mismo patrón que `[tt_podcast]`, pero es la opción de más mantenimiento de las cuatro |
+| **CPT + ACF Relationship + importador** | Contenido que llega de un feed externo y se mantiene solo (el podcast) | Un snippet PHP de importación (`tt-podcast-importador.php`); la parte visual, nativa. Ver `PODCAST_ESTRUCTURA.md` |
+| **CPT + molde de tarjeta + Post Cards en carrusel** | Los días de una novena: contenido fijo, de uno en uno, sin página por día | Un tipo de contenido por novena de días. Ver `ORACIONES_ESTRUCTURA.md` §3.3 |
 
 ---
 
@@ -705,8 +709,11 @@ Tiritaito, Biblioteca, Hombres de Dios, y cualquier sección futura.
 | Listado con diseño de tarjeta | — | **Post Cards** (Avada Library) | ✅ Confirmado en Local (piloto de Novedades, 22-23 julio 2026): ordena de forma nativa por Custom Field ACF (ej. fecha). ❌ NO filtra por valor de campo de forma nativa — decisión de equipo (26 julio 2026): no se construye el filtro; el listado de Novedades muestra todas las entradas, activas u ocultas, sin distinción. El campo `activo` queda como control interno del editor en la app, sin efecto en la web pública. Si en el futuro "Seminarios pasados" u otra sección sí necesitan filtrar de verdad, ahí haría falta el hook `fusion_post_cards_shortcode_query_override` |
 | Rotar entre entradas distintas (ej. los santos de Hombres de Dios) | — | **Post Slider** — no confundir con "Slideshows" (Options), que solo controla varias imágenes dentro de UNA misma entrada, no rotación entre entradas distintas | 🔲 Identificado como el elemento correcto, confirmado de forma independiente por dos sesiones de trabajo (11 agosto 2026) — sin configurar ni probar todavía en Local. Ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 |
 | Bloque que desaparece entero si no hay contenido | — | **Conditional Rendering Logic** (pestaña Extras) sobre un Container: *ACF Field* (campo sencillo) o *ACF Repeater Count* (lista) | ✅ Comprobado en Local (29-30 sept 2026): el bloque vacío no deja rastro en el código de la página. Ver `HOMBRES_DE_DIOS_ESTRUCTURA.md` |
-| Reproductor de audio | 3 sistemas distintos (`.pp-*`, `.mp-*`, `.hmds-*`) | No es un elemento Avada — consolidación de snippets propios | Ver `METODOLOGIA_CONSTRUCCION.md` |
+| Reproductor de audio | 3 sistemas distintos (`.pp-*`, `.mp-*`, `.hmds-*`) | Web nueva: elemento **Audio** leyendo `ep_audio_url` con *ACF Link*. Los tres sistemas antiguos son de la web vieja | ☑ Ver `PODCAST_ESTRUCTURA.md` |
 | Borde redondeado, sombra, degradado, "cristal esmerilado", texto con degradado, hover de botón | Antes: campo Clase CSS del elemento (❌ ya no permitido escribirlo por cuenta propia) | Ya nativo en Container/Columna/Botón/Título/Highlight — pestañas Diseño/Fondo/Extras. Si de verdad no está: traspaso a Proyecto 11 (Código en Avada) | ✅ Ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis (6 sept 2026) y Sección 5 ter (24 sept 2026) |
+| Contar elementos de una relación | — | **Conditional Rendering → ACF Relationship Count** (Equal To, Greater Than…) | ☑ Una condición por elemento |
+| Enlazar a una entrada guardada en una casilla | — | ❌ No funciona con *Relationship* ni Objeto de entrada; usar una casilla URL escrita por el importador | ☑ Álvaro, 9 oct |
+| Los 9 días de una novena, de uno en uno | Pestañas (Tabs), descartadas | **Post Cards** en layout *Carousel* con un molde de tarjeta | 🔲 Ver `ORACIONES_ESTRUCTURA.md` |
 
 ### 9.1 ⚠️ Corrección — menú móvil: Flyout Menu es método legacy
 
@@ -764,7 +771,7 @@ incluido explícitamente en la decisión del equipo.
 | Necesidad | Por qué no es Avada | Solución |
 |---|---|---|
 | Endpoint REST API propio | Lógica de servidor pura | Code Snippets PHP |
-| Procesamiento de feed RSS del podcast | Lógica de servidor con caché | Code Snippets PHP |
+| Procesamiento de feed RSS del podcast | Lógica de servidor con caché | Code Snippets PHP  → **importador propio** (`tt-podcast-importador.php`, v1.1)|
 | Shortcodes con datos dinámicos de `wp_options` | Lógica de negocio | Code Snippets PHP |
 | Player interactivo con estado JS complejo | JS con estado | Code Snippets HTML (`<style>` + `<script>`) |
 | Widgets devocionales | Leen de REST API en tiempo real | Code Snippets HTML |
@@ -950,6 +957,8 @@ if (document.getElementById('mi-modulo-root')) {
 - **11 agosto 2026: mecanismo de tres capas de "Default Page Template = 100% Width" documentado con evidencia directa (Sección 4.0.3) — no fuerza pantalla completa, solo la habilita por Container.**
 - **6 de septiembre de 2026: verificado contra documentación oficial de avada.com (no de memoria) que Container y Columna tienen nativamente border-radius, box-shadow, degradado de fondo y filtros de desenfoque (backdrop filters); que el elemento Botón trae 10 transiciones de hover de fábrica; y que el degradado de color en texto es nativo vía el elemento Título o Highlight — ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis para el detalle completo y las fuentes.**
 - **29 septiembre – 3 octubre 2026: decisión de arquitectura de Hombres de Dios comprobada en Local — un Layout único con CPT + ACF sirve a todos los santos, cada bloque desaparece entero si su campo está vacío (comprobado en el código fuente de la página, sin rastro) y Post Cards sobre un Repetidor pinta una tarjeta por fila con un molde propio. En construcción desde el 1 de octubre (Su vida, Discursos, Sus palabras, Vídeos; según Álvaro, sin captura revisada). Detalle en `HOMBRES_DE_DIOS_ESTRUCTURA.md` y en `CATALOGO_ELEMENTOS_AVADA.md` Sección 4.**
+- **1–3 octubre 2026:** pruebas del podcast en Local: ✅ Post Cards con *ACF Relationship*, Audio con *ACF Link*, ocultar un bloque con el contador de una relación. Averías: relación creada como Texto, filtros antiguos de Post Cards, un Layout editado en varias pestañas.
+- **9 octubre 2026 (Álvaro, ☑):** *Menu Order* ✅; contador *Equal To / Greater Than* ☑; enlace a una entrada desde una relación ❌; «Post Content» inexistente en el contenido dinámico ☑; primera sincronización del importador (36 episodios, 1 temporada, 0 errores).
 
 **🔲 Solo se puede confirmar dentro de Local:**
 - Si Image Carousel / Avada Slider replican el comportamiento exacto de "Próximos eventos" (autoplay, swipe, modal de vídeo).
@@ -1031,7 +1040,7 @@ golpe; se actualizan la próxima vez que se verifique cada una.
 | # | Pregunta | Por qué importa |
 |---|---|---|
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
-| 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? | Solo se puede confirmar probando en Local — pendiente de sesión práctica. A diferencia de Novedades, si estas dos necesitan filtrar de verdad, sí haría falta el hook de la Sección 9 |
+| 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? **Parcialmente aclarada (10 oct 2026):** Post Cards **sí** lista desde una casilla de relación (podcast). Filtrar por **valor** de campo sigue sin probarse. | Solo se puede confirmar probando en Local — pendiente de sesión práctica. A diferencia de Novedades, si estas dos necesitan filtrar de verdad, sí haría falta el hook de la Sección 9 |
 | 3 | ~~¿Se desactiva "Portafolio"?~~ **Resuelto 14 agosto 2026** — confirmado desactivado contra el export real, ver Sección 4.0.1. | — |
 | 4 | ~~¿10px sustituye a 25px...?~~ **Resuelto 24 de septiembre de 2026** — `--tt-r-web` = 15px, referencia propia de Avada, distinta de los tokens de la web vieja (Sección 13) | Pendiente aplicar en el border-radius de Tabs, Testimonials y Audio, hoy en 0px |
 | 5 | ¿Se confirma que la copia de `GUIA_AVADA_LOCAL.md` que maneja cada cuenta/Proyecto está al día? | La Sección 4.0.3 se añadió porque una sesión de trabajo citó un pasaje sobre "Default Page Template" que no se localizó en la versión disponible en ese momento — puede ser síntoma de una sincronización desactualizada en algún Proyecto |
