@@ -1,5 +1,7 @@
 # 02_REF_PODCAST | Referencia de Podcast
 
+> **Este documento describe el podcast de la web vieja (V1).** La web nueva se documenta en `03-guias-practicas/PODCAST_ESTRUCTURA.md`.
+
 **Dueño**: Técnico permanente (Hno A)
 **Audiencia**: Hno A
 **Propósito**: Referencia técnica de podcast
