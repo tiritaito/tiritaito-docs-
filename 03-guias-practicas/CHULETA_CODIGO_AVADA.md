@@ -262,15 +262,13 @@ propio archivo, al final).
 
 ## 11. Traspasos pendientes del podcast (recibidos el 10 de octubre de 2026)
 
-Cuatro mejoras visuales del podcast que no se resuelven con lo nativo de Avada. Vienen de `PODCAST_ESTRUCTURA.md` §7 y todavía no están escritas. **No las toques por iniciativa propia:** espera a que Álvaro traiga cada una como tarea normal y sigue entonces las Secciones 3 a 5 (pedir el HTML real, escribir la ficha, entregar el archivo completo).
+Cuatro mejoras visuales del ficha del episodio y de la tarjeta del podcast que no se resuelven con lo nativo de Avada. **No las toques por iniciativa propia:** espera a que Álvaro traiga cada una como tarea normal y sigue entonces las Secciones 3 a 5 (pedir el HTML real, escribir la ficha, entregar el archivo completo). Cada una acabará con su ficha y su clase `tt-…` en `avada-custom-css.css`.
 
-| # | Qué quiere conseguir | Dónde | Datos ya conocidos | Estado |
+| # | Qué quiere conseguir | Dónde | Lo ya sabido | Estado |
 |---|---|---|---|---|
-| T1 | Botón «Ver vídeo / Cambiar a audio» | Ficha del episodio | Por completar con `PODCAST_ESTRUCTURA.md` §7 | 🔲 pendiente |
-| T2 | Botones redondos para la barra del reproductor | Elemento Audio, ficha del episodio | Los campos de Design del Audio solo afectan a ese elemento. Con *Controls Color Scheme* = Light los iconos y tiempos se vuelven blancos sobre gris claro; con Dark se leen, pero la línea de progreso queda gruesa y oscura | 🔲 pendiente |
-| T3 | Anterior / Siguiente como botones | Elemento Pagination (*Same Taxonomy Term* + *Swap Post Order*) | Los enlaces salen en inglés («Previous / Next») y no se ha comprobado a dónde llevan | 🔲 pendiente |
-| T4 | Que la miniatura de la tarjeta de episodio no se encoja en móvil | Tarjeta de episodio (Post Cards) | Por completar con `PODCAST_ESTRUCTURA.md` §7 | 🔲 pendiente |
-
-Cada una acabará con su ficha y su clase `tt-…` en `avada-custom-css.css`. La primera será la del elemento Audio (T2).
+| T1 | Botón «Ver vídeo / Cambiar a audio» | Ficha del episodio (Layout `TT — Podcast — Episodio`) | El vídeo de YouTube se oculta si la casilla `ep_youtube_url` está vacía (Conditional Rendering). El audio sale del elemento Audio. El botón debería alternar entre ambos | 🔲 pendiente |
+| T2 | Barra del reproductor con botones redondos ⏮ ▶ ⏭ | Elemento Audio, ficha del episodio | Los campos de Design del Audio solo afectan a ese elemento. Con *Controls Color Scheme* = Light, iconos y tiempos se vuelven blancos sobre gris claro; con Dark se leen, pero la línea de progreso queda gruesa y oscura. Será la primera mejora de Audio del archivo maestro | 🔲 pendiente |
+| T3 | Anterior / Siguiente como botones | Elemento Pagination (*Same Taxonomy Term* + *Swap Post Order*) | Los enlaces salen en inglés («Previous / Next»), como texto. No se ha comprobado a dónde llevan ni en qué orden (prueba H6) | 🔲 pendiente |
+| T4 | Que la miniatura de la tarjeta de episodio no se encoja en móvil | Molde de tarjeta `TT — Podcast — Episodio` (Post Cards) | Una fila de tarjeta se rompe con títulos largos; ya se arregló con elementos nativos (Column *No Wrap*, título al 55 % en móvil, duración oculta en móvil). El detalle del problema de la miniatura no consta: que lo describa Álvaro al traer el traspaso | 🔲 pendiente |
 
 *Para la mayor gloria de Dios · tiritaito.com*
