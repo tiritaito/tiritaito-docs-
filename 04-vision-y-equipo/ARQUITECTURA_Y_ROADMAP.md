@@ -68,6 +68,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | R5 | WPMobile.app vs PWA Creators (confusión de herramientas) | Son herramientas distintas para públicos distintos — definido en `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 |
 | R6 | Reinventar en código lo que Avada+ACF ya resuelve nativo (riesgo medio, ya materializado una vez) | Un shortcode `[tt_novedades]` llegó a construirse por error el 26/07/2026 replicando el patrón antiguo, antes de corregirse a Post Cards+Dynamic Content. Mitigación: principio de "mínimo código posible" reforzado en `GUIA_AVADA_LOCAL.md` Sección 8 y en las instrucciones del Proyecto 3 |
 | R7 | Trabajo perdido por divergencia entre dos ordenadores (riesgo medio, ya materializado una vez como confusión — 31/07/2026) | El segundo ordenador apareció con un WordPress vacío por no partir de un backup del principal. Mitigación: procedimiento acordado en `GUIA_AVADA_LOCAL.md` Sección 2.1 — el ordenador principal gana siempre, backup previo obligatorio, tabla de registro de cambios como red de seguridad |
+| R8 | Fallos silenciosos del importador del podcast (feed caído, relaciones vacías) | Pantalla de estado con registro por canal; no borra nada solo; un feed vacío no toca nada (`PODCAST_ESTRUCTURA.md` §5) |
 
 ### 2.4 Oportunidades
 
@@ -81,6 +82,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | O6 | WPMobile.app integrado desde el principio | Si la arquitectura se piensa con la app en mente desde ahora, la integración futura será mucho más limpia (ver conexión directa en `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7.2) |
 | O7 | ACF Pro + elementos nativos reducen el mantenimiento a largo plazo | Novedades y Devocional (confirmados 26/07/2026) demuestran que Hna C y los editores pueden gestionar contenido dinámico desde wp-admin sin depender de código nuevo cada vez |
 | O8 | Local Cloud Backups habilita trabajo puntual en dos ordenadores sin depender de USB ni de compartir carpetas manualmente | Confirmado y en uso (31/07/2026) — ver `GUIA_AVADA_LOCAL.md` Sección 2.1. No es sincronización en tiempo real, pero resuelve de forma razonable el caso de sesiones puntuales de trabajo conjunto |
+| O9 | Importador de feeds | Los episodios entran solos desde Spotify y la web nueva no depende de teclearlos; el mismo patrón puede servir a Seminarios, Música y Vía Crucis (por estudiar) |
 
 ---
 
@@ -188,6 +190,12 @@ Decisión de Hna C. **Este es también el momento en el que la web vieja (V1) se
 | REST API | Sistema de comunicación entre la PWA Creators y WordPress |
 | PWA Creators | Tiritaito for Creators — herramienta interna para editores, independiente de la web |
 | WPMobile.app | Herramienta para crear la app nativa para la comunidad de usuarios |
+| Feed | La dirección técnica de la que Spotify publica un programa |
+| Importador | Programa propio que lee los feeds y crea en la web las temporadas y los episodios |
+| Canal, temporada y episodio (podcast) | Los tres niveles del podcast de la web nueva: un canal tiene temporadas y cada temporada tiene episodios |
+| ACF Relationship | Casilla que enlaza una entrada con otras (por ejemplo, un canal con sus temporadas) |
+| Novena de días | Novena de 9 días con un tipo de contenido propio, un molde de tarjeta y una portada con un carrusel de los 9 días |
+| Molde de tarjeta | Diseño de una tarjeta de Post Cards, hecho una vez y repetido para todas las entradas |
 
 ---
 
