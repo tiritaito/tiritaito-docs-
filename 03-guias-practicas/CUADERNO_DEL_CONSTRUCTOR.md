@@ -110,6 +110,28 @@ Caso: Novedades no se veía en Post Cards — sesión de diagnóstico y cierre
 |---|---|---|---|
 | 1 | El CPT `novedades` podría no aparecer en el selector "Post Type" de Post Cards en Avada por faltar `'publicly_queryable' => true` en el `register_post_type()` (junto a `public => false`). Diagnóstico de una sesión anterior del Proyecto de Investigación, sin verificar todavía contra el PHP real actual. | 🔲 Pendiente de que Álvaro lo pruebe en Local y confirme el resultado — NO aplicar el fix en el PHP oficial hasta esa confirmación | Sin fecha confirmada |
 
+---
+
+### Podcast — pruebas en Local (1–9 octubre 2026)
+
+#### ✅ Esto funciona así
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| P1 | Post Cards con Content Source = ACF Relationship lista las entradas enlazadas desde una casilla de relación (no solo Repeaters), ordenadas por Menu Order ascendente. | Estado: ✅ las listas (pruebas 1–3 oct); ☑ el orden por Menu Order (Álvaro, 9 oct). Detalle en `PODCAST_ESTRUCTURA.md` | 1–9 octubre 2026 |
+| P2 | El elemento Audio reproduce leyendo una casilla de tipo ACF Link (`ep_audio_url`) con Return HTML = No. | Estado: ✅ (informe de pruebas 1–3 oct) | 1–3 octubre 2026 |
+| P3 | Conditional Rendering → ACF Relationship Count (Equal To, Greater Than…) oculta un bloque según cuántos elementos tiene una relación. Una sola condición por elemento. | Estado: ☑ (Álvaro) | 9 octubre 2026 |
+| P4 | Para que una tarjeta entera sea un enlace: Column → Link URL → icono de discos apilados (no la cadena) → Permalink, con Before / After / Fallback vacíos. | Estado: ☑ (Álvaro) | 9 octubre 2026 |
+
+#### ⚠️ Cuidado con esto
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| P5 | ACF Relationship (u Objeto de entrada) como Button URL no devuelve una dirección: el botón no lleva a ningún sitio. Solución: una casilla de tipo URL, escrita por el importador, leída con ACF Link. | Estado: ☑ (Álvaro) | 9 octubre 2026 |
+| P6 | No existe «Post Content» en el contenido dinámico del Text Block; Excerpt corta a ~20 palabras y aplana los párrafos. Solución: casilla de tipo Editor (`ep_texto`). | Estado: ☑ (Álvaro) | 9 octubre 2026 |
+| P7 | El elemento Pagination (Same Taxonomy Term + Swap Post Order) saca los enlaces en inglés («Previous / Next') y no se ha comprobado a dónde llevan. | Sin comprobar | 1–3 octubre 2026 |
+| P8 | Tres averías en las pruebas: (1) una relación creada como tipo Texto, no como Relación; (2) filtros antiguos de Post Cards que se conservan al editar (si se rehace, reconstruir desde cero); (3) un Layout editado en varias pestañas a la vez. | Informe de pruebas 1–3 oct; solo constan los nombres de las tres averías | 1–3 octubre 2026 |
+
 ## 4. Ya graduadas — trasladadas a documentación oficial
 
 *(Ejemplos de referencia, con hallazgos reales ya confirmados en el proyecto, para que se
