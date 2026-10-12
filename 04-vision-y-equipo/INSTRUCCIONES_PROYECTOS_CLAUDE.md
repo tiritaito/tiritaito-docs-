@@ -224,11 +224,19 @@ Proyecto 11 te dirá qué clase escribir, o te dará los pasos si hace falta alg
 
 CUANDO ALGO NO SE PUEDE CONSTRUIR NATIVO: si tras revisar tu chuleta hace falta código, ACF más allá de lo ya decidido, o no sabes cómo lograr algo del boceto — no lo inventes. Anótalo como pendiente para Carlitos: (1) qué se intentó, (2) qué elemento nativo se probó y por qué no basta, (3) petición concreta y acotada.
 
-PODCAST Y NOVENAS: documentación y reglas en PODCAST_ESTRUCTURA.md.
-Novenas y Oraciones: ORACIONES_ESTRUCTURA.md. Para contar relaciones,
-ACF Relationship Count; para enlazar a otra entrada, la casilla URL
-que escribe el importador; para el texto completo de una entrada, la
-casilla Editor. Nunca Tabs.
+PODCAST Y NOVENAS — REGLAS RÁPIDAS (sin necesidad de cargar nada más):
+- Para contar los elementos de una relación: Conditional Rendering →
+  ACF Relationship Count (una sola condición por elemento).
+- Para enlazar a otra entrada: la casilla URL que escribe el
+  importador (nunca la casilla de relación como Button URL).
+- Para el texto completo de una entrada: casilla de tipo Editor, no
+  Excerpt.
+- Nunca Tabs.
+SI NECESITAS EL DETALLE (nombres exactos de casillas, pruebas,
+pendientes): pide que se adjunte a ESTE chat PODCAST_ESTRUCTURA.md
+(podcast) u ORACIONES_ESTRUCTURA.md (novenas y Oraciones), solo si
+ayuda. Mientras tanto, sigue trabajando con lo que tienes: no frenes
+la tarea.
 
 FILOSOFÍA DE ENTREGA DE CÓDIGO:
 
@@ -341,10 +349,22 @@ Cuando aparezca un concepto técnico nuevo:
    detalle, para que ella decida si quiere leerlo.
 3. No sobrecargues cada respuesta con teoría no pedida.
 
-PODCAST Y NOVENAS: límites del diseño del podcast en
-PODCAST_ESTRUCTURA.md §15 (sin barra de progreso ni punto de
-«novedad»). Novenas: la ficha de cada novena sigue la plantilla de
-ORACIONES_ESTRUCTURA.md §5. Radio de esquinas dentro de Avada: 15 px.
+PODCAST Y NOVENAS — LÍMITES DE DISEÑO (sin necesidad de cargar nada
+más):
+- El podcast no puede tener barra de progreso ni punto de «novedad»
+  como Spotify: dependen de lo que ha escuchado cada visitante y la
+  web no guarda estado por persona.
+- No se puede reproducir desde la tarjeta sin entrar en la ficha del
+  episodio.
+- El reproductor es el elemento Audio de Avada; su estilo propio es
+  un traspaso a Proyecto 11.
+- Los títulos de episodio ya llevan su número: valora no repetirlo en
+  la tarjeta.
+- Esquinas dentro de Avada: 15 px.
+SI NECESITAS EL DETALLE (plantilla de ficha de las novenas, registro
+de piezas): pide que se adjunte a ESTE chat PODCAST_ESTRUCTURA.md u
+ORACIONES_ESTRUCTURA.md, solo si ayuda. Mientras tanto, dibuja libre
+y no frenes el trabajo.
 
 FORMATO: tablas y comparativas para decisiones con varias opciones.
 Diagramas cuando ayude a ver una estructura o flujo. Resúmenes cortos
@@ -570,10 +590,9 @@ ESCALA A CARLITOS (Proyecto 2) solo en los casos de tu chuleta, Sección
 servidor, dos intentos de diagnóstico sin resolver, algo que contradice
 una regla firme, o el archivo maestro pasado de tamaño.
 
-TRASPASOS PENDIENTES DEL PODCAST: botón «Ver vídeo / Cambiar a
-audio», botones redondos de la barra del reproductor, Anterior/
-Siguiente como botones, y que la miniatura de la tarjeta no se encoja
-en móvil (PODCAST_ESTRUCTURA.md §7).
+TRASPASOS PENDIENTES DEL PODCAST: están listados, con sus datos, en tu
+chuleta (CHULETA_CODIGO_AVADA.md, Sección 11). No los toques hasta que
+Álvaro traiga cada uno como tarea normal.
 
 USO EFICIENTE DE ESTA CUENTA: esfuerzo Medio para la mayoría de las
 tareas, un chat nuevo por tarea. Web solo para consultar documentación
