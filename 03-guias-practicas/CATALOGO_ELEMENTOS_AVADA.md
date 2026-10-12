@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Catálogo de Elementos de Avada
 **De "tengo esta necesidad de contenido" a "este es el elemento que la resuelve, y así de seguro estoy"**
-*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026 · Ampliado con la Sección 5 bis (efectos visuales sin Clase CSS) — 6 de septiembre de 2026 · Ampliado con Modal Element, Conditional Rendering Logic y el reproductor de podcast — 17 de septiembre de 2026 · Ampliado con el patrón de Hombres de Dios (Sección 4) y la resolución de la decisión 3.1 — 3 de octubre de 2026*
+*Construido a partir de 3 informes de sesión de Global Options — Cuenta 1, Cuenta 2, Cuenta 3, 28 julio – 10 agosto 2026 — y 2 documentos de investigación sobre el Off Canvas Builder · Primera versión: 11 agosto 2026 · Ampliado con la Sección 5 bis (efectos visuales sin Clase CSS) — 6 de septiembre de 2026 · Ampliado con Modal Element, Conditional Rendering Logic y el reproductor de podcast — 17 de septiembre de 2026 · Ampliado con el patrón de Hombres de Dios (Sección 4) y la resolución de la decisión 3.1 — 3 de octubre de 2026 · Ampliado 10 de octubre de 2026 con los hallazgos del podcast y de las novenas*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -356,7 +356,33 @@ de Avada, sin código. Para el caso excepcional en que no baste:
 - 🔲 Sin confirmar todavía si Post Cards cubre bien el listado de "Seminarios pasados" y la
   portada de "Hombres de Dios" — depende directamente del punto anterior
   (`GUIA_AVADA_LOCAL.md` Sección 19, pregunta abierta #2).
+- ✅ **Content Source = *ACF Relationship*** sirve para tarjetas de una lista de entradas enlazadas, no solo para Repeaters (podcast, 1–3 oct y 9 oct 2026).
 
+### Necesito que un bloque aparezca según cuántos elementos tiene una relación
+
+→ **Elemento:** Conditional Rendering → *ACF Relationship Count* (Equal To, Greater Than…)
+
+- ☑ Álvaro, 9 oct 2026. **Una sola condición por elemento**; basta con una (un Container con «mayor que 0» y dos Post Cards con «igual a 1» y «mayor que 1»).
+
+### Necesito enlazar un botón a una entrada guardada en una casilla
+
+→ **Elemento:** ninguno nativo
+
+- ❌ *ACF Relationship* (y Objeto de entrada) como *Button URL* **no da una dirección**: el botón no lleva a ningún sitio (☑ Álvaro, 9 oct).
+- ✅ Solución: guardar la dirección en una **casilla de tipo URL** (la escribe el importador) y leerla con *ACF Link*.
+
+### Necesito el texto completo de la entrada dentro de un Layout de un tipo propio
+
+→ **Elemento:** casilla de tipo *Editor* + Text Block
+
+- ❌ No existe «Post Content» en el contenido dinámico del Text Block; *Excerpt* corta a ~20 palabras y aplana los párrafos (☑ Álvaro, 9 oct).
+- ✅ Solución: una casilla de tipo *Editor* con el texto completo (`ep_texto`).
+
+### Necesito que una tarjeta entera sea un enlace
+
+→ **Elemento:** Column → *Link URL*
+
+- ☑ Icono de **discos apilados** (no la cadena) → *Permalink*, con Before / After / Fallback vacíos (Álvaro, 9 oct).  
 ### Necesito rotar entre varias entradas distintas (ej. los santos de Hombres de Dios, un listado de Novedades destacadas)
 
 → **Elemento:** Post Slider (Avada Builder Element)
@@ -412,25 +438,15 @@ solapamiento entre dos paneles distintos, abajo
   evento como elemento suelto). Antes de dar "Próximos Eventos" por cerrado del todo,
   recomiendo confirmar esto en Local y resolver la pregunta de "Events Text Display".
 
-### Necesito un reproductor de podcast con lista de episodios, agrupados por temporada
+### Necesito un podcast con lista de episodios, agrupados por temporada
 
-→ **Elemento:** ninguno nativo — Code Snippet propio `[tt_podcast]` dentro de un Code Block
+→ **Elementos:** Audio + Post Cards (fuente *ACF Relationship*) + Pagination + tipos de contenido propios alimentados por el importador
 
-- ✅ **Confirmado (16 septiembre 2026):** es uno de los casos donde Avada genuinamente no
-  ofrece nada equivalente — consume un feed RSS externo en el servidor (con caché, vía
-  `fetch_feed()` nativo de WordPress) y construye una lista con estado de reproducción. El
-  elemento **Audio** de Avada (Sección 5 de este catálogo) solo sirve para un audio suelto
-  autoalojado y **no gobierna este reproductor**.
-- ⚠️ **Alcance real mayor de lo documentado hasta ahora:** el shortcode `[tt_podcast]` no
-  vive solo en Rincón de Nico y Charlas de la Biblia — el propio comentario del código lo
-  describe como compartido por "los 12 canales", y al menos una ficha de Hombres de Dios
-  (San Serafín de Sarov) lo usa también, con un feed real de 36 episodios. Ver
-  `02-metodologia/investigaciones/INVESTIGACION_PODCAST.md` para el detalle completo —
-  **pendiente confirmar la lista exacta de los 12 canales** antes de corregir
-  `ALCANCE_WEB_NUEVA.md` y `METODOLOGIA_CONSTRUCCION.md` en consecuencia.
-- 🔲 Diagnóstico técnico completo (rendimiento, accesibilidad, SEO) en el documento de
-  investigación citado arriba — pendiente de trasladar aquí en detalle una vez se localice
-  el bloque `<script>` que falta en el código compartido y se confirme el alcance real.
+- ✅ Reproductor: el elemento **Audio** leyendo la casilla `ep_audio_url` (*ACF Link*, *Return HTML* = No) — informe de pruebas del 1–3 oct 2026.
+- ✅ Listas: **Post Cards** con fuente *ACF Relationship* (y también Repeater), ordenadas por *Menu Order* ascendente — pruebas del 1–3 oct y Álvaro, 9 oct.
+- ☑ Ocultar bloques según la cuenta de una relación: *ACF Relationship Count* (Equal To, Greater Than…), **una condición por elemento** (Álvaro, 9 oct).
+- ◐ Anterior/Siguiente: elemento **Pagination** con *Same Taxonomy Term* y *Swap Post Order*; los enlaces salen en inglés («Previous / Next»); sin comprobar a dónde llevan.
+- **El shortcode `[tt_podcast]` queda solo para la web vieja (V1).** Detalle completo en `PODCAST_ESTRUCTURA.md`.
 
 ### Necesito la vista clásica de archivo del blog de WordPress
 
@@ -616,6 +632,27 @@ Post Cards Element; documentada de forma genérica también para Container/Colum
   seminarios o contenido de Rincón de Nico/Charlas de la Biblia si algún día llevan carrusel
   propio. **Sin estilo por defecto revisado por ninguna de las tres cuentas en esta ronda.**
 
+### Necesito un carrusel de tarjetas de contenido (por ejemplo, los 9 días de una novena)
+
+→ **Elemento:** Post Cards, layout *Carousel*, sobre un tipo de contenido propio
+
+- 📖 Documentado por Avada: Post Cards admite el layout *Carousel*; con **1 tarjeta visible, flechas, puntos y sin reproducción automática**, número de entradas ≥ al de días y *Order By* = casilla del número del día, **numérico y ascendente**.
+- 🔲 Sin probar en Local (novena de la Inmaculada): deslizar con el dedo en móvil real; orden numérico 1, 2, 10 y no por fecha.
+- ❌ **Límite:** el punto activo solo se distingue por color; no hay contador «Día N de 9» (cada tarjeta lleva su propia etiqueta, leída de una casilla).
+
+### Necesito una tarjeta de altura fija cuyo contenido se desplace dentro
+
+→ **Elemento:** Container / columna con altura mínima = máxima + *overflow* automático
+
+- 📖 Sin probar: ¿acepta unidades `vh`?, ¿se llega con teclado?, ¿funciona en móvil real?
+- ⚠️ Decisión de equipo (7 oct 2026): se acepta para las novenas de días; la cabecera «DÍA N» queda fija arriba y solo se desplaza el texto.
+
+### Necesito pestañas (1, 2, 3…)
+
+→ **Elemento:** Tabs — ❌ **descartado para novenas y para Conecta cada día**
+
+- Decisión del equipo (7 oct 2026): el elemento Tabs se considera frágil para lo que se busca (cada sección en una pestaña hija; meter el contenido libre exigía código). Alternativa elegida para las novenas: Post Cards en carrusel; para Conecta cada día, el diseño se estudia aparte.
+  
 ### Necesito una galería de imágenes con paginación
 
 → **Elemento:** Gallery
@@ -641,10 +678,7 @@ Post Cards Element; documentada de forma genérica también para Container/Colum
 
 - ✅ Configurado por Cuenta 1: Fondo Texto Principal (oscuro) · Progress Color Fondo Blanco ·
   Controls "Light" — coherente con el reproductor de vídeo ya visto en Toggles.
-- ❌ **Aclaración importante:** este panel NO gobierna el reproductor de podcast real del
-  sitio (`TT Podcast`, prefijo `.pp-*`), que sigue siendo un snippet custom aparte,
-  documentado como deuda técnica intencional sin migrar (`00_CORE.md` Sección 10). Este
-  elemento solo afecta a audios nativos insertados directamente vía Builder.
+- ⚠️ En la **web vieja (V1)** este panel no gobierna el reproductor `TT Podcast` (`.pp-*`). En la **web nueva**, el elemento Audio **sí es** el reproductor del podcast (casilla `ep_audio_url`, *ACF Link*). Con *Controls Color Scheme* = Light los iconos y tiempos se vuelven blancos sobre gris claro; con Dark se leen pero la línea de progreso queda gruesa y oscura. Los campos de Design del Audio solo afectan a ese elemento. Su estilo propio es un **traspaso a Proyecto 11**.
 - ⚠️ Border Radius en 0px — la norma general para Avada ya está decidida (15px, Sección
   13.1), pendiente solo de aplicarla aquí si se quiere que este elemento la siga.
 
@@ -821,7 +855,7 @@ elemento vive esto?"**
 | Bordes redondeados en un Container o Columna | Pestaña Diseño → Border Radius | ✅ Confirmado | avada.com/documentation/container-element/ |
 | Sombra (box-shadow) en un Container o Columna | Pestaña Diseño/Extras → Box Shadow (posición, difuminado, extensión, color) | ✅ Confirmado | avada.com/blog/how-to-use-the-avada-container-element/ |
 | Fondo con degradado de color | Pestaña Fondo → sub-pestaña Degradado (colores, posiciones, tipo, ángulo, opacidad) | ✅ Confirmado | avada.com/documentation/how-to-use-the-container-column-background-options/ |
-| Efecto "cristal esmerilado" / desenfoque de lo que hay detrás | Container y Columna (incluidas columnas anidadas) → pestaña Extras → Filtros de Fondo, con estado Normal y Hover independientes | ✅ Confirmado — función reciente; **confirmar que la versión de Avada del Local ya la incluye antes de prometérsela a Carlota** | avada.com/documentation/backdrop-filters-on-containers-and-columns/ |
+| Efecto "cristal esmerilado" / desenfoque de lo que hay detrás | Container y Columna (incluidas columnas anidadas) → pestaña Extras → Filtros de Fondo, con estado Normal y Hover independientes | ✅ Confirmado — función reciente; **confirmar que la versión de Avada del Local ya la incluye antes de prometérsela a Carlota** · Lo usan las tarjetas de las novenas (desenfoque 22 px); **🔲 sin confirmar en Local** (resultado pendiente de las fichas de Álvaro, `ORACIONES_ESTRUCTURA.md` §3.7) | avada.com/documentation/backdrop-filters-on-containers-and-columns/ |
 | Degradado de color EN el texto | Elemento Título (tipo Texto) → Gradient Font Color; o elemento Highlight sobre una porción de texto | ✅ Confirmado | avada.com/documentation/highlight-element/ |
 | Texto con sombra o contorno | Elemento Título → Text Shadow, Text Stroke | ✅ Confirmado | avada.com/documentation/how-to-use-the-title-element-title-types/ |
 | Texto animado (aparece al hacer scroll, se desplaza, rota entre frases) | Elemento Título → tipos "Scroll Reveal", "Marquee", "Rotating" | ✅ Confirmado | avada.com/documentation/how-to-use-the-title-element-title-types/ |
