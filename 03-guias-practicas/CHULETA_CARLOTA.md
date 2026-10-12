@@ -112,9 +112,14 @@ Si un efecto no aparece aquí, dibújalo igual — no es tu trabajo confirmar si
 
 ---
 
-## 7. Podcast y novenas — referencias
+## 7. Podcast y novenas — límites de diseño
 
-- Podcast: límites del diseño en `PODCAST_ESTRUCTURA.md` §15. Novenas: plantilla de ficha en `ORACIONES_ESTRUCTURA.md` §5. Esquinas dentro de Avada: 15 px (no 25).
+- El podcast no puede tener barra de progreso ni punto de «novedad» como Spotify: dependen de lo que ha escuchado cada visitante y la web no guarda estado por persona.
+- No se puede reproducir desde la tarjeta sin entrar en la ficha del episodio.
+- El reproductor es el elemento **Audio** de Avada; su estilo propio es un traspaso a Proyecto 11.
+- Los títulos de episodio ya llevan su número: valora no repetirlo en la tarjeta.
+- Esquinas dentro de Avada: 15 px (no 25).
+- Si necesitas el detalle (plantilla de ficha de las novenas, registro de piezas): pide que se adjunte al chat `PODCAST_ESTRUCTURA.md` u `ORACIONES_ESTRUCTURA.md`. Solo si ayuda; dibuja libre mientras tanto.
 
 ---
 
