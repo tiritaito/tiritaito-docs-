@@ -17,6 +17,18 @@ viceversa.
 
 ---
 
+## v1-16 — 2026-10-12
+
+✅ Actualización automática: `sw.js` sirve el HTML red-primero (caché solo sin conexión). Ya no hay que desinstalar ni subir `CACHE_NAME` en cada entrega
+✅ Registro del service worker con `updateViaCache: 'none'` y búsqueda de versión nueva al volver a primer plano
+✅ Diagnosticado el vídeo de Lenguas de Hoy que se veía antiguo en el móvil: era una copia cacheada de la página en LiteSpeed (se resolvió purgando todo). App, `POST /datos` y `GET /datos` no tenían fallo
+⚠️ Pendiente: excluir `/blog/conecta-cada-dia/` de la caché de LiteSpeed (Do Not Cache URIs)
+⚠️ Conocido, no tocado: el widget de Lenguas lleva `TT_READ_TOKEN` visible en el código de la página, y ese token también abre `/medios` y `/entradas`
+▪️ `sw.js`: `CACHE_NAME` = `tt-creators-v1-16`
+▪️ Verificado: nada ejecutado; los cambios son sustituciones puntuales y habría que pasar `node --check` al HTML antes de subirlo
+
+---
+
 ## v1-13 — 2026-10-08
 
 ⚠️ **Excepción al modo mantenimiento de V1**, pedida expresamente por el equipo
