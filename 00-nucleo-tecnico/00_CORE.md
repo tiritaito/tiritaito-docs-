@@ -365,6 +365,7 @@ if (document.getElementById('mi-modulo-root')) {
 - [ ] Barra de progreso visible en subidas de archivo
 - [ ] Si el componente lee/escribe contenido dinámico: ¿va en ACF (Options Page o CPT) o en `wp_options`? Ver Sección 3 antes de decidir, y siempre `update_field()` si es ACF
 - [ ] Si el componente se puede resolver con un elemento nativo de Avada: consultar `CATALOGO_ELEMENTOS_AVADA.md` antes de escribir código nuevo (ver `GUIA_AVADA_LOCAL.md` Sección 8)
+- [ ] Si el contenido llega de un feed externo y se repite: ¿entra por el importador (tipo propio + relación)? Ver `PODCAST_ESTRUCTURA.md`. Si son los días de una novena: ver `ORACIONES_ESTRUCTURA.md`
 
 ---
 
