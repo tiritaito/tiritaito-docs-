@@ -709,7 +709,7 @@ h1, h2, h3, h4, .tt-title {
 
         </div>
       </div>
-      <div class="tt-footer-note">Tiritaito for Creators · v1-15<br>Ad maiorem Dei gloriam</div>
+      <div class="tt-footer-note">Tiritaito for Creators · v1-16<br>Ad maiorem Dei gloriam</div>
     </section>
 
     <!-- ───────── PÁGINA: RECURSOS ───────── -->
@@ -2452,7 +2452,13 @@ if (sessionStorage.getItem('tt-creators-auth') === '1') iniciarApp();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
-      .register('https://www.tiritaito.com/blog/Tiritaito%20for%20Creators/App/sw.js')
+      .register('https://www.tiritaito.com/blog/Tiritaito%20for%20Creators/App/sw.js', { updateViaCache: 'none' })
+      .then((reg) => {
+        // Busca versión nueva del service worker cada vez que la app vuelve a primer plano.
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update().catch(() => {});
+        });
+      })
       .catch((err) => console.warn('Service Worker no registrado:', err));
   });
 }
