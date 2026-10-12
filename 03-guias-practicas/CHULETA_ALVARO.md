@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Chuleta rápida de construcción (Álvaro)
 **Referencia compacta para las cuentas ligeras de construcción — Proyecto 3 y Proyecto 7**
-*Destilada de `00_CORE.md`, `04_ENTORNO_LOCAL.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude · Sección 7 reescrita el 24 de septiembre de 2026 con el sistema de código en Avada (Proyecto 11)*
+*Destilada de `00_CORE.md`, `04_ENTORNO_LOCAL.md`, `GUIA_AVADA_LOCAL.md` y `CATALOGO_ELEMENTOS_AVADA.md` — 22 de septiembre de 2026, a raíz del estudio de consumo de uso de Claude · Sección 7 reescrita el 24 de septiembre de 2026 con el sistema de código en Avada (Proyecto 11) · Ampliada el 10 de octubre de 2026 con la Sección 12 (podcast y novenas)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -284,6 +284,16 @@ if (document.getElementById('mi-modulo-root')) {
 - Si necesitas construir algo grande, verificar un contrato de endpoint que no esté aquí, o leer el HTML/PHP real de la app: pásate a **Proyecto 10 — Consulta Técnica Profunda**.
 - Si lo que necesitas es CSS o un pequeño HTML/JS visual para un elemento de Avada que no se puede nativo: no lo pidas aquí. Genera el TRASPASO de la Sección 7 y llévalo a **Proyecto 11 — Código en Avada**.
 
+---
+
+## 12. Podcast y novenas — referencias
+
+- Podcast: `PODCAST_ESTRUCTURA.md`. Novenas: `ORACIONES_ESTRUCTURA.md`.
+- Para contar los elementos de una relación: *Conditional Rendering → ACF Relationship Count*; una sola condición por elemento.
+- Para enlazar un botón a otra entrada: **no** la casilla de entrada; usar la casilla URL que escribe el importador.
+- Si falta el texto completo de una entrada en un Layout: casilla Editor, no *Excerpt*.
+- Container de una novena de oración única: guardado como **Guardado (no global)**.
+  
 ---
 
 *Para la mayor gloria de Dios · tiritaito.com*
