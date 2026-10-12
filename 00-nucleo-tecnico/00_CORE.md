@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Contexto Maestro
 *Reemplaza: ENTORNO_TÉCNICO · GUÍA_DE_ESTILO_VISUAL · tiritaito-guia-diseno-visual.md · secciones 2,9-14 de protocolo-tiritaito-creators-2.md*
 *Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast) · TIRITAITO_FOR_CREATORS_VERSIONS.md (si trabajas en V1/V2 de la app)*
-*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026*
+*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026 · Ampliado 10 de octubre de 2026 con el mapa de datos del podcast y la convención de las novenas*
 
 ---
 
@@ -11,7 +11,7 @@
 |---|---|
 | Hosting | Raiola Networks (bloquea `/wp-admin/` para usuarios no logados) |
 | CMS | WordPress en `/blog/` + Avada Live Builder |
-| Plugin código | Code Snippets (free): tipos PHP y HTML únicamente — NO JS/CSS separados |
+| Plugin código | Code Snippets (free): tipos PHP y HTML únicamente — NO JS/CSS separados. Incluye el snippet «TT Podcast — Importador» (alcance «Run snippet everywhere») |
 | Caché | LiteSpeed Cache — excluir `/blog/wp-json/tiritaito/` |
 | Plugins activos | WPMobile.app · Jetpack · Limit Login Attempts · Administrador Archivos WP · ACF Pro (incluido con la licencia de Avada) |
 
@@ -163,6 +163,21 @@ Avada+Creators, sin nombre formal asignado en este documento; confirmar y renomb
 constante si es así.
 
 **Header:** `Cache-Control: no-store` · **CORS:** priority 15
+
+### 3.4 CPT `episodio`, `temporada` y taxonomía `canal` (podcast)
+
+El contenido del podcast vive en dos tipos propios y una taxonomía, alimentados por el importador. Esquema completo, estado y hallazgos en `03-guias-practicas/PODCAST_ESTRUCTURA.md` Sección 3; aquí solo los nombres.
+
+- **`episodio`:** `ep_guid`, `ep_audio_url`, `ep_youtube_url` (Texto), `ep_imagen_url`, `ep_duracion`, `ep_numero`, `ep_temporada`, `ep_temporada_ref`, `ep_temporada_url`, `ep_texto` (Editor), `ep_hash`.
+- **`temporada`:** `tmp_numero`, `tmp_canal`, `tmp_canal_url`, `tmp_canal_nombre`, `tmp_episodios`, `tmp_descripcion`.
+- **Canal (Hombres de Dios):** `hdd_podcast_feed`, `hdd_podcast_caratula`, `hdd_temporadas`, `hdd_episodios`. **Resto de canales:** `pod_feed`, `pod_caratula`, `pod_temporadas`, `pod_episodios`.
+- **Privados del importador:** `_tt_pod_clave`, `_tt_pod_canal`, `_tt_pod_term`; registro en `wp_options`, clave `tt_podcast_importador_log`.
+
+⚠️ El importador escribe con `update_field()` **por clave de campo** (no por nombre), para que ACF guarde también la referencia.
+
+### 3.5 CPT de las novenas de días
+
+Cada novena de días tiene un tipo de contenido propio (`novena_<tema>`, público, sin archivo) y un prefijo de tres letras para sus casillas: `nes_` (Espíritu Santo), `nsc_` (Sagrados Corazones), `nin_` (Inmaculada). Casilla: `<prefijo>_<apartado>_<campo>`; el número del día, `<prefijo>_dia`. **Convención completa, fichas y casillas propuestas** en `03-guias-practicas/ORACIONES_ESTRUCTURA.md` Sección 3.4. Solo `novena_inmaculada` y `nin_dia` están creadas (☑); las demás son propuesta hasta sellar sus fichas.
 
 ---
 
@@ -328,7 +343,11 @@ if (document.getElementById('mi-modulo-root')) {
 | Sin límite de peticiones en el backend actual (26 julio 2026) | El snippet reconstruido tras la pérdida del Local no tiene rate limiting — el PHP anterior sí lo tenía (60 peticiones/hora por IP con el token de escritura). No confirmado si es una omisión temporal o una decisión — preguntar a Hno A antes de asumir que es definitivo |
 | Subida de archivos sin validar tipo ni tamaño (26 julio 2026) | `tt_subir_archivo()` llama directo a `media_handle_upload()` sin comprobar el tipo MIME real ni un tamaño máximo — el PHP anterior sí validaba ambos antes de subir. Mismo aviso: confirmar con Hno A si es intencional |
 | Confundir "Slideshows" con "Post Slider" en Avada (11 agosto 2026) | Slideshows (Avada → Options) solo controla varias imágenes DENTRO de una misma entrada. Para rotar entre entradas distintas (ej. los 9 santos de Hombres de Dios) hace falta Post Slider, un elemento del Builder — confusión ya cometida y corregida dos veces de forma independiente durante la ronda de Global Options. Ver `GUIA_AVADA_LOCAL.md` Sección 9 |
-| Atributo `seasons` de `[tt_podcast]` con comillas mal anidadas (16 septiembre 2026) | Debe ser JSON válido con comillas dobles por dentro y comillas simples envolviendo todo el atributo (`seasons='{"1":"Nombre"}'`). Comillas simples anidadas rompen el parseo de WordPress **en silencio** — no da error, el mapa de temporadas llega vacío y los nombres no se aplican. Verificado ejecutando `shortcode_parse_atts()` real de WordPress contra el string |
+| Atributo `seasons` de `[tt_podcast]` con comillas mal anidadas (16 septiembre 2026) | Debe ser JSON válido con comillas dobles por dentro y comillas simples envolviendo todo el atributo (`seasons='{"1":"Nombre"}'`). Comillas simples anidadas rompen el parseo de WordPress **en silencio** — no da error, el mapa de temporadas llega vacío y los nombres no se aplican. Verificado ejecutando `shortcode_parse_atts()` real de WordPress contra el string (solo web vieja, V1) |
+| `update_field()` por nombre en entradas nuevas (10 octubre 2026) | Sin una referencia previa, ACF no localiza el campo: usar la clave del campo (`field_…`) |
+| ACF Relationship / Objeto de entrada como *Button URL* (9 octubre 2026) | No devuelve una dirección: el botón no lleva a ningún sitio. Usar una casilla de URL escrita por el importador |
+| No hay «Post Content» en el contenido dinámico (9 octubre 2026) | Usar una casilla de tipo Editor con el texto completo (`ep_texto`) |
+| Renombrar la entrada de un canal duplicaba sus episodios (10 octubre 2026) | Pasaba si la identidad del canal dependía de su slug. El importador v1.1 usa el ID de la entrada (`_tt_pod_canal`, `_tt_pod_term`) |
 
 *Eliminada la fila "Application Password con espacios" — ya no aplica desde que se descartó ese patrón de autenticación.*
 
@@ -351,7 +370,7 @@ if (document.getElementById('mi-modulo-root')) {
 
 ## 10. NOTAS SOBRE EL REPRODUCTOR DE PODCAST
 
-El reproductor existente (`TT Podcast`) usa prefijo `.pp-*` y hex directo — es anterior al estándar `tt-` / `var(--tt-*)`. No es un error, es deuda técnica. No migrar salvo que se refactorice explícitamente.
+El reproductor `TT Podcast` (`.pp-*`, `[tt_podcast]`) es solo de la **web vieja (V1)**: usa prefijo `.pp-*` y hex directo, es anterior al estándar `tt-` / `var(--tt-*)` y es deuda técnica; no se migra. La web nueva usa el elemento Audio de Avada y el sistema de `PODCAST_ESTRUCTURA.md`.
 
 `has_shortcode()` falla con Avada. El CSS del podcast se inyecta con `wp_head` unconditional (priority 5) como workaround documentado.
 
