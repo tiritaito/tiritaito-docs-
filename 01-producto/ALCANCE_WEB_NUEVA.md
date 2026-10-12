@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Alcance de la Web Nueva
 **Estructura de la web nueva: páginas, secciones internas, prioridades y método de trabajo**
-*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades · Actualizado 17 de septiembre de 2026 con las decisiones de equipo sobre los vídeos de seminarios (Sección 4.C) · Actualizado 3 de octubre de 2026 con el método de Hombres de Dios (Sección 4.H)*
+*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades · Actualizado 17 de septiembre de 2026 con las decisiones de equipo sobre los vídeos de seminarios (Sección 4.C) · Actualizado 3 de octubre de 2026 con el método de Hombres de Dios (Sección 4.H) · Actualizado 10 de octubre de 2026 con el podcast y con Oraciones/Novenas (4.E, 4.G, 4.H)* 
 *Aprobación: Hna C · Redacción: Hno C*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -91,7 +91,7 @@ PÁGINA DE INICIO
 ├── BIBLIOTECA (página) — 3 apartados, presentación distinta cada uno
 │     ├── Libros      — sistema PWA existente, migra a formato de entrada
 │     ├── Películas   — plantilla compartida con Libros
-│     └── Oraciones   — 7 tipos, 🔲 ¿entrada única densa o estructura distinta?
+│     └── Oraciones   — 7 tipos con portal; novenas (8, cinco formatos) y canales de podcast (Adoraciones, Rosario, Salmos, Novenas). Ver ORACIONES_ESTRUCTURA.md
 │
 ├── HOMBRES DE DIOS (página) — 9 entradas propias (y llegarán más)
 │     └── CPT hombres_de_dios + campos ACF + Layout único; cada bloque
@@ -224,10 +224,7 @@ Rincón de Nico · Charlas de la Biblia · Ejército de Intercesores** (detalle 
 **Principio de unidad de presentación** (aplica igual a Oraciones, Sección G): Rincón de
 Nico y Charlas de la Biblia son ambos podcasts de Tiritaito. Cada uno puede tener su
 propio estilo (Rincón de Nico más colorido y orientado a niños, Charlas de la Biblia más
-sobrio), **pero el formato del reproductor debe ser el mismo**. Esto ya está resuelto
-técnicamente — es el patrón `[tt_podcast]` ya documentado en `METODOLOGIA_CONSTRUCCION.md`
-(componente compartido, parámetros por instancia). No hace falta inventar nada, solo
-aplicarlo con disciplina.
+sobrio), **pero el formato del reproductor debe ser el mismo**. Esto se resuelve en la web nueva con un sistema común: cada canal tiene su entrada, con un campo de feed; un importador crea las temporadas y los episodios, y todos los canales usan los mismos moldes de tarjeta, la misma página de temporada y la misma ficha de episodio (`PODCAST_ESTRUCTURA.md`). El shortcode `[tt_podcast]` queda solo para la web vieja (V1).
 
 **Nota de arquitectura de información (añadida 14 julio 2026, ver Sección 5.1):**
 Tiritaito es el ejemplo natural del criterio "sección con varias entradas propias" — cada
@@ -268,12 +265,20 @@ documentarla donde corresponda.
 **Películas:** reutiliza el mismo sistema/plantilla que Libros — probablemente un Layout
 compartido entre ambos.
 
-**Oraciones:** dos dudas abiertas:
-1. 🔲 ¿Es una sola entrada densa (por el volumen de contenido) o necesita una estructura
-   distinta?
-2. Con 7 tipos muy distintos en contenido (Adoraciones, Rosario, Novenas, Oración en
-   lenguas, Vía Crucis, Salmos, Posesión mariana), el reto es que se sienta como una sola
-   sección aunque el contenido varíe — mismo principio de unidad que en Tiritaito (E).
+**Oraciones:** una página-portal que lleva a siete tipos de contenido. Detalle y estado en `ORACIONES_ESTRUCTURA.md`.
+
+| Tipo | Cómo se resuelve |
+|---|---|
+| Adoraciones | Canal del podcast + un vídeo aparte, «Adorando en silencio (hora de la brisa)» |
+| Rosario | Canal del podcast con 2 temporadas (Rosario y Coronilla de la Divina Misericordia); contenido fijo |
+| Salmos | Canal del podcast con 6 temporadas de 25 episodios; contenido fijo |
+| Novenas | Unas 8, en cinco formatos (días de texto, oración única, podcast, lista de YouTube, vídeo); página de Novenas con las tarjetas |
+| Oración en lenguas | Lista de YouTube con el mismo formato que Tiritaito Music (aplazada) |
+| Vía Crucis | Misma lógica que Tiritaito Music, con 2 temporadas ampliables (aplazada) |
+| Posesión mariana | Entrada sencilla: explicación, vídeo de YouTube y oración escrita |
+
+**Podcast en Oraciones:** cuatro tipos llevan podcast (Adoraciones, Rosario, Salmos, Novenas). Para el podcast basta con que cada canal sea una entrada propia; solo se desaconseja meter los canales en una sola entrada densa. **Sigue sin decidirse** si Oraciones es una entrada por tipo o un tipo de contenido con plantilla única.
+**Principio de unidad de presentación:** aunque el contenido varíe, la sección debe sentirse como una sola.
 
 ### H. Hombres de Dios
 
@@ -281,7 +286,7 @@ Hoy son **9 santos, y llegarán más**. La web actual tiene 9 entradas (Papa Fra
 
 ✅ **Método técnico decidido el 3 de octubre de 2026 — reemplaza la decisión anterior (Layout + Elementos Guardados):** un tipo de contenido propio (CPT `hombres_de_dios`) con campos ACF y un único Layout de Avada que sirve de plantilla para todos los santos. Cada sección es un bloque del Layout que lee los campos del santo que se esté viendo y desaparece entero si ese campo está vacío (Conditional Rendering Logic) — así cada santo muestra solo las secciones que usa (unos llevan audio, otros discursos, otros solo biografía), y un cambio de diseño en un bloque llega a todos a la vez.
 
-**Esto deja sin efecto la decisión anterior**, que descartaba Dynamic Content por asumir una estructura de campos uniforme: con "mostrar solo si" no hace falta que todos los santos usen las mismas secciones. Un santo nuevo es una entrada nueva, sin tocar la plantilla. Comprobado en Local el 29-30 de septiembre de 2026; en construcción desde el 1 de octubre. Detalle, secciones ya construidas y pendientes: `03-guias-practicas/HOMBRES_DE_DIOS_ESTRUCTURA.md`. El podcast entrará como una sección más de la ficha, diseñada aparte.
+**Esto deja sin efecto la decisión anterior**, que descartaba Dynamic Content por asumir una estructura de campos uniforme: con "mostrar solo si" no hace falta que todos los santos usen las mismas secciones. Un santo nuevo es una entrada nueva, sin tocar la plantilla. Comprobado en Local el 29-30 de septiembre de 2026; en construcción desde el 1 de octubre. Detalle, secciones ya construidas y pendientes: `03-guias-practicas/HOMBRES_DE_DIOS_ESTRUCTURA.md`. El podcast ya es una sección más de la ficha, para los 4 santos que tienen programa (Santa Teresita, Emiliano Tardif, Ana Catalina Emmerick y San Serafín de Sarov): ☑ construido, `PODCAST_ESTRUCTURA.md`.
 
 ### I. Próximos eventos
 
@@ -361,11 +366,12 @@ día, que ya tienen lo esencial definido):
 | 3 | ~~¿Cómo se integra el sistema de vídeos de seminarios pasados con el nuevo formato de carteles?~~ **Resuelto en parte (17 septiembre 2026)** — ver Sección 4.C: los 2 vídeos del panel de "Más información" ya están decididos. Sigue abierta la arquitectura exacta de la nueva entrada con el catálogo completo (pregunta #10) | C |
 | 4 | ¿"Canción del Ejército" se mantiene? | F |
 | 5 | ¿La PWA de biblioteca de libros es Tiritaito for Creators, un módulo suyo, u otra cosa? | G |
-| 6 | ¿Oraciones es una entrada única densa o necesita estructura distinta? | G |
+| 6 | ~~¿Oraciones es una entrada única densa o necesita estructura distinta?~~ **Resuelto en parte (10 oct 2026):** es una página-portal con una entrada por tipo; falta decidir si cada tipo es una entrada o un tipo de contenido con plantilla única (`ORACIONES_ESTRUCTURA.md` §2.2) | G |
 | 7 | ¿Se usa la feature Eventos de Avada tal cual, o se personaliza? | I |
 | 8 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | 5.0, E |
 | 9 | ¿Cuál es el patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro)? Pendiente de referencia visual correcta compartida por Carlitos | B, 5.1 |
 | 10 | ¿Cuál es la estructura exacta (nombre del CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador puede servir también a Tiritaito Music y a Vía Crucis cuando se construyan esas piezas (ver `02-metodologia/investigaciones/`)? | C |
+| 11 | ¿Las entradas de Charlas, Rincón y Oraciones son Entradas o Páginas? Decide dónde aparecen las casillas del podcast | G, E |
 
 ---
 
