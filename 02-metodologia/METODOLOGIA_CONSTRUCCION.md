@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Metodología de Construcción
 **Diagnóstico heredado, inventario de consolidación y aplicación práctica a cada sección real de la web nueva**
-*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md` · Actualizado 17 de septiembre de 2026 con las decisiones de vídeos de Seminarios y el cierre de la evaluación de Tiritaito Music · Actualizado 3 de octubre de 2026 con la nueva decisión de Hombres de Dios (Sección 4)*
+*Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md` · Actualizado 17 de septiembre de 2026 con las decisiones de vídeos de Seminarios y el cierre de la evaluación de Tiritaito Music · Actualizado 3 de octubre de 2026 con la nueva decisión de Hombres de Dios (Sección 4) · Actualizado 10 de octubre de 2026 con el sistema del podcast y con las novenas*
 *Audiencia: Hno A (aplicación técnica) · Hna C (para entender el porqué de cada decisión)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -85,9 +85,9 @@ para identificar rápido qué elemento nativo aplica en cada caso.**
 
 | Componente actual | Prefijo | Dónde se ha visto (web vieja) | Acción propuesta |
 |---|---|---|---|
-| Reproductor de podcast (RSS) | `.pp-*` | Global, `[tt_podcast]` | **Mantener** — funciona bien, es el patrón de referencia para todo lo nuevo |
+| Reproductor de podcast (RSS) | `.pp-*` | Global, `[tt_podcast]` | **Solo web vieja (V1).** En la web nueva se sustituye por el sistema de `PODCAST_ESTRUCTURA.md` (tipos propios + importador + elemento Audio de Avada). No se migra `[tt_podcast]` |
 | "Tiritaito Music" (con cola) | `.mp-*` | Ejército de Intercesores | ✅ **Evaluación resuelta (16 sept 2026):** `[tt_podcast]` NO cubre el caso — el módulo real tiene cola, búsqueda, mini-reproductor persistente, enlace profundo `?mp_play=` y pestañas por playlist; nada de eso lo hace un lector de RSS. Arquitectura de construcción sin decidir (ver `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md`) — aplazada a propósito hasta que se construya esa entrada |
-| Mini reproductor de un track | `.hmds-*` | Ejército de Intercesores | **Eliminar** — sustituir por `[tt_podcast]` de un solo episodio |
+| Mini reproductor de un track | `.hmds-*` | Ejército de Intercesores | **Eliminar.** Si el contenido es un episodio de un feed, entra por el importador |
 | Accordion "¿Qué es X?" + vídeo | `toggle-ios` | Ejército de Intercesores, Rincón de Nico | **Guardado (no-global)** o `[tt_accordion]`, **nunca Global** (`GUIA_AVADA_LOCAL.md` Sección 8) — en la web nueva aplica a la "Introducción" del Ejército (Sección 3) |
 | Menú hamburguesa custom | (sin prefijo `tt-`) | Al menos Ejército de Intercesores | Sustituir por Off Canvas Builder nativo (`GUIA_AVADA_LOCAL.md` Sección 9.1, `CATALOGO_ELEMENTOS_AVADA.md` Sección 3) |
 | Sistema de Santos | `.tiritaito-santo` | Global, Hombres de Dios | Mantener el CSS, pero cargarlo solo donde se usa — nunca "Run everywhere". ⚠️ Sin decidir si sigue haciendo falta: la ficha de Hombres de Dios se construye ahora con Layout + ACF y elementos nativos de Avada (Sección 4) — confirmar si este CSS se sigue usando |
@@ -140,8 +140,8 @@ como Novedades (ver arriba).
 | Pieza | Dónde vive | Nota |
 |---|---|---|
 | Tiritaito Music | Snippet ya existente (`.mp-*`) | Evaluar si se reduce (Sección 2) |
-| Rincón de Nico | Snippet `[tt_podcast]` + accordion | Sin cambios |
-| Charlas de la Biblia | Snippet `[tt_podcast]` | **Actualizado: vive en Tiritaito, ya no en Biblioteca** |
+| Rincón de Nico | Entrada propia con la casilla `pod_feed`; episodios por importador; bloque «Podcast» (Post Cards) + accordion «¿Qué es…?» | Ver `PODCAST_ESTRUCTURA.md` |
+| Charlas de la Biblia | Entrada propia con la casilla `pod_feed` (feed de 3 temporadas y ~70 episodios); episodios por importador | **Vive en Tiritaito, no en Biblioteca.** Ver `PODCAST_ESTRUCTURA.md` §14 |
 | Ejército de Intercesores — Introducción | **Guardado (no-global)** o `[tt_accordion]` | Mismo patrón que el resto de accordions "¿Qué es X?" |
 | Ejército de Intercesores — Batalla de cada día (vídeo + intenciones + lenguas) | 🔲 Candidato a snippet PHP nuevo con lógica de fecha, similar al patrón de `wp_options` de Conecta cada día — o, siguiendo el principio de mínimo código (`GUIA_AVADA_LOCAL.md` Sección 8), evaluar primero si un CPT + ACF con Dynamic Content resuelve lo mismo sin lógica de servidor nueva | El contenido cambia a diario — probablemente necesita clave(s) nueva(s) en `wp_options` o un CPT propio, según se resuelva. **Requiere coordinación previa** (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6) antes de tocar el contrato de datos de la PWA Creators |
 | Ejército de Intercesores — Batalla de la semana | 🔲 Igual que arriba, con periodicidad semanal | Misma nota sobre coordinación previa |
@@ -149,10 +149,7 @@ como Novedades (ver arriba).
 | Ejército de Intercesores — Claves de intercesión | Fusion Builder puro | Contenido estático |
 | Ejército de Intercesores — Testimonios | 🔲 Post Cards si son muchos, contenido estático si son pocos | Volumen sin confirmar |
 
-**Principio de unidad de podcast** (`ALCANCE_WEB_NUEVA.md` Sección 5): Rincón de Nico y
-Charlas de la Biblia pueden tener tono/estilo propio, pero el formato del reproductor debe
-ser el mismo — ya resuelto técnicamente por el patrón `[tt_podcast]`, no hace falta nada
-nuevo.
+**Principio de unidad de podcast** (`ALCANCE_WEB_NUEVA.md` Sección 5): Rincón de Nico y Charlas de la Biblia pueden tener tono y estilo propios, pero usan los mismos moldes y el mismo patrón (`PODCAST_ESTRUCTURA.md`). El `[tt_podcast]` queda solo para la web vieja (V1).
 
 🔲 **Nota añadida 11 agosto 2026:** para "rotar entre los santos" (sección de Hombres de
 Dios, más abajo) y para cualquier necesidad futura de rotar entre varias entradas distintas
@@ -166,7 +163,8 @@ Dios, más abajo) y para cualquier necesidad futura de rotar entre varias entrad
 |---|---|---|
 | Libros | 🔲 Pendiente aclarar qué es la PWA de biblioteca de libros mencionada en la sesión de alcance (`ALCANCE_WEB_NUEVA.md` pregunta abierta #5) antes de definir el Layout | No documentar el método hasta que se resuelva esa pregunta |
 | Películas | 🔲 Plantilla compartida con Libros — depende de lo anterior | — |
-| Oraciones | 🔲 Pendiente si es una entrada única densa o una estructura distinta (`ALCANCE_WEB_NUEVA.md` pregunta abierta #6) | Con los 7 tipos, aplica el mismo principio de unidad de presentación que en Tiritaito |
+| Oraciones | Página-portal con siete tipos: Adoraciones, Rosario, Salmos y Novenas llevan podcast; Lenguas y Vía Crucis dependen de Tiritaito Music; Posesión mariana es una entrada sencilla | Ver `ORACIONES_ESTRUCTURA.md`. Sin decidir: arquitectura (entrada por tipo o tipo único) y portal |
+| Novenas | Ocho, en cinco formatos: **días de texto** (tipo de contenido propio + grupo de casillas + molde de tarjeta + página portada con Post Cards en carrusel), **oración única** (página normal), **podcast** (temporada de un canal), **lista de YouTube** y **vídeo** | Ver `ORACIONES_ESTRUCTURA.md` §3. ☑ construidas; pendientes de resultados y de tres fichas |
 
 ### Menú y Próximos eventos
 
@@ -203,7 +201,7 @@ Un **tipo de contenido propio** (CPT `hombres_de_dios`) con **campos ACF**, y **
 | Base construida: CPT `hombres_de_dios`, Layout "TT — HdD — Ficha del santo", grupo ACF con prefijo `hdd_`, santos de prueba | ⚠️ Según Álvaro (1 oct 2026), sin captura revisada |
 | Secciones construidas: Su vida, Discursos, Sus palabras, Vídeos | ⚠️ Según Álvaro (1-3 oct 2026); detalle y diferencias con el boceto en `HOMBRES_DE_DIOS_ESTRUCTURA.md` Sección 4 |
 | Resto de secciones del boceto de Carlota | 🔲 Sin ficha todavía — se registran según se cierren |
-| Podcast como una sección más de la ficha | 🔲 Se diseña aparte, en un chat propio (`HOMBRES_DE_DIOS_ESTRUCTURA.md` Sección 8) |
+| Podcast como una sección más de la ficha | ☑ Construido por Álvaro (9 oct 2026) como bloque de la ficha; pendiente de pruebas (`PODCAST_ESTRUCTURA.md` §4 y §12) |
 | ¿Post Slider / Post Cards para la portada o el listado que rota entre los santos? | 🔲 Identificado como el elemento correcto (ver Sección 3 y `CATALOGO_ELEMENTOS_AVADA.md` Sección 4) — sin configurar ni probar todavía |
 
 ---
@@ -241,6 +239,8 @@ Un **tipo de contenido propio** (CPT `hombres_de_dios`) con **campos ACF**, y **
 4. Cuando se resuelvan las preguntas abiertas de `ALCANCE_WEB_NUEVA.md` sobre Biblioteca (PWA de libros, estructura de Oraciones), completar las filas correspondientes de la Sección 3 de este documento
 5. Confirmar en Local si el Off-Canvas "Menu Movil" ya existente está diseñado y probado por dentro, o solo registrado como borrador (Sección 3, "Menú y Próximos eventos")
 6. Probar en Local si el Lightbox de Avada funciona anidado dentro de un Modal (necesario para el panel de "Más información" de Seminarios, Sección 3) y definir la estructura (CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"
+7. Podcast: instalar el importador v1.1, ejecutar el plan de pruebas y montar Charlas de la Biblia (`PODCAST_ESTRUCTURA.md` §9)
+8. Novenas: sellar las fichas que faltan y recoger los resultados de Álvaro (`ORACIONES_ESTRUCTURA.md` §1 y §4)
 
 **Preguntas abiertas propias de este documento:**
 
