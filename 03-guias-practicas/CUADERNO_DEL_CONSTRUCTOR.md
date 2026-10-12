@@ -132,6 +132,30 @@ Caso: Novedades no se veía en Post Cards — sesión de diagnóstico y cierre
 | P7 | El elemento Pagination (Same Taxonomy Term + Swap Post Order) saca los enlaces en inglés («Previous / Next') y no se ha comprobado a dónde llevan. | Sin comprobar | 1–3 octubre 2026 |
 | P8 | Tres averías en las pruebas: (1) una relación creada como tipo Texto, no como Relación; (2) filtros antiguos de Post Cards que se conservan al editar (si se rehace, reconstruir desde cero); (3) un Layout editado en varias pestañas a la vez. | Informe de pruebas 1–3 oct; solo constan los nombres de las tres averías | 1–3 octubre 2026 |
 
+---
+
+### Podcast — construcción y pruebas (1–10 octubre 2026)
+*Origen: `PODCAST_ESTRUCTURA.md` §8. Los estados ✅ / ☑ son los del documento de origen.*
+
+#### ✅ Esto funciona así
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| P1 | Imagen destacada en una tarjeta: elegir *Main Featured Image* (las opciones 2–5 son extras vacíos). | ☑ Álvaro. Hallazgo 4 de `PODCAST_ESTRUCTURA.md` | 9 octubre 2026 |
+| P2 | Un feed puede traer el enlace de YouTube como texto plano (sin `<a>`) o como `<a>` con un carácter invisible delante. La v1.1 del importador cubre ambos casos. | ✅ simulación. Hallazgo 13 | 10 octubre 2026 |
+
+#### ⚠️ Cuidado con esto
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| P3 | Una fila de tarjeta se rompe si el título es largo. Se arregla con: Column en *No Wrap* + título con ancho 100 % (55 % en móvil) + duración oculta en móvil. | ☑ Álvaro. Hallazgo 7 | 9 octubre 2026 |
+| P4 | Image Max Width no tiene icono de pantalla propio: no se puede dar un valor distinto por dispositivo desde ese campo. | ☑ Álvaro. Hallazgo 10 | 9 octubre 2026 |
+| P5 | El enlace de YouTube «el primero que aparezca» falla en Charlas de la Biblia: muchas descripciones llevan antes un enlace de «Proyecto Biblia» (otro canal). El de la charla va tras «ver en YouTube:» y es de tipo `youtube.com/live/…`. | ✅ feed real y simulación. Hallazgo 12 | 10 octubre 2026 |
+| P6 | Los GUID de las primeras Charlas son direcciones (`https://www.tiritaito.com/blog/?p=16495`): sus 8 primeras letras son iguales para todos. Para el sufijo del slug se usan las 8 **últimas**. | ✅ feed real. Hallazgo 15 | 10 octubre 2026 |
+| P7 | Los títulos ya llevan su número («Capítulo 36: …», «41. …»). En la temporada 1 de Charlas el número del título y el de la etiqueta difieren en 1 («25. Fin del Génesis» es el episodio 24). Mostrar además `ep_numero` duplica y a veces contradice. Decisión pendiente. | ✅ feed real. Hallazgo 16 | 10 octubre 2026 |
+| P8 | En Charlas el número de episodio **reinicia en cada temporada** (1–24, 1–42, 1–4). La lista «todos los episodios del canal» mezclaría las temporadas, así que solo se usa cuando hay una sola. | ✅ feed real. Hallazgo 17 | 10 octubre 2026 |
+| P9 | Tres averías en las pruebas del 1–3 oct: (1) una relación creada como tipo Texto en vez de Relación; (2) filtros antiguos que Post Cards conserva al editarlo (si se rehace, reconstruirlo desde cero); (3) un Layout editado en varias pestañas a la vez. | Informe de pruebas | 1–3 octubre 2026 |
+
 ## 4. Ya graduadas — trasladadas a documentación oficial
 
 *(Ejemplos de referencia, con hallazgos reales ya confirmados en el proyecto, para que se
@@ -142,6 +166,14 @@ vea el patrón — no hace falta anotar estos de nuevo, ya viven en su documento
 | 1 | Escribir un campo de una ACF Options Page con `update_option()` en vez de `update_field()` lo deja invisible para Avada Dynamic Content — hay que usar siempre `update_field()`. | `00_CORE.md` Sección 8 | 23 julio 2026 |
 | 2 | "Slideshows" (Avada → Options) solo controla varias imágenes DENTRO de una misma entrada — no rota entre entradas distintas. Para eso hace falta Post Slider. | `GUIA_AVADA_LOCAL.md` Sección 9 / `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 | 11 agosto 2026 |
 | 3 | Los iframes de YouTube construidos dinámicamente por JS necesitan el atributo `referrerpolicy`, o falla la reproducción (Error 153), desde que YouTube exige un header Referer válido. | `00_CORE.md` Sección 8 | — |
+| 4 | Contar los elementos de una relación para ocultar un bloque: Conditional Rendering → *ACF Relationship Count* (Equal To, Greater Than…). Una sola condición por elemento; basta. | `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 | 10 octubre 2026 |
+| 5 | El elemento Audio reproduce desde una casilla URL: contenido dinámico *ACF Link*, `ep_audio_url`, *Return HTML* = No. | `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 | 10 octubre 2026 |
+| 6 | Tarjeta entera como enlace: Column → Link URL → icono de discos apilados (no la cadena) → Permalink, con Before / After / Fallback vacíos. | `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 | 10 octubre 2026 |
+| 7 | No existe «Post Content» en el contenido dinámico del Text Block; *Excerpt* corta a ~20 palabras y aplana los párrafos. Solución: casilla de tipo Editor. | `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 / `00_CORE.md` Sección 8 | 10 octubre 2026 |
+| 8 | ACF Relationship (u Objeto de entrada) como Button URL no devuelve una dirección. Solución: casilla URL escrita por el importador. | `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 / `00_CORE.md` Sección 8 | 10 octubre 2026 |
+| 9 | Audio: con *Controls Color Scheme* = Light, iconos y tiempos se vuelven blancos sobre gris claro; con Dark la línea de progreso queda gruesa y oscura. Los campos de Design del Audio solo afectan a ese elemento. | `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 | 10 octubre 2026 |
+| 10 | Pagination trae *Same Taxonomy Term* y *Swap Post Order*; los enlaces salen en inglés («Previous / Next»). | `CATALOGO_ELEMENTOS_AVADA.md` Sección 4 | 10 octubre 2026 |
+| 11 | Renombrar la entrada del canal (slug o título) duplicaba todos los episodios. Se corrigió: la identidad del canal es el ID de la entrada. | `00_CORE.md` Sección 8 | 10 octubre 2026 |
 
 ## 5. Próximos pasos y preguntas abiertas
 
