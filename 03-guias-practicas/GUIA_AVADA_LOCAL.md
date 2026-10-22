@@ -212,6 +212,42 @@ tomada de pasada aquí.
 
 ---
 
+## 2.2 ⭐ Exportar y sanear Avada Global Options — saneador del equipo (22 octubre 2026)
+
+**Herramienta:** `saneador-avada-options.html` (ruta propuesta: `03-guias-practicas/exports/`, confirmar).
+Es la **fuente de verdad única** (decisión de Carlitos, 14 agosto 2026); `sanitizar_avada_export.py` está
+retirado. Se abre con doble clic en el navegador. Todo ocurre en local, sin red (verificado leyendo su código).
+
+**Cuándo:** para dejar constancia de un cambio en Global Options, para el antes/después de una tarea de
+configuración, o para renovar la línea base. **Quién:** quien tenga Local abierto.
+
+**Pasos**
+1. Avada → Options → Import/Export → *Download Data File* (ruta según el propio saneador; confirmar en 7.15/7.16).
+2. Guardar ese original (RAW) **fuera del repositorio**. Nunca se sube ni se pega en ningún chat.
+3. Abrir el saneador. Subir el export y, si existe, `claves_conocidas.json` del repo.
+4. Pulsar *Procesar export* y leer el veredicto y los tres carriles.
+5. Descargar `avada-global-options.json` (limpio) y `claves_conocidas.json` (nuevo). Subir **solo esos dos**
+   a `03-guias-practicas/exports/`.
+
+**Qué hacer según el resultado**
+| Carril | Significa | Acción |
+|---|---|---|
+| Vaciados | Campos de la lista fija que traían valor y se han vaciado | Informativo. Nada que hacer |
+| A revisar | Campo con nombre de apariencia sensible y valor no vacío, fuera de las listas | Abrir el archivo descargado y buscar esa ruta. Credencial real: añadir el campo a `CAMPOS_A_VACIAR` y repetir. Falso positivo: añadirlo a `CAMPOS_CONFIRMADOS_INOFENSIVOS`. **Nunca pegar el valor en un chat** |
+| Claves nuevas | Avada añadió ajustes desde la línea base | Revisar los nombres. Si no son sensibles, aceptar; el nuevo `claves_conocidas.json` las incorpora |
+| Veredicto | «Listo para subir» o «Revisar antes de subir» | Con «Revisar», no subir hasta resolver |
+
+**Límites:** solo analiza nombres de campo, no valores (un correo, un script de seguimiento o un secreto bajo un
+nombre inocuo no se detectan); el vaciado actúa solo en primer nivel; en la primera ejecución sin línea base no
+puede detectar claves nuevas; no compara valores entre exports.
+
+**Restaurar:** nunca importar el JSON limpio en Avada (tiene credenciales vaciadas y las sobrescribiría con vacío).
+Para volver atrás: Blueprint o backup de Local, o el RAW privado.
+
+**Cambiar las listas:** solo en la sección 1 del propio archivo, con decisión de Carlitos.
+
+---
+
 ## 3. Mapa mental — cómo organiza Avada una página
 
 Avada organiza cada página en **cuatro secciones estructurales**. Un **Layout** es el contenedor que decide qué versión de cada sección se muestra, y bajo qué condiciones.
