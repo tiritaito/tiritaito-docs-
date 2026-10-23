@@ -434,9 +434,9 @@
   "typography_sets": {
     "typography1": {
       "label": "Headings",
-      "font-family": "Inter",
-      "font-backup": "Arial, Helvetica, sans-serif",
-      "variant": "600",
+      "font-family": "YEAH-PAPA",
+      "font-backup": "",
+      "variant": "400",
       "font-size": "clamp(30px, 23.66px + 1.69vw, 48px)",
       "line-height": "1.2",
       "letter-spacing": "-0.015em",
@@ -444,9 +444,9 @@
     },
     "typography2": {
       "label": "Subheadings",
-      "font-family": "Inter",
-      "font-backup": "Arial, Helvetica, sans-serif",
-      "variant": "600",
+      "font-family": "YEAH-PAPA",
+      "font-backup": "",
+      "variant": "400",
       "font-size": "clamp(22px, 19.18px + 0.75vw, 30px)",
       "line-height": "1.1",
       "letter-spacing": "0",
@@ -454,9 +454,9 @@
     },
     "typography3": {
       "label": "Lead",
-      "font-family": "Inter",
-      "font-backup": "Arial, Helvetica, sans-serif",
-      "variant": "500",
+      "font-family": "Poppins",
+      "font-backup": "",
+      "variant": "400",
       "font-size": "clamp(18px, 16.59px + 0.38vw, 22px)",
       "line-height": "1.2",
       "letter-spacing": "0.015em",
@@ -464,8 +464,8 @@
     },
     "typography4": {
       "label": "Body",
-      "font-family": "Inter",
-      "font-backup": "Arial, Helvetica, sans-serif",
+      "font-family": "Poppins",
+      "font-backup": "",
       "variant": "400",
       "font-size": "clamp(16px, 15.30px + 0.19vw, 18px)",
       "line-height": "1.72",
@@ -474,8 +474,8 @@
     },
     "typography5": {
       "label": "Small",
-      "font-family": "Inter",
-      "font-backup": "Arial, Helvetica, sans-serif",
+      "font-family": "Poppins",
+      "font-backup": "",
       "variant": "400",
       "font-size": "clamp(13px, 12.65px + 0.09vw, 14px)",
       "line-height": "1.72",
@@ -489,7 +489,7 @@
     "variant": "var(--awb-typography4)",
     "font-style": "",
     "font-weight": "400",
-    "font-size": "16px",
+    "font-size": "clamp(16px, 15.30px + 0.19vw, 18px)",
     "line-height": "var(--awb-tipografía4-línea-altura)",
     "letter-spacing": "Var(--awb-tipografía-4-espaciado-de-letras)",
     "color": "#ffffff"
@@ -1464,7 +1464,6 @@
   "button_typography": {
     "font-family": "Poppins",
     "font-backup": "",
-    "variant": "400",
     "font-style": "",
     "font-weight": "400",
     "font-size": "var(--awb-tipografía3-tamaño-de-fuente)",
@@ -1954,7 +1953,6 @@
   "accordion_title_typography": {
     "font-family": "YEAH-PAPA",
     "font-backup": "",
-    "variant": "400",
     "font-style": "",
     "font-weight": "400",
     "font-size": "clamp(22px, 19.18px + 0.75vw, 30px)",
@@ -1970,7 +1968,6 @@
   "accordion_content_typography": {
     "font-family": "Helvetica Nueva",
     "font-backup": "",
-    "variant": "200",
     "font-style": "",
     "font-weight": "400",
     "font-size": "16px",
