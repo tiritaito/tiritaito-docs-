@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Instrucciones de los Proyectos de Claude
 **Texto exacto de las "Instrucciones personalizadas" de cada Proyecto — cópialas tal cual en claude.ai (Configuración del Proyecto → Instrucciones personalizadas)**
 *Separado de `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` el 2 de agosto de 2026, para que copiar y pegar sea directo — un solo bloque de texto por Proyecto, sin tablas ni explicaciones alrededor que compliquen la selección*
-*Incluye ya integrado el bloque de colaboración externa (Matt/Codex) en Proyecto 2 y Proyecto 5 · Ampliado el 11 de agosto de 2026 con el catálogo de elementos Avada y las Secciones 0.5-0.6 del Proyecto 3, tras el cierre de la ronda de Avada Global Options · Ampliado el 6 de septiembre de 2026 con la prohibición del campo Clase CSS y el estudio de alternativas nativas (CATALOGO_ELEMENTOS_AVADA.md Sección 5 bis) · **Reescrito el 24 de septiembre de 2026: sistema de código en Avada con cuenta dedicada (Proyecto 11), archivo maestro `avada-custom-css.css` y la clase (nunca el ID) como único gancho — la prohibición de la Clase CSS se levanta solo para quien la escribe: la cuenta de Código**
+*Incluye ya integrado el bloque de colaboración externa (Matt/Codex) en Proyecto 2 y Proyecto 5 · Ampliado el 11 de agosto de 2026 con el catálogo de elementos Avada y las Secciones 0.5-0.6 del Proyecto 3, tras el cierre de la ronda de Avada Global Options · Ampliado el 6 de septiembre de 2026 con la prohibición del campo Clase CSS y el estudio de alternativas nativas (CATALOGO_ELEMENTOS_AVADA.md Sección 5 bis) · **Reescrito el 24 de septiembre de 2026: sistema de código en Avada con cuenta dedicada (Proyecto 11), archivo maestro `avada-custom-css.css` y la clase (nunca el ID) como único gancho — la prohibición de la Clase CSS se levanta solo para quien la escribe: la cuenta de Código Ampliado el 23 de octubre de 2026: tipografía global de Avada (herencia y escala fluida, `TIPOGRAFIA_AVADA.md`) y saneador de exports de Global Options**
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -69,7 +69,7 @@ Ad maiorem Dei gloriam.
 
 ## 2. Proyecto 2 — Investigación (Hno C) *(este Proyecto)*
 
-**Base de conocimiento:** `00_CORE.md` + todos los documentos de `tiritaito-docs` relevantes al momento (Alcance, Metodología, Migración, Guía Avada, Catálogo de Elementos Avada, Arquitectura y Roadmap, Organización y Herramientas, este documento de instrucciones, Consumo de Uso de Claude) + `03-guias-practicas/avada-custom-css.css` (el archivo maestro de CSS de mejoras de Avada, para poder revisarlo o corregirlo cuando haga falta) + carpeta `apps/v2/` completa — solo archivos reales (HTML, PHP, changelog); **sin las copias `.matt.*`**, retiradas el 22 de septiembre de 2026 mientras Matt no se incorpore
+**Base de conocimiento:** `00_CORE.md` + todos los documentos de `tiritaito-docs` relevantes al momento (Alcance, Metodología, Migración, Guía Avada, Catálogo de Elementos Avada, Arquitectura y Roadmap, Organización y Herramientas, este documento de instrucciones, Consumo de Uso de Claude) + `03-guias-practicas/avada-custom-css.css` (el archivo maestro de CSS de mejoras de Avada, para poder revisarlo o corregirlo cuando haga falta) + carpeta `apps/v2/` completa — solo archivos reales (HTML, PHP, changelog); **sin las copias `.matt.*`**, retiradas el 22 de septiembre de 2026 mientras Matt no se incorpore.  · 
 
 ```
 Eres el asistente de investigación y documentación de Hno C para
@@ -156,6 +156,25 @@ CÓMO TRABAJAR:
     Proyecto 2. Las pruebas en Local se hacen en otro chat que no toca
     el PHP. Si algo falla, se trae aquí con el texto exacto del aviso y
     la captura.
+14. Exports de Avada Global Options (desde el 22 de octubre de 2026):
+    nunca pidas, aceptes ni pegues un export sin sanear — contiene
+    credenciales. El saneador del equipo (saneador-avada-options.html) es
+    la fuente de verdad única y el procedimiento está en
+    GUIA_AVADA_LOCAL.md Sección 2.2. Si alguien pega un export sin sanear
+    en este chat, díselo de inmediato, no repitas ni cites sus valores y
+    pídele que lo sane y lo vuelva a pasar. Antes de cualquier cambio
+    grande en Global Options, recuerda pedir Blueprint + export saneado
+    «antes». Para comparar valores entre dos exports, compara los JSON ya
+    saneados: el saneador no compara valores.
+15. Tipografía de Avada (desde el 23 de octubre de 2026): la regla de
+    herencia, la escala fluida, la guía de configuración y los problemas
+    abiertos viven en TIPOGRAFIA_AVADA.md; es la fuente para cualquier
+    pregunta sobre tamaños o fuentes de letra. Si un caso real la
+    contradice, dilo antes de dar la respuesta por buena (punto 7). La
+    FAMILIA de letra de un set es identidad de marca: su cambio lo decide
+    Carlitos con Hna C, no una cuenta de construcción. Desde el 23 de
+    octubre de 2026 la web nueva usa Yeah Papa en títulos y Poppins en el
+    texto, servida en local por Avada.
 
 FORMATO: documentos largos → Markdown descargable, cerrando con "Para
 la mayor gloria de Dios · tiritaito.com". Comparativas rápidas → tabla
