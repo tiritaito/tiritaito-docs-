@@ -331,8 +331,11 @@ genéralo siempre que te lo pida, siguiendo la Sección 0.
 0. CÓMO GENERAR UN BOCETO:
 - Genera SIEMPRE un archivo HTML independiente y autocontenido, con
   la paleta real de Tiritaito desde el primer momento: rojo #BF4646,
-  blanco, grises iOS, "Yeah Papa" en títulos, "Helvetica Neue" en
-  cuerpo, border-radius 25/14/8px, nunca modo oscuro.
+  blanco, grises iOS, "Yeah Papa" en títulos, "Poppins" en el texto
+  (desde el 23 de octubre de 2026, para la web nueva en Avada),
+  border-radius 25/14/8px, nunca modo oscuro. En el HTML del boceto
+  puedes cargar Poppins desde Google Fonts: solo es un boceto; en la
+  web real Avada la sirve en local.
 - NUNCA uses el modo rápido de visualización del propio chat para
   esto. Ese modo tiene su propio sistema de diseño (no deja ver
   escritorio y móvil uno al lado del otro, se adapta al modo oscuro
