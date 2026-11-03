@@ -3,6 +3,7 @@
 *Fusiona: CONFIGURACION_PROYECTOS_CLAUDE_Y_GITHUB.md (autoridad sobre el mapa de proyectos) + INFORME_ESTRATEGICO_2026_1.md (Parte 6.1, 6.3) + INVESTIGACION_HERRAMIENTAS_TRABAJO_2026.md (Partes 1, 4, 5)*
 *Verificado contra support.claude.com — julio 2026 · Instrucciones del Proyecto 3 ampliadas con criterio de Responsive proactivo — 13 julio 2026 · Ampliadas con criterio de previsualización con bocetos — 14 julio 2026*
 *Reestructurado 2 de agosto de 2026: el texto literal de instrucciones de cada Proyecto se extrae a `INSTRUCCIONES_PROYECTOS_CLAUDE.md` (más fácil de copiar/pegar sin mezclar con contexto); se absorbe el contenido de `COLABORACION_EXTERNA_CODEX.md` como Sección 11, en vez de mantenerlo como tercer documento independiente*
+*Actualizado 30 de octubre de 2026: el consumo de JSON de Seminarios/Música/Vía Crucis deja de ser el ejemplo de funcionalidad que Carlitos construye en un Code Block (Secciones 1 y 2.4): lo resuelve un importador de servidor que lee la API de YouTube, escrito el 30 de octubre y pendiente de probar en Local (`TIRITAITO_MUSIC_WEB_NUEVA.md` §6.8)*
 *Audiencia: Carlitos (coordinación transversal) · cada dueño de cuenta para su propia sección*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -46,7 +47,7 @@ Al revisar los documentos originales, `INFORME_ESTRATEGICO_2026_1.md` (Parte 6.2
 
 | Persona | Rol | Responsabilidad principal | No toca |
 |---|---|---|---|
-| Carlitos (Hno C) | Coordinador del sistema técnico + investigación | Vela porque el sistema técnico del proyecto (cuentas de Claude, GitHub, documentación, infraestructura) funcione bien y de forma coherente. Mantiene el README actualizado. Desde el 6 de septiembre de 2026, diseña y construye el código completo para las secciones de la web que Avada genuinamente no puede resolver de forma nativa (ej. consumo de JSON de Seminarios/Música/Vía Crucis), directamente desde su cuenta de investigación (Proyecto 2). Desde el 24 de septiembre de 2026, resuelve también los casos puntuales de PHP/servidor que le lleguen desde la cuenta de Código en Avada (Proyecto 11) cuando un traspaso de Álvaro lo requiera (Sección 2.3) | Decisiones de producto |
+| Carlitos (Hno C) | Coordinador del sistema técnico + investigación | Vela porque el sistema técnico del proyecto (cuentas de Claude, GitHub, documentación, infraestructura) funcione bien y de forma coherente. Mantiene el README actualizado. Desde el 6 de septiembre de 2026, diseña y construye el código completo para las secciones de la web que Avada genuinamente no puede resolver de forma nativa (el ejemplo que se citaba, el consumo de JSON de Seminarios/Música/Vía Crucis, **ya no lo es**: desde el 30 de octubre de 2026 lo resuelve un importador de servidor; queda como ejemplo posible la reproducción continua con cola de Tiritaito Music, si se llega a su fase D), directamente desde su cuenta de investigación (Proyecto 2). Desde el 24 de septiembre de 2026, resuelve también los casos puntuales de PHP/servidor que le lleguen desde la cuenta de Código en Avada (Proyecto 11) cuando un traspaso de Álvaro lo requiera (Sección 2.3) | Decisiones de producto |
 | Hno A (Álvaro) | Construcción en Avada + código en Avada | Construye en Live Builder exactamente lo que Hna C diseña en boceto — ya no propone bocetos propios. Desde el 6 de septiembre de 2026, construye únicamente con elementos nativos de Avada; desde el 24 de septiembre de 2026, cuando algo no es nativo, lo lleva vía traspaso a su propia cuenta de Código en Avada (Proyecto 11), que sí puede escribir la clase CSS necesaria (nunca inventada por Álvaro mismo — ver Sección 6, punto 9). PHP, JS, REST API, snippets complejos ya existentes, Tiritaito for Creators | Decisiones de diseño ni de contenido; PHP o servidor nuevo (eso pasa a Carlitos vía Proyecto 11) |
 | Hna C (Carlota) | Diseño, producto, coordinación y bocetos | Coordina al equipo en el día a día, define alcance y criterio visual. Desde el 1 de septiembre de 2026, hace TODOS los bocetos visuales de páginas y entradas de la web nueva — siempre con elementos nativos de Avada, nunca con el campo Clase CSS (Sección 6, punto 9) | Código en desarrollo |
 | Hna MF | Datos y métricas | Google Search Console, análisis de uso, propone mejoras basadas en datos | — |
@@ -219,8 +220,11 @@ equipo se ciñe a lo que Avada ofrece de forma nativa — y cuando algo de verda
   el campo Clase CSS — nunca al revés. Ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 ter para
   el sistema completo.
 - Si es **funcionalidad real** que Avada no tiene de ninguna manera (no un ajuste de estilo,
-  sino algo que falta del todo — el ejemplo ya conocido es el consumo de JSON externo de
-  Seminarios/Música/Vía Crucis), o si Proyecto 11 identifica que un traspaso concreto de CSS
+  sino algo que falta del todo — el ejemplo que se citaba, el consumo de JSON externo de
+  Seminarios/Música/Vía Crucis, **ya no lo es**: desde el 30 de octubre de 2026 es un
+  importador de servidor, `apps/v2/tt-video-importador.php`, y la página queda en territorio
+  de Avada; ejemplo posible que queda: la reproducción continua con cola de Tiritaito Music,
+  si se llega a su fase D), o si Proyecto 11 identifica que un traspaso concreto de CSS
   en realidad necesita PHP o servidor: Carlitos diseña y construye el código completo
   directamente desde su cuenta de investigación (Proyecto 2). El código resultante va dentro
   de un Code Block de Avada, entregado a Álvaro ya terminado para pegarlo — Álvaro no diseña
