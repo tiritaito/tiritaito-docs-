@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Contexto Maestro
 *Reemplaza: ENTORNO_TÉCNICO · GUÍA_DE_ESTILO_VISUAL · tiritaito-guia-diseno-visual.md · secciones 2,9-14 de protocolo-tiritaito-creators-2.md*
 *Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast) · TIRITAITO_FOR_CREATORS_VERSIONS.md (si trabajas en V1/V2 de la app)*
-*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026 · Ampliado 10 de octubre de 2026 con el mapa de datos del podcast y la convención de las novenas*
+*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026 · Ampliado 10 de octubre de 2026 con el mapa de datos del podcast y la convención de las novenas · Ampliado 30 de octubre de 2026 con el importador de vídeos de YouTube*
 
 ---
 
@@ -11,9 +11,10 @@
 |---|---|
 | Hosting | Raiola Networks (bloquea `/wp-admin/` para usuarios no logados) |
 | CMS | WordPress en `/blog/` + Avada Live Builder |
-| Plugin código | Code Snippets (free): tipos PHP y HTML únicamente — NO JS/CSS separados. Incluye el snippet «TT Podcast — Importador» (alcance «Run snippet everywhere») |
+| Plugin código | Code Snippets (free): tipos PHP y HTML únicamente — NO JS/CSS separados. Incluye los snippets «TT Podcast — Importador» y «TT Vídeos YouTube — Importador» (ambos con alcance «Run snippet everywhere») |
 | Caché | LiteSpeed Cache — excluir `/blog/wp-json/tiritaito/` |
 | Plugins activos | WPMobile.app · Jetpack · Limit Login Attempts · Administrador Archivos WP · ACF Pro (incluido con la licencia de Avada) |
+| Claves en `wp-config.php` | `TT_YT_API_KEY` (clave de la API de YouTube del importador de vídeos; **una distinta para Local**; el valor nunca va en el repositorio ni en documentos) |
 
 **Regla crítica de Avada:** el `post_content` serializa Code Blocks en Base64. Jamás escribir ahí desde fuera. Todo dato dinámico → `wp_options`, ACF, o Biblioteca de Medios (ver Sección 3 para cuál usar en cada caso).
 
@@ -129,9 +130,9 @@ que Proyecto 5 retire la UI real.
 | Clave | Tipo | Módulo | Frecuencia |
 |---|---|---|---|
 | `tt_docx_lectura_url` | URL Media Library | Lecturas | Semanal |
-| `tt_youtube_json_url` | URL Media Library (`music-data.json`) | YouTube | Ocasional |
-| `tt_seminarios_json_url` | URL Media Library (`Seminarios.json`) | YouTube | Ocasional |
-| `tt_viacrucis_json_url` | URL Media Library (JSON) — 🔲 tipo inferido por el patrón de nombre; confirmar con Hno A | Vía Crucis | Ocasional |
+| `tt_youtube_json_url` | URL Media Library (`music-data.json`) — ⏳ **transitoria**: la sustituye el importador de vídeos (3.6) cuando migre Música | YouTube | Ocasional |
+| `tt_seminarios_json_url` | URL Media Library (`Seminarios.json`) — ⏳ **transitoria**: igual, cuando migre Seminarios | YouTube | Ocasional |
+| `tt_viacrucis_json_url` | URL Media Library (JSON) — 🔲 tipo inferido por el patrón de nombre; confirmar con Hno A — ⏳ **transitoria**: igual, cuando migre Vía Crucis | Vía Crucis | Ocasional |
 | `tt_fiesta_dias` | JSON directo, no URL — 🔲 sigue sin estructura confirmada | Fiestas / calendario | Ocasional |
 
 ### 3.3 CPT `novedades` — Custom Post Type propio
@@ -179,6 +180,19 @@ El contenido del podcast vive en dos tipos propios y una taxonomía, alimentados
 
 Cada novena de días tiene un tipo de contenido propio (`novena_<tema>`, público, sin archivo) y un prefijo de tres letras para sus casillas: `nes_` (Espíritu Santo), `nsc_` (Sagrados Corazones), `nin_` (Inmaculada). Casilla: `<prefijo>_<apartado>_<campo>`; el número del día, `<prefijo>_dia`. **Convención completa, fichas y casillas propuestas** en `03-guias-practicas/ORACIONES_ESTRUCTURA.md` Sección 3.4. Solo `novena_inmaculada` y `nin_dia` están creadas (☑); las demás son propuesta hasta sellar sus fichas.
 
+### 3.6 CPT de vídeos de YouTube (`cancion`, `viacrucis`, `seminario`) y taxonomía `categoria_musica`
+
+Una ficha por vídeo, alimentada por el importador de vídeos (`apps/v2/tt-video-importador.php`, escrito el 30 octubre 2026, **sin ejecutar aún en Local**). Esquema, decisiones y casos de prueba en `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` Secciones 5, 6 y 6.8; aquí solo los nombres.
+
+- **Tipos:** `cancion` (creado en Local; público, con página propia compartible) · `viacrucis` y `seminario` (⚠️ nombres propuestos, sin crear). **Taxonomía:** `categoria_musica` (creada) · `categoria_viacrucis` (⚠️ propuesta). «Todas» **no** es categoría: su papel lo hace la pestaña «All» de Avada.
+- **Grupo de casillas «TT — Vídeo YouTube»** (asignado a todos los tipos de vídeo): `vid_video_id`, `vid_youtube_url` (Texto), `vid_miniatura_url` (URL), `vid_fecha_video` (Texto `AAAA-MM-DD`), `vid_comprobado` (Texto, fecha y hora en UTC), `vid_hash`; opcionales: `vid_kids`, `sem_anio`, `sem_mes`, `vcr_numero`.
+- **Orden:** nativo, en `menu_order` (Avada ordena por *Menu Order*, ascendente); no hay casilla de orden.
+- **Privados del importador:** `_tt_vid_area`, `_tt_vid_playlists`, `_tt_vid_retirada`, `_tt_vid_vaciada` (en las fichas) y `_tt_vid_playlist` (en cada categoría: ID de la playlist que la alimenta). Ajustes y registro en `wp_options`: `tt_video_importador_filas`, `tt_video_importador_log`.
+- **Regla de los 30 días de YouTube:** los datos de la API solo se guardan 30 días sin refrescar. El importador refresca a diario, vacía las retiradas a los 25 días y avisa a los 10 (amarillo) y 20 (rojo).
+- **Endpoint del semáforo:** `GET /tiritaito/v1/videos/estado` (token `X-TT-Token`).
+
+⚠️ Igual que en el podcast, el importador escribe con `update_field()` **por clave de campo**.
+
 ---
 
 ## 4. ENDPOINTS REST COMPLETOS
@@ -196,6 +210,7 @@ Cada novena de días tiene un tipo de contenido propio (`novena_<tema>`, públic
 | POST | `/tiritaito/v1/novedades` | `X-TT-Token` | Crea una novedad — el `id` lo asigna el servidor |
 | PUT | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Edita una novedad |
 | DELETE | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Elimina una novedad |
+| GET | `/tiritaito/v1/videos/estado` | `X-TT-Token` | Semáforo del importador de vídeos (color, días, filas, frenos, última ejecución). Snippet propio `apps/v2/tt-video-importador.php`, no el central. 🔲 Escrito 30 octubre 2026, sin probar; usa `TT_WRITE_TOKEN` si está definida como constante — **verificar contra el snippet central** |
 
 ⚠️ **Confirmado que ya NO existen en el backend actual (26 julio 2026):** las rutas
 `/tiritaito/v1/entradas` y `/tiritaito/v1/entrada/{id}` (gestión de posts normales desde la
@@ -348,6 +363,10 @@ if (document.getElementById('mi-modulo-root')) {
 | ACF Relationship / Objeto de entrada como *Button URL* (9 octubre 2026) | No devuelve una dirección: el botón no lleva a ningún sitio. Usar una casilla de URL escrita por el importador |
 | No hay «Post Content» en el contenido dinámico (9 octubre 2026) | Usar una casilla de tipo Editor con el texto completo (`ep_texto`) |
 | Renombrar la entrada de un canal duplicaba sus episodios (10 octubre 2026) | Pasaba si la identidad del canal dependía de su slug. El importador v1.1 usa el ID de la entrada (`_tt_pod_canal`, `_tt_pod_term`) |
+| **Error 153 de YouTube** («Video player configuration error») (30 octubre 2026) | El reproductor exige que la petición identifique a la web con la cabecera `Referer` (historial de la IFrame Player API, 9 julio 2025). No suprimirla con un `Referrer-Policy` estricto de servidor o plugin de seguridad; usar `strict-origin-when-cross-origin` en el iframe o en la página. Prueba A2: sin `Referrer-Policy` en Local ni en producción, no apareció el 153 |
+| Regla de los 30 días de la API de YouTube (30 octubre 2026) | Los datos pedidos a la API sin login solo pueden guardarse 30 días naturales sin refrescarlos o borrarlos. Un importador parado más de 30 días, o fichas retiradas que nadie refresca, la incumplen. El importador de vídeos refresca a diario, vacía a los 25 días y avisa a 10 y 20 |
+| Una playlist **privada** no la lee una clave de API (30 octubre 2026) | La fila saldrá en error («privada o no se puede leer»); nunca retira fichas por ello |
+| `is_singular( array() )` es verdadero en cualquier página (30 octubre 2026) | Con un array vacío WordPress no filtra: comprobar que la lista de tipos no está vacía antes de usarlo (el importador de vídeos lo hace) |
 
 *Eliminada la fila "Application Password con espacios" — ya no aplica desde que se descartó ese patrón de autenticación.*
 
@@ -366,6 +385,7 @@ if (document.getElementById('mi-modulo-root')) {
 - [ ] Si el componente lee/escribe contenido dinámico: ¿va en ACF (Options Page o CPT) o en `wp_options`? Ver Sección 3 antes de decidir, y siempre `update_field()` si es ACF
 - [ ] Si el componente se puede resolver con un elemento nativo de Avada: consultar `CATALOGO_ELEMENTOS_AVADA.md` antes de escribir código nuevo (ver `GUIA_AVADA_LOCAL.md` Sección 8)
 - [ ] Si el contenido llega de un feed externo y se repite: ¿entra por el importador (tipo propio + relación)? Ver `PODCAST_ESTRUCTURA.md`. Si son los días de una novena: ver `ORACIONES_ESTRUCTURA.md`
+- [ ] Si el contenido es una lista de vídeos de una playlist de YouTube: ¿una fila nueva en el importador de vídeos? Ver Sección 3.6
 
 ---
 

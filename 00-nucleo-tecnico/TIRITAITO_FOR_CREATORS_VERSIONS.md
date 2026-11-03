@@ -4,7 +4,7 @@
 **Audiencia**: Hno A · Carlitos (coordinación de GitHub)
 **Propósito**: Diferencia entre V1 y V2 de la app, dónde vive cada archivo en GitHub, formato de changelog, y alcance confirmado de funcionalidades nuevas por versión
 **Versión**: (controlada por Git)
-**Última actualización**: 2026-07-26
+**Última actualización**: 2026-10-30
 
 ---
 
@@ -34,8 +34,8 @@ Responde: **¿qué diferencia hay entre V1 y V2 de Tiritaito for Creators, dónd
 |---|---|---|
 | Endpoint | `tiritaito.com/blog/wp-json` | `tiritaito-real.local/wp-json` (en Local) |
 | Ciclo de trabajo | Solo bugs críticos, sin funcionalidad nueva | Desarrollo activo, funcionalidades nuevas |
-| Nombre del archivo en GitHub | Uno por versión: `v1-07.html`, `v1-08.html`... (ver Sección 2) | ⚠️ **Fijo siempre**, no cambia con la versión (ver Sección 2 — decisión de Carlitos, 26 julio 2026) |
-| Dónde vive el número real de versión | En el propio nombre del archivo | Solo en el footer del HTML y en el título de la entrada de `CHANGELOG-v2-web-nueva.md` |
+| Nombre del archivo en GitHub | ⚠️ **Fijo siempre**: `tiritaito-creators-v1-01.html` (ver Sección 2 — corregido 30 octubre 2026) | ⚠️ **Fijo siempre**: `tiritaito-creators-v2-01.html` (ver Sección 2 — decisión de Carlitos, 26 julio 2026) |
+| Dónde vive el número real de versión | Solo en el footer del HTML y en el título de la entrada de `CHANGELOG-v1-web-vieja.md` (hoy **v1-15**) | Solo en el footer del HTML y en el título de la entrada de `CHANGELOG-v2-web-nueva.md` |
 | Autenticación | Token `TT_WRITE_TOKEN`, header `X-TT-Token` | Token `TT_WRITE_TOKEN`, header `X-TT-Token` (mismo patrón, confirmado 26 julio 2026 contra el HTML real) |
 
 El código de ambas versiones es muy parecido — los cambios son puntuales: el endpoint, y las funcionalidades nuevas exclusivas de V2.
@@ -54,7 +54,7 @@ para reflejar que V1 quedó retirada, y el Proyecto 1 (Web Vieja) se archiva o r
 tiritaito-docs/
 └── apps/
     ├── v1/
-    │   ├── tiritaito-creators-v1-XX.html   ← HTML de la app, web vieja
+    │   ├── tiritaito-creators-v1-01.html   ← HTML de la app, web vieja (nombre fijo; versión real: v1-15)
     │   └── CHANGELOG-v1-web-vieja.md       ← changelog de V1
     └── v2/
         ├── tiritaito-creators-v2-01.html               ← HTML de la app (nombre fijo)
@@ -73,9 +73,9 @@ Hno A — coincide en todo. Lista para subir a `apps/v2/snippet-tt-creators-endp
 Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 7.1 para tres avisos abiertos encontrados
 al revisarla (sin bloquear la subida).
 
-### ⚠️ Regla de nombres — DISTINTA para V1 y V2 (corregido 26 julio 2026)
+### ⚠️ Regla de nombres — V1 y V2 usan nombre de archivo FIJO (V1 corregida 30 octubre 2026)
 
-**V1 — un archivo nuevo por versión, como siempre:** cada versión nueva es un archivo nuevo (`v1-07` → `v1-08`), nunca se sobreescribe el mismo nombre.
+**V1 — nombre de archivo FIJO, siempre `tiritaito-creators-v1-01.html`, se sobreescribe.** Es lo que el equipo ya hacía en la práctica (el archivo en GitHub se subía siempre con ese nombre); la regla antigua de «un archivo por versión» (`v1-07` → `v1-08`) **ya no vale**. El número real (hoy **v1-15**) vive solo en el footer del propio HTML y en el título de la entrada de `CHANGELOG-v1-web-vieja.md`. Confirmado por Carlitos (12 octubre 2026).
 
 **V2 — nombre de archivo FIJO, siempre `tiritaito-creators-v2-01.html`, se sobreescribe.** Decisión de Carlitos, 26 julio 2026. El número real de la versión (v2-02, v2-03, v2-04, v2-05...) **vive solo en dos sitios**: el footer del propio HTML (`<div class="tt-footer-note">`) y el título de la entrada correspondiente en `CHANGELOG-v2-web-nueva.md`. El nombre del archivo en GitHub nunca cambia.
 
@@ -105,14 +105,14 @@ Cada entrada nueva, arriba de las anteriores:
 
 ## 4. Cómo subir un cambio — paso a paso
 
-### V1 (sin cambios respecto a siempre)
+### V1 — nombre fijo (actualizado 30 octubre 2026)
 
 1. Descargar el HTML nuevo que entregó Claude en la sesión de trabajo
 2. En local, en la carpeta del repo `tiritaito-docs`: `git pull origin main`
-3. Copiar el HTML nuevo a `apps/v1/`, con el número de versión siguiente (`v1-08.html`, etc.)
-4. Abrir `CHANGELOG-v1-web-vieja.md` y pegar la entrada nueva arriba
+3. Copiar el HTML nuevo a `apps/v1/`, **renombrándolo siempre a `tiritaito-creators-v1-01.html`** — sobrescribe el que ya está
+4. Abrir `CHANGELOG-v1-web-vieja.md` y pegar la entrada nueva arriba, con el número real de versión en el título (`## v1-16 — …`)
 5. `git add` de los dos archivos (HTML + changelog)
-6. `git commit -m "v1-08: descripción corta"`
+6. `git commit -m "v1-16: descripción corta"` — el número va en el mensaje del commit, no en el nombre del archivo
 7. `git push origin main`
 8. Pulsar **"Sync now"** en el conector de GitHub del Proyecto 1 antes de la siguiente sesión
 
@@ -227,7 +227,7 @@ Tres observaciones al revisar el PHP real y completo (26 julio 2026), comparánd
 
 | # | Pregunta | Por qué importa |
 |---|---|---|
-| 1 | ¿La regla de "nombre de archivo fijo" se extiende también a V1, o V1 se queda con un archivo por versión como hasta ahora? | Asunción actual: solo V2 cambia — V1 está en mantenimiento mínimo, tiene fecha de caducidad conocida (Sección 1) y no se ha reportado confusión ahí. Confirmar si es correcto |
+| 1 | ~~¿La regla de "nombre de archivo fijo" se extiende también a V1?~~ **Respondida (12 octubre 2026): sí.** V1 también usa `tiritaito-creators-v1-01.html` fijo; la versión real (v1-15) vive en el footer y el changelog | Resuelta — la asunción anterior («solo V2») era errónea |
 | 2 | ¿Qué otras funcionalidades nuevas llevará V2, además de Novedades y Devocional? | El equipo aún no lo ha determinado — no asumir nada hasta que se confirme aquí |
 | 3 | ¿`01_CREATORS_APP.md` tenía contenido real en el repositorio de GitHub que no llegó a este Proyecto de Investigación? | Antes de confirmar que su fusión aquí (Sección 0) no perdió nada, verificar contra el archivo real en GitHub |
 | 4 | ¿Rate limit, validación de subidas, y Biblioteca/entradas ausentes (Sección 7.1) — deliberado o pendiente de reconstruir? | Determina si hace falta una sesión de Proyecto 3 para restaurarlas, o si el sistema se queda así a propósito |
