@@ -9,7 +9,7 @@
 
 Toda la documentación que el equipo usa para construir la Web Nueva de Tiritaito.com, en un solo sitio, sin fragmentación. Cada documento tiene **un dueño de contenido, una audiencia y una función clara** — si algo parece que debería estar en dos sitios a la vez, es una señal de que hay que fusionar, no duplicar.
 
-**Regla de mantenimiento:** se edita el documento existente, no se crean copias con sufijo de versión (`_v2`, `_final`, `_nuevo`). El historial de versiones lo lleva git, no el nombre del archivo. **Excepción documentada:** el HTML de Tiritaito for Creators V2 (`apps/v2/tiritaito-creators-v2-01.html`) es un caso especial — su nombre de archivo es siempre fijo por decisión de Carlitos (26 julio 2026); el número real de versión vive en el footer del HTML y en `CHANGELOG-v2-web-nueva.md`, ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 2.
+**Regla de mantenimiento:** se edita el documento existente, no se crean copias con sufijo de versión (`_v2`, `_final`, `_nuevo`). El historial de versiones lo lleva git, no el nombre del archivo. **Excepción documentada:** el HTML de Tiritaito for Creators (`apps/v1/tiritaito-creators-v1-01.html` y `apps/v2/tiritaito-creators-v2-01.html`) es un caso especial — su nombre de archivo es siempre fijo (V2 por decisión de Carlitos del 26 julio 2026; V1 confirmado el 12 octubre 2026); el número real de versión (hoy v1-15 en V1) vive en el footer del HTML y en el changelog de cada versión, ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 2.
 
 ---
 
@@ -63,7 +63,7 @@ tiritaito-docs/
 │   └── CONSUMO_USO_CLAUDE_EQUIPO.md            ← nuevo, 22 sept 2026
 ├── apps/
 │   ├── v1/
-│   │   ├── tiritaito-creators-v1-07.html
+│   │   ├── tiritaito-creators-v1-01.html            ← nombre SIEMPRE fijo, se sobreescribe (versión real: v1-15, en el footer)
 │   │   ├── CHANGELOG-v1-web-vieja.md
 │   └── v2/
 │       ├── tiritaito-creators-v2-01.html            ← nombre SIEMPRE fijo, se sobreescribe
@@ -71,6 +71,7 @@ tiritaito-docs/
 │       └── snippet-tt-creators-endpoint-central.php  ← PHP del endpoint (✅ real y
 │                                                         completo, obtenido 26/07/2026)
 │       ├── tt-podcast-importador.php                 ← nuevo, 10 octubre 2026 (v1.1) — importador de feeds del podcast
+│       ├── tt-video-importador.php                   ← nuevo, 30 octubre 2026 (v1.0, sin probar en Local) — importador de vídeos de YouTube (Música, Vía Crucis, Seminarios)
 └── historico/
     ├── INFORME_ESTRATEGICO_2026_1.md
     ├── INVESTIGACION_HERRAMIENTAS_2026.md
@@ -186,7 +187,7 @@ a esa decisión.
 | Confirmar en Local si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, o solo registrado como borrador | `GUIA_AVADA_LOCAL.md` Sección 9.1 | Cierre real del menú móvil — uno de los tres bloqueantes de Fase 1 |
 | **Vídeos de seminarios:** decidido el panel de "Más información" (Modal + 2 vídeos recientes vía Lightbox, siempre YouTube) — pendiente definir la estructura (CPT/ACF) de la nueva entrada "Vídeos de los Seminarios" y probar en Local si el Lightbox funciona anidado dentro de un Modal | `METODOLOGIA_CONSTRUCCION.md` Sección 3 · `ALCANCE_WEB_NUEVA.md` Sección 4.C | Construcción del Boceto J v5 y de la nueva entrada |
 | **Podcast:** ✅ estructura y decisiones cerradas (10/10/2026): Canal → Temporada → Episodio, con importador propio. 🔲 Pendientes en `PODCAST_ESTRUCTURA.md` Sección 9 (instalar la v1.1, pruebas, Charlas de la Biblia, prefijo de URLs, orden de episodios) | `PODCAST_ESTRUCTURA.md` | Corrección de `ALCANCE_WEB_NUEVA.md` 4.E/4.G/4.H y cierre del podcast |
-| **Tiritaito Music:** confirmado que `[tt_podcast]` no cubre el caso (cola, mini-reproductor, enlace profundo); sigue sin decidir dónde viven los datos — aplazado a propósito hasta que se construya esa entrada | `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` | Boceto de Carlota y construcción de la entrada Tiritaito Music |
+| **Tiritaito Music:** decidido (22-28/10/2026) una ficha por canción, presentación A y luego D, datos en WordPress vía importador de vídeos de YouTube. ☑ Importador escrito el 30/10/2026 (`apps/v2/tt-video-importador.php`), 🔲 sin ejecutar en Local: Álvaro pasa los casos M0–M24; Carlitos pone los IDs de las playlists de Espíritu Santo y Navidad | `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` §6.8 y §13.2 | Boceto de Carlota (solo tras las pruebas) y construcción de la entrada Tiritaito Music |
 | Completar en `CATALOGO_ELEMENTOS_AVADA.md` el nombre de los ~70 elementos de Avada Builder Elements todavía sin inventariar ni por nombre | `CATALOGO_ELEMENTOS_AVADA.md` Sección 12 | Que el catálogo cubra el listado completo de elementos activos, no solo los ~24-50 ya revisados a fondo |
 | Crear la cuenta del Proyecto 10 y repegar sus instrucciones; reconfigurar los conectores de GitHub de Proyecto 3, 4, 6 y 7 a sus chuletas respectivas; quitar los archivos `.matt.*` de Proyecto 2 y 5 | `CONSUMO_USO_CLAUDE_EQUIPO.md` · `INSTRUCCIONES_PROYECTOS_CLAUDE.md` Secciones 3, 4, 6, 7, 10 | Que el consumo de uso mejore de verdad, no solo en el papel |
 | **Podcast — instalar el importador v1.1 en Local y crear las 4 casillas nuevas** (`ep_texto`, `ep_temporada_url`, `tmp_canal_url`, `tmp_canal_nombre`) | `PODCAST_ESTRUCTURA.md` §9 | Las pruebas del importador |
