@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Alcance de la Web Nueva
 **Estructura de la web nueva: páginas, secciones internas, prioridades y método de trabajo**
-*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades · Actualizado 17 de septiembre de 2026 con las decisiones de equipo sobre los vídeos de seminarios (Sección 4.C) · Actualizado 3 de octubre de 2026 con el método de Hombres de Dios (Sección 4.H) · Actualizado 10 de octubre de 2026 con el podcast y con Oraciones/Novenas (4.E, 4.G, 4.H)* 
+*Sustituye a `historico/ALCANCE_WEB_NUEVA_v1.md` — reestructuración completa a partir de la sesión con Hna C, 8-9 julio 2026 · Ampliado con criterios de diseño de la sesión de equipo del 14 julio 2026 · Actualizado 26 julio 2026 con la eliminación de "Tip" y el backend de Novedades · Actualizado 17 de septiembre de 2026 con las decisiones de equipo sobre los vídeos de seminarios (Sección 4.C) · Actualizado 3 de octubre de 2026 con el método de Hombres de Dios (Sección 4.H) · Actualizado 10 de octubre de 2026 con el podcast y con Oraciones/Novenas (4.E, 4.G, 4.H) · Actualizado 30 de octubre de 2026 con las decisiones de Tiritaito Music y el importador de vídeos de YouTube (4.E, 4.G, pregunta abierta 10)* 
 *Aprobación: Hna C · Redacción: Hno C*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -221,6 +221,8 @@ en la siguiente actualización.
 Página contenedora de 4 entradas propias, cada una su propio post: **Tiritaito Music ·
 Rincón de Nico · Charlas de la Biblia · Ejército de Intercesores** (detalle en F).
 
+**Tiritaito Music** (decidido 22-28 octubre 2026): **una ficha por canción, con página propia compartible**, y presentación «escaparate nativo» primero y reproductor con cola después (A y luego D). Las canciones las crea y mantiene un importador de servidor que lee las playlists de YouTube (`apps/v2/tt-video-importador.php`, escrito el 30 octubre, sin probar en Local); detalle en `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` Sección 6.8.
+
 **Principio de unidad de presentación** (aplica igual a Oraciones, Sección G): Rincón de
 Nico y Charlas de la Biblia son ambos podcasts de Tiritaito. Cada uno puede tener su
 propio estilo (Rincón de Nico más colorido y orientado a niños, Charlas de la Biblia más
@@ -273,8 +275,8 @@ compartido entre ambos.
 | Rosario | Canal del podcast con 2 temporadas (Rosario y Coronilla de la Divina Misericordia); contenido fijo |
 | Salmos | Canal del podcast con 6 temporadas de 25 episodios; contenido fijo |
 | Novenas | Unas 8, en cinco formatos (días de texto, oración única, podcast, lista de YouTube, vídeo); página de Novenas con las tarjetas |
-| Oración en lenguas | Lista de YouTube con el mismo formato que Tiritaito Music (aplazada) |
-| Vía Crucis | Misma lógica que Tiritaito Music, con 2 temporadas ampliables (aplazada) |
+| Oración en lenguas | Área del importador de vídeos de YouTube, con el mismo formato que Tiritaito Music (se crea cuando acaben las pruebas del importador) |
+| Vía Crucis | Área del importador de vídeos de YouTube: 2 playlists ampliables, una ficha por estación (aplazada hasta que exista su tipo de contenido) |
 | Posesión mariana | Entrada sencilla: explicación, vídeo de YouTube y oración escrita |
 
 **Podcast en Oraciones:** cuatro tipos llevan podcast (Adoraciones, Rosario, Salmos, Novenas). Para el podcast basta con que cada canal sea una entrada propia; solo se desaconseja meter los canales en una sola entrada densa. **Sigue sin decidirse** si Oraciones es una entrada por tipo o un tipo de contenido con plantilla única.
@@ -370,7 +372,7 @@ día, que ya tienen lo esencial definido):
 | 7 | ¿Se usa la feature Eventos de Avada tal cual, o se personaliza? | I |
 | 8 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | 5.0, E |
 | 9 | ¿Cuál es el patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro)? Pendiente de referencia visual correcta compartida por Carlitos | B, 5.1 |
-| 10 | ¿Cuál es la estructura exacta (nombre del CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador puede servir también a Tiritaito Music y a Vía Crucis cuando se construyan esas piezas (ver `02-metodologia/investigaciones/`)? | C |
+| 10 | ~~¿Cuál es la estructura exacta de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador puede servir también a Tiritaito Music y a Vía Crucis?~~ **Respondida (30 octubre 2026):** un mismo importador de vídeos de YouTube sirve para Música, Vía Crucis y Seminarios (una fila de ajustes por playlist). Queda por crear el tipo de contenido de Seminarios (`seminario`, nombre propuesto) y sus casillas; ver `TIRITAITO_MUSIC_WEB_NUEVA.md` §6.8 | C |
 | 11 | ¿Las entradas de Charlas, Rincón y Oraciones son Entradas o Páginas? Decide dónde aparecen las casillas del podcast | G, E |
 
 ---
