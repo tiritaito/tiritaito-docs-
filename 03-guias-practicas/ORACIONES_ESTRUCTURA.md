@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Oraciones y Novenas: estructura
 **Registro vivo: qué es la sección Oraciones, cómo están montadas las novenas (cinco formatos, recetas, convención de nombres), las fichas de cada novena, lo contrastado entre los prompts y las fichas, y lo que queda pendiente**
-*Para el repositorio: `03-guias-practicas/ORACIONES_ESTRUCTURA.md` · Redactado por Proyecto 2 (Hno C) el 10 de octubre de 2026 · Modelo: `HOMBRES_DE_DIOS_ESTRUCTURA.md` y `PODCAST_ESTRUCTURA.md` · **Documento abierto: se sella cuando lleguen las fichas que faltan (Sección 1)***
+*Para el repositorio: `03-guias-practicas/ORACIONES_ESTRUCTURA.md` · Redactado por Proyecto 2 (Hno C) el 10 de octubre de 2026 · Modelo: `HOMBRES_DE_DIOS_ESTRUCTURA.md` y `PODCAST_ESTRUCTURA.md` · **Documento abierto: se sella cuando lleguen las fichas que faltan (Sección 1)** · Actualizado 30 de octubre de 2026 con las decisiones de vídeos (Tiritaito Music, importador, novenas)*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -50,8 +50,8 @@ Oraciones es una de las tres partes de Biblioteca (`ALCANCE_WEB_NUEVA.md` 4.G). 
 | **Adoraciones** | Su página corresponde a un podcast, más un vídeo de YouTube aparte, «Adorando en silencio (hora de la brisa)», que hay que presentar bien | Canal del podcast (`PODCAST_ESTRUCTURA.md`) + un vídeo aparte | 🔲 sin feed, sin construir |
 | **Rosario** | Podcast de **2 temporadas**: «Rosario» y «Coronilla de la Divina Misericordia». Contenido fijo | Canal del podcast con 2 temporadas (la cuadrícula de temporadas). Sin decidir si van juntas o como entradas separadas | 🔲 |
 | **Novenas** | Unas 8 novenas de 9 días | Ver Sección 3 | ☑ construidas (Sección 1) |
-| **Oración en lenguas** | Una lista de YouTube con el mismo formato que Tiritaito Music | Depende de Tiritaito Music (primero hay que planear su sección y su lógica interna) | 🔲 aplazada |
-| **Vía Crucis** | La misma lógica que Tiritaito Music, con **dos temporadas** que pueden ampliarse con los años (hoy `tt_viacrucis_json_url`) | Depende de Tiritaito Music | 🔲 aplazada |
+| **Oración en lenguas** | **Área del importador de vídeos de YouTube**, con el mismo formato que Tiritaito Music (una ficha por vídeo) | Depende del importador de vídeos (escrito el 30 oct, sin probar en Local) | 🔲 aplazada: se crea como área cuando acaben las pruebas |
+| **Vía Crucis** | **Área del importador de vídeos de YouTube:** una ficha por estación y **dos playlists** («Con Jesús hacia la Cruz» y «Vía Crucis de la Divina Misericordia 2024») que pueden ampliarse con los años (cada año nuevo = una fila más); orden por el número del título. `tt_viacrucis_json_url` se retira al migrar | Depende del importador de vídeos | 🔲 aplazada hasta que exista su tipo de contenido (`viacrucis`, nombre propuesto) |
 | **Salmos** | Podcast con los **150 salmos en 6 temporadas de 25 episodios**, en orden (1–25, 26–50…). Contenido fijo | Canal del podcast con 6 temporadas. Será una buena prueba de la cuadrícula de temporadas | 🔲 |
 | **Posesión mariana** | Entrada sencilla: una explicación, un vídeo de YouTube y la oración escrita | Página normal de Avada, mismo patrón que la «oración única» de las novenas (Sección 3.5) | 🔲 sin construir |
 
@@ -65,7 +65,7 @@ Oraciones es una de las tres partes de Biblioteca (`ALCANCE_WEB_NUEVA.md` 4.G). 
 | 2 | **Portal de Oraciones:** la página que lleva a los siete tipos (su diseño y su estructura) |
 | 3 | **Rosario:** ¿las dos temporadas juntas o como entradas separadas? |
 | 4 | **Adoraciones:** cómo se presenta el vídeo aparte |
-| 5 | Lenguas y Vía Crucis: dependen de la sección de Tiritaito Music |
+| 5 | ~~Lenguas y Vía Crucis: dependen de la sección de Tiritaito Music~~ **Resuelto (22-30 oct 2026):** son áreas del importador de vídeos de YouTube (Lenguas tras las pruebas; Vía Crucis cuando exista su tipo) |
 
 ---
 
@@ -77,13 +77,13 @@ Cada novena es una página. Hay **cinco formatos, que funcionan como recetas**: 
 
 | Novena | Formato | Estado de la ficha |
 |---|---|---|
-| Espíritu Santo (Elena Guerra) | **Días de texto** (carrusel de 9 días) | 🔲 ficha pendiente de llegar |
-| Sagrados Corazones de Jesús, María y José | **Días de texto** | 🔲 ficha pendiente de llegar |
+| Espíritu Santo (Elena Guerra) | **Días de texto** (carrusel de 9 días); vídeos del día en una playlist de YouTube, pegados a mano (22 oct); canción fija pendiente | 🔲 ficha pendiente de llegar |
+| Sagrados Corazones de Jesús, María y José | **Días de texto**; la canción de cierre es la misma los 9 días (`Rwh6N8Q7D1s`), vídeo fijo a mano | 🔲 ficha pendiente de llegar |
 | San José | **Oración única** | ✅ ficha recibida (sin resultados) |
 | Lourdes | **Oración única** (misma plantilla, duplicando la página) | ✅ ficha recibida |
 | Santa Teresita | **Podcast**: es la **temporada 1 del feed de Santa Teresita** (el canal del santo) | ☑ según Carlitos |
 | Divina Misericordia | **Podcast**: es una **temporada del feed de Novenas** | ☑ según Carlitos |
-| Inmaculada | ⚠️ **Cambió de formato** (Sección 3.7, punto 1): de «lista de YouTube» a **días con carrusel**, con foto por día y vídeo pendiente de Tiritaito Music | ✅ ficha recibida (sin resultados) |
+| Inmaculada | ⚠️ **Cambió de formato** (Sección 3.7, punto 1): de «lista de YouTube» a **días con carrusel**, con foto por día y **vídeo fijo pegado a mano** (decidido el 22 oct) | ✅ ficha recibida (sin resultados) |
 | Pentecostés | **Vídeo**: una página con un vídeo y su texto | 🔲 ficha pendiente de llegar |
 
 La entrada «Novenas» de Oraciones es una página con las tarjetas de las 8 novenas hechas a mano: **el contenido es fijo** y añadir una novena es duplicar una columna.
@@ -112,7 +112,7 @@ La entrada «Novenas» de Oraciones es una página con las tarjetas de las 8 nov
 | Qué se ve si alguien abre la dirección de un día suelto | **Abierta** (Álvaro solo lo anota) | — |
 | Novena del Espíritu Santo con podcast: su temporada 2 del feed de Novenas tiene 9 episodios; incluirlo (audio del día, o lista bajo el carrusel) | **Abierta:** hueco opcional reservado | Carlitos, 8 oct |
 | Pentecostés: ¿qué vídeo lleva y hay algo más en la página? | **Abierta** | — |
-| Inmaculada: formato días (con carrusel) y vídeo de cada día | **Parcial:** días cerrado según su ficha; el vídeo, aplazado a Tiritaito Music | Ficha recibida el 10 oct |
+| Inmaculada: formato días (con carrusel) y vídeo de cada día | ✅ **Cerrada (22 oct 2026):** carrusel de días con el vídeo de cada día fijo, pegado a mano | Ficha del 10 oct; Equipo, 22 oct |
 
 ### 3.3 Cómo se construye una novena de días
 
@@ -288,7 +288,7 @@ FICHA DE NOVENA — INMACULADA (novena de días, un vídeo/foto por día)
 
 | # | Qué | Lo que se encuentra | Qué se hace |
 |---|---|---|---|
-| 1 | **Formato de la Inmaculada** | Los prompts y las decisiones del 7 oct la dan como **«lista de YouTube», aplazada** hasta decidir Tiritaito Music. Su ficha la describe como **novena de días con carrusel** (`novena_inmaculada`, `nin_`), con foto por día y el vídeo pendiente de Tiritaito Music | ⚠️ Se documenta el formato de la ficha (más reciente) y **se pregunta a Carlitos si lo confirma** (Sección 4, pregunta 1) |
+| 1 | **Formato de la Inmaculada** | Los prompts y las decisiones del 7 oct la dan como **«lista de YouTube», aplazada** hasta decidir Tiritaito Music. Su ficha la describe como **novena de días con carrusel** (`novena_inmaculada`, `nin_`), con foto por día y el vídeo pendiente de Tiritaito Music | ✅ **Resuelto (22 oct 2026):** queda como novena de días con carrusel y vídeo fijo a mano (Sección 4, pregunta 1) |
 | 2 | Radio de las esquinas | Ambas fichas usan 15 px y dicen que el boceto dibuja 25 px | La norma dentro de Avada es **15 px** (`CATALOGO_ELEMENTOS_AVADA.md` 13.1); se sigue 15 px |
 | 3 | Resultados de las pruebas | Las dos fichas llegaron con estado y pruebas sin rellenar | Todo ☑/🔲 hasta recibir el resultado de Álvaro |
 | 4 | Versión de Avada | Los prompts dicen 7.16.1; el registro de Álvaro del 9 oct, 7.16.2 (el panel lo marca así) | Se anota 7.16.2 |
@@ -308,7 +308,7 @@ FICHA DE NOVENA — INMACULADA (novena de días, un vídeo/foto por día)
 | Espíritu Santo | Títulos sin tilde: «DIA 1», «MOMENTO PARA LA MEDITACION PERSONAL» |
 | Sagrados Corazones | Todo el texto sin tildes ni eñes («Senor», «Ensenennos a amar» → «Enséñennos a amar») |
 | Sagrados Corazones, día 7 | La palabra de Dios sobre la vid cita «Jn 15, 15»; el texto es de Jn 15, 5 (probable errata: comprobar) |
-| Sagrados Corazones | Confirmar que la canción es la misma los 9 días y si sigue como tarjeta de Tiritaito Music o pasa a un vídeo normal |
+| Sagrados Corazones | ✅ Resuelto (22 oct 2026): la canción es la misma los 9 días (`Rwh6N8Q7D1s`) y va como vídeo fijo pegado a mano, no como tarjeta de Tiritaito Music |
 
 ### 3.9 Cómo añadir una novena nueva
 
@@ -325,14 +325,14 @@ FICHA DE NOVENA — INMACULADA (novena de días, un vídeo/foto por día)
 
 | # | Pregunta | Bloquea a |
 |---|---|---|
-| 1 | **Inmaculada:** ¿se confirma el formato de su ficha (novena de días con carrusel, foto por día y vídeo después) en lugar de «lista de YouTube»? ¿Su lista tiene 9 vídeos, uno por día? | Su ficha y el formato «Lista de YouTube» |
+| 1 | ~~**Inmaculada:** ¿se confirma el formato de su ficha en lugar de «lista de YouTube»?~~ **Resuelta (22 oct 2026):** novena de días con carrusel y vídeo fijo a mano. 🔲 Sigue sin confirmarse que su lista tenga 9 vídeos, uno por día | Su ficha |
 | 2 | ¿Se confirman los feeds? **Santa Teresita:** `https://anchor.fm/s/1100f52d8/podcast/rss` (novena = temporada 1) · **Novenas:** `https://anchor.fm/s/11070301c/podcast/rss` (Divina Misericordia = temporada 1; Espíritu Santo = temporada 2, 9 episodios). **Proyecto 2 no ha podido leerlos** | Formato podcast; canales del podcast |
 | 3 | ¿La página de temporada estándar del podcast sirve para una novena, o necesita su propio diseño? | Novenas con podcast |
 | 4 | Espíritu Santo: ¿se incluye el podcast (audio del día, o lista bajo el carrusel)? | Hueco opcional |
 | 5 | Pentecostés: ¿qué vídeo lleva y hay algo más? | Su ficha |
 | 6 | ¿Qué se ve si alguien abre la dirección de un día suelto? (P6) | Decisión de equipo |
 | 7 | Inmaculada: ¿la foto es la misma los 9 días o cambia (`nin_imagen`)? ¿El texto opcional es fijo o con casilla? | Su molde |
-| 8 | Sagrados Corazones: ¿la canción es la misma los 9 días y sigue como tarjeta de Tiritaito Music? | Su ficha |
+| 8 | ~~Sagrados Corazones: ¿la canción es la misma los 9 días y sigue como tarjeta de Tiritaito Music?~~ **Resuelta (22 oct 2026):** sí, la misma los 9 días (`Rwh6N8Q7D1s`); vídeo fijo a mano | Su ficha |
 | 9 | Resultados de Álvaro: estado de cada novena y resultado de P1–P6, Filtros de Fondo y Desktop / Medium / Small | **Sellar este documento** |
 | 10 | Oraciones: arquitectura (O2 u O3), portal, Rosario (¿juntas o separadas?) y Adoraciones (vídeo aparte) | Toda la sección Oraciones |
 
