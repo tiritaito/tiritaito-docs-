@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Tipografía en Avada
 **Cómo funciona, qué hacer en cada caso y guía de configuración (una sola vez)**
-*Versión 1.3 · 3 de noviembre de 2026 · **set «Medium» creado y medido por Álvaro (Parte 4.6)** · Versión 1.2 (1 nov) · **añadido el sexto set «Medium» (texto mediano)**, propuesto por Álvaro y decidido por Carlitos: se crea el set 6 (cambios marcados con «v1.2») · Versión 1.1 (23 octubre): tras la prueba de Álvaro y la decisión de fuente (Poppins) · Verificado contra documentación oficial de avada.com (21-22 octubre 2026), contra el informe de Álvaro del 23 de octubre y contra `GUIA_AVADA_LOCAL.md`, `CATALOGO_ELEMENTOS_AVADA.md` y `00_CORE.md`*
+*Versión 1.5 · 3 de noviembre de 2026 · **los tres tamaños de cuerpo bajan aún más (Parte 4.7)** · Versión 1.4: primera bajada (15 / 13,5 / 12) · Versión 1.3: set «Medium» creado y medido (4.6) · Versión 1.2 (1 nov) · **añadido el sexto set «Medium» (texto mediano)**, propuesto por Álvaro y decidido por Carlitos: se crea el set 6 (cambios marcados con «v1.2») · Versión 1.1 (23 octubre): tras la prueba de Álvaro y la decisión de fuente (Poppins) · Verificado contra documentación oficial de avada.com (21-22 octubre 2026), contra el informe de Álvaro del 23 de octubre y contra `GUIA_AVADA_LOCAL.md`, `CATALOGO_ELEMENTOS_AVADA.md` y `00_CORE.md`*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -46,9 +46,9 @@ Responde cinco preguntas, para tres públicos:
 | **Headings** | Títulos H1-H6 y títulos de página | Yeah Papa | Cada nivel el suyo (Anexo A) |
 | **Subheadings** | Títulos de elementos: Toggles, tarjetas | Yeah Papa | 22 → 30 px |
 | **Lead** | Entradilla: el párrafo introductorio, algo mayor | Poppins | 18 → 22 px |
-| **Body** | Texto normal y párrafos largos | Poppins | 16 → 18 px |
-| **Medium** *(nuevo, v1.2)* | Texto secundario: descripciones de tarjeta, etc. | Poppins | 14,5 → 16 px |
-| **Small** | Fechas, pies de foto, etiquetas | Poppins | 13 → 14 px |
+| **Body** | Texto normal y párrafos largos | Poppins | 14 → 16 px |
+| **Medium** *(nuevo, v1.2)* | Texto secundario: descripciones de tarjeta, etc. | Poppins | 12,5 → 14 px |
+| **Small** | Fechas, pies de foto, etiquetas | Poppins | 11,5 → 12,5 px |
 
 ⚠️ Los **nombres y el orden** de los cinco primeros son los de Avada. Los **usos y los tamaños son una propuesta nuestra**, pendiente de que Hna C la valide mirándola en pantalla. El set Medium se crea a mano con *Add New Typography Set*; Avada lo guardará como `typography6` (contador fijo: si se borra y se vuelve a crear, otro set heredaría ese nombre interno).
 
@@ -56,7 +56,7 @@ Responde cinco preguntas, para tres públicos:
 
 ✅ Carlitos ha visto el resultado con Poppins y queda bien. Si algún día algo se ve grande o pequeño, se recalcula con la 5.4.
 
-⚠️ **Excepción de v1.2:** a 375 px el Medium mide 14,5 px, por debajo del criterio de 16 px para texto normal. Se acepta **solo para texto secundario**; el texto de lectura (párrafos largos) sigue siendo Body.
+⚠️ **Excepción (v1.4):** por decisión de Carlitos (3 nov) los tres tamaños de cuerpo bajan. A 375 px: Body 14 px, Medium 12,5 px y Small 11,5 px, todos por debajo del criterio de 16 px que había para texto normal. Se acepta de forma consciente; si en un móvil real se ve difícil de leer, se sube Body (5.4).
 
 ## 1.3 El esquema
 
@@ -226,8 +226,8 @@ Dos cosas a mirar con atención:
 | Headings | Yeah Papa | Helvetica, Arial, sans-serif | el del H2 (Anexo A) — cada nivel lo cambia luego |
 | Subheadings | Yeah Papa | Helvetica, Arial, sans-serif | `clamp(22px, 19.18px + 0.75vw, 30px)` |
 | Lead | Poppins *(actualizado 23 oct)* | Helvetica, Arial, sans-serif | `clamp(18px, 16.59px + 0.38vw, 22px)` |
-| Body | Poppins *(actualizado 23 oct)* | Helvetica, Arial, sans-serif | `clamp(16px, 15.30px + 0.19vw, 18px)` |
-| Small | Poppins *(actualizado 23 oct)* | Helvetica, Arial, sans-serif | `clamp(13px, 12.65px + 0.09vw, 14px)` |
+| Body | Poppins *(actualizado 23 oct)* | Helvetica, Arial, sans-serif | `clamp(14px, 13.30px + 0.19vw, 16px)` *(v1.5)* |
+| Small | Poppins *(actualizado 23 oct)* | Helvetica, Arial, sans-serif | `clamp(11.5px, 11.15px + 0.09vw, 12.5px)` *(v1.5)* |
 
 *(Si la Ruta es B, deja el tamaño de los sets como esté y pon solo la fuente.)*
 
@@ -245,13 +245,13 @@ Dos cosas a mirar con atención:
 | Font Family | Poppins (**la de Custom Fonts**, no la de Google, ver 4.3) |
 | Fuente de respaldo | Helvetica, Arial, sans-serif |
 | Variante / peso | 400 |
-| Font Size | `clamp(14.5px, 13.97px + 0.14vw, 16px)` (sin `font-size:`) |
+| Font Size | `clamp(12.5px, 11.97px + 0.14vw, 14px)` (sin `font-size:`) |
 | Line Height | 1.72 |
 | Letter Spacing | 0.015em |
 | Text Transform | none |
 
 4. Guarda. **Reset Avada Caches**, purga la caché del navegador y recarga.
-5. **Comprueba:** en la página de pruebas, pon un Text Block con el set **Medium** (selector de set del campo, nunca escribiendo la variable a mano). Inspeccionar → Computed → `font-size`: debe dar **14,5 px a 375**, ~15 a 768 y **16 a 1440**. Y en `<html>` → Styles, debe existir `--awb-typography6-font-size`.
+5. **Comprueba:** en la página de pruebas, pon un Text Block con el set **Medium** (selector de set del campo, nunca escribiendo la variable a mano). Inspeccionar → Computed → `font-size`: debe dar **12,5 px a 375**, ~13 a 768 y **14 a 1440**. Y en `<html>` → Styles, debe existir `--awb-typography6-font-size`.
 6. Exporta y sanea "después". Saldrán **claves nuevas** `typography_sets.typography6.*`: es lo esperado, se aceptan y se sube el `claves_conocidas.json` nuevo (`GUIA_AVADA_LOCAL.md` §2.2).
 
 **Si Avada no deja crear el set 6 o no lo guarda:** no insistas. Pon la misma fórmula directamente en el campo Typography de cada elemento que deba ir en tamaño mediano, y anota cada uso en el registro de excepciones (Parte 6). Avisa a Carlitos.
@@ -259,7 +259,7 @@ Dos cosas a mirar con atención:
 **Aviso (el mismo de la 4.4):** si al vincular algo al set Medium el campo queda en **rojo**, o en el export aparece `tipograf` en español, el set se ha vinculado con la interfaz en español. Repite con el idioma en inglés.
 
 ### 3.2 Body (Typography → Body Typography)
-Vincúlalo al set **Body** (selector de set: icono de globo). Los campos pasan a gris. No toques el color ni la decoración de enlaces.
+Vincúlalo al set **Body** (selector de set: icono de globo). Los campos pasan a gris. No toques el color ni la decoración de enlaces. ⚠️ *(v1.4)* En el export, el tamaño de Body Typography está escrito como fórmula propia, no vinculado al set: al cambiar el set Body hay que poner la **misma fórmula** también aquí.
 
 ### 3.3 Headings H1 a H6 (Typography → Heading Typography)
 Para **cada nivel**: vincula al set **Headings** (campo en gris) y **solo el tamaño** lo escribes tú en ese campo, con la fórmula del Anexo A. Quedará el tamaño en blanco (propio) y lo demás en gris. Es justo lo que la documentación de Avada describe.
@@ -301,12 +301,13 @@ Abre la página de pruebas **en el navegador** (no en Avada Live), con Inspeccio
 | H4 | 23 | 26,7 | 29 | 33 |
 | H5 | 21 | 23,6 | 25 | 28 |
 | H6 | 19 | 20 | 21 | 22 |
-| Body | 16 | 16,8 | 17,2 | 18 |
-| **Medium** *(v1.2)* | 14,5 | 15,0 | 15,4 | 16 |
+| Body | 14 | 14,7 | 15,2 | 16 |
+| **Medium** *(v1.2)* | 12,5 | 13,1 | 13,4 | 14 |
+| Small | 11,5 | 11,9 | 12,1 | 12,5 |
 
 Además:
 
-- [ ] El texto normal (Body) no baja de 16 px en móvil. **Excepción v1.2:** el set Medium (texto secundario) puede bajar hasta 14,5 px.
+- [ ] *(v1.4)* En móvil, Body mide 14 px, Medium 12,5 y Small 11,5 (decisión consciente de Carlitos). Mírese en un móvil real que se lee bien.
 - [ ] Ningún título ocupa más de 3 líneas a 375 px y no hay scroll horizontal.
 - [ ] A 1024 px el aspecto es coherente (sin salto brusco).
 - [ ] Con el zoom del navegador al 200 %, el texto sigue creciendo y no se corta.
@@ -451,6 +452,20 @@ Si R3, queda una vía más: un reemplazo controlado en la base de datos (herrami
 
 Se da el cambio por cerrado: Medium funciona y mide lo previsto. Las dos casillas sin responder y la petición a Google son comprobaciones menores, no bloqueantes.
 
+## 4.7 Tamaños de cuerpo más pequeños (3 noviembre 2026) *(v1.5)*
+
+**Decisión de Carlitos:** Body, Medium y Small deben ser más pequeños que los de la 4.2. Se hicieron dos bajadas el mismo día: la primera (v1.4: 15 / 13,5 / 12 px en móvil) le pareció todavía grande, y esta (v1.5) es la vigente. Se ajustan con la 5.4 si hace falta:
+
+| Set | Original (4.2) | v1.4 (descartada) | **Vigente (v1.5)** | Fórmula |
+|---|---|---|---|---|
+| Body | 16 → 18 px | 15 → 17 px | **14 → 16 px** | `clamp(14px, 13.30px + 0.19vw, 16px)` |
+| Medium | 14,5 → 16 px | 13,5 → 15 px | **12,5 → 14 px** | `clamp(12.5px, 11.97px + 0.14vw, 14px)` |
+| Small | 13 → 14 px | 12 → 13 px | **11,5 → 12,5 px** | `clamp(11.5px, 11.15px + 0.09vw, 12.5px)` |
+
+Se cambian **cuatro sitios**: los sets Body, Medium y Small, **y también** el tamaño de Body Typography, que lleva su propia fórmula escrita (3.2). Interlineado, espaciado, fuente y peso no se tocan.
+
+⚠️ Avisos honestos: en móvil, Body (14 px) queda muy por debajo de 16; Small (11,5 px) está en el límite de lo legible, sobre todo para personas mayores; y Lead (18 → 22 px) se ve ahora muy grande al lado de Body: probablemente convenga bajarlo también (no se toca sin que lo pidas). Formularios siguen en 16 px a propósito (zoom de Safari). Si Carlota o alguien dice que cuesta leer, se sube Body primero.
+
 ---
 
 # PARTE 5 — Cómo tocar la tipografía a partir de ahora (Álvaro)
@@ -520,13 +535,13 @@ Mínimo en **375 px**, máximo en **1440 px**. Fórmulas **sin** `font-size:` si
 | Page Title Bar | 32 → 54 | `clamp(32px, 24.25px + 2.07vw, 54px)` | 32 | 40,1 | 45,4 | 54 |
 | Subheadings | 22 → 30 | `clamp(22px, 19.18px + 0.75vw, 30px)` | 22 | 24,9 | 26,9 | 30 |
 | Lead | 18 → 22 | `clamp(18px, 16.59px + 0.38vw, 22px)` | 18 | 19,5 | 20,5 | 22 |
-| Body | 16 → 18 | `clamp(16px, 15.30px + 0.19vw, 18px)` | 16 | 16,8 | 17,2 | 18 |
-| **Medium** *(v1.2)* | 14,5 → 16 | `clamp(14.5px, 13.97px + 0.14vw, 16px)` | 14,5 | 15,0 | 15,4 | 16 |
-| Small | 13 → 14 | `clamp(13px, 12.65px + 0.09vw, 14px)` | 13 | 13,3 | 13,6 | 13,9 |
+| Body | 14 → 16 | `clamp(14px, 13.30px + 0.19vw, 16px)` | 14 | 14,7 | 15,2 | 16 |
+| **Medium** *(v1.2)* | 12,5 → 14 | `clamp(12.5px, 11.97px + 0.14vw, 14px)` | 12,5 | 13,1 | 13,4 | 14 |
+| Small | 11,5 → 12,5 | `clamp(11.5px, 11.15px + 0.09vw, 12.5px)` | 11,5 | 11,9 | 12,1 | 12,5 |
 
 **De dónde salen:** los máximos de escritorio conservan la escala de los H1-H6 que había (50/43/37/31/25/20 px) con un máximo algo mayor, porque el texto se veía pequeño en escritorio; los mínimos son nuevos y más bajos, porque el texto se veía grande en móvil. "Yeah Papa" necesita más píxeles que Helvetica Neue para el mismo peso visual (`00_CORE.md` §6), así que no se bajan más. **Es una propuesta: se valida a ojo en el Paso 5.**
 
-**Medium (v1.2):** propuesto por Álvaro. Ocupa el hueco entre Body y Small. Proporción aproximada respecto a Body: 91 % a 375 px y 89 % a 1440 px (no exactamente 90 %). Interlineado 1,72 y espaciado 0,015em, iguales a Body y Small (decisión de este documento, no de Álvaro: él no los especificó).
+**Medium (v1.2):** propuesto por Álvaro. Ocupa el hueco entre Body y Small. Proporción aproximada respecto a Body: 89 % a 375 px y 88 % a 1440 px. Interlineado 1,72 y espaciado 0,015em, iguales a Body y Small (decisión de este documento, no de Álvaro: él no los especificó).
 
 **Cómo se calculó:** `tamaño = A + B·(ancho/100)`, con B = (máx − mín)/(1440 − 375) y A = mín − B·375, acotado entre mín y máx. Si Hna C quiere otro mínimo o máximo, se recalcula con esa fórmula.
 
@@ -568,7 +583,7 @@ Solo recoge lo que se encontró en la prueba. **No hace falta anotar las nuevas*
 | Home, Title «TIRITAITO» | Familia y peso a mano (mismo valor que el global) | 🔲 Por vaciar (4.5) | Álvaro |
 | Carrusel de santos (home) | Vinculado a Subheadings; nivel H1 ×9 | 🔲 Pasar a H3 (4.5) | Álvaro |
 | `es_title_font_size` 42, `countdown` «18 píxeles» y otros | px sueltos del export original | 🔲 Probablemente funciones sin usar; sin revisar | Álvaro |
-| Set Medium a 375 px | 14,5 px, por debajo del criterio de 16 px | Aceptado solo para texto secundario (1.2, v1.2) | Álvaro / Carlitos |
+| Body, Medium y Small a 375 px | 14 / 12,5 / 11,5 px, por debajo del criterio antiguo de 16 px | Decisión de Carlitos (3 nov, v1.4): quiere los tres más pequeños | Carlitos |
 | Lead | Interlineado 1,2 (más apretado que Body y Small, 1,72) | Visto el 3 nov; no se toca salvo que una entradilla de varias líneas se vea apretada (entonces 1,4-1,5) | Álvaro |
 
 ## Próximos pasos
@@ -579,6 +594,7 @@ Solo recoge lo que se encontró en la prueba. **No hace falta anotar las nuevas*
 2. **Álvaro:** reparar las variables en español con la receta rápida (4.4): 30-60 minutos.
 3. **Álvaro:** fijar en el global el color por defecto del texto: Color 7 · Texto secundario en Body y Heading Typography (4.5), y mirar la home.
 4. ✅ **Hecho (3 nov):** set Medium creado y medido (4.6). Quedan dos casillas del informe sin rellenar (variable `--awb-typography6` y campos en rojo): no bloquean.
+4-bis. **Álvaro (v1.4):** bajar los tamaños de Body, Medium y Small a los valores de la 4.7 (tres sets + Body Typography), medir y avisar.
 5. **Carlitos:** decirle a Carlota que el texto ahora es Poppins y que hay **cuatro** niveles de texto (Lead, Body, Medium, Small), y pegar los bloques del grupo A de `CAMBIOS_REPOSITORIO_2026-10-23.md`.
 6. **Carlitos:** mirar la home en su móvil. El problema original era el móvil: es la prueba que de verdad importa.
 7. **Hno C:** con 1, 2, 3 y 4 hechos, cerrar este documento como versión 2 y actualizar `00_CORE.md`, el catálogo y la guía.
