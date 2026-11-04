@@ -1,3 +1,44 @@
+## v2-07 — 2026-11-04
+
+✅ Novedades: ocultar de verdad. `activo:false` en el PUT pasa la entrada a
+   borrador (deja de salir en la web); `true` la vuelve a publicar. La app
+   (con token) recibe publicadas + ocultas; la lectura pública sigue
+   devolviendo solo las publicadas. `activo` en la respuesta refleja el
+   estado real de la entrada, no el campo ACF
+✅ Novedades: dos desplegables nuevos en el formulario, Molde y Categoría.
+   Sus opciones se leen de ACF vía `GET /tiritaito/v1/novedades/opciones`:
+   ni la app ni el PHP llevan las listas escritas, ni claves `field_…`.
+   Novedad nueva → molde por defecto (`molde_defecto`). Editar → se precargan
+   los valores guardados. Sin opciones cargadas no se abre el formulario
+✅ Lista de Novedades: las ocultas se ven atenuadas con la etiqueta «Oculta»
+   y cada tarjeta muestra el nombre de su molde
+✅ `mensajeError()`: ahora lee el código HTTP real del principio del mensaje.
+   Antes un 400 caía en «Sin conexión» y `includes('5')` daba falsos «error
+   de servidor» si el cuerpo contenía un 5. Un 400 por molde o categoría
+   inexistente avisa en lenguaje humano
+✅ PHP (snippet central): ruta nueva `GET /novedades/opciones`; `molde` y
+   `categoria` en GET/POST/PUT; validación contra las opciones de ACF
+   (400 sin escribir nada si no valen); molde por defecto si llega vacío;
+   `activo` solo se toca en el PUT si la app lo manda; purga de LiteSpeed
+   tras cada cambio
+✅ PHP: corregidos dos fallos del parche original. (1) Decía «sustituir la
+   Sección 7» pero en el snippet real esa es Biblioteca de Medios; Novedades
+   es la Sección 8. (2) Con un cuerpo no JSON, `$body` era `null` y
+   `array_key_exists()` daba error fatal en PHP 8: ahora `tt_novedades_body()`
+   devuelve siempre un array
+▪️ No tocado: Devocional, Biblioteca de Medios, Recursos, PIN, navegación,
+   `subirArchivo()`
+⚠️ Verificado en el sandbox sobre los archivos reales, NO en Local: `php -l` y 13 pruebas de lógica PHP
+   con un WordPress simulado; `node --check` y 16 pruebas de las funciones
+   JS nuevas. Sin probar contra el WordPress real: lectura de los campos ACF
+   `molde` y `categoria` (deben ser tipo Select con esos nombres exactos),
+   el respaldo por `get_field_object`, y la purga de LiteSpeed
+🔲 Pendiente de Proyecto 3 en Local: pruebas curl 1–5 del prompt, backfill
+   del Bloque C y los 4 criterios de «terminado» (en especial añadir un molde
+   en ACF y comprobar que aparece en la app sin tocar código)
+🔲 Pendiente (sin cambios desde v2-03): bug de subida en V2, sigue sin
+   diagnosticar
+
 ## v2-06 — 2026-07-30
 
 ✅ Novedades: añadido input de "Título (opcional)" al formulario (crear
