@@ -20,7 +20,8 @@
    `categoria` en GET/POST/PUT; validación contra las opciones de ACF
    (400 sin escribir nada si no valen); molde por defecto si llega vacío;
    `activo` solo se toca en el PUT si la app lo manda; purga de LiteSpeed
-   tras cada cambio
+   tras cada cambio; los Select de ACF se leen siempre como valor aunque su
+   Formato de retorno sea «Matriz»
 ✅ PHP: corregidos dos fallos del parche original. (1) Decía «sustituir la
    Sección 7» pero en el snippet real esa es Biblioteca de Medios; Novedades
    es la Sección 8. (2) Con un cuerpo no JSON, `$body` era `null` y
@@ -28,7 +29,7 @@
    devuelve siempre un array
 ▪️ No tocado: Devocional, Biblioteca de Medios, Recursos, PIN, navegación,
    `subirArchivo()`
-⚠️ Verificado en el sandbox sobre los archivos reales, NO en Local: `php -l` y 13 pruebas de lógica PHP
+⚠️ Verificado en el sandbox sobre los archivos reales, NO en Local: `php -l` (anteponiendo `<?php`, porque el snippet no lo lleva) y 14 pruebas de lógica PHP
    con un WordPress simulado; `node --check` y 16 pruebas de las funciones
    JS nuevas. Sin probar contra el WordPress real: lectura de los campos ACF
    `molde` y `categoria` (deben ser tipo Select con esos nombres exactos),
