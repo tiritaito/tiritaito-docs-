@@ -122,6 +122,12 @@ add_action('rest_api_init', function () {
 
     /* ---------- Novedades — CPT propio ---------- */
 
+    register_rest_route('tiritaito/v1', '/novedades/opciones', [
+        'methods'             => 'GET',
+        'callback'            => 'tt_novedades_opciones_listar',
+        'permission_callback' => '__return_true', // solo etiquetas de desplegable, nada sensible
+    ]);
+
     register_rest_route('tiritaito/v1', '/novedades', [
         'methods'             => 'GET',
         'callback'            => 'tt_novedades_listar',
@@ -363,11 +369,141 @@ function tt_novedades_fecha_a_acf($fecha_app) {
     return $dt ? $dt->format('Ymd') : '';
 }
 
+/* ---------- Utilidades de Novedades (v2-07) ---------- */
+
+// Cuerpo JSON de la petición, siempre como array.
+// get_json_params() devuelve null si el cuerpo no es JSON válido; sin esto,
+// array_key_exists() sobre null es un error fatal en PHP 8.
+function tt_novedades_body($request) {
+    $b = $request->get_json_params();
+    return is_array($b) ? $b : [];
+}
+
+// ¿La petición trae el token de escritura correcto? (para decidir si se ven borradores)
+function tt_novedades_token_valido($request) {
+    $t = $request->get_header('X-TT-Token');
+    return !empty($t) && hash_equals((string) TT_WRITE_TOKEN, (string) $t);
+}
+
+// Definición de un campo ACF de Novedades, buscada POR NOMBRE.
+// Sin claves field_... escritas a mano: cambian entre Local y producción.
+function tt_novedades_campo_acf($nombre) {
+    static $cache = [];
+    if (array_key_exists($nombre, $cache)) return $cache[$nombre];
+
+    $encontrado = null;
+    if (function_exists('acf_get_field_groups') && function_exists('acf_get_fields')) {
+        foreach (acf_get_field_groups(['post_type' => 'novedades']) as $grupo) {
+            $campos = acf_get_fields($grupo['key']);
+            if (!is_array($campos)) continue;
+            foreach ($campos as $campo) {
+                if (isset($campo['name']) && $campo['name'] === $nombre) {
+                    $encontrado = $campo;
+                    break 2;
+                }
+            }
+        }
+    }
+
+    // Respaldo: si la regla de ubicación del grupo no se resuelve por tipo de
+    // entrada, pedirlo a través de cualquier novedad existente.
+    if (!$encontrado && function_exists('get_field_object')) {
+        $ids = get_posts([
+            'post_type'   => 'novedades',
+            'post_status' => 'any',
+            'numberposts' => 1,
+            'fields'      => 'ids',
+        ]);
+        if ($ids) {
+            $obj = get_field_object($nombre, $ids[0]);
+            if (is_array($obj) && !empty($obj['key'])) $encontrado = $obj;
+        }
+    }
+
+    $cache[$nombre] = $encontrado;
+    return $encontrado;
+}
+
+// Opciones de un campo Select de ACF: ['valor' => 'Etiqueta', ...]
+function tt_novedades_opciones($nombre) {
+    $campo = tt_novedades_campo_acf($nombre);
+    if (!$campo || empty($campo['choices']) || !is_array($campo['choices'])) return [];
+    return $campo['choices'];
+}
+
+// Molde que se asigna si la app no manda ninguno: el valor por defecto del campo
+// en ACF y, si no hay, la primera opción. Así una novedad nunca se queda sin molde.
+function tt_novedades_molde_defecto() {
+    $campo = tt_novedades_campo_acf('molde');
+    if ($campo && !empty($campo['default_value'])) {
+        $d = is_array($campo['default_value']) ? reset($campo['default_value']) : $campo['default_value'];
+        if ($d !== false && $d !== '' && $d !== null) return (string) $d;
+    }
+    $claves = array_keys(tt_novedades_opciones('molde'));
+    return $claves ? (string) $claves[0] : '';
+}
+
+// Valida un valor contra las opciones del campo.
+// Devuelve: el valor limpio si es válido · '' si viene vacío · false si NO es válido.
+function tt_novedades_validar_opcion($nombre, $valor) {
+    $valor = sanitize_text_field((string) $valor);
+    if ($valor === '') return '';
+    $validos = array_map('strval', array_keys(tt_novedades_opciones($nombre)));
+    return in_array($valor, $validos, true) ? $valor : false;
+}
+
+// Guarda un campo usando su CLAVE (resuelta en el momento), con el nombre como
+// último recurso. Evita la trampa de update_field() por nombre en entradas nuevas.
+function tt_novedades_guardar_campo($nombre, $valor, $post_id) {
+    $campo = tt_novedades_campo_acf($nombre);
+    update_field($campo ? $campo['key'] : $nombre, $valor, $post_id);
+}
+
+// Ocultar / mostrar de verdad: estado de la entrada + campo `activo` sincronizados.
+function tt_novedades_aplicar_activo($post_id, $activo) {
+    update_field('activo', (bool) $activo, $post_id);
+    wp_update_post([
+        'ID'          => $post_id,
+        'post_status' => $activo ? 'publish' : 'draft',
+    ]);
+}
+
+// Si hay LiteSpeed Cache, vaciar la caché para que ocultar/mostrar se note ya.
+// ⚠️ Sin probar: en Local no hay LiteSpeed. Si el plugin no existe, no hace nada.
+function tt_novedades_purgar_cache() {
+    do_action('litespeed_purge_all');
+}
+
+function tt_novedades_error($mensaje, $estado = 400) {
+    return new WP_REST_Response(['error' => $mensaje], $estado);
+}
+
+/* ---------- GET /novedades/opciones ---------- */
+
+function tt_novedades_opciones_listar($request) {
+    $salida = [];
+    foreach (['molde', 'categoria'] as $nombre) {
+        $lista = [];
+        foreach (tt_novedades_opciones($nombre) as $valor => $etiqueta) {
+            $lista[] = ['valor' => (string) $valor, 'etiqueta' => (string) $etiqueta];
+        }
+        $salida[$nombre] = $lista;
+    }
+    $salida['molde_defecto'] = tt_novedades_molde_defecto();
+    return new WP_REST_Response($salida, 200);
+}
+
+/* ---------- GET /novedades ---------- */
+
 function tt_novedades_listar($request) {
+    // Con token (la app): publicadas + ocultas, para poder volver a mostrarlas.
+    // Sin token (lectura pública): solo lo publicado.
+    $con_token = tt_novedades_token_valido($request);
+
     $posts = get_posts([
         'post_type'      => 'novedades',
         'posts_per_page' => -1,
-        'post_status'    => 'publish',
+        'post_status'    => $con_token ? ['publish', 'draft'] : 'publish',
     ]);
 
     $resultado = [];
@@ -380,33 +516,51 @@ function tt_novedades_listar($request) {
             'texto'     => (string) get_field('texto', $id),
             'enlace'    => (string) get_field('enlace', $id),
             'fecha'     => tt_novedades_fecha_a_app(get_field('fecha', $id)),
-            'activo'    => (bool) get_field('activo', $id),
+            // La verdad es el estado real de la entrada, no el campo ACF:
+            // así la app refleja siempre lo que de verdad sale en la web.
+            'activo'    => ($post->post_status === 'publish'),
             'titulo'    => (string) get_field('titulo', $id),
+            'categoria' => (string) get_field('categoria', $id),
+            'molde'     => (string) get_field('molde', $id),
         ];
     }
 
     return new WP_REST_Response($resultado, 200);
 }
 
+/* ---------- POST /novedades ---------- */
+
 function tt_novedades_crear($request) {
-    $body = $request->get_json_params();
+    $body = tt_novedades_body($request);
 
     $tipo      = sanitize_text_field($body['tipo'] ?? '');
     $media_url = esc_url_raw($body['media_url'] ?? '');
     $texto     = sanitize_textarea_field($body['texto'] ?? '');
     $enlace    = esc_url_raw($body['enlace'] ?? '');
     $fecha_acf = tt_novedades_fecha_a_acf($body['fecha'] ?? '');
-    $activo    = !empty($body['activo']);
     $titulo    = sanitize_text_field($body['titulo'] ?? '');
+    // Si la app no manda `activo`, la novedad nueva nace visible.
+    $activo    = array_key_exists('activo', $body) ? !empty($body['activo']) : true;
+
+    // Validar ANTES de crear nada (un 400 no debe dejar una entrada a medias)
+    $categoria = tt_novedades_validar_opcion('categoria', $body['categoria'] ?? '');
+    if ($categoria === false) {
+        return tt_novedades_error('Categoría no válida: no está entre las opciones del campo en ACF.');
+    }
+    $molde = tt_novedades_validar_opcion('molde', $body['molde'] ?? '');
+    if ($molde === false) {
+        return tt_novedades_error('Molde no válido: no está entre las opciones del campo en ACF.');
+    }
+    if ($molde === '') $molde = tt_novedades_molde_defecto();
 
     $post_id = wp_insert_post([
         'post_type'   => 'novedades',
-        'post_status' => 'publish',
+        'post_status' => $activo ? 'publish' : 'draft',
         'post_title'  => $titulo !== '' ? $titulo : ('Novedad ' . current_time('Y-m-d H:i')),
     ]);
 
     if (is_wp_error($post_id) || !$post_id) {
-        return new WP_REST_Response(['error' => 'No se pudo crear la novedad'], 500);
+        return tt_novedades_error('No se pudo crear la novedad', 500);
     }
 
     update_field('tipo', $tipo, $post_id);
@@ -416,26 +570,47 @@ function tt_novedades_crear($request) {
     update_field('fecha', $fecha_acf, $post_id);
     update_field('activo', $activo, $post_id);
     update_field('titulo', $titulo, $post_id);
+    tt_novedades_guardar_campo('categoria', $categoria, $post_id);
+    tt_novedades_guardar_campo('molde', $molde, $post_id);
 
+    tt_novedades_purgar_cache();
     return new WP_REST_Response(['id' => $post_id], 200);
 }
+
+/* ---------- PUT /novedades/{id} ---------- */
 
 function tt_novedades_editar($request) {
     $id = (int) $request['id'];
 
     $post = get_post($id);
     if (!$post || $post->post_type !== 'novedades') {
-        return new WP_REST_Response(['error' => 'Novedad no encontrada'], 404);
+        return tt_novedades_error('Novedad no encontrada', 404);
     }
 
-    $body = $request->get_json_params();
+    $body = tt_novedades_body($request);
+
+    // Validar primero: si algo no vale, no se escribe nada.
+    $molde = null;
+    if (array_key_exists('molde', $body)) {
+        $molde = tt_novedades_validar_opcion('molde', $body['molde']);
+        if ($molde === false) {
+            return tt_novedades_error('Molde no válido: no está entre las opciones del campo en ACF.');
+        }
+        if ($molde === '') $molde = tt_novedades_molde_defecto();
+    }
+    $categoria = null;
+    if (array_key_exists('categoria', $body)) {
+        $categoria = tt_novedades_validar_opcion('categoria', $body['categoria']);
+        if ($categoria === false) {
+            return tt_novedades_error('Categoría no válida: no está entre las opciones del campo en ACF.');
+        }
+    }
 
     $tipo      = sanitize_text_field($body['tipo'] ?? '');
     $media_url = esc_url_raw($body['media_url'] ?? '');
     $texto     = sanitize_textarea_field($body['texto'] ?? '');
     $enlace    = esc_url_raw($body['enlace'] ?? '');
     $fecha_acf = tt_novedades_fecha_a_acf($body['fecha'] ?? '');
-    $activo    = !empty($body['activo']);
     $titulo    = sanitize_text_field($body['titulo'] ?? '');
 
     update_field('tipo', $tipo, $id);
@@ -443,28 +618,39 @@ function tt_novedades_editar($request) {
     update_field('texto', $texto, $id);
     update_field('enlace', $enlace, $id);
     update_field('fecha', $fecha_acf, $id);
-    update_field('activo', $activo, $id);
     update_field('titulo', $titulo, $id);
+
+    // molde, categoría y activo: solo se tocan si la app los manda.
+    // (Así una edición que no los incluya no los borra ni oculta la novedad.)
+    if ($molde !== null)     tt_novedades_guardar_campo('molde', $molde, $id);
+    if ($categoria !== null) tt_novedades_guardar_campo('categoria', $categoria, $id);
+    if (array_key_exists('activo', $body)) {
+        tt_novedades_aplicar_activo($id, !empty($body['activo']));
+    }
 
     if ($titulo !== '') {
         wp_update_post(['ID' => $id, 'post_title' => $titulo]);
     }
 
+    tt_novedades_purgar_cache();
     return new WP_REST_Response(['ok' => true], 200);
 }
+
+/* ---------- DELETE /novedades/{id} ---------- */
 
 function tt_novedades_borrar($request) {
     $id = (int) $request['id'];
 
     $post = get_post($id);
     if (!$post || $post->post_type !== 'novedades') {
-        return new WP_REST_Response(['error' => 'Novedad no encontrada'], 404);
+        return tt_novedades_error('Novedad no encontrada', 404);
     }
 
     $borrado = wp_delete_post($id, true);
     if (!$borrado) {
-        return new WP_REST_Response(['error' => 'No se pudo borrar la novedad'], 500);
+        return tt_novedades_error('No se pudo borrar la novedad', 500);
     }
 
+    tt_novedades_purgar_cache();
     return new WP_REST_Response(['ok' => true], 200);
 }

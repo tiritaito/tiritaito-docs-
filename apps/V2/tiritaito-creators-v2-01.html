@@ -334,6 +334,9 @@ h1, h2, h3, h4, .tt-title {
 .tt-novedad-actedit:active, .tt-novedad-actdel:active { transform:scale(.9) }
 .tt-novedad-actedit { background:var(--tt-surf3); color:var(--tt-txt3) }
 .tt-novedad-actdel  { background:#FFF0F0; color:var(--tt-alert) }
+.tt-novedad-item.oculta { opacity:.55 }
+select.tt-finput { padding-right:38px; background-repeat:no-repeat; background-position:right 14px center;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2386868b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>") }
 
 /* ── Responsive ─────────────────────── */
 @media (min-width:768px) {
@@ -592,7 +595,7 @@ h1, h2, h3, h4, .tt-title {
 
         </div>
       </div>
-      <div class="tt-footer-note">Tiritaito for Creators · v2-06 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
+      <div class="tt-footer-note">Tiritaito for Creators · v2-07 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
     </section>
 
     <!-- ───────── PÁGINA: RECURSOS ───────── -->
@@ -852,7 +855,8 @@ const S = {
   ytSubTab: 'musica',
   fiestaDias: [],
   fiestaBackendPendiente: false,
-  novedades: []
+  novedades: [],
+  novedadesOpciones: null
 };
 window.S = S;
 
@@ -929,11 +933,21 @@ window.confirmarEliminar = (nombre, fnConfirm) => {
 
 function mensajeError(e) {
   const m = e.message || '';
-  if (m.includes('401')) return '❌ No estás autorizada. Contacta con el equipo técnico.';
-  if (m.includes('403')) return '❌ No tienes permiso para hacer esto.';
-  if (m.includes('404')) return '❌ No se encontró el archivo en la web.';
-  if (m.includes('413')) return '❌ El archivo es demasiado grande.';
-  if (m.includes('5'))   return '❌ Error en el servidor. Inténtalo en unos minutos.';
+  // El código HTTP se lee del principio del mensaje ("HTTP 400: ..."), no con
+  // includes(): un "5" o un "401" dentro del cuerpo del error daba falsos avisos.
+  const st = (m.match(/^HTTP (\d{3})/) || [])[1];
+  if (st === '400') {
+    let detalle = '';
+    try { detalle = (JSON.parse(m.slice(m.indexOf(':') + 1).trim()) || {}).error || ''; } catch { /* cuerpo no JSON */ }
+    if (detalle.startsWith('Molde'))     return '❌ Ese molde ya no está disponible. Recarga la app y elige otro.';
+    if (detalle.startsWith('Categoría')) return '❌ Esa categoría ya no está disponible. Recarga la app y elige otra.';
+    return '❌ Alguno de los datos no es válido. Revísalos e inténtalo de nuevo.';
+  }
+  if (st === '401') return '❌ No estás autorizada. Contacta con el equipo técnico.';
+  if (st === '403') return '❌ No tienes permiso para hacer esto.';
+  if (st === '404') return '❌ No se encontró el archivo en la web.';
+  if (st === '413') return '❌ El archivo es demasiado grande.';
+  if (st && st[0] === '5') return '❌ Error en el servidor. Inténtalo en unos minutos.';
   return '❌ Sin conexión. Comprueba tu internet e inténtalo de nuevo.';
 }
 
@@ -1564,11 +1578,21 @@ window.generarYPublicar = async (tipo) => {
    de este cambio) — la app solo habla con tiritaito/v1/*, nunca con
    /wp/v2/*:
 
-   GET  /tiritaito/v1/novedades
+   GET  /tiritaito/v1/novedades/opciones   (v2-07, pública)
+     → { molde: [{valor, etiqueta}], categoria: [{valor, etiqueta}],
+         molde_defecto: <string> }  — leídas de ACF, nunca escritas en la app
+
+   GET  /tiritaito/v1/novedades   (con X-TT-Token: publicadas + ocultas)
      → array de objetos, cada uno:
        { id: <int, ID real del post>, tipo: "imagen"|"video",
          media_url: <string>, texto: <string>, enlace: <string>,
-         fecha: "YYYY-MM-DD", activo: <bool>, titulo: <string> }
+         fecha: "YYYY-MM-DD", activo: <bool, = entrada publicada>,
+         titulo: <string>, categoria: <string>, molde: <string> }
+
+   POST/PUT además aceptan molde y categoria (400 si no están entre las
+   opciones). activo:false pasa la entrada a borrador (sale de la web);
+   true la publica. El PUT sigue sin ser parcial para tipo, media_url,
+   texto, enlace, fecha y titulo: se manda siempre el objeto completo.
 
    POST /tiritaito/v1/novedades
      body: { tipo, media_url, texto, enlace, fecha, activo, titulo }
@@ -1591,6 +1615,42 @@ let novedadArchivoPendiente = null;
 let novedadTipoPendiente    = null;
 let novedadMediaUrlActual   = null;
 let novedadActivoActual     = true;
+
+async function cargarNovedadesOpciones() {
+  // Moldes y categorías salen de ACF vía el endpoint: nunca van escritos en la app.
+  try {
+    const d = await wpFetch('/tiritaito/v1/novedades/opciones', { method: 'GET' });
+    const limpiar = l => Array.isArray(l) ? l.filter(o => o && typeof o.valor === 'string') : [];
+    const ops = {
+      molde: limpiar(d?.molde),
+      categoria: limpiar(d?.categoria),
+      molde_defecto: typeof d?.molde_defecto === 'string' ? d.molde_defecto : ''
+    };
+    if (!ops.molde.length) {
+      S.novedadesOpciones = null;
+      toast('⚠️ No hay moldes disponibles. Avisa al equipo técnico.', 'warn');
+      return false;
+    }
+    S.novedadesOpciones = ops;
+    return true;
+  } catch (e) {
+    S.novedadesOpciones = null;
+    toast(mensajeError(e), 'error');
+    return false;
+  }
+}
+
+function etiquetaOpcion(lista, valor) {
+  const o = (lista || []).find(x => x.valor === valor);
+  return o ? o.etiqueta : '';
+}
+
+function opcionesHtml(lista, seleccionado, conVacio) {
+  const vacio = conVacio ? '<option value="">Sin categoría</option>' : '';
+  return vacio + lista.map(o =>
+    `<option value="${escapeHtml(o.valor).replace(/"/g, '&quot;')}"${o.valor === seleccionado ? ' selected' : ''}>${escapeHtml(o.etiqueta)}</option>`
+  ).join('');
+}
 
 async function cargarNovedades() {
   try {
@@ -1627,13 +1687,15 @@ function pintarNovedades() {
       : `<img src="${item.media_url}" alt="">`;
     const activo = item.activo !== false;
     const fechaTxt = item.fecha ? formatFechaLarga(item.fecha) : 'Sin fecha';
-    return `<div class="tt-novedad-item">
+    const moldeTxt = etiquetaOpcion(S.novedadesOpciones?.molde, item.molde);
+    return `<div class="tt-novedad-item${activo ? '' : ' oculta'}">
       <div class="tt-novedad-thumb">${thumb}</div>
       <div class="tt-novedad-info">
         <div class="tt-novedad-texto">${item.texto ? escapeHtml(item.texto) : '<span style="color:var(--tt-txt4)">Sin texto</span>'}</div>
         <div class="tt-novedad-meta">
           <span>${fechaTxt}</span>
           <span class="tt-novedad-badge ${activo ? 'on' : 'off'}">${activo ? 'Visible' : 'Oculta'}</span>
+          ${moldeTxt ? `<span>${escapeHtml(moldeTxt)}</span>` : ''}
         </div>
       </div>
       <div class="tt-novedad-actions">
@@ -1656,7 +1718,10 @@ window.toggleNovedadActivo = () => {
   if (txt) txt.textContent = novedadActivoActual ? 'Visible en la web' : 'Oculta';
 };
 
-window.abrirModalNovedad = (id = null) => {
+window.abrirModalNovedad = async (id = null) => {
+  // Sin opciones no se puede elegir molde: se reintenta una vez y, si falla, no se abre.
+  if (!S.novedadesOpciones) await cargarNovedadesOpciones();
+  if (!S.novedadesOpciones) return; // cargarNovedadesOpciones ya avisó al usuario
   novedadEditandoId = id;
   const item = id ? S.novedades.find(n => n.id === id) : null;
   const esEdicion = !!item;
@@ -1665,6 +1730,12 @@ window.abrirModalNovedad = (id = null) => {
   novedadTipoPendiente    = item?.tipo || null;
   novedadMediaUrlActual   = item?.media_url || null;
   novedadActivoActual     = item ? (item.activo !== false) : true;
+
+  const ops = S.novedadesOpciones;
+  const moldeSel = (item && ops.molde.some(o => o.valor === item.molde))
+    ? item.molde
+    : (ops.molde.some(o => o.valor === ops.molde_defecto) ? ops.molde_defecto : ops.molde[0].valor);
+  const categoriaSel = item?.categoria || '';
 
   const sh = mkSheet('tt-modal-novedad', `
     <div class="tt-mtitle">${esEdicion ? 'Editar novedad' : 'Nueva novedad'}</div>
@@ -1693,6 +1764,16 @@ window.abrirModalNovedad = (id = null) => {
     <div class="tt-fg">
       <label class="tt-flabel" for="novedad-enlace">Enlace al pulsar (opcional)</label>
       <input type="text" class="tt-finput" id="novedad-enlace" placeholder="https://…" value="${item?.enlace ? escapeHtml(item.enlace) : ''}">
+    </div>
+
+    <div class="tt-fg">
+      <label class="tt-flabel" for="novedad-molde">Molde (diseño en la web)</label>
+      <select class="tt-finput" id="novedad-molde">${opcionesHtml(ops.molde, moldeSel, false)}</select>
+    </div>
+
+    <div class="tt-fg">
+      <label class="tt-flabel" for="novedad-categoria">Categoría</label>
+      <select class="tt-finput" id="novedad-categoria">${opcionesHtml(ops.categoria, categoriaSel, true)}</select>
     </div>
 
     <div class="tt-fg">
@@ -1738,12 +1819,15 @@ window.guardarNovedad = async () => {
   const texto  = document.getElementById('novedad-texto').value.trim();
   const enlace = document.getElementById('novedad-enlace').value.trim();
   const fecha  = document.getElementById('novedad-fecha').value;
+  const molde     = document.getElementById('novedad-molde')?.value || '';
+  const categoria = document.getElementById('novedad-categoria')?.value || '';
 
   if (!novedadArchivoPendiente && !novedadMediaUrlActual) {
     toast('Elige una imagen o un vídeo antes de publicar.', 'warn');
     return;
   }
   if (!fecha) { toast('Elige una fecha.', 'warn'); return; }
+  if (!molde) { toast('Elige un molde.', 'warn'); return; }
 
   const btn = document.querySelector('#tt-modal-novedad .tt-btn-primary');
   const textoOriginalBtn = btn ? btn.textContent : '';
@@ -1761,7 +1845,7 @@ window.guardarNovedad = async () => {
       mediaUrl = media.source_url;
     }
 
-    const payload = { tipo, media_url: mediaUrl, texto, enlace, fecha, activo: novedadActivoActual, titulo };
+    const payload = { tipo, media_url: mediaUrl, texto, enlace, fecha, activo: novedadActivoActual, titulo, molde, categoria };
 
     if (novedadEditandoId) {
       await wpFetch(`/tiritaito/v1/novedades/${novedadEditandoId}`, {
@@ -1826,6 +1910,7 @@ async function iniciarApp() {
   }
   S.fiestaDias = parseFiestaDias(S.opciones.tt_fiesta_dias);
   await cargarNovedades();
+  await cargarNovedadesOpciones();
   pintarEstadoDevocional();
   pintarEstadoRecursos();
   pintarNovedades();
