@@ -2,8 +2,15 @@
    TT Creators + Biblioteca — Endpoint central
    Entorno: Local (tiritaito-real.local) — NUNCA producción
    Token de escritura: X-TT-Token, comparado contra TT_WRITE_TOKEN
-   Última actualización: 26 julio 2026
-   Cambios de esta sesión:
+   Última actualización: 4 noviembre 2026 (v2-07 de la app)
+   Cambios del 4 noviembre 2026 (Novedades):
+   - Ocultar de verdad: activo=false pasa la entrada a borrador; la lectura
+     pública solo devuelve publicadas, con X-TT-Token también las ocultas
+   - Campos nuevos molde y categoria (Select de ACF), con sus opciones leídas
+     de ACF; ruta nueva GET /novedades/opciones; validación con 400
+   - Corregido: cuerpo no JSON ya no provoca error fatal (tt_novedades_body)
+   - Los Select de ACF se leen siempre como valor (tt_novedades_valor_select)
+   Cambios del 26 julio 2026:
    - Devocional migrado a ACF Options Page
    - Tip del día ELIMINADO por completo (no existe en la web nueva)
    - virgen_fecha y brisa_autor separados en campos propios (antes
@@ -468,6 +475,16 @@ function tt_novedades_aplicar_activo($post_id, $activo) {
     ]);
 }
 
+// Valor de un campo Select leído con get_field(). Si en ACF el Formato de
+// retorno es «Matriz» (array), get_field() devuelve ['value'=>..,'label'=>..]
+// y un (string) daría «Array». Aquí se normaliza siempre al valor.
+function tt_novedades_valor_select($v) {
+    if (is_array($v)) {
+        $v = isset($v['value']) ? $v['value'] : (reset($v) ?: '');
+    }
+    return is_scalar($v) ? (string) $v : '';
+}
+
 // Si hay LiteSpeed Cache, vaciar la caché para que ocultar/mostrar se note ya.
 // ⚠️ Sin probar: en Local no hay LiteSpeed. Si el plugin no existe, no hace nada.
 function tt_novedades_purgar_cache() {
@@ -520,8 +537,8 @@ function tt_novedades_listar($request) {
             // así la app refleja siempre lo que de verdad sale en la web.
             'activo'    => ($post->post_status === 'publish'),
             'titulo'    => (string) get_field('titulo', $id),
-            'categoria' => (string) get_field('categoria', $id),
-            'molde'     => (string) get_field('molde', $id),
+            'categoria' => tt_novedades_valor_select(get_field('categoria', $id)),
+            'molde' => tt_novedades_valor_select(get_field('molde', $id)),
         ];
     }
 
