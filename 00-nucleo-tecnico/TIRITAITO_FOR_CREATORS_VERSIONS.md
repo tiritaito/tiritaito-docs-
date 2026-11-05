@@ -4,7 +4,7 @@
 **Audiencia**: Hno A · Carlitos (coordinación de GitHub)
 **Propósito**: Diferencia entre V1 y V2 de la app, dónde vive cada archivo en GitHub, formato de changelog, y alcance confirmado de funcionalidades nuevas por versión
 **Versión**: (controlada por Git)
-**Última actualización**: 2026-10-30
+**Última actualización**: 2026-11-04
 
 ---
 
@@ -133,9 +133,9 @@ Cada entrada nueva, arriba de las anteriores:
 
 | Módulo | Estado (26 julio 2026) |
 |---|---|
-| Novedades | ✅ Backend confirmado y probado de extremo a extremo (crear, editar, ocultar/mostrar, borrar) — CPT `novedades` + ACF (6 campos) + endpoint `tiritaito/v1/novedades`. ⚠️ El campo `titulo` existe en el backend pero **la app todavía no lo envía** (confirmado revisando `guardarNovedad()` en v2-05 — el payload no incluye `titulo`). Pendiente además: montar Post Cards + Dynamic Content en Avada (no filtra por `activo`, ver `GUIA_AVADA_LOCAL.md` Sección 9) |
-| Devocional (Virgen, Brisa, Homilía, Lenguas) | 🔄 En migración parcial — 7 de 12 claves antiguas de `wp_options` migradas a ACF Options Page "Devocional — Contenido Diario" (ver Sección 7). Virgen y Brisa ya separan fecha/autor en campos propios en la app (v2-05); `virgen_fecha` es obligatoria antes de publicar. ⚠️ Homilía — texto **sigue pidiendo y pegando la fecha en el texto** en v2-05 — la decisión de quitarla (26 julio 2026, siempre es la fecha de publicación) no se ha aplicado todavía en la app |
-| Tip del día | ❌ Decisión: eliminado por completo (26 julio 2026) — pero ⚠️ **sigue construido en la app** (`tt_tip_1`/`tt_tip_2`, confirmado en v2-05). Falta que Proyecto 5 lo retire de verdad |
+| Novedades | ✅ Backend probado en Local (4 nov 2026, Proyecto 3): CPT `novedades` + ACF (10 campos) + endpoint `tiritaito/v1/novedades`. **Ocultar una novedad la pasa a borrador y desaparece de la web** (revierte la decisión del 26 julio). Cada novedad tiene un **molde** (diseño) y una **categoría**, y las opciones de ambos se leen de ACF (ver Sección 6). App v2-07 con desplegables de molde y categoría. ⚠️ **La app v2-07 no se ha visto funcionar en el navegador** (solo verificada por sintaxis y pruebas simuladas), la purga de LiteSpeed no está probada y falta la instalación en producción. Pendiente en Avada: Álvaro y Carlota diseñan los moldes (Post Cards) |
+| Devocional (Virgen, Brisa, Homilía, Lenguas) | 🔄 En migración parcial — 7 de 12 claves antiguas de `wp_options` migradas a ACF Options Page "Devocional — Contenido Diario" (ver Sección 7). Virgen y Brisa ya separan fecha/autor en campos propios en la app (v2-05); `virgen_fecha` es obligatoria antes de publicar. Homilía — texto: según el informe de Proyecto 5 (4 nov 2026), la petición de fecha se retiró en v2-06 (sin verificar contra el HTML) |
+| Tip del día | ❌ Eliminado por completo (decisión 26 julio 2026). Según el informe de Proyecto 5 (4 nov 2026), retirado de la app en v2-06 (sin verificar contra el HTML) |
 | Cualquier otro módulo nuevo | 🔲 Sin decidir — no dar nada por hecho hasta que se confirme aquí |
 
 ---
@@ -146,7 +146,7 @@ Cada entrada nueva, arriba de las anteriores:
 
 **CPT:** `novedades` — `public => false` (no genera páginas propias públicas), `show_ui => true` (visible en wp-admin), `show_in_rest => true` (necesario para ACF y REST), `supports => ['title']`. `rest_base` confirmado: `novedades`.
 
-**Campos ACF (6):**
+**Campos ACF (10):**
 
 | Campo | Tipo | Nota |
 |---|---|---|
@@ -155,23 +155,36 @@ Cada entrada nueva, arriba de las anteriores:
 | `texto` | Texto largo | Opcional |
 | `enlace` | Texto/URL | Opcional |
 | `fecha` | Fecha, Return Format `Ymd` | El endpoint convierte `Ymd` ↔ `YYYY-MM-DD` en la frontera (`tt_novedades_fecha_a_app()` / `tt_novedades_fecha_a_acf()`) — el campo ACF interno se queda siempre en `Ymd` para que Post Cards ordene bien |
-| `activo` | Verdadero/Falso | Control interno del editor — **no filtra el listado público** (decisión de equipo, 26 julio 2026, ver `GUIA_AVADA_LOCAL.md` Sección 9) |
-| `titulo` | Texto | Confirmado en el backend — si llega vacío, el título del post se autogenera como `"Novedad " + fecha/hora`. ⚠️ **Sin input todavía en la app** (v2-05 no lo envía) |
+| `activo` | Verdadero/Falso | **Oculta de verdad (desde 4 nov 2026):** `false` pasa la entrada a **borrador** y deja de salir en la web; `true` la devuelve a publicada. La app y el endpoint leen el estado real de la entrada, no solo este campo. Revierte la decisión del 26 julio 2026 («no filtra») |
+| `titulo` | Texto | Si llega vacío, el título del post se autogenera como `"Novedad " + fecha/hora`. Según el informe de Proyecto 5, la app ya lo envía desde v2-06 (sin verificar contra el HTML) |
+| `categoria` | Selección (Select), retorno Valor | Badge de la tarjeta. Opciones en Local: `seminarios`, `santos`, `audio`, `adoracion`. Se leen de ACF |
+| `molde` | Selección (Select), retorno Valor, valor por defecto `estandar` | Diseño con el que se pinta la novedad en la home. Opciones en Local: `estandar`, `nuevo_episodio`. Se leen de ACF. Nunca debe quedar vacío (una tarjeta sin molde sale en blanco) |
+| `imagen` | Imagen | Sin uso: la foto sale de `media_url`. Aparece en el grupo de campos |
 
 **Endpoint dedicado — `tiritaito/v1/novedades`** (nunca `/wp/v2/posts`):
 
 | Método | Ruta | Auth | Función |
 |---|---|---|---|
-| GET | `/tiritaito/v1/novedades` | Pública | Lista todas las novedades — activas y ocultas, sin filtrar |
-| POST | `/tiritaito/v1/novedades` | `X-TT-Token` | Crea una novedad — el `id` lo asigna el servidor |
-| PUT | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Edita una novedad |
+| GET | `/tiritaito/v1/novedades` | Pública (con o sin token) | **Sin token:** solo las publicadas. **Con `X-TT-Token`:** publicadas y ocultas, para que la app pueda volver a mostrarlas. Incluye `categoria` y `molde`. `activo` refleja el estado real de la entrada |
+| GET | `/tiritaito/v1/novedades/opciones` | Pública | Opciones de los desplegables, leídas de ACF: `{molde:[{valor,etiqueta}], categoria:[{valor,etiqueta}], molde_defecto}` |
+| POST | `/tiritaito/v1/novedades` | `X-TT-Token` | Crea una novedad — el `id` lo asigna el servidor. Acepta `molde` y `categoria`; sin molde asigna el valor por defecto; sin `activo` nace visible. Un valor que no esté en las opciones de ACF da **400** y no escribe nada |
+| PUT | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Edita una novedad. `molde`, `categoria` y `activo` solo se tocan si se mandan; los demás campos, **si no se mandan, se borran** (la app debe enviar siempre el objeto completo) |
 | DELETE | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Elimina una novedad |
 
 **El shortcode `[tt_novedades]`** que se llegó a construir por error replicando el patrón antiguo de `wp_options` **queda descartado** — la lectura pública es Post Cards de Avada + Dynamic Content, no un shortcode propio. No está presente en el PHP real subido.
 
+**Moldes — cómo funciona (4 nov 2026):** hay un solo Post Card en Avada con un bloque por molde; cada bloque se muestra solo si el campo `molde` de la novedad vale lo suyo (Conditional Rendering). Un molde que ninguna novedad usa no se pinta. **Añadir un molde nuevo es añadir una línea a las opciones del campo `molde` en ACF**: ni el PHP ni la app tienen la lista escrita. Las claves de campo (`field_…`) no están escritas en el PHP: se buscan por nombre en tiempo de ejecución, porque cambian entre Local y producción. Guía de construcción: `GUIA_ANADIR_MOLDE_NOVEDADES.md`.
+
+**Quién hizo qué:** el parche del PHP lo redactó Proyecto 2; Proyecto 5 lo integró en el snippet y en la app (v2-07); Proyecto 3 lo instaló y lo probó en Local.
+
+**Probado en Local (Proyecto 3):** opciones leídas de ACF, ocultar y mostrar (API y web), molde inexistente → 400 sin escribir, cuerpo no JSON sin error fatal, opción nueva en ACF visible sin tocar código, backfill de molde en las novedades existentes.
+
+**Sin probar:** la app v2-07 en el navegador; la purga de caché de LiteSpeed tras cada cambio (en Local no hay LiteSpeed; si fallara, ocultar o mostrar tardaría en notarse, sin romper nada); la instalación en producción.
+
 **Pendiente:**
-- App: añadir el input de `titulo` al formulario de Novedades
-- Avada: montar Post Cards + Dynamic Content (el campo `activo` no tendrá efecto — se muestran todas)
+- Probar la app v2-07 con la web instalada: añadir novedad (Molde y Categoría visibles, Estándar preseleccionado), publicar una con «Nuevo episodio», ocultarla (atenuada con «Oculta» y fuera de la web), mostrarla, borrarla
+- Producción, por este orden: copia del snippet actual → crear en ACF `molde` y `categoria` (Select, retorno Valor, mismas opciones que en Local, `molde` con valor por defecto `estandar`) → instalar el snippet v2-07 → backfill de molde → cambiar `WP_BASE` de la app y revisar que el token coincide → probar la app y comprobar la purga de LiteSpeed
+- Álvaro y Carlota: diseñar los moldes en Avada (Post Cards)
 
 ---
 
@@ -214,9 +227,9 @@ Tres observaciones al revisar el PHP real y completo (26 julio 2026), comparánd
 ## 8. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Proyecto 5: quitar de la app el input de `titulo` pendiente → añadirlo al formulario de Novedades
-2. Proyecto 5: quitar el input de fecha de Homilía-texto y dejar de anexarla al texto
-3. Proyecto 5: retirar por completo la UI de "Tip del día" (tarjetas, inputs, botones de quitar) — confirmado de nuevo por Carlitos el 26 de julio, es la próxima actualización de la app
+1. ✅ Según el informe de Proyecto 5 (4 nov 2026), resueltos en v2-06 y sin verificar contra el HTML: input de `titulo` en Novedades, retirada de la fecha de Homilía-texto y retirada de la UI de «Tip del día»
+2. Subir v2-07 a GitHub (HTML + PHP + changelog) y pulsar «Sync now»
+3. Probar la app v2-07 en el navegador y llevar Novedades a producción (ver Sección 6, «Pendiente»)
 4. Al subir cualquiera de esos cambios: seguir el paso a paso de la Sección 4 — nombre de archivo fijo para V2, número real solo en el footer y en el changelog
 5. Confirmar con Hno A qué cambió realmente en v2-04 (si se recuerda) para completar esa entrada del changelog — no es urgente, es un hueco honesto, no un bloqueante
 6. ✅ Snippet PHP real y completo obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026) — la primera versión compartida ese mismo día era de la web vieja, no de esta; ya corregido

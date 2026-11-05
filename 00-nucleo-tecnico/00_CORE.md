@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Contexto Maestro
 *Reemplaza: ENTORNO_TÉCNICO · GUÍA_DE_ESTILO_VISUAL · tiritaito-guia-diseno-visual.md · secciones 2,9-14 de protocolo-tiritaito-creators-2.md*
 *Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast) · TIRITAITO_FOR_CREATORS_VERSIONS.md (si trabajas en V1/V2 de la app)*
-*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026 · Ampliado 10 de octubre de 2026 con el mapa de datos del podcast y la convención de las novenas · Ampliado 30 de octubre de 2026 con el importador de vídeos de YouTube*
+*Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026 · Ampliado 10 de octubre de 2026 con el mapa de datos del podcast y la convención de las novenas · Ampliado 30 de octubre de 2026 con el importador de vídeos de YouTube · Ampliado 4 de noviembre de 2026 con molde, categoría y ocultar de verdad en Novedades*
 
 ---
 
@@ -139,8 +139,8 @@ que Proyecto 5 retire la UI real.
 
 Sustituye por completo a la antigua clave `tt_novedades` de `wp_options`. Esquema completo
 en `TIRITAITO_FOR_CREATORS_VERSIONS.md` Sección 6 — no se repite aquí para no duplicar
-mantenimiento. 6 campos ACF por entrada (`tipo`, `media_url`, `texto`, `enlace`, `fecha`,
-`activo`, `titulo`), gestionados vía endpoint propio `tiritaito/v1/novedades` (Sección 4),
+mantenimiento. 10 campos ACF por entrada (`tipo`, `media_url`, `texto`, `enlace`, `fecha`,
+`activo`, `titulo`, `categoria`, `molde` e `imagen`, esta última sin uso: la foto sale de `media_url`), gestionados vía endpoint propio `tiritaito/v1/novedades` (Sección 4),
 nunca vía `/wp/v2/posts`.
 
 ✅ **Registro del CPT, confirmado contra el PHP real (26 julio 2026):** `public => false`
@@ -148,9 +148,17 @@ nunca vía `/wp/v2/posts`.
 a mano), `show_in_rest => true` (necesario para que ACF y REST lo vean), `supports =>
 ['title']`.
 
-**El campo `activo` no filtra el listado público** (decisión de equipo, 26 julio 2026) —
-Post Cards en Avada muestra todas las novedades, visibles u ocultas. `activo` queda solo
-como control interno del editor en la app. Ver `GUIA_AVADA_LOCAL.md` Sección 9.
+**El campo `activo` oculta de verdad (desde el 4 de noviembre de 2026)** — revierte la
+decisión del 26 julio. `activo = false` pasa la entrada a **borrador** y deja de salir en la
+web (Post Cards solo pinta publicadas); `true` la devuelve a publicada. El endpoint lee el
+estado real de la entrada, no solo el campo. Las novedades ocultas solo se devuelven a quien
+manda `X-TT-Token`.
+
+**Campos `molde` y `categoria` (Select de ACF, retorno Valor):** sus opciones se leen de ACF,
+no están escritas en el PHP ni en la app. Añadir un molde nuevo = añadir una línea a las
+opciones del campo. `molde` debe tener valor por defecto (`estandar`): una novedad sin molde
+sale en blanco. Las claves `field_…` no se escriben en el PHP: se buscan por nombre en tiempo
+de ejecución, porque cambian entre Local y producción. Guía: `GUIA_ANADIR_MOLDE_NOVEDADES.md`.
 
 **Sanitizado por campo (confirmado 26 julio 2026):** cada campo de Devocional se limpia
 según lo que realmente contiene (texto largo, URL, o fecha con patrón `YYYY-MM-DD`
@@ -206,9 +214,10 @@ Una ficha por vídeo, alimentada por el importador de vídeos (`apps/v2/tt-video
 | POST | `/tiritaito/v1/subir` | `X-TT-Token` | Sube archivo a la Biblioteca de Medios — ⚠️ sin validación de tipo MIME ni tamaño máximo en el propio endpoint (ver aviso más abajo) |
 | GET | `/tiritaito/v1/medios` | `X-TT-Token` | Lista Biblioteca de Medios — a diferencia de `/datos`, esta ruta pide token incluso para leer |
 | DELETE | `/tiritaito/v1/medio/{id}` | `X-TT-Token` | Elimina archivo permanente |
-| GET | `/tiritaito/v1/novedades` | Pública | Lista todas las novedades (activas y ocultas, sin filtrar) |
+| GET | `/tiritaito/v1/novedades` | Pública (con o sin token) | Sin token: solo las publicadas. Con `X-TT-Token`: publicadas y ocultas. Incluye `categoria` y `molde` |
+| GET | `/tiritaito/v1/novedades/opciones` | Pública | Opciones de molde y categoría leídas de ACF, y `molde_defecto` |
 | POST | `/tiritaito/v1/novedades` | `X-TT-Token` | Crea una novedad — el `id` lo asigna el servidor |
-| PUT | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Edita una novedad |
+| PUT | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Edita una novedad. `molde`, `categoria` y `activo` solo se tocan si se mandan; los demás campos, si no se mandan, se borran |
 | DELETE | `/tiritaito/v1/novedades/{id}` | `X-TT-Token` | Elimina una novedad |
 | GET | `/tiritaito/v1/videos/estado` | `X-TT-Token` | Semáforo del importador de vídeos (color, días, filas, frenos, última ejecución). Snippet propio `apps/v2/tt-video-importador.php`, no el central. 🔲 Escrito 30 octubre 2026, sin probar; usa `TT_WRITE_TOKEN` si está definida como constante — **verificar contra el snippet central** |
 
