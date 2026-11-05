@@ -141,13 +141,14 @@ recordatorios generales de Tiritaito.
 se llamaba "Tip del día" ya no existe como pieza separada en `wp_options` ni en Conecta
 cada día — ese contenido se sube ahora directamente aquí, como una Novedad más.
 
-**Backend confirmado (26 julio 2026):** CPT `novedades` + ACF (6 campos: tipo, media_url,
-texto, enlace, fecha, activo, y titulo pendiente de input en la app) + endpoint propio
+**Backend confirmado (26 julio 2026):** CPT `novedades` + ACF (10 campos: tipo, media_url,
+texto, enlace, fecha, activo, titulo, categoria, molde e imagen sin uso) + endpoint propio
 `tiritaito/v1/novedades`, probado de extremo a extremo desde la app (crear, editar,
 ocultar/mostrar, borrar). Falta solo el montaje visual en Avada (Post Cards + Dynamic
-Content) — ver `METODOLOGIA_CONSTRUCCION.md`. El campo `activo` no filtra el listado
-público — se muestran todas las novedades (decisión de equipo, ver `GUIA_AVADA_LOCAL.md`
-Sección 9).
+Content) — ver `METODOLOGIA_CONSTRUCCION.md`. Ocultar una novedad desde la app la
+pasa a borrador y deja de salir en la web (4 nov 2026, revierte la decisión del 26 julio).
+Cada novedad lleva un molde (diseño) y una categoría; Álvaro y Carlota diseñan los moldes
+(`GUIA_ANADIR_MOLDE_NOVEDADES.md`).
 
 *Implicación técnica a confirmar con Hno A:* sin URL propia — vive como sección del
 Layout de la home, no como Post/Page independiente, salvo que se decida lo contrario.
