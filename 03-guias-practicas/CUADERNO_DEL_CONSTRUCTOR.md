@@ -134,6 +134,25 @@ Caso: Novedades no se veía en Post Cards — sesión de diagnóstico y cierre
 | P8 | En Charlas el número de episodio **reinicia en cada temporada** (1–24, 1–42, 1–4). La lista «todos los episodios del canal» mezclaría las temporadas, así que solo se usa cuando hay una sola. | ✅ feed real. Hallazgo 17 | 10 octubre 2026 |
 | P9 | Tres averías en las pruebas del 1–3 oct: (1) una relación creada como tipo Texto en vez de Relación; (2) filtros antiguos que Post Cards conserva al editarlo (si se rehace, reconstruirlo desde cero); (3) un Layout editado en varias pestañas a la vez. | Informe de pruebas | 1–3 octubre 2026 |
 
+### Novedades — molde y ocultar (4 noviembre 2026)
+*Origen: pruebas de Álvaro y de Proyecto 3 en Local, e informe de Proyecto 5 (v2-07). La app v2-07 sigue sin probarse en el navegador.*
+
+#### ✅ Esto funciona así
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| N1 | Un molde distinto por novedad: un solo Post Card con un bloque por molde y Conditional Rendering (*ACF Field `molde` igual a …*). Un molde que ninguna novedad usa no se pinta. Comprobado con Text Block y con Video. | Álvaro, prueba «MOLDE B» | 4 noviembre 2026 |
+| N2 | Ocultar una novedad = pasarla a borrador: Post Cards solo pinta publicadas. | Proyecto 3, en Local | 4 noviembre 2026 |
+
+#### ⚠️ Cuidado con esto
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| N3 | Una novedad sin `molde` sale en blanco si todos los bloques llevan condición. Solución: valor por defecto en ACF y en el PHP, más un backfill de las existentes. | Diseño del sistema de moldes | 4 noviembre 2026 |
+| N4 | El `PUT` del endpoint borra los campos antiguos que no se mandan; solo `molde`, `categoria` y `activo` se respetan si faltan. La app debe mandar el objeto completo. | Contrato del endpoint | 4 noviembre 2026 |
+| N5 | El elemento Video reapareció solo en «Madre enséñame» tras devolverla a Estándar y no en las otras. Causa sin aclarar (falta el `src` del `<video>` y el `molde` de cada novedad). No afecta a la prueba. | Prueba de moldes | 4 noviembre 2026 |
+| N6 | Sin confirmar si una Columna o Nested Columns entera admite Conditional Rendering. Decide cómo se construyen los demás moldes. | Primer encargo para Álvaro | 4 noviembre 2026 |
+
 ## 4. Ya graduadas — trasladadas a documentación oficial
 
 *(Ejemplos de referencia, con hallazgos reales ya confirmados en el proyecto, para que se

@@ -352,7 +352,7 @@ de Avada, sin código. Para el caso excepcional en que no baste:
   no comportarse como su nombre sugiere — pero deja de ser un ❌ tranquilo: bloquea el
   listado de Novedades sin filtrar por `activo`, el de "Seminarios pasados", y ahora también
   el filtro por tipo de seminario de la nueva entrada de vídeos. Prueba de 15 minutos
-  pendiente.
+  pendiente. **Novedades ya no depende de este filtro (4 nov 2026):** ocultar = borrador, ver las dos entradas nuevas de abajo.
 - 🔲 Sin confirmar todavía si Post Cards cubre bien el listado de "Seminarios pasados" y la
   portada de "Hombres de Dios" — depende directamente del punto anterior
   (`GUIA_AVADA_LOCAL.md` Sección 19, pregunta abierta #2).
@@ -363,6 +363,23 @@ de Avada, sin código. Para el caso excepcional en que no baste:
 → **Elemento:** Conditional Rendering → *ACF Relationship Count* (Equal To, Greater Than…)
 
 - ☑ Álvaro, 9 oct 2026. **Una sola condición por elemento**; basta con una (un Container con «mayor que 0» y dos Post Cards con «igual a 1» y «mayor que 1»).
+
+### Necesito que una novedad oculta desde la app deje de verse en la web
+
+→ **Elemento:** ninguno — se resuelve en el estado de la entrada (borrador)
+
+- ✅ **Comprobado en Local (Proyecto 3, 4 nov 2026):** `activo = false` pasa la entrada a borrador; Post Cards solo pinta publicadas y el carrusel no la muestra. Sin filtro por Custom Field ni hook.
+- ⚠️ Sin probar con LiteSpeed Cache (en producción): si la caché de página no se vacía, ocultar o mostrar tardaría en notarse. El PHP intenta vaciarla al guardar.
+
+### Necesito que cada novedad use un diseño distinto, elegido desde la app
+
+→ **Elementos:** un solo Post Card + un bloque por molde + Conditional Rendering sobre el campo `molde` (ACF Select)
+
+- ✅ **Comprobado en Local (Álvaro, 4 nov 2026):** un Text Block y un elemento Video con la condición *ACF Field `molde` igual a …* dentro del Post Card; un bloque de un molde que ninguna novedad usa no se pinta ni deja hueco.
+- 🔲 Sin confirmar: que una Columna o Nested Columns entera admita Conditional Rendering (si no, la condición va en cada elemento del molde); cuatro moldes o más en el mismo Post Card; rendimiento (cada tarjeta lleva todos los bloques en el código).
+- ⚠️ Una novedad sin molde sale en blanco: el PHP asigna siempre un valor por defecto y el campo `molde` debe tener valor por defecto en ACF.
+- ⚠️ Los rótulos fijos de un diseño («Nuevo seminario», «Pulsa para ver») pertenecen al molde; la novedad solo aporta foto, título, texto, enlace y categoría.
+- Las opciones de molde se leen de ACF: añadir un molde no toca PHP ni app. Guía: `03-guias-practicas/GUIA_ANADIR_MOLDE_NOVEDADES.md`.
 
 ### Necesito enlazar un botón a una entrada guardada en una casilla
 
