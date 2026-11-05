@@ -110,7 +110,7 @@ ya decidida.
 | Pieza | Dónde vive | Nota |
 |---|---|---|
 | Página de inicio — estructura | Fusion Builder puro | Accesos a las cinco páginas contenedoras + apartado Novedades arriba de todo |
-| Novedades | CPT `novedades` + ACF (6 campos) + Post Cards de Avada con Dynamic Content — backend confirmado y probado de extremo a extremo (26 julio 2026), falta el montaje visual en Avada | No es página ni entrada aparte (`ALCANCE_WEB_NUEVA.md` Sección 4.B) — vive dentro del Layout de la home. El listado NO filtra por el campo `activo` — se muestran todas las novedades (decisión de equipo, ver `GUIA_AVADA_LOCAL.md` Sección 9). El snippet PHP antiguo `[tt_novedades]` que se llegó a construir por error se descartó, no llegó a activarse. El contenido que antes era "Tip del día" se sube ahora directamente aquí |
+| Novedades | CPT `novedades` + ACF (10 campos, incluidos `categoria` y `molde`) + Post Cards de Avada con Dynamic Content — backend confirmado y probado de extremo a extremo (26 julio 2026), falta el montaje visual en Avada | No es página ni entrada aparte (`ALCANCE_WEB_NUEVA.md` Sección 4.B) — vive dentro del Layout de la home. Ocultar una novedad la pasa a borrador y deja de salir (4 nov 2026, revierte la decisión del 26 julio); cada novedad lleva un molde y la tarjeta tiene un bloque por molde (`GUIA_ANADIR_MOLDE_NOVEDADES.md`). El snippet PHP antiguo `[tt_novedades]` que se llegó a construir por error se descartó, no llegó a activarse. El contenido que antes era "Tip del día" se sube ahora directamente aquí |
 
 ### Qué hacemos
 
