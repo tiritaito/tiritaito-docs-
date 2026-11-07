@@ -1,9 +1,12 @@
 /**
- * TT Vídeos YouTube — Importador · v1.0 · 30 octubre 2026
+ * TT Vídeos YouTube — Importador · v1.1 · 6 noviembre 2026
+ *   v1.1: (1) las taxonomías de vídeos (`categoria_musica`, `categoria_viacrucis`…) salen del mapa de páginas
+ *   y sus archivos llevan noindex; (2) la fila de Seminarios por defecto usa el tipo `video_seminario`
+ *   (el tipo `seminario` ya existe para las fichas de tipo de seminario). Sin más cambios sobre v1.0.
  *
  * QUÉ HACE
  *   Lee playlists de YouTube con la API (clave en la constante TT_YT_API_KEY de wp-config.php)
- *   y mantiene UNA FICHA por vídeo (tipo `cancion`, `viacrucis`, `seminario`…), con sus
+ *   y mantiene UNA FICHA por vídeo (tipo `cancion`, `viacrucis`, `video_seminario`…), con sus
  *   categorías (una por playlist, salvo la fila marcada «no crea categoría»).
  *   Sigue TIRITAITO_MUSIC_WEB_NUEVA.md, Secciones 5, 6 y 11.
  *
@@ -82,7 +85,7 @@ function tt_vid_filas_defecto() {
 		// Vía Crucis y Seminarios: tipos y taxonomía aún sin crear en Local → filas inactivas.
 		$f( 'PLX21N4KPkRTTz6ILAWvbk1a7SBywzw_3O', 'viacrucis', 'Con Jesús hacia la Cruz', true, false, 'titulo_numero', 'viacrucis', 'categoria_viacrucis', false ),
 		$f( 'PLX21N4KPkRTR9zSSsTdq85v3Oc4qYecP1', 'viacrucis', 'Vía Crucis de la Divina Misericordia 2024', true, false, 'titulo_numero', 'viacrucis', 'categoria_viacrucis', false ),
-		$f( 'PLX21N4KPkRTR8_vFAGAlKswgbV7f_EF4J', 'seminarios', 'Seminarios', false, true, 'texto', 'seminario', '', false ),
+		$f( 'PLX21N4KPkRTR8_vFAGAlKswgbV7f_EF4J', 'seminarios', 'Seminarios', false, true, 'texto', 'video_seminario', '', false ),
 	);
 }
 
@@ -162,6 +165,17 @@ function tt_vid_cpts() {
 		}
 	}
 	return array_values( $c );
+}
+
+/** Taxonomías de todas las filas (para sacar sus archivos del mapa de páginas y de Google). */
+function tt_vid_taxs() {
+	$t = array();
+	foreach ( tt_vid_filas() as $f ) {
+		if ( ! empty( $f['tax'] ) ) {
+			$t[ $f['tax'] ] = $f['tax'];
+		}
+	}
+	return array_values( $t );
 }
 
 /* =====================================================================
@@ -1349,9 +1363,19 @@ add_filter( 'wp_sitemaps_post_types', function ( $types ) {
 	return $types;
 } );
 
+add_filter( 'wp_sitemaps_taxonomies', function ( $taxonomies ) {
+	if ( tt_vid_cfg()['noindex'] ) {
+		foreach ( tt_vid_taxs() as $x ) {
+			unset( $taxonomies[ $x ] );
+		}
+	}
+	return $taxonomies;
+} );
+
 add_filter( 'wp_robots', function ( $robots ) {
 	$c = tt_vid_cpts();
-	if ( $c && tt_vid_cfg()['noindex'] && is_singular( $c ) ) {
+	$x = tt_vid_taxs();
+	if ( tt_vid_cfg()['noindex'] && ( ( $c && is_singular( $c ) ) || ( $x && is_tax( $x ) ) ) ) {
 		$robots['noindex'] = true;
 		$robots['follow']  = true;
 	}
