@@ -1,3 +1,62 @@
+## v2-08 — 2026-11-12
+
+✅ Módulo nuevo «Dios te habla» (Tip del día / Promesa de Dios): pestaña nueva
+   en la barra inferior (segunda, tras «Hoy») con su propia pantalla. Reintroduce
+   el Tip, eliminado el 26 julio 2026, por decisión de Carlitos y con otro
+   formato. `tt_tip_1` / `tt_tip_2` NO se restauran (no existen en el backend y
+   se rechazan): el módulo usa claves nuevas
+✅ Cada día se sube UNA imagen que es un Tip O una Promesa. Pantalla: selector
+   Tip del día / Promesa de Dios (obligatorio), subida de imagen con barra de
+   progreso y vista previa antes de publicar, fecha (hoy por defecto, editable),
+   botón «Publicar» y botón «Quitar lo de hoy» (con confirmación)
+✅ Contrato (revisado contra el PHP real del 12 nov 2026, sin rutas nuevas):
+   `GET /tiritaito/v1/datos` al abrir la pantalla → `tt_dgh_tipo`
+   (`tip`|`promesa`|``), `tt_dgh_imagen` (URL), `tt_dgh_fecha` (YYYY-MM-DD).
+   Publicar → `POST /datos` con SOLO esas 3 claves. Quitar → `POST /datos` con
+   `{tt_dgh_tipo:"", tt_dgh_imagen:""}`. La imagen se sube con `subirArchivo()`
+   a `/tiritaito/v1/subir` y se usa el `source_url` de la respuesta
+✅ Errores en lenguaje humano: un 400 del servidor («Falta la imagen…», «Tipo no
+   válido…») se traduce con una función propia, `mensajeErrorDgh()`; no se ha
+   tocado `mensajeError()`
+✅ Protecciones del cliente (decisiones mías, no pedidas): (1) si se cambia de Tip a
+   Promesa (o al revés) hay que subir imagen nueva, para no publicar la de ayer
+   bajo la etiqueta equivocada; (2) al subir una imagen nueva, si la fecha no se ha
+   tocado a mano, pasa a ser la de hoy; (3) la fecha «de hoy» es la local del
+   dispositivo, no la UTC; (4) solo JPG, PNG o WebP; (5) si la subida no responde en
+   120 s, se libera el botón Publicar con un aviso; (6) si el servidor no devuelve
+   las claves `tt_dgh_*` o las rechaza, se avisa de que falta actualizar el PHP en
+   vez de dar por publicado; (7) reabrir la pantalla no pisa lo que se está rellenando
+✅ Ayuda: nueva pregunta frecuente sobre «Dios te habla». Pie: v2-08
+▪️ No tocado: Novedades, Devocional (Virgen, Brisa, Homilía, Lenguas), Biblioteca de
+   Medios, Recursos, PIN, token, `WP_BASE`, `subirArchivo()`, `mensajeError()`. Solo
+   se añadió una línea a `cambiarPagina()` (título de la barra y apertura de la pantalla)
+⚠️ Verificado en el sandbox, NO en el navegador: `node --check` del bloque
+   `<script>` (OK), auditoría `getElementById` vs `id=` (sin referencias colgantes;
+   solo los IDs de modales dinámicos, esperado), balance de `<div>`/`<section>`
+   (183/183 y 6/6), todos los `onclick` nuevos cuelgan de `window.*`, y 60
+   comprobaciones con jsdom (servidor y subida SIMULADOS) sobre: abrir, vacío,
+   validación, subida + payload exacto, errores 400, servidor sin el módulo,
+   quitar, fallos de subida, subida colgada y regresión de Novedades/Devocional
+⚠️ Sin verificar: (1) cómo se ve la barra con SEIS pestañas en un móvil real (la
+   etiqueta «Dios te habla» es la más larga y va en una sola línea; puede
+   sobresalir 1-2 px); (2) una subida real de imagen — el bug de subida de V2
+   (v2-03) sigue sin diagnosticar y este módulo depende de `subirArchivo()`;
+   (3) los campos ACF `dgh_tipo`, `dgh_imagen` y `dgh_fecha` en la Options Page de
+   Local y cómo guarda/lee `dgh_fecha`; (4) la purga de LiteSpeed; (5) que v2-07
+   (base de esta versión) tampoco se ha visto aún en el navegador
+⚠️ Reconstrucción del archivo: el HTML no estaba en disco en la sesión, así que
+   v2-08 se escribió a partir de la copia v2-07 de la base de conocimiento. Antes
+   del commit, `git diff` sobre `tiritaito-creators-v2-01.html` debe mostrar SOLO:
+   bloque CSS «Módulo Dios te habla», `<section id="page-dios">`, botón de la
+   barra, pregunta de Ayuda, pie v2-08, la línea de `cambiarPagina()` y la sección
+   15c del script
+🔲 Pendiente de Proyecto 3 / Hno A (PHP): confirmar que `acf_get_field($nombre)`
+   resuelve el campo por nombre en la Options Page (el respaldo por nombre existe,
+   pero sin la clave `field_…` Avada Dynamic Content podría no leerlo); confirmar el
+   formato de `dgh_fecha` en ACF (Texto, o Fecha con retorno `Y-m-d`); una fecha mal
+   formada con tipo no vacío se descarta en silencio, sin 400 (la app no la envía)
+🔲 Pendiente (sin cambios desde v2-03): bug de subida en V2, sin diagnosticar
+
 ## v2-07 — 2026-11-04
 
 ✅ Novedades: ocultar de verdad. `activo:false` en el PUT pasa la entrada a
