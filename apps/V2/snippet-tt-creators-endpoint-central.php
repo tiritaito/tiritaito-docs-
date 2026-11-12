@@ -2,7 +2,17 @@
    TT Creators + Biblioteca — Endpoint central
    Entorno: Local (tiritaito-real.local) — NUNCA producción
    Token de escritura: X-TT-Token, comparado contra TT_WRITE_TOKEN
-   Última actualización: 4 noviembre 2026 (v2-07 de la app)
+   Última actualización: 12 noviembre 2026 (Dios te habla — pendiente de v2-08 de la app)
+   Cambios del 12 noviembre 2026 (Dios te habla, columna Tip / Promesa):
+   - 3 claves nuevas en ACF Options Page: tt_dgh_tipo ('tip' | 'promesa' | ''),
+     tt_dgh_imagen (URL) y tt_dgh_fecha (YYYY-MM-DD). Un solo «interruptor»
+     (tipo) + una sola imagen: así nunca se ven Tip y Promesa a la vez
+   - Validación con 400 ANTES de escribir nada (tipo no válido, falta imagen)
+   - Se guardan por CLAVE de campo (ACF guarda así la referencia que Avada
+     Dynamic Content necesita) y se purga la caché al guardar
+   - Endurecido: cuerpo no JSON en POST /datos ya no genera aviso de PHP
+   - Ojo: esto REINTRODUCE el «Tip del día» (eliminado el 26 julio) dentro de
+     Dios te habla; tt_tip_1/tt_tip_2 siguen sin existir
    Cambios del 4 noviembre 2026 (Novedades):
    - Ocultar de verdad: activo=false pasa la entrada a borrador; la lectura
      pública solo devuelve publicadas, con X-TT-Token también las ocultas
@@ -186,7 +196,30 @@ function tt_mapa_campos_devocional() {
         'tt_homilia_audio' => 'homilia_audio',
         'tt_homilia_texto' => 'homilia_texto',
         'tt_lenguas_url'   => 'lenguas_url',
+        // Dios te habla — columna derecha (Tip / Promesa), 12 nov 2026
+        'tt_dgh_tipo'      => 'dgh_tipo',
+        'tt_dgh_imagen'    => 'dgh_imagen',
+        'tt_dgh_fecha'     => 'dgh_fecha',
     ];
+}
+
+// Los 3 campos de «Dios te habla». Se tratan aparte (validación, guardado por
+// clave y purga de caché).
+function tt_dgh_campos() {
+    return ['dgh_tipo', 'dgh_imagen', 'dgh_fecha'];
+}
+
+// Valores permitidos de dgh_tipo. '' = «hoy no hay nada» (se ocultan los dos bloques).
+function tt_dgh_tipos_validos() {
+    return ['', 'tip', 'promesa'];
+}
+
+// Guarda un campo de la Options Page usando su CLAVE (field_...), buscada por
+// nombre en el momento. Así ACF guarda también la referencia interna y Avada
+// Dynamic Content / Conditional Rendering pueden leerlo. Respaldo: el nombre.
+function tt_dgh_guardar_campo($nombre, $valor) {
+    $campo = function_exists('acf_get_field') ? acf_get_field($nombre) : null;
+    update_field(($campo && !empty($campo['key'])) ? $campo['key'] : $nombre, $valor, 'option');
 }
 
 // Las claves que HOY se quedan en wp_options plano, sin tocar —
@@ -207,7 +240,7 @@ function tt_opciones_wp_pendientes() {
 // (podría alterar acentos, p.ej. en "José María", al tratarlos como URL)
 function tt_sanitizar_campo_devocional($campo_acf, $valor) {
     $texto_largo = ['virgen', 'brisa', 'homilia_texto'];
-    $urls        = ['homilia_audio', 'lenguas_url'];
+    $urls        = ['homilia_audio', 'lenguas_url', 'dgh_imagen'];
 
     if (in_array($campo_acf, $texto_largo, true)) {
         return sanitize_textarea_field($valor);
@@ -215,7 +248,13 @@ function tt_sanitizar_campo_devocional($campo_acf, $valor) {
     if (in_array($campo_acf, $urls, true)) {
         return esc_url_raw($valor);
     }
-    if ($campo_acf === 'virgen_fecha') {
+    if ($campo_acf === 'dgh_tipo') {
+        // Lista blanca: cualquier otra cosa se descarta (la validación con 400
+        // ya se hizo antes en tt_datos_guardar; esto es el cinturón y los tirantes)
+        $t = sanitize_text_field((string) $valor);
+        return in_array($t, tt_dgh_tipos_validos(), true) ? $t : '';
+    }
+    if ($campo_acf === 'virgen_fecha' || $campo_acf === 'dgh_fecha') {
         // Espera 'YYYY-MM-DD' del <input type="date"> de la app.
         // Si no coincide con el patrón, se descarta en vez de guardar basura.
         return preg_match('/^\d{4}-\d{2}-\d{2}$/', $valor) ? sanitize_text_field($valor) : '';
@@ -230,7 +269,12 @@ function tt_datos_leer($request) {
     // Devocional — de ACF Options Page
     foreach (tt_mapa_campos_devocional() as $clave_app => $campo_acf) {
         // 'option' le dice a ACF que lea de la Options Page, no de un post
-        $resultado[$clave_app] = (string) get_field($campo_acf, 'option');
+        $v = get_field($campo_acf, 'option');
+        // Si un Select de ACF devolviera «Matriz», se normaliza al valor
+        if (is_array($v)) {
+            $v = isset($v['value']) ? $v['value'] : (reset($v) ?: '');
+        }
+        $resultado[$clave_app] = is_scalar($v) ? (string) $v : '';
     }
 
     // Recursos — de wp_options plano, sin cambios
@@ -243,10 +287,33 @@ function tt_datos_leer($request) {
 
 function tt_datos_guardar($request) {
     $body       = $request->get_json_params();
+    if (!is_array($body)) $body = []; // cuerpo no JSON: no avisos de PHP
     $mapa_acf   = tt_mapa_campos_devocional();
     $pendientes = tt_opciones_wp_pendientes();
     $guardadas  = [];
     $rechazadas = [];
+    $dgh_tocado = false;
+
+    // ---- Dios te habla: validar ANTES de escribir nada (un 400 no deja nada a medias) ----
+    if (array_key_exists('tt_dgh_tipo', $body)) {
+        $tipo_nuevo = sanitize_text_field((string) $body['tt_dgh_tipo']);
+        if (!in_array($tipo_nuevo, tt_dgh_tipos_validos(), true)) {
+            return new WP_REST_Response(['error' => 'Tipo no válido: solo «tip», «promesa» o vacío.'], 400);
+        }
+        if ($tipo_nuevo !== '') {
+            // No se publica un Tip/Promesa sin imagen: saldría un panel vacío
+            $imagen_nueva = array_key_exists('tt_dgh_imagen', $body)
+                ? esc_url_raw((string) $body['tt_dgh_imagen'])
+                : (string) get_field('dgh_imagen', 'option');
+            if ($imagen_nueva === '') {
+                return new WP_REST_Response(['error' => 'Falta la imagen del Tip o de la Promesa.'], 400);
+            }
+            // Si la app no manda fecha, se pone la de hoy
+            if (!array_key_exists('tt_dgh_fecha', $body)) {
+                $body['tt_dgh_fecha'] = current_time('Y-m-d');
+            }
+        }
+    }
 
     foreach ($body as $clave_app => $valor) {
 
@@ -254,7 +321,12 @@ function tt_datos_guardar($request) {
         if (isset($mapa_acf[$clave_app])) {
             $campo_acf    = $mapa_acf[$clave_app];
             $valor_limpio = tt_sanitizar_campo_devocional($campo_acf, $valor);
-            update_field($campo_acf, $valor_limpio, 'option');
+            if (in_array($campo_acf, tt_dgh_campos(), true)) {
+                tt_dgh_guardar_campo($campo_acf, $valor_limpio); // por clave
+                $dgh_tocado = true;
+            } else {
+                update_field($campo_acf, $valor_limpio, 'option');
+            }
             $guardadas[] = $clave_app;
             continue;
         }
@@ -275,6 +347,10 @@ function tt_datos_guardar($request) {
         // versión antigua de la app todavía los mandara) se rechaza
         $rechazadas[] = $clave_app;
     }
+
+    // La home está cacheada: sin esto, el cambio de Tip/Promesa tardaría en verse
+    // ⚠️ Sin probar con LiteSpeed (en Local no hay)
+    if ($dgh_tocado) tt_novedades_purgar_cache();
 
     return new WP_REST_Response([
         'guardadas'  => $guardadas,
