@@ -338,6 +338,16 @@ h1, h2, h3, h4, .tt-title {
 select.tt-finput { padding-right:38px; background-repeat:no-repeat; background-position:right 14px center;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2386868b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>") }
 
+/* ── Módulo Dios te habla (v2-08) ─────────────────── */
+.tt-dgh-tipos { margin-bottom:0 }
+.tt-dgh-tipos .tt-stab { flex:1 1 0; padding:12px 10px; text-align:center }
+.tt-dgh-preview { display:block; width:100%; max-height:420px; object-fit:contain;
+  background:var(--tt-surf2); border-radius:var(--tt-r-sm); margin-bottom:12px }
+#page-dios .tt-btn:disabled { opacity:.55; cursor:default }
+/* "Dios te habla" es la etiqueta más larga de la barra: una sola línea, para que
+   los iconos de las seis pestañas queden a la misma altura */
+.tt-ni--dios { min-width:0; white-space:nowrap }
+
 /* ── Responsive ─────────────────────── */
 @media (min-width:768px) {
   .tt-page { max-width:600px; margin:0 auto }
@@ -498,6 +508,51 @@ select.tt-finput { padding-right:38px; background-repeat:no-repeat; background-p
 
     </section>
 
+    <!-- ───────── PÁGINA: DIOS TE HABLA ───────── -->
+    <section class="tt-page" id="page-dios">
+
+      <div class="tt-card">
+        <div class="tt-card-hdr">
+          <div class="tt-card-hdr-left">
+            <div class="tt-card-hdr-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+            </div>
+            <div class="tt-h3">Dios te habla</div>
+          </div>
+        </div>
+        <div class="tt-card-body">
+          <div class="tt-dev-status" id="dgh-status">Cargando estado…</div>
+
+          <div class="tt-fg">
+            <label class="tt-flabel">Qué publicas hoy</label>
+            <div class="tt-stabs tt-dgh-tipos" id="dgh-tipo">
+              <button class="tt-stab" type="button" data-tipo="tip" onclick="window.elegirDghTipo('tip')">Tip del día</button>
+              <button class="tt-stab" type="button" data-tipo="promesa" onclick="window.elegirDghTipo('promesa')">Promesa de Dios</button>
+            </div>
+          </div>
+
+          <div class="tt-fg">
+            <label class="tt-flabel">Imagen</label>
+            <div id="dgh-preview-wrap" style="display:none">
+              <img class="tt-dgh-preview" id="dgh-preview" alt="Vista previa de la imagen">
+            </div>
+            <input type="file" id="dgh-file-input" accept="image/jpeg,image/png,image/webp" style="display:none">
+            <button class="tt-btn tt-btn-sec tt-btn-full" type="button" id="dgh-file-btn" onclick="document.getElementById('dgh-file-input').click()">Elegir imagen</button>
+            <div class="tt-progress-wrap" id="dgh-progress" style="display:none"><div class="tt-progress-fill" id="dgh-progress-fill"></div></div>
+          </div>
+
+          <div class="tt-fg">
+            <label class="tt-flabel" for="dgh-fecha">Fecha</label>
+            <input type="date" class="tt-finput" id="dgh-fecha">
+          </div>
+
+          <button class="tt-btn tt-btn-primary" type="button" id="dgh-publicar" onclick="window.publicarDgh()">Publicar</button>
+          <button class="tt-btn tt-btn-sec tt-btn-full" type="button" id="dgh-quitar" style="margin-top:10px" onclick="window.confirmarQuitarDgh()">Quitar lo de hoy</button>
+        </div>
+      </div>
+
+    </section>
+
     <!-- ───────── PÁGINA: NOVEDADES ───────── -->
     <section class="tt-page" id="page-novedades">
 
@@ -569,6 +624,11 @@ select.tt-finput { padding-right:38px; background-repeat:no-repeat; background-p
           </details>
 
           <details class="tt-faq">
+            <summary>¿Cómo publico el Tip o la Promesa de «Dios te habla»?</summary>
+            <p>Ve a la pestaña "Dios te habla", elige si hoy toca Tip o Promesa, sube la imagen, comprueba la fecha y pulsa "Publicar". Solo se muestra una cosa cada vez: si publicas otra, sustituye a la anterior. Con "Quitar lo de hoy" la columna deja de mostrar nada en la web.</p>
+          </details>
+
+          <details class="tt-faq">
             <summary>¿Cómo elimino un archivo de la Biblioteca de Medios?</summary>
             <p>Ve a la pestaña "Biblioteca", toca el archivo para abrirlo y pulsa "Eliminar". Te pedirá confirmación porque esta acción no tiene vuelta atrás.</p>
           </details>
@@ -595,7 +655,7 @@ select.tt-finput { padding-right:38px; background-repeat:no-repeat; background-p
 
         </div>
       </div>
-      <div class="tt-footer-note">Tiritaito for Creators · v2-07 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
+      <div class="tt-footer-note">Tiritaito for Creators · v2-08 (Web Nueva / Local)<br>Ad maiorem Dei gloriam</div>
     </section>
 
     <!-- ───────── PÁGINA: RECURSOS ───────── -->
@@ -757,6 +817,10 @@ select.tt-finput { padding-right:38px; background-repeat:no-repeat; background-p
     <button class="tt-ni active" data-page="devocional" onclick="window.cambiarPagina('devocional')">
       <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L8 6v6l4 4 4-4V6L12 2z"/><path d="M8 12c-2 1-3 3-3 5s1 4 3 5M16 12c2 1 3 3 3 5s-1 4-3 5"/></svg>
       Hoy
+    </button>
+    <button class="tt-ni tt-ni--dios" data-page="dios" onclick="window.cambiarPagina('dios')">
+      <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+      Dios te habla
     </button>
     <button class="tt-ni" data-page="novedades" onclick="window.cambiarPagina('novedades')">
       <svg class="tt-ni-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
@@ -991,12 +1055,13 @@ window.pinPress = pinPress; window.pinDel = pinDel;
 window.cambiarPagina = (pagina) => {
   document.querySelectorAll('.tt-page').forEach(p => p.classList.toggle('active', p.id === 'page-' + pagina));
   document.querySelectorAll('.tt-ni').forEach(b => b.classList.toggle('active', b.dataset.page === pagina));
-  const titulos = { devocional: 'Hoy', novedades: 'Novedades', medios: 'Biblioteca', recursos: 'Recursos', ayuda: 'Ayuda' };
+  const titulos = { devocional: 'Hoy', dios: 'Dios te habla', novedades: 'Novedades', medios: 'Biblioteca', recursos: 'Recursos', ayuda: 'Ayuda' };
   document.getElementById('topbar-title').textContent = titulos[pagina] || '';
   S.modulo = pagina;
   if (pagina === 'medios' && S.mediaItems.length === 0) cargarMedios(true);
   if (pagina === 'recursos') pintarEstadoRecursos();
   if (pagina === 'novedades') pintarNovedades();
+  if (pagina === 'dios') abrirDgh();
   document.getElementById('main').scrollTop = 0;
 };
 
@@ -1892,6 +1957,332 @@ window.eliminarNovedad = async (id) => {
     S.novedades = anterior;
     pintarNovedades();
     toast(mensajeError(e), 'error');
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+   15c. MÓDULO DIOS TE HABLA — Tip del día / Promesa de Dios
+   ════════════════════════════════════════════════════════
+   Añadido en v2-08 (12 nov 2026). Reintroduce el «Tip del día», que se
+   eliminó el 26 jul 2026, pero dentro de «Dios te habla» y con claves
+   NUEVAS: tt_tip_1 / tt_tip_2 siguen sin existir y el servidor las rechaza.
+
+   Cada día se sube UNA imagen que es un Tip O una Promesa, nunca las dos.
+
+   CONTRATO — revisado contra snippet-tt-creators-endpoint-central.php
+   (versión del 12 nov 2026). Sin rutas nuevas: se usa /datos.
+
+   GET  /tiritaito/v1/datos   (pública; se manda el token igualmente)
+     → entre otras: tt_dgh_tipo ("tip"|"promesa"|""), tt_dgh_imagen (URL),
+       tt_dgh_fecha ("YYYY-MM-DD")
+
+   POST /tiritaito/v1/datos   (X-TT-Token) — solo toca las claves que se envían
+     body publicar: { tt_dgh_tipo, tt_dgh_imagen, tt_dgh_fecha }
+     body quitar:   { tt_dgh_tipo: "", tt_dgh_imagen: "" }
+     → 200 { guardadas: [...], rechazadas: [...] }
+     → 400 { error: "..." } si el tipo no es válido o falta la imagen
+       (con tipo no vacío); no se escribe nada.
+
+   La imagen se sube con subirArchivo() a /tiritaito/v1/subir y se usa el
+   source_url de la respuesta. ⚠️ Ese endpoint no valida tipo ni tamaño
+   (aviso abierto de la Sección 7.1 de TIRITAITO_FOR_CREATORS_VERSIONS.md),
+   así que aquí solo se filtra en el cliente (JPG, PNG o WebP).
+   ════════════════════════════════════════════════════════ */
+const DGH_CLAVES  = ['tt_dgh_tipo', 'tt_dgh_imagen', 'tt_dgh_fecha'];
+const DGH_NOMBRES = { tip: 'Tip del día', promesa: 'Promesa de Dios' };
+const DGH_IMAGENES_OK = ['image/jpeg', 'image/png', 'image/webp'];
+const DGH_TIMEOUT_SUBIDA_MS = 120000;
+
+S.dgh = { tipo: '', imagen: '', fecha: '' };   // lo publicado ahora (última lectura de /datos)
+let dghCargado     = false;   // ¿se ha podido leer /datos al menos una vez?
+let dghSinBackend  = false;   // el servidor no conoce las claves tt_dgh_* (PHP sin actualizar)
+let dghTipoSel     = '';      // lo que hay elegido en el formulario
+let dghImagenUrl   = '';      // URL de la imagen del formulario (subida ahora o ya publicada)
+let dghBlobUrl     = '';      // vista previa local mientras se sube
+let dghSubiendo    = false;
+let dghGuardando   = false;
+let dghSucio       = false;   // hay cambios en el formulario sin publicar
+let dghFechaTocada = false;   // la persona ha cambiado la fecha a mano
+
+function hoyLocalISO() {
+  // Fecha local del dispositivo (toISOString() daría la de UTC, que a las 00:30 en España es la de ayer)
+  const d = new Date();
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+}
+
+function normalizarFechaDgh(v) {
+  // Acepta YYYY-MM-DD (lo que escribe la app) y YYYYMMDD (formato interno de ACF);
+  // cualquier otra cosa → '' (y se usará la fecha de hoy)
+  v = String(v == null ? '' : v).trim();
+  if (/^\d{8}$/.test(v)) v = `${v.slice(0, 4)}-${v.slice(4, 6)}-${v.slice(6, 8)}`;
+  const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return '';
+  const mes = Number(m[2]), dia = Number(m[3]);
+  return (mes >= 1 && mes <= 12 && dia >= 1 && dia <= 31) ? v : '';
+}
+
+function mensajeErrorDgh(e) {
+  const m = e.message || '';
+  if (/^HTTP 400/.test(m)) {
+    let detalle = '';
+    try { detalle = (JSON.parse(m.slice(m.indexOf(':') + 1).trim()) || {}).error || ''; } catch { /* cuerpo no JSON */ }
+    if (detalle.startsWith('Tipo'))          return '❌ Elige si hoy publicas un Tip o una Promesa.';
+    if (detalle.startsWith('Falta la imagen')) return '❌ Falta la imagen del Tip o de la Promesa. Súbela e inténtalo de nuevo.';
+    if (detalle)                              return '❌ ' + detalle;
+  }
+  if (m.startsWith('Tiempo de espera')) return '❌ La imagen tarda demasiado en subir. Comprueba tu conexión e inténtalo de nuevo.';
+  return mensajeError(e);
+}
+
+function pintarEstadoDgh() {
+  const el = document.getElementById('dgh-status');
+  if (!el) return;
+  if (dghSinBackend) {
+    el.textContent = '⚠️ El servidor todavía no tiene este módulo: falta actualizar el snippet PHP. Hasta entonces no se puede publicar.';
+    return;
+  }
+  if (!dghCargado) { el.textContent = '⚠️ No se pudo comprobar lo que está publicado ahora.'; return; }
+  const { tipo, imagen, fecha } = S.dgh;
+  if (!tipo) { el.textContent = 'Ahora mismo no hay nada publicado en «Dios te habla».'; return; }
+  const fechaTxt = fecha ? ' (' + formatFechaLarga(fecha) + ')' : '';
+  const avisoViejo = (fecha && fecha < hoyLocalISO()) ? ' — no es de hoy' : '';
+  const enlace = /^https?:\/\//i.test(imagen)
+    ? ' <a href="' + escapeHtml(imagen).replace(/"/g, '&quot;') + '" target="_blank" rel="noopener" style="color:var(--tt-red)">Ver imagen actual</a>'
+    : '';
+  el.innerHTML = '✅ Publicado: ' + escapeHtml(DGH_NOMBRES[tipo]) + escapeHtml(fechaTxt) + escapeHtml(avisoViejo) + '.' + enlace;
+}
+
+function liberarBlobDgh() {
+  if (dghBlobUrl) { URL.revokeObjectURL(dghBlobUrl); dghBlobUrl = ''; }
+}
+
+function pintarFormDgh() {
+  document.querySelectorAll('#dgh-tipo .tt-stab').forEach(b => b.classList.toggle('on', b.dataset.tipo === dghTipoSel));
+
+  const wrap = document.getElementById('dgh-preview-wrap');
+  const img  = document.getElementById('dgh-preview');
+  const src  = dghSubiendo ? dghBlobUrl : dghImagenUrl;
+  if (wrap && img) {
+    wrap.style.display = src ? 'block' : 'none';
+    if (src) { if (img.getAttribute('src') !== src) img.src = src; }
+    else img.removeAttribute('src');
+  }
+
+  const fbtn = document.getElementById('dgh-file-btn');
+  if (fbtn) {
+    fbtn.disabled = dghSubiendo;
+    fbtn.textContent = dghSubiendo ? 'Subiendo…' : (dghImagenUrl ? 'Cambiar imagen' : 'Elegir imagen');
+  }
+  const pbtn = document.getElementById('dgh-publicar');
+  if (pbtn) {
+    pbtn.disabled = dghSubiendo || dghGuardando;
+    pbtn.textContent = dghGuardando ? 'Publicando…' : 'Publicar';
+  }
+  const qbtn = document.getElementById('dgh-quitar');
+  if (qbtn) qbtn.disabled = dghSubiendo || dghGuardando;
+}
+
+function rellenarFormDgh() {
+  // Deja el formulario como lo publicado ahora (o vacío, con la fecha de hoy, si no hay nada)
+  const hay = !!S.dgh.tipo;
+  dghTipoSel   = S.dgh.tipo;
+  dghImagenUrl = hay ? S.dgh.imagen : '';
+  liberarBlobDgh();
+  dghFechaTocada = false;
+  dghSucio = false;
+  const f = document.getElementById('dgh-fecha');
+  if (f) f.value = (hay && S.dgh.fecha) ? S.dgh.fecha : hoyLocalISO();
+  pintarFormDgh();
+}
+
+async function abrirDgh() {
+  const st = document.getElementById('dgh-status');
+  if (!dghCargado && st) st.textContent = 'Cargando estado…';
+  try {
+    const datos = await leerOpciones();
+    // Si el servidor no devuelve ni la clave del tipo, es que su PHP aún no tiene el módulo
+    dghSinBackend = !datos || !('tt_dgh_tipo' in datos);
+    S.dgh = {
+      tipo:   (datos && DGH_NOMBRES[datos.tt_dgh_tipo]) ? datos.tt_dgh_tipo : '',
+      imagen: (datos && typeof datos.tt_dgh_imagen === 'string') ? datos.tt_dgh_imagen : '',
+      fecha:  normalizarFechaDgh(datos && datos.tt_dgh_fecha)
+    };
+    dghCargado = true;
+    pintarEstadoDgh();
+    // Sin pisar lo que la persona ya haya empezado a rellenar
+    if (!dghSucio && !dghSubiendo && !dghGuardando) rellenarFormDgh();
+  } catch (e) {
+    toast(mensajeError(e), 'error');
+    pintarEstadoDgh();
+    if (!dghCargado && !dghSucio) rellenarFormDgh(); // formulario vacío con la fecha de hoy
+  }
+}
+
+window.elegirDghTipo = (tipo) => {
+  if (!DGH_NOMBRES[tipo]) return;
+  dghTipoSel = tipo;
+  dghSucio = true;
+  pintarFormDgh();
+};
+
+async function subirImagenDgh(file) {
+  const anterior = dghImagenUrl;
+  liberarBlobDgh();
+  dghBlobUrl  = URL.createObjectURL(file);
+  dghSubiendo = true;
+  const prog = document.getElementById('dgh-progress');
+  const fill = document.getElementById('dgh-progress-fill');
+  if (prog) prog.style.display = 'block';
+  if (fill) fill.style.width = '0%';
+  pintarFormDgh();
+
+  let timer;
+  try {
+    // Plazo máximo: si la subida no responde nunca, el botón Publicar no se queda bloqueado
+    const limite = new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error('Tiempo de espera agotado')), DGH_TIMEOUT_SUBIDA_MS);
+    });
+    const media = await Promise.race([
+      subirArchivo(file, pct => { if (fill) fill.style.width = pct + '%'; }),
+      limite
+    ]);
+    if (!media || typeof media.source_url !== 'string' || !media.source_url) {
+      throw new Error('La respuesta de subida no trae la URL de la imagen');
+    }
+    dghImagenUrl = media.source_url;
+    dghSucio = true;
+    // Imagen nueva = contenido nuevo: si no se ha tocado la fecha, pasa a ser la de hoy
+    const f = document.getElementById('dgh-fecha');
+    if (f && !dghFechaTocada) f.value = hoyLocalISO();
+  } catch (e) {
+    dghImagenUrl = anterior;
+    liberarBlobDgh();
+    toast(mensajeErrorDgh(e), 'error');
+  } finally {
+    clearTimeout(timer);
+    dghSubiendo = false;
+    if (prog) prog.style.display = 'none';
+    pintarFormDgh();
+  }
+}
+
+document.getElementById('dgh-file-input').addEventListener('change', e => {
+  const file = e.target.files[0]; e.target.value = '';
+  if (!file || dghSubiendo) return;
+  if (!DGH_IMAGENES_OK.includes(file.type)) {
+    toast('Elige una imagen JPG, PNG o WebP.', 'warn');
+    return;
+  }
+  subirImagenDgh(file);
+});
+
+document.getElementById('dgh-fecha').addEventListener('change', () => {
+  dghFechaTocada = true;
+  dghSucio = true;
+});
+
+// Si la vista previa remota no carga, se enseña la copia local (si la hay)
+document.getElementById('dgh-preview').addEventListener('error', e => {
+  const img = e.target;
+  if (dghBlobUrl && img.getAttribute('src') !== dghBlobUrl) img.src = dghBlobUrl;
+});
+
+window.publicarDgh = async () => {
+  if (dghSubiendo || dghGuardando) return;
+  const fecha = document.getElementById('dgh-fecha').value;
+
+  if (!dghTipoSel)   { toast('Elige si hoy publicas un Tip o una Promesa.', 'warn'); return; }
+  if (!dghImagenUrl) { toast('Sube la imagen antes de publicar.', 'warn'); return; }
+  if (!normalizarFechaDgh(fecha)) { toast('Elige la fecha.', 'warn'); return; }
+
+  // Evita publicar la imagen de ayer bajo la etiqueta equivocada: si cambia el tipo, la imagen tiene que ser nueva
+  if (S.dgh.tipo && dghTipoSel !== S.dgh.tipo && dghImagenUrl === S.dgh.imagen) {
+    toast(`La imagen actual es la de «${DGH_NOMBRES[S.dgh.tipo]}». Sube la de «${DGH_NOMBRES[dghTipoSel]}» para publicarla.`, 'warn');
+    return;
+  }
+
+  const payload = { tt_dgh_tipo: dghTipoSel, tt_dgh_imagen: dghImagenUrl, tt_dgh_fecha: fecha };
+  dghGuardando = true;
+  pintarFormDgh();
+  try {
+    const res = await wpFetch('/tiritaito/v1/datos', { method: 'POST', body: JSON.stringify(payload) });
+    const rechazadas = (res && Array.isArray(res.rechazadas)) ? res.rechazadas : [];
+    const guardadas  = (res && Array.isArray(res.guardadas))  ? res.guardadas  : null;
+    if (DGH_CLAVES.some(k => rechazadas.includes(k)) || (guardadas && !DGH_CLAVES.every(k => guardadas.includes(k)))) {
+      dghSinBackend = true;
+      pintarEstadoDgh();
+      toast('⚠️ El servidor aún no acepta este módulo: el equipo técnico debe actualizar el snippet PHP.', 'warn');
+      return;
+    }
+    dghSinBackend = false;
+    S.dgh = { tipo: dghTipoSel, imagen: dghImagenUrl, fecha: fecha };
+    S.opciones.tt_dgh_tipo   = S.dgh.tipo;
+    S.opciones.tt_dgh_imagen = S.dgh.imagen;
+    S.opciones.tt_dgh_fecha  = S.dgh.fecha;
+    dghSucio = false;
+    dghFechaTocada = false;
+    pintarEstadoDgh();
+    toast('✅ Publicado en «Dios te habla».', 'ok');
+  } catch (e) {
+    toast(mensajeErrorDgh(e), 'error');
+  } finally {
+    dghGuardando = false;
+    pintarFormDgh();
+  }
+};
+
+window.confirmarQuitarDgh = () => {
+  if (dghSubiendo || dghGuardando) return;
+  if (dghCargado && !dghSinBackend && !S.dgh.tipo) {
+    toast('Ahora mismo no hay nada publicado que quitar.', 'info');
+    return;
+  }
+  const sh = mkSheet('tt-modal-dgh-quitar', `
+    <div style="text-align:center;padding:8px 0 16px">
+      <div style="font-size:44px;margin-bottom:16px">⚠️</div>
+      <div class="tt-mtitle" style="margin-bottom:8px">¿Quitar lo de hoy?</div>
+      <p style="font-size:14px;color:var(--tt-txt3);margin-bottom:28px;line-height:1.6">
+        «Dios te habla» dejará de mostrar el Tip o la Promesa en la web. La imagen se queda en la Biblioteca de Medios.</p>
+      <button class="tt-btn tt-btn-sec tt-btn-full"
+        onclick="document.getElementById('tt-modal-dgh-quitar').remove()">Cancelar</button>
+      <button class="tt-btn tt-btn-danger tt-btn-full" style="margin-top:10px"
+        onclick="window.quitarDgh()">Sí, quitar</button>
+    </div>`);
+  document.body.appendChild(sh);
+};
+
+window.quitarDgh = async () => {
+  document.getElementById('tt-modal-dgh-quitar')?.remove();
+  if (dghSubiendo || dghGuardando) return;
+  dghGuardando = true;
+  pintarFormDgh();
+  try {
+    const res = await wpFetch('/tiritaito/v1/datos', {
+      method: 'POST',
+      body: JSON.stringify({ tt_dgh_tipo: '', tt_dgh_imagen: '' })
+    });
+    const rechazadas = (res && Array.isArray(res.rechazadas)) ? res.rechazadas : [];
+    const guardadas  = (res && Array.isArray(res.guardadas))  ? res.guardadas  : null;
+    if (rechazadas.includes('tt_dgh_tipo') || rechazadas.includes('tt_dgh_imagen') ||
+        (guardadas && !(guardadas.includes('tt_dgh_tipo') && guardadas.includes('tt_dgh_imagen')))) {
+      dghSinBackend = true;
+      pintarEstadoDgh();
+      toast('⚠️ El servidor aún no acepta este módulo: el equipo técnico debe actualizar el snippet PHP.', 'warn');
+      return;
+    }
+    dghSinBackend = false;
+    S.dgh = { tipo: '', imagen: '', fecha: S.dgh.fecha };
+    S.opciones.tt_dgh_tipo   = '';
+    S.opciones.tt_dgh_imagen = '';
+    pintarEstadoDgh();
+    rellenarFormDgh();
+    toast('✅ Retirado. «Dios te habla» ya no muestra nada.', 'ok');
+  } catch (e) {
+    toast(mensajeErrorDgh(e), 'error');
+  } finally {
+    dghGuardando = false;
+    pintarFormDgh();
   }
 };
 
