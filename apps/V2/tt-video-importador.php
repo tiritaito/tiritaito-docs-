@@ -1,4 +1,10 @@
 /**
+ * TT Vídeos YouTube — Importador · v1.2 · 7 noviembre 2026
+ *   v1.2: (1) Música: el título de la ficha va SIN «Tiritaito Music» y SIN la autora («Hna. Emi», «Hno. Nico»…);
+ *   la autora se guarda aparte en la casilla opcional `vid_autora` y el título original de YouTube en `vid_titulo_yt`.
+ *   (2) Seminarios: el título de la ficha es solo «Mes Año» (si el mes y el año salen del texto del vídeo;
+ *   si no, se deja el título de YouTube y se avisa). Vía Crucis y demás áreas no cambian.
+ *   La primera sincronización tras instalar la v1.2 reescribe todas las fichas una vez (es normal).
  * TT Vídeos YouTube — Importador · v1.1 · 6 noviembre 2026
  *   v1.1: (1) las taxonomías de vídeos (`categoria_musica`, `categoria_viacrucis`…) salen del mapa de páginas
  *   y sus archivos llevan noindex; (2) la fila de Seminarios por defecto usa el tipo `video_seminario`
@@ -190,6 +196,41 @@ function tt_vid_titulo_base( $t ) {
 	return trim( preg_replace( '/[^a-z0-9]+/', ' ', $t ) );
 }
 
+/** Nombre del mes en español, con inicial mayúscula. */
+function tt_vid_nombre_mes( $m ) {
+	$n = array( 1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio', 7 => 'Julio',
+		8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre' );
+	return isset( $n[ (int) $m ] ) ? $n[ (int) $m ] : '';
+}
+
+/**
+ * Título que se ve en la web (y, en Música, la autora aparte). Devuelve array( título, autora ).
+ *  - Música: quita «Tiritaito Music» / «Tiritaito» del final y la autora («Hna. Emi», «Hno. Nico»…).
+ *  - Seminarios: «Mes Año», solo si el mes y el año salen del texto del vídeo; si no, el título de YouTube.
+ *  - Resto de áreas: el título de YouTube tal cual.
+ * Un caso dudoso nunca deja el título vacío: se queda el de YouTube.
+ */
+function tt_vid_titulo_visible( $area, $titulo_yt, $anio, $mes, $de_texto ) {
+	$t = trim( (string) $titulo_yt );
+	if ( 'musica' === $area ) {
+		$limpio = trim( (string) preg_replace( '/\s*[-–—\/|]?\s*Tiritaito(?:\s+Music)?\s*$/iu', '', $t ) );
+		$autora = '';
+		$patron = '/\s*[-–—|\/]\s*((?:Hna|Hno|Hermana|Hermano)\b.*)$/iu';
+		if ( preg_match( $patron, $limpio, $m ) ) {
+			$autora = trim( $m[1] );
+			$limpio = trim( (string) preg_replace( $patron, '', $limpio ) );
+		}
+		return '' !== $limpio ? array( $limpio, $autora ) : array( $t, '' );
+	}
+	if ( 'seminarios' === $area && $de_texto && $anio ) {
+		$nombre = tt_vid_nombre_mes( $mes );
+		if ( '' !== $nombre ) {
+			return array( $nombre . ' ' . (int) $anio, '' );
+		}
+	}
+	return array( $t, '' );
+}
+
 function tt_vid_romano( $s ) {
 	$v   = array( 'I' => 1, 'V' => 5, 'X' => 10, 'L' => 50 );
 	$tot = 0;
@@ -262,7 +303,7 @@ function tt_vid_clave_orden( $regla, $d ) {
 }
 
 function tt_vid_hash( $d ) {
-	return md5( wp_json_encode( array( $d['titulo'], $d['fecha'], $d['miniatura'], $d['anio'], $d['mes'], $d['numero'], $d['orden'], $d['area'] ) ) );
+	return md5( wp_json_encode( array( $d['titulo'], $d['fecha'], $d['miniatura'], $d['anio'], $d['mes'], $d['numero'], $d['orden'], $d['area'], $d['titulo_yt'], $d['autora'] ) ) );
 }
 
 function tt_vid_ts_texto( $v ) {
@@ -431,6 +472,8 @@ function tt_vid_campos_requeridos() {
 function tt_vid_campos_opcionales() {
 	return array(
 		'vid_kids'    => array( 'text' ),
+		'vid_titulo_yt' => array( 'text' ),
+		'vid_autora'  => array( 'text' ),
 		'sem_anio'    => array( 'number' ),
 		'sem_mes'     => array( 'number' ),
 		'vcr_numero'  => array( 'number' ),
@@ -693,6 +736,8 @@ function tt_vid_escribir_campos( $id, $d, $ahora ) {
 	if ( ! empty( $d['numero'] ) ) {
 		tt_vid_uf( 'vcr_numero', (int) $d['numero'], $id );
 	}
+	tt_vid_uf( 'vid_titulo_yt', $d['titulo_yt'], $id );
+	tt_vid_uf( 'vid_autora', $d['autora'], $id );
 	tt_vid_uf( 'vid_hash', $d['hash'], $id ); // el hash va el último: si algo falla antes, se reintenta
 }
 
@@ -900,6 +945,7 @@ function tt_vid_sync_area( $area, $filas, $op ) {
 				continue;
 			}
 			$anio = null;
+			$de_texto = false;
 			$mes  = null;
 			$num  = null;
 			$regla = $f['orden'];
@@ -907,6 +953,7 @@ function tt_vid_sync_area( $area, $filas, $op ) {
 				$ft = tt_vid_fecha_texto( $it['descr'], $it['titulo'] );
 				if ( $ft ) {
 					list( $anio, $mes ) = $ft;
+					$de_texto = true;
 				} else {
 					$anio = (int) gmdate( 'Y', $it['ts'] );
 					$mes  = (int) gmdate( 'n', $it['ts'] );
@@ -922,8 +969,9 @@ function tt_vid_sync_area( $area, $filas, $op ) {
 					}
 				}
 			}
+			list( $tit_vis, $autora ) = tt_vid_titulo_visible( $area, $it['titulo'], $anio, $mes, $de_texto );
 			$d = array(
-				'vid' => $vid, 'titulo' => $it['titulo'], 'ts' => $it['ts'], 'fecha' => $it['ts'] ? gmdate( 'Y-m-d', $it['ts'] ) : '',
+				'vid' => $vid, 'titulo' => $tit_vis, 'titulo_yt' => $it['titulo'], 'autora' => $autora, 'ts' => $it['ts'], 'fecha' => $it['ts'] ? gmdate( 'Y-m-d', $it['ts'] ) : '',
 				'miniatura' => $it['miniatura'], 'url' => 'https://www.youtube.com/watch?v=' . $vid,
 				'anio' => $anio, 'mes' => $mes, 'numero' => $num, 'area' => $area, 'playlists' => array( $f['id'] ),
 			);
@@ -1104,8 +1152,15 @@ function tt_vid_sync_area( $area, $filas, $op ) {
 /** R1: el vídeo sigue existiendo → se confirma y se refrescan sus datos (la ficha sigue en borrador). */
 function tt_vid_refrescar_retirada( $id, $vid, $v, $m, $ahora ) {
 	$sn = isset( $v['snippet'] ) ? $v['snippet'] : array();
-	if ( ! empty( $sn['title'] ) && get_the_title( $id ) !== $sn['title'] ) {
-		wp_update_post( wp_slash( array( 'ID' => $id, 'post_title' => $sn['title'] ) ) );
+	if ( ! empty( $sn['title'] ) ) {
+		$area = (string) get_post_meta( $id, '_tt_vid_area', true );
+		$ft   = tt_vid_fecha_texto( isset( $sn['description'] ) ? $sn['description'] : '', $sn['title'] );
+		list( $tv, $aut ) = tt_vid_titulo_visible( $area, $sn['title'], $ft ? $ft[0] : null, $ft ? $ft[1] : null, (bool) $ft );
+		if ( get_the_title( $id ) !== $tv ) {
+			wp_update_post( wp_slash( array( 'ID' => $id, 'post_title' => $tv ) ) );
+		}
+		tt_vid_uf( 'vid_titulo_yt', $sn['title'], $id );
+		tt_vid_uf( 'vid_autora', $aut, $id );
 	}
 	$min = tt_vid_miniatura( $sn, $vid );
 	if ( (string) get_post_meta( $id, 'vid_miniatura_url', true ) !== $min ) {
@@ -1123,7 +1178,7 @@ function tt_vid_refrescar_retirada( $id, $vid, $v, $m, $ahora ) {
 /** R3: se vacían título, miniatura, fecha y demás datos de YouTube; queda solo el ID. El slug no cambia. */
 function tt_vid_vaciar( $id ) {
 	wp_update_post( wp_slash( array( 'ID' => $id, 'post_title' => '', 'post_name' => (string) get_post_field( 'post_name', $id ) ) ) );
-	foreach ( array( 'vid_miniatura_url', 'vid_fecha_video', 'vid_kids', 'sem_anio', 'sem_mes', 'vcr_numero', 'vid_hash' ) as $n ) {
+	foreach ( array( 'vid_miniatura_url', 'vid_fecha_video', 'vid_kids', 'vid_titulo_yt', 'vid_autora', 'sem_anio', 'sem_mes', 'vcr_numero', 'vid_hash' ) as $n ) {
 		tt_vid_uf( $n, '', $id );
 	}
 	update_post_meta( $id, '_tt_vid_vaciada', 1 );

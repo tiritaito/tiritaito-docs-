@@ -1,8 +1,13 @@
 /**
- * TT — Tipo de seminario automático · v1.2 · 7 noviembre 2026
+ * TT — Tipo de seminario automático · v1.3 · 7 noviembre 2026
  * Pone a cada vídeo de seminario su TIPO (como categoría de la taxonomía `categoria_seminario`)
  * mirando el título, solo si la ficha no tiene ya ninguno. Nunca pisa un tipo puesto a mano.
  * Se puede desactivar sin perder nada.
+ *
+ * IMPORTANTE (v1.3): con el importador v1.2 el título de cada vídeo de seminario pasa a ser solo «Mes Año»,
+ * así que el tipo se busca en el TÍTULO ORIGINAL de YouTube, que el importador guarda en la casilla
+ * `vid_titulo_yt`. Esa casilla (Texto) tiene que existir en el grupo «TT — Vídeo YouTube».
+ * El tipo se pone en cuanto el importador escribe esa casilla (primera sincronización incluida).
  *
  * CAMBIOS sobre la versión de Álvaro (v1.0):
  *   - El tipo es una CATEGORÍA, no una casilla: así sirve a la vez para el panel «Más información»
@@ -83,12 +88,29 @@ function tt_sem_tipo_poner( $post_id, $titulo ) {
 	return true;
 }
 
+/** Texto donde se busca el tipo: el título original de YouTube si existe; si no, el de la ficha. */
+function tt_sem_titulo_base( $post_id ) {
+	$o = (string) get_post_meta( $post_id, 'vid_titulo_yt', true );
+	return '' !== $o ? $o : get_the_title( $post_id );
+}
+
+// Al guardar una ficha a mano (o al crearla el importador; si aún no tiene el título original, no hace nada).
 add_action( 'save_post_video_seminario', function ( $post_id, $post ) {
 	if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
 		return;
 	}
-	tt_sem_tipo_poner( $post_id, $post->post_title );
+	tt_sem_tipo_poner( $post_id, tt_sem_titulo_base( $post_id ) );
 }, 20, 2 );
+
+// En cuanto el importador escribe el título original de YouTube.
+function tt_sem_tipo_al_escribir_meta( $meta_id, $post_id, $meta_key, $meta_value ) {
+	if ( 'vid_titulo_yt' !== $meta_key || 'video_seminario' !== get_post_type( $post_id ) ) {
+		return;
+	}
+	tt_sem_tipo_poner( $post_id, (string) $meta_value );
+}
+add_action( 'added_post_meta', 'tt_sem_tipo_al_escribir_meta', 10, 4 );
+add_action( 'updated_post_meta', 'tt_sem_tipo_al_escribir_meta', 10, 4 );
 
 // Relleno de una sola vez para las fichas que ya existen.
 add_action( 'admin_init', function () {
@@ -107,12 +129,12 @@ add_action( 'admin_init', function () {
 	$con = 0;
 	$sin = array();
 	foreach ( $ids as $id ) {
-		if ( tt_sem_tipo_poner( $id, get_the_title( $id ) ) ) {
+		if ( tt_sem_tipo_poner( $id, tt_sem_titulo_base( $id ) ) ) {
 			$con++;
 		} else {
 			$t = wp_get_object_terms( $id, 'categoria_seminario', array( 'fields' => 'ids' ) );
 			if ( is_wp_error( $t ) || empty( $t ) ) {
-				$sin[] = get_the_title( $id );
+				$sin[] = tt_sem_titulo_base( $id );
 			}
 		}
 	}
