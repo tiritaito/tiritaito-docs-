@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Tiritaito Music en la Web Nueva (modelo: el podcast)
 **Cómo llevar las playlists de YouTube (Música, Vía Crucis, Seminarios y la novena de la Inmaculada) a la web nueva: fuente de datos, modelo, importador, piezas que dependen, opciones, recomendación, plan de pruebas y brief para el boceto**
-*Investigación de Proyecto 2 (Hno C) — Fase 3 de 3 · entregado el 14 de octubre de 2026 · **revisado el 23 de octubre de 2026 con las decisiones de Carlitos (22 y 23 de octubre)** · Actualiza el documento del 16 de septiembre de 2026 (no se crea versión con sufijo) · **importador escrito el 30 de octubre de 2026 (Sección 6.8), sin ejecutar todavía en Local***
+*Investigación de Proyecto 2 (Hno C) — Fase 3 de 3 · entregado el 14 de octubre de 2026 · **revisado el 23 de octubre de 2026 con las decisiones de Carlitos (22 y 23 de octubre)** · Actualiza el documento del 16 de septiembre de 2026 (no se crea versión con sufijo) · **importador escrito el 30 de octubre de 2026 (Sección 6.8), probado en Local el 6 de noviembre y en v1.2 desde el 7 de noviembre · tema cerrado el 12 de noviembre de 2026 (Sección 17)***
 *Fuentes: archivos reales de la sesión (`music-data.json`, `Viacrucis.json`, `NovenaYT.json`, fragmentos del generador v1-15) · documentos del repositorio (`PODCAST_ESTRUCTURA.md`, `ORACIONES_ESTRUCTURA.md`, `00_CORE.md`, la versión anterior de este documento) · documentación oficial de YouTube, Google Cloud, Avada y WordPress consultada el 14 de octubre de 2026*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
@@ -12,6 +12,8 @@
 Responde a una pregunta: **¿cómo se lleva Tiritaito Music (y las demás playlists de YouTube) a la web nueva con formato nativo de Avada, con el mínimo código y sin teclear cada vídeo a mano?** Es el resultado de tres fases: inventario (Fase 1), investigación externa (Fase 2) y esta síntesis con recomendación y plan de pruebas (Fase 3). **No contiene código de producción**: solo investiga, recomienda y planifica.
 
 **Versión del 23 de octubre:** incorpora las decisiones de Carlitos del 22 y 23 de octubre (Sección 11.1): «Todas» sin categoría propia (su papel lo hace la pestaña «All» de Avada), **los títulos se importan tal como están en YouTube** (si hay que cambiarlos, se cambian en YouTube), fichas compartibles, `vid_` como prefijo común, R1 + R3 para las retiradas, avisos de importador parado con semáforo, «A y luego D», y **Carlota hace los diseños visuales solo cuando todas las pruebas hayan pasado y todo funcione**. «(IX) La Última Cena» se queda donde está. El 23 de octubre se cerraron además el mes descendente de Seminarios y las novenas a mano, y se incorporaron los IDs de las playlists reales (Sección 2.6). **Las nueve pruebas de Avada y YouTube las hace solo Álvaro** (decisión del 25 de octubre). El 28 de octubre se incorporan los resultados de las pruebas del bloque A (Sección 13.3). La Sección 11 distingue lo cerrado de lo pendiente.
+
+**Estado del tema (12 de noviembre de 2026): CERRADO.** El importador (v1.2) funciona en Local, Seminarios ya carga sus títulos «Mes Año» y las páginas y fichas de Música están construidas en Avada. Lo que pasó desde el 30 de octubre y lo que queda pendiente está en la **Sección 17**.
 
 | Si necesitas… | Ve a… |
 |---|---|
@@ -84,10 +86,10 @@ Responde a una pregunta: **¿cómo se lleva Tiritaito Music (y las demás playli
 4. **Datos reales ✅:** 5 playlists, 88 entradas de YouTube, 64 vídeos distintos, **62 canciones** tras quitar 2 subidas duplicadas. Vía Crucis: 28 vídeos en 2 playlists. Inmaculada: 9.
 5. **Coste de la API ✅:** unas **15–20 unidades al día de 10.000** (≈0,2 %). Los visitantes nunca llaman a YouTube.
 6. **Clave:** nueva, en un proyecto de Google Cloud propio y en la cuenta de Tiritaito, limitada a «YouTube Data API v3», **sin restricción de aplicación** (decisión mantenida el 22 de octubre), en `wp-config.php`; **una clave distinta para Local**.
-7. **Títulos:** el importador los sube **tal como están en YouTube** (decisión del 23 de octubre) y, si hace falta cambiar alguno, se cambia en YouTube. Quedan con su sufijo («/ Tiritaito Music» en 63 de 64; media de 45 caracteres, máximo 98). La regla de «título limpio y autora aparte», ya probada sobre los títulos reales (Sección 2.5), queda como **mejora futura**, sin rehacer nada.
+7. **Títulos** (revisado el 7 de noviembre): en **Música** van sin «Tiritaito Music» ni la autora (la autora se guarda aparte, en `vid_autora`); en **Seminarios** son solo «Mes Año»; en **Vía Crucis** y el resto, tal como están en YouTube. El título original se guarda en `vid_titulo_yt`.
 8. **Cada canción tiene dirección propia y es compartible** (sustituye al enlace `?mp_play=`). Necesita una plantilla de ficha y comprobar la vista previa al compartir.
 9. **Presentación:** **A y luego D.** Dirección 1 con un hueco reservado para el reproductor con cola. **Carlota diseña después de que todas las pruebas hayan pasado y todo funcione** (Sección 10). El importador avisa cuando se para: **amarillo a 10 días, rojo a 20, con semáforo en la app de Creators**.
-10. **Estado:** el importador **está escrito (30 de octubre) pero sin ejecutar en Local**: sintaxis validada y 33 comprobaciones de sus funciones de cálculo; los 25 casos M0–M24 siguen en 🔲 (Sección 6.8). **Las pruebas de Avada y YouTube están hechas salvo A3 y A8** (Sección 13.3); siguen el importador con sus **25 casos** y, solo entonces, el diseño de Carlota. Quedan **3 respuestas pendientes de Carlitos** (Sección 11.2).
+10. **Estado:** **tema cerrado el 12 de noviembre de 2026.** El importador (v1.2) funciona en Local (casos probados el 6 de noviembre, Sección 17.3), Seminarios ya carga sus títulos «Mes Año» y las páginas y fichas de Música están construidas en Avada (Sección 17.4). Quedan los pendientes de la Sección 17.5: servidor de producción, vista previa real al compartir, revisión en móvil y diseño de Carlota, entre otros.
 
 ---
 
@@ -137,9 +139,9 @@ La función `ordenMusica()` del generador (fragmentos v1-15) puntúa los título
 
 **`ordenMusica()` falla con Vía Crucis** ✅ (probado con los títulos reales): puntúa el vídeo introductorio con un 9 (la palabra «Novena» coincide con el ordinal «noven»), igual que a «(IX)»; y deja «(XIII)» en 9999 porque su tabla de números romanos termina en XII. Si se reutilizara tal cual, el orden saldría mal.
 
-### 2.5 Mejora futura: título limpio y autora aparte (regla ya probada sobre los títulos reales) ✅ `[R]`
+### 2.5 Título limpio y autora aparte (implementado en la v1.2, 7 de noviembre) ✅ `[R]`
 
-*Decisión del 23 de octubre: la v1 sube los títulos tal como están en YouTube. Esta regla **no se construye ahora**; queda probada por si se quiere más adelante.*
+*Decisión del 7 de noviembre (invierte la del 23 de octubre): Música sube el título sin sufijo ni autora y Seminarios, solo «Mes Año». Esta es la regla, probada sobre los títulos reales, que se implementó.*
 
 **La regla:** (1) se quita del final «Tiritaito Music» o «Tiritaito» con su separador (`-`, `/`, `|`); (2) en Vía Crucis se quitan además sus textos propios («Vía Crucis de la Divina Misericordia», «Vía Crucis Divina Misericordia»); (3) si lo que queda tras el último separador empieza por «Hna.», «Hno.», «Hermana» o «Hermano», **eso es la autora** y se mueve a su casilla.
 
@@ -209,7 +211,7 @@ La función `ordenMusica()` del generador (fragmentos v1-15) puntúa los título
 | N11 | **Cada ficha pública genera una URL y entra en el mapa de páginas (`/wp-sitemap.xml`)**: WordPress incluye por defecto todos los tipos de contenido públicos | **Decidido (C9):** las fichas son compartibles, pero llevan `noindex` y se sacan del mapa. Para los seminarios ocultos es lo que evita que «oculto» deje de serlo | `[W]` WordPress 5.5 | ✅ |
 | N12 | **Post Cards solo muestra por defecto las entradas publicadas** (la opción «Post Status» vacía = publicadas), así que una canción retirada a borrador **desaparece sola de la web** | Confirma que «borrador» es un retiro limpio. Ver también N7 | `[W]` Avada | ✅ |
 | N13 | **Overlays y reproductor:** las reglas de YouTube prohíben poner capas por encima del reproductor o de sus controles y exigen un reproductor de al menos 200×200 px (recomendado 480×270) | Condiciona el diseño de tarjetas con vídeo dentro de un carrusel y de las ventanas emergentes | `[W]` Required Minimum Functionality | ✅ |
-| N14 | **El título largo es un problema de diseño** (media de 45 caracteres, máximo 98; «/ Tiritaito Music» en 63 de 64) | **Decidido el 23 de octubre: se acepta tal cual** y, si molesta, se cambian los títulos en YouTube. Carlota deberá diseñar la tarjeta para títulos de hasta 98 caracteres. La limpieza queda como mejora futura (Sección 2.5) | Sección 2.5 | ✅ `[R]` |
+| N14 | **El título largo era un problema de diseño** (media de 45 caracteres, máximo 98; «/ Tiritaito Music» en 63 de 64) | **Revisado el 7 de noviembre:** Música sin sufijo ni autora (media de 18, máximo 55); Seminarios, solo «Mes Año»; el resto, tal cual. Ver 2.5 y 17 | Sección 2.5 | ✅ `[R]` |
 | N15 | **Espíritu Santo también tiene «Vídeo del día»** (apartado 1 de cada día, casilla `nes_video`); el encargo de esta fase solo menciona los vídeos de Sagrados Corazones | Si esos 9 vídeos están en una playlist, se plantea la misma decisión que con la Inmaculada | `ORACIONES_ESTRUCTURA.md` 3.6 | ✅ `[R]` / 🔲 |
 | N16 | **Sagrados Corazones, apartado 9:** la canción «Enséñennos a amar» es hoy una tarjeta del módulo Tiritaito Music y es **una canción real de la lista**: `Rwh6N8Q7D1s` | Se resuelve con un elemento YouTube de Avada con ese ID fijo escrito en el molde; no depende del importador | `ORACIONES_ESTRUCTURA.md` 3.6 y `music-data.json` | ✅ `[R]` |
 | N17 | El generador de Seminarios **no usa la fecha de la API**: extrae «mes año» de la primera línea de la descripción o del título (`extraerFecha`). **Y ordena año descendente pero mes ascendente dentro de cada año**, no «fecha descendente» como escribí en la primera entrega | Con ese orden, «los 2 más recientes» del panel serían los meses más antiguos del último año. **Decidido (C3):** año y mes descendentes, desempate por la fecha del vídeo | Fragmentos v1-15 | ✅ `[R]` |
@@ -326,7 +328,7 @@ YouTube (playlists)                  WordPress                                  
 | Tipo de contenido | `cancion` ⚠️ (nombre propuesto) | **Público y con página propia compartible** (decisión C9), sin archivo, `show_in_rest`. Público es obligatorio para que Post Cards lo vea (hallazgo ya anotado en `learnings`) |
 | Taxonomía | `categoria_musica` | Unida solo a `cancion`. Cada categoría lleva el **nombre visible** de su fila de ajustes («Virgen María»), no el de YouTube |
 | «Todas» | **No crea categoría** (decidido el 28 de octubre, tras las pruebas) | Avada ya añade su pestaña «All» y con una categoría «Todas» salían las dos iguales. La playlist «Tiritaito Music» sigue alimentando el catálogo. El orden de Música lo da la fecha del propio vídeo, no una lista |
-| Título de la ficha | **El título de YouTube, tal cual** (decidido el 23 de octubre) | Si cambia en YouTube, cambia en la web en la siguiente sincronización. Si hay que corregirlo (mayúsculas, sufijo, tildes), **se corrige en YouTube** |
+| Título de la ficha | **Música:** el título de YouTube sin «Tiritaito Music» ni la autora. **Seminarios:** solo «Mes Año». **Vía Crucis y demás:** el de YouTube, tal cual (decidido el 7 de noviembre, v1.2) | El título original se guarda en `vid_titulo_yt` y la autora en `vid_autora` (casillas opcionales). Si hay que corregir un título (mayúsculas, tildes), **se corrige en YouTube** |
 | Indexación | `noindex` y fuera del mapa de páginas | Interpretación de «me basta con que sea compartible». Se puede cambiar con un ajuste |
 
 ### 5.3 Casillas (prefijo común `vid_`, decidido el 22 de octubre)
@@ -339,6 +341,8 @@ YouTube (playlists)                  WordPress                                  
 | `vid_youtube_url` | **Texto** (no URL, lección del podcast) | Importador | `https://www.youtube.com/watch?v=<id>`; sirve para Lightbox y para el elemento YouTube, que acepta ID o dirección ✅ `[W]` |
 | `vid_miniatura_url` | URL | Importador | La miniatura `medium` (320×180) que devuelve la API; si falta, la construida con el ID |
 | `vid_fecha_video` | Texto `AAAA-MM-DD` | Importador | Fecha de publicación del vídeo |
+| `vid_titulo_yt` *(opcional)* | Texto | Importador | Título original de YouTube. **Obligatoria en Seminarios**: el snippet de tipos busca ahí el tipo |
+| `vid_autora` *(opcional)* | Texto | Importador | La hermana o hermanas que cantan (Música); vacía si no hay. Se muestra donde decida Carlota |
 | `vid_comprobado` | Texto (fecha y hora) | Importador | Última vez que YouTube confirmó esta ficha (regla de los 30 días) |
 | `vid_hash` | Texto (técnica) | Importador | Huella para no reescribir si nada cambió |
 | `vid_kids` *(opcional)* | Texto | Importador | `sí` / `no` / `desconocido` según `status.madeForKids` |
@@ -362,7 +366,7 @@ YouTube (playlists)                  WordPress                                  
 |---|---|---|---|---|
 | Música | `cancion` | — | Fecha del vídeo, descendente | Importador |
 | Vía Crucis | `viacrucis` | `vcr_numero` (opcional) | Número del título (arábigo o romano), con la posición de respaldo | Importador |
-| Seminarios | `seminario` | `sem_anio`, `sem_mes`; incluye **ocultos** | Año y mes del texto, descendentes; desempate por fecha del vídeo | Importador |
+| Seminarios | `video_seminario` (el tipo `seminario` ya existe para las 6 fichas de tipo) | `sem_anio`, `sem_mes`; categoría `categoria_seminario` con el tipo (la asigna un snippet); incluye **ocultos** | Año y mes del texto, descendentes; desempate por fecha del vídeo | Importador |
 | Lenguas | por definir | — | Por definir | Importador, **cuando acaben las pruebas** |
 | Inmaculada, Sagrados Corazones, Espíritu Santo | Sus tipos de novena, ya definidos (`novena_inmaculada`…) | `nin_video`, `nsc_video`, `nes_video` (Texto) | El número de día | **A mano**, sin importador (Sección 7) |
 
@@ -403,7 +407,7 @@ Es **una sola pantalla de WordPress** (como la del importador del podcast) con *
 | Tipo de contenido y taxonomía | Qué se crea en WordPress | `cancion` · `categoria_musica` |
 | ¿Activa? | Para pausar una fila sin borrarla | Sí |
 
-**Mejora futura (no en la v1):** ajustes de título por área («textos a quitar» y prefijos de autora). Ver Sección 2.5.
+**Reglas de título (v1.2):** viven en el código del importador (función `tt_vid_titulo_visible`); editarlas desde esta pantalla sería una mejora futura. Ver Sección 2.5.
 
 **Filas previstas hoy (IDs en la Sección 2.6):** Música (5: «Tiritaito Music» **sin categoría**, porque su papel lo hace la pestaña «All» de Avada, Espíritu Santo, Virgen María, Navidad, San José) · Vía Crucis (2: «Vía Crucis de la Divina Misericordia 2024» y «Con Jesús hacia la Cruz») · Seminarios (1 playlist de 29 vídeos) · Lenguas (1, tras las pruebas; «Lenguas Ejército» queda fuera por ahora).
 
@@ -420,8 +424,8 @@ Es **una sola pantalla de WordPress** (como la del importador del podcast) con *
 | 6 | **Segunda sincronización = cero cambios** (hash) | M2 |
 | 7 | **Un ID repetido en la misma lista se ignora** (con aviso) | M8 |
 | 8 | **Área nueva = fila nueva**, sin código. Lo que sí hay que crear a mano es su tipo de contenido y su taxonomía (y asignarle el grupo `vid_`); el importador **no los crea**, y su pantalla de Estado dice qué falta | M20 |
-| 9 | **Título tal cual** (decidido el 23 de octubre): la ficha usa el título de YouTube sin tocarlo; sin reglas de limpieza en la v1 | M23 |
-| 10 | **Mejora futura prevista:** «textos a quitar» y autora aparte (Sección 2.5), sin rehacer nada | — |
+| 9 | **Título limpio** (7 nov, v1.2): en **Música** se quita «Tiritaito Music» / «Tiritaito» del final y la autora («Hna.», «Hno.», «Hermana», «Hermano» y lo que sigue); en **Seminarios** el título es «Mes Año» solo si el mes y el año salen del texto del vídeo, si no se deja el de YouTube y se avisa | M23 |
+| 10 | **Autora aparte** (v1.2): se guarda en `vid_autora` y el título original en `vid_titulo_yt` (casillas opcionales). Casos dudosos: el título se deja como está | M23 |
 | 11 ➕ | **Regla de los 30 días con red de seguridad (R1 + R3):** Sección 6.5 | M5, M19 |
 | 12 ➕ | **Categorías gobernadas por YouTube:** si quitas la canción de «Navidad» en YouTube, pierde esa categoría en la web. Las creadas a mano no se tocan | M11 |
 | 13 ➕ | **Avisos sin acciones:** «mismo título normalizado con ID distinto» (no fusiona), «vídeo sin número en una lista numerada», «en una categoría pero no en la playlist «Tiritaito Music»», «orden dudoso» | M9, M13 |
@@ -484,6 +488,8 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 
 ### 6.8 Implementación del 30 de octubre de 2026 (`apps/v2/tt-video-importador.php`, v1.0)
 
+> **Actualización del 12 de noviembre:** esta sección describe la v1.0. Lo que cambió después y los resultados de las pruebas están en la Sección 17.
+
 *Escrito por Proyecto 2 siguiendo las Secciones 5, 6 y 11. **Validado solo en sintaxis y en sus funciones de cálculo** (33 comprobaciones: números de Vía Crucis, órdenes, fecha de Seminarios, hash, semáforo, filas por defecto). **No se ha ejecutado contra WordPress, ACF ni la API real**: todo lo que toca la base de datos o YouTube está sin probar.*
 
 | Pieza | Cómo quedó |
@@ -492,7 +498,7 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 | Clave | Constante `TT_YT_API_KEY` en `wp-config.php`. Nunca se muestra ni se escribe en el registro (los mensajes de error la tapan) |
 | Ajustes | Opción `tt_video_importador_filas`, editable en la pantalla (una fila por playlist, columnas de la Sección 6.2) |
 | Lector | `playlistItems` con `snippet,contentDetails,status`, todas las páginas. **Una página fallida = playlist fallida**; una playlist vacía también cuenta como fallida (regla 3). Cuota agotada o clave mala cortan el resto de filas de esa pasada |
-| Fichas | Una por vídeo, identidad = ID. Título tal cual. Fecha de la ficha = fecha del vídeo. Slug = título; si choca, título + ID del vídeo |
+| Fichas | Una por vídeo, identidad = ID. Título tal cual en la v1.0 (**desde la v1.2: Música sin sufijo ni autora y Seminarios «Mes Año»**, Sección 17.2). Fecha de la ficha = fecha del vídeo. Slug = título; si choca, título + ID del vídeo |
 | Categorías | Identidad = ID de la playlist guardado en la propia categoría (`_tt_vid_playlist`). Renombrar en los ajustes renombra el mismo término. Si ya existe una categoría con ese nombre, **se adopta**. Las categorías ajenas a las filas no se tocan |
 | Orden (`menu_order`, ascendente) | Música: `2147000000 − fecha del vídeo`. Seminarios: año y mes descendentes del texto, desempate por fecha del vídeo. Vía Crucis: `10 + 10·n` con el número del título; sin número = primero (con aviso); si ninguna lista lleva números, la posición. Cada ficha depende solo de sus datos |
 | Hash | Título, fecha, miniatura, año/mes, número, orden y área. Las categorías se comparan aparte en cada pasada |
@@ -513,7 +519,7 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 
 | # | Qué | Estado |
 |---|---|---|
-| I1 | Los nombres `viacrucis`, `seminario` y `categoria_viacrucis` son **propuestas**: los documentos no los fijan. Se cambian en la tabla de ajustes | ⚠️ |
+| I1 | Los nombres `viacrucis`, `seminario` y `categoria_viacrucis` eran **propuestas** | ✅ Resuelto: `viacrucis`, `video_seminario` (el tipo `seminario` ya existía para las 6 fichas de tipo), `categoria_viacrucis` y `categoria_seminario` |
 | I2 | La lectura de «mes y año» de Seminarios se escribió **desde la descripción de este documento**, no desde `extraerFecha()` del generador (no estaba en la sesión). El caso M14 lo contrasta con los 29 seminarios reales | 🔲 |
 | I3 | El endpoint usa la constante `TT_WRITE_TOKEN` si existe; si el snippet central guarda el token de otra forma, responderá 503 hasta que se ajuste. **No he visto ese snippet** | 🔲 |
 | I4 | Si la app (otro origen) no recibe las cabeceras CORS en esta ruta, habrá que añadirlas como en las demás rutas de `tiritaito/v1` | 🔲 |
@@ -521,7 +527,7 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 | I6 | `og:image` usa la miniatura de 320×180 de la ficha; puede quedar pequeña en WhatsApp. Hay un filtro (`tt_vid_og_imagen`) para cambiarla | 🔲 |
 | I7 | `vid_comprobado` guarda fecha y hora en **UTC** (`AAAA-MM-DD HH:MM:SS`). Para M19, editarlo a mano con ese formato | ✅ decisión |
 | I8 | Una playlist **privada** no se puede leer con clave: saldrá como error de esa fila, sin retirar nada. Qué devuelve la API con un vídeo **eliminado** dentro de una playlist (pregunta abierta 8) **no está comprobado**; el código descarta los títulos «Deleted video» / «Private video» | 🔲 |
-| I9 | `sem_tipo` (P6) **no está implementado**: sigue pendiente decidir cómo se rellena | 🔲 |
+| I9 | `sem_tipo` (P6) | ✅ Resuelto el 7 de noviembre: el tipo es la categoría `categoria_seminario`, asignada por `tt-sem-tipo-automatico.php` (Sección 17.2) |
 | I10 | El freno cuenta sobre las fichas **publicadas del área**; en un área muy pequeña (p. ej. 2 fichas) retirar una ya supera el 20 % y frena | ⚠️ |
 
 **Cómo se prueban M4, M16, M19 y M24 sin tocar YouTube:** M4 (botón «Simular cuota agotada»), M24 (botones «Fingir última sincronización correcta hace 11 / 21 días»), M16 (`'presupuesto' => 0` en `tt_vid_cfg()`, devolviéndolo a 25), M19 (poner `vid_comprobado` de una ficha retirada en hace 26 días y cambiar su `vid_video_id` por 11 caracteres inventados para que no se pueda confirmar).
@@ -704,7 +710,7 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 | C4 | Orden de Vía Crucis | **Número del título** (arábigo o romano); armonizar títulos en YouTube es opcional, el analizador entiende ambos; sin número = primero con aviso. «(IX) La Última Cena» **se queda en su sitio** (confirmado el 23 de octubre) |
 | C5 | Duplicados | Se quedan **`P-3LMZvoH_Q`** («Él me ama», 4:28) y **`tHN2sKkguYA`** («Bajo tu manto», 4:17). Se quitan de las playlists `DETq7RBupns`, `ufGu9PJwH7c` y el `tHN2sKkguYA` repetido en «Todas» |
 | C6 | Canciones retiradas | **R1 + R3 a los 25 días** (Sección 6.5); freno del 20 % |
-| C7 | Títulos | **Se importan tal como están en YouTube** (23 oct). Si hay que cambiar alguno (sufijo, mayúsculas, tildes), se cambia en YouTube. Título limpio y autora aparte: **mejora futura** (Sección 2.5) |
+| C7 | Títulos | **Revisada el 7 de noviembre (invierte la del 23 de octubre):** Música sin «Tiritaito Music» ni autora (la autora, en `vid_autora`); Seminarios, solo «Mes Año»; Vía Crucis, tal cual. Implementado en la v1.2 del importador |
 | C8 | Casillas | **Prefijo común `vid_`** más prefijos propios (`sem_`, `vcr_`); sin casilla de orden; tipo `cancion` |
 | C9 | Fichas públicas | **Cada canción tiene dirección propia y es compartible.** Indexar no hace falta: `noindex` y fuera del mapa de páginas (interpretación mía, reversible) |
 | C10 | Inmaculada, Sagrados Corazones, Espíritu Santo | **Vídeos fijos, a mano** (confirmado el 23 de octubre). Criterio fijo/abierto en 7.0 |
@@ -729,7 +735,7 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 | P3 | **Espíritu Santo:** me diste las playlists de Pentecostés y de Sagrados Corazones. ¿La de «Pentecostés» es la de los vídeos del día de Espíritu Santo? Y **¿cuál es su canción fija?** | Molde de esa novena | — |
 | P4 | ~~Novenas regrabadas cada año~~ | — | **Cerrado el 23 de octubre:** se ponen a mano |
 | P5 | **Cuatro playlists que no pude abrir** (las dos sin identificar, Pentecostés y Sagrados Corazones): ábrelas en una ventana de incógnito y dime si son públicas, no listadas o privadas. **Una privada no la lee la clave** | Primera carga | — |
-| P6 | ~~¿Cómo se sabe el tipo de cada seminario?~~ Se resuelve con una casilla `sem_tipo` y Post Cards filtrando por valor (probado en A1-bis). **Falta decidir cómo se rellena** (regla de texto o a mano) | Fichas de Seminarios | Hablarlo al llegar a Seminarios; no frena Música |
+| P6 | ~~¿Cómo se sabe el tipo de cada seminario?~~ **Cerrado el 7 de noviembre:** el tipo es una categoría (`categoria_seminario`) que asigna el snippet `tt-sem-tipo-automatico.php` mirando el título original de YouTube (26 de 29 asignados; 3 a mano) | Fichas de Seminarios | Hecho |
 
 ### 11.3 Carlota
 
@@ -740,7 +746,7 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 | # | Decisión | Dato que necesita |
 |---|---|---|
 | K2 | Qué manda en el hero (acuarela, foto del grupo, logo, vídeo corto mudo) | — |
-| K5 | **Qué pasa al pulsar una tarjeta (ABIERTA, 28 oct):** se prueba el **Lightbox en Columna**, ya probado (abre, suena, se para al cerrar, sin código). El Off-Canvas no para el vídeo al cerrar y necesitaría un arreglo de código; «ir a la ficha» también es posible | Resultados de A5 y A6 (Sección 13.3). Falta probarlo en un caso real y que Carlota lo diseñe. **Nada por encima del reproductor ni de sus controles** y reproductor mínimo de 200×200 px (N13) |
+| K5 | **Qué pasa al pulsar una tarjeta: resuelto en la construcción (11 nov).** La tarjeta abre la **ficha** de la canción; en la ficha, la fila de la pista abre el vídeo en **Lightbox** (según Álvaro, sin capturas; falta confirmarlo en móvil real). El Off-Canvas se usa solo para «Compartir» | Informe de construcción (Sección 17.4) |
 | K6 | **Títulos largos:** la tarjeta debe tolerar títulos de hasta 98 caracteres en dos líneas (media de 45), salvo que se editen en YouTube | Sección 2.1 |
 | K10 | **Plantilla de la ficha de canción** (la página compartible): vídeo, título, autora, categorías, botón de compartir o copiar enlace, volver | N21 y A9 |
 | K11 | **El hueco reservado para el reproductor con cola** (opción D) y cómo convive con el header sticky y los paneles | Hallazgo #11 |
@@ -790,31 +796,31 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 
 | # | Prueba | Cómo | Resultado esperado | Estado |
 |---|---|---|---|---|
-| M0 | **Estado** | Activar el importador y abrir su pantalla | ✅ tipo, taxonomía, grupo de casillas, constante de la clave presente (sin mostrar su valor) y salida a internet. Si falta algo, ❌ con el motivo | 🔲 |
-| M1 | **Primera carga de Música** | Cargar las 5 filas con el estado actual de YouTube | **64 fichas** (62 si ya se limpiaron los duplicados). Categorías: Espíritu Santo 7, Virgen María 7, Navidad 7, San José 2; «Tiritaito Music» **no crea categoría**. 1 aviso por el ID repetido; 0 errores | 🔲 |
-| M2 | **Segunda sincronización** | Pulsar de nuevo sin tocar nada | 0 creadas, 0 actualizadas, 64 sin cambios, **0 escrituras** | 🔲 |
-| M3 | **Una playlist rota** | Una fila con un ID inventado y otra con una playlist privada | Solo esas filas pasan a «error» con el motivo; las demás se importan; **no se retira nada** (3b) | 🔲 |
-| M4 | **Clave inválida o cuota agotada** (simulada) | Clave falsa; forzar la respuesta de cuota agotada | Todas las filas en «error»; 0 retiradas; 0 cambios | 🔲 |
-| M5 | **Canción retirada (R1)** | Quitar una canción de todas las playlists y sincronizar; luego volver a añadirla | Pasa a **borrador** y desaparece de Post Cards; **mientras el vídeo exista se sigue refrescando** su `vid_comprobado`; al volver, se publica con el mismo slug | 🔲 |
-| M6 | **Freno del 20 %** | Quitar de golpe más de 12 de 64 | **Se detiene, avisa y no retira nada**; el botón «Aplicar de todos modos» sí lo hace | 🔲 |
-| M7 | **Modo simulación** | Cambiar títulos, quitar una canción y simular | Lista lo que se crearía, cambiaría y retiraría; recuento de entradas y fechas de modificación **idénticos** antes y después | 🔲 |
-| M8 | **ID repetido** | «Todas» real (`tHN2sKkguYA` ×2) | Una sola ficha y un aviso | 🔲 |
-| M9 | **«Hágase en mí»** | `b0NmnYywmas` y `YiFwoQSCQxs` | **Dos fichas distintas**, slugs distintos, ninguna fusionada. Los títulos son distintos, tal como en YouTube. Como mucho, aviso | 🔲 |
-| M10 | **Subidas duplicadas** («Él me ama», «Bajo tu manto») | Importar antes y después de limpiar las playlists | Antes: 2 avisos de «posible duplicado». Después: 62 publicadas y 2 en borrador | 🔲 |
-| M11 | **Categorías** | Renombrar «Navidad» en los ajustes; quitar una canción de «Navidad» en YouTube; quitar una de «Tiritaito Music» pero no de «Navidad» | El mismo término se renombra (0 duplicados); la canción pierde esa categoría; en el último caso, **aviso «en una categoría pero no en la playlist «Tiritaito Music»»** | 🔲 |
-| M12 | **Orden de Música** | Comprobar el resultado | Más reciente primero según la fecha del vídeo; añadir una canción no reescribe las demás | 🔲 |
-| M13 | **Orden de Vía Crucis** | Cargar las 2 playlists | «1º»…«14º» en orden; «(I)»…«(XIII)» con «(XIII)» **sin quedar al final por error**; el vídeo introductorio **no** puntúa como 9 y va el primero con aviso | 🔲 |
-| M14 | **Seminarios** | Fila con «ocultos = sí» | No listados incluidos, privados excluidos; año y mes del texto, **descendentes**; desempate por la fecha del vídeo; los 2 más recientes primero | 🔲 |
-| M15 | **Edición manual** | Cambiar a mano el título de una ficha; luego cambiar el título en YouTube | Se conserva hasta que YouTube cambie **ese** vídeo; entonces se pisa (dato más actual); por eso los cambios de título conviene hacerlos en YouTube | 🔲 |
-| M16 | **Pasadas parciales** | Presupuesto 0 y sincronizar varias veces. **Devolver el valor** | Una ficha por pasada, «pendiente»; al final 64 sin duplicados | 🔲 |
-| M17 | **Cambios en YouTube** | Cambiar un título; poner un vídeo en privado; eliminar otro | Título actualizado con el mismo slug; el privado y el eliminado se retiran en la siguiente sincronización | 🔲 |
-| M18 | **Tarea diaria y botón** | Mirar «Próxima sincronización» | Mañana a una hora distinta de la del podcast (04:30); el botón sincroniza ya | 🔲 |
-| M19 | **R3 y regla de los 30 días** | Poner `vid_comprobado` de una ficha retirada en hace 26 días y hacer que su vídeo no se pueda confirmar | **Se vacían título, miniatura y fecha y queda el ID**; si la canción vuelve, se rellena todo | 🔲 |
-| M20 | **Área nueva sin tocar código** | Crear tipo y taxonomía de Lenguas (o de Vía Crucis), asignar el grupo `vid_` y añadir su fila | Se importa; si falta algo, el Estado lo dice | 🔲 |
-| M21 | **Lectura en Avada** | Post Cards sobre el tipo: tarjetas, filtros, orden | Aparecen publicadas, ordenadas y filtradas; los borradores no salen | 🔲 |
-| M22 | **Fichas fuera de Google** | Abrir `/wp-sitemap.xml` y el código de una ficha | Las fichas **no figuran** en el mapa y emiten `noindex`, pero **su enlace funciona** | 🔲 |
-| M23 | **Títulos tal cual** | Importar los 64 títulos de Música y los 28 de Vía Crucis | Cada ficha lleva **exactamente** el título de YouTube, sin tocar sufijos, mayúsculas ni tildes | 🔲 |
-| M24 | **Avisos y semáforo** | Simular una última sincronización correcta de hace 11 días y de hace 21 | Amarillo y rojo en Estado y en el escritorio; el endpoint del estado devuelve el color (y la app lo pintará cuando Proyecto 5 lo construya) | 🔲 |
+| M0 | **Estado** | Activar el importador y abrir su pantalla | ✅ tipo, taxonomía, grupo de casillas, constante de la clave presente (sin mostrar su valor) y salida a internet. Si falta algo, ❌ con el motivo | ✅ (Álvaro, 6 nov) |
+| M1 | **Primera carga de Música** | Cargar las 5 filas con el estado actual de YouTube | **64 fichas** (62 si ya se limpiaron los duplicados). Categorías: Espíritu Santo 7, Virgen María 7, Navidad 7, San José 2; «Tiritaito Music» **no crea categoría**. 1 aviso por el ID repetido; 0 errores | ✅ 64 fichas, 0 errores (6 nov) |
+| M2 | **Segunda sincronización** | Pulsar de nuevo sin tocar nada | 0 creadas, 0 actualizadas, 64 sin cambios, **0 escrituras** | ✅ (6 nov) |
+| M3 | **Una playlist rota** | Una fila con un ID inventado y otra con una playlist privada | Solo esas filas pasan a «error» con el motivo; las demás se importan; **no se retira nada** (3b) | ✅ (6 nov) |
+| M4 | **Clave inválida o cuota agotada** (simulada) | Clave falsa; forzar la respuesta de cuota agotada | Todas las filas en «error»; 0 retiradas; 0 cambios | ✅ 5 errores, 0 cambios (6 nov) |
+| M5 | **Canción retirada (R1)** | Quitar una canción de todas las playlists y sincronizar; luego volver a añadirla | Pasa a **borrador** y desaparece de Post Cards; **mientras el vídeo exista se sigue refrescando** su `vid_comprobado`; al volver, se publica con el mismo slug | ✅ (6 nov) |
+| M6 | **Freno del 20 %** | Quitar de golpe más de 12 de 64 | **Se detiene, avisa y no retira nada**; el botón «Aplicar de todos modos» sí lo hace | ✅ (6 nov) |
+| M7 | **Modo simulación** | Cambiar títulos, quitar una canción y simular | Lista lo que se crearía, cambiaría y retiraría; recuento de entradas y fechas de modificación **idénticos** antes y después | ◐ solo se vio el aviso «No se ha escrito nada» |
+| M8 | **ID repetido** | «Todas» real (`tHN2sKkguYA` ×2) | Una sola ficha y un aviso | ✅ (visto en M10) |
+| M9 | **«Hágase en mí»** | `b0NmnYywmas` y `YiFwoQSCQxs` | **Dos fichas distintas**, slugs distintos, ninguna fusionada. Los títulos son distintos, tal como en YouTube. Como mucho, aviso | ✅ (6 nov) |
+| M10 | **Subidas duplicadas** («Él me ama», «Bajo tu manto») | Importar antes y después de limpiar las playlists | Antes: 2 avisos de «posible duplicado». Después: 62 publicadas y 2 en borrador | ✅ 62 publicadas y 2 en borrador (6 nov) |
+| M11 | **Categorías** | Renombrar «Navidad» en los ajustes; quitar una canción de «Navidad» en YouTube; quitar una de «Tiritaito Music» pero no de «Navidad» | El mismo término se renombra (0 duplicados); la canción pierde esa categoría; en el último caso, **aviso «en una categoría pero no en la playlist «Tiritaito Music»»** | ✅ renombra la misma, no crea otra (6 nov) |
+| M12 | **Orden de Música** | Comprobar el resultado | Más reciente primero según la fecha del vídeo; añadir una canción no reescribe las demás | ✅ (6 nov) |
+| M13 | **Orden de Vía Crucis** | Cargar las 2 playlists | «1º»…«14º» en orden; «(I)»…«(XIII)» con «(XIII)» **sin quedar al final por error**; el vídeo introductorio **no** puntúa como 9 y va el primero con aviso | ✅ 28 fichas (6 nov) |
+| M14 | **Seminarios** | Fila con «ocultos = sí» | No listados incluidos, privados excluidos; año y mes del texto, **descendentes**; desempate por la fecha del vídeo; los 2 más recientes primero | ✅ 29 fichas (6 nov) |
+| M15 | **Edición manual** | Cambiar a mano el título de una ficha; luego cambiar el título en YouTube | Se conserva hasta que YouTube cambie **ese** vídeo; entonces se pisa (dato más actual); por eso los cambios de título conviene hacerlos en YouTube | ✅ (6 nov) |
+| M16 | **Pasadas parciales** | Presupuesto 0 y sincronizar varias veces. **Devolver el valor** | Una ficha por pasada, «pendiente»; al final 64 sin duplicados | 🔲 no probada (toca código; no se recomienda hacerla) |
+| M17 | **Cambios en YouTube** | Cambiar un título; poner un vídeo en privado; eliminar otro | Título actualizado con el mismo slug; el privado y el eliminado se retiran en la siguiente sincronización | ✅ (6 nov) |
+| M18 | **Tarea diaria y botón** | Mirar «Próxima sincronización» | Mañana a una hora distinta de la del podcast (04:30); el botón sincroniza ya | ✅ se dispara solo (WP-Cron espera a la primera visita) (6 nov) |
+| M19 | **R3 y regla de los 30 días** | Poner `vid_comprobado` de una ficha retirada en hace 26 días y hacer que su vídeo no se pueda confirmar | **Se vacían título, miniatura y fecha y queda el ID**; si la canción vuelve, se rellena todo | ✅ regla de los 25 días (6 nov) |
+| M20 | **Área nueva sin tocar código** | Crear tipo y taxonomía de Lenguas (o de Vía Crucis), asignar el grupo `vid_` y añadir su fila | Se importa; si falta algo, el Estado lo dice | ✅ (6 nov) |
+| M21 | **Lectura en Avada** | Post Cards sobre el tipo: tarjetas, filtros, orden | Aparecen publicadas, ordenadas y filtradas; los borradores no salen | ◐ Post Cards lee las 62 canciones; sin darla por cerrada |
+| M22 | **Fichas fuera de Google** | Abrir `/wp-sitemap.xml` y el código de una ficha | Las fichas **no figuran** en el mapa y emiten `noindex`, pero **su enlace funciona** | ✅ `noindex` y `og:*` en canciones y vídeos de seminario; ningún tipo en el mapa (las taxonomías sí salían: corregido en v1.1, sin probar) |
+| M23 | **Título limpio y autora (v1.2)** | Importar los títulos de Música y de Seminarios | **Música:** sin «Tiritaito Music» ni «Hna./Hno. …», con la autora en `vid_autora` (esperado: 53 de 64 con autora). **Seminarios:** «Mes Año»; los que no traen mes y año en el texto conservan el de YouTube y salen en los avisos | ✅ Seminarios (Carlitos, 12 nov) · 🔲 Música sin confirmar |
+| M24 | **Avisos y semáforo** | Simular una última sincronización correcta de hace 11 días y de hace 21 | Amarillo y rojo en Estado y en el escritorio; el endpoint del estado devuelve el color (y la app lo pintará cuando Proyecto 5 lo construya) | ✅ amarillo (11 días) y rojo (21) en Estado (6 nov) |
 
 **Qué se podrá probar sin el importador:** solo el bloque A. **Qué solo se cierra en producción:** A8, A2 (cabecera real), M18 con cron real y el rendimiento con todas las fichas.
 
@@ -845,6 +851,8 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 
 ## 14. Qué hay que actualizar en otros documentos (lista para el cuarto chat)
 
+*Superada el 12 de noviembre por el documento de cambios del repositorio que se entrega al cerrar el tema.*
+
 *No se ha editado ningún otro documento en esta fase. El cuarto chat debe cargar **solo** estos.*
 
 | # | Documento | Qué cambiar | ¿Cuándo? |
@@ -863,6 +871,8 @@ El estado se mide por **fila**: días desde su **última sincronización correct
 ---
 
 ## 15. Próximos pasos y preguntas abiertas
+
+*Superada el 12 de noviembre: lo que queda está en la Sección 17.5.*
 
 ### Próximos pasos
 
@@ -981,13 +991,92 @@ Consultada en directo el 16 de septiembre. Su página es un **escaparate**, no u
 - **Canción destacada:** la más reciente, automática; no hay interruptor.
 - **Cada canción tiene su página**, compartible: necesita una plantilla de ficha.
 
-**Títulos:** tal como están en YouTube, con el sufijo «/ Tiritaito Music» (63 de 64), media de 45 caracteres y máximo 98; 13 en MAYÚSCULAS (11 tras quitar duplicados). La tarjeta debe tolerar dos líneas, salvo que se editen en YouTube. «Hágase en mi» aparece dos veces con títulos distintos.
+**Títulos:** **Música**, sin «Tiritaito Music» ni autora (media de unos 18 caracteres, máximo 55; la autora va en una casilla aparte que puede mostrarse o no); **Seminarios**, solo «Mes Año»; **Vía Crucis**, tal como están en YouTube. Quedan unos 11 títulos de canciones en MAYÚSCULAS. «Hágase en mi» aparece dos veces con el mismo título limpio: la autora las distingue.
 
 **Lo que ella decide (Sección 11.3):** K2 hero · K5 qué pasa al pulsar (Off-Canvas, Lightbox o ficha) · K6 títulos largos · K10 plantilla de la ficha · K11 el hueco del reproductor.
 
 **Lo que debe tener presente:**
 - Nada por encima del reproductor de YouTube ni de sus controles; reproductor mínimo de 200×200 px.
 - Sin «Clase CSS». Cristal esmerilado y filtros sobre carrusel, sin confirmar.
+
+---
+
+## 17. Cierre del tema (6–12 de noviembre de 2026)
+
+*Esta sección recoge lo que pasó después de la implementación del 30 de octubre: las pruebas de Álvaro del 6 de noviembre, los cambios que salieron de ellas, la construcción en Avada del 11 de noviembre y lo que queda. Todo lo marcado «según Álvaro» viene de sus informes, sin capturas de la revisión final.*
+
+### 17.1 Estado final
+
+| Pieza | Estado |
+|---|---|
+| Importador de vídeos | `apps/v2/tt-video-importador.php` **v1.2** (7 nov). La v1.0 pasó casi todos los casos en Local el 6 de noviembre (17.3). La v1.2 ya carga los títulos «Mes Año» de Seminarios (Carlitos, 12 nov). **Sin confirmar:** la v1.2 sobre Música (título limpio y autora aparte) |
+| Snippet de tipos de seminario | `apps/v2/tt-sem-tipo-automatico.php` **v1.3**. 🔲 Sin confirmar su resultado en Local |
+| Tipos y taxonomías | `cancion` + `categoria_musica` · `viacrucis` + `categoria_viacrucis` · `video_seminario` + `categoria_seminario`. El tipo `seminario` (las 6 fichas de tipo de seminario) es **otra cosa** y no se toca. La limpieza del tipo antiguo `videos_seminarios` estaba prevista; su estado final no consta |
+| Música | 62 fichas (64 menos 2 duplicados). Páginas, tarjeta, ficha y compartir construidos en Avada (17.4); sin revisar en móvil ni tablet |
+| Vía Crucis | 28 fichas; orden correcto («(XIII)» no queda al final; el vídeo introductorio va primero, con aviso) |
+| Seminarios | 29 fichas; títulos «Mes Año» cargados |
+
+### 17.2 Qué cambió después de las pruebas
+
+| Versión | Cambio | Por qué |
+|---|---|---|
+| Importador **v1.1** (6 nov) | La fila de Seminarios usa el tipo `video_seminario`; las **taxonomías de vídeos** salen del mapa de páginas y sus archivos llevan `noindex` | `seminario` ya existía para las 6 fichas de tipo; las taxonomías sí salían en `wp-sitemap.xml` (hallazgo 3 de 17.3) |
+| Importador **v1.2** (7 nov) | **Música:** el título va sin «Tiritaito Music» ni la autora; la autora se guarda en `vid_autora` y el título original en `vid_titulo_yt` (ambas casillas opcionales). **Seminarios:** el título es «Mes Año» solo si el mes y el año salen del texto del vídeo; si no, se deja el de YouTube y se avisa. Vía Crucis no cambia. La primera sincronización reescribe todas las fichas una vez | Decisión de Carlitos del 7 de noviembre, que invierte la del 23 de octubre |
+| Snippet **v1.3** | El tipo de cada vídeo de seminario es una **categoría** de `categoria_seminario` (no una casilla `sem_tipo`), buscada en `vid_titulo_yt`; no pisa un tipo puesto a mano; relleno de una vez en `…/wp-admin/index.php?tt_sem_tipo_relleno=1`. En los ajustes, fila de Seminarios con taxonomía `categoria_seminario` y «crea categoría» = No | Con una categoría sirven a la vez el panel «Más información» y las pestañas de la página de vídeos. Con la v1.2 el título ya no dice el tipo |
+
+### 17.3 Resultados de las pruebas del importador (Álvaro, 6 de noviembre; v1.0 sin modificar)
+
+**Pasan:** M0, M1 (64 fichas, 0 errores), M2, M3, M4, M5, M6, M8, M9, M10 (62 publicadas y 2 en borrador), M11, M12, M13 (28 fichas), M14 (29 fichas), M15, M17, M18 (se dispara solo; WP-Cron espera a la primera visita), M19, M20, M22, M24, y una versión sencilla de A3 (la fecha guardada coincide con la de YouTube).
+**A medias:** M7 (solo se vio el aviso «No se ha escrito nada»), M21 (Post Cards lee las 62 canciones, sin darla por cerrada).
+**No hecha:** M16 (toca código; no se recomienda hacerla, el riesgo es bajo con unas 120 fichas).
+**M23:** se probó con la v1.0 (títulos iguales a YouTube); con la v1.2 queda Seminarios ✅ y Música 🔲.
+
+**Hallazgos:**
+
+1. La simulación dijo una vez «0 retiradas» y la sincronización real hizo 2 (los duplicados). No se ha vuelto a reproducir; por el código, simulación y sincronización usan el mismo cálculo, así que lo más probable es un cambio de YouTube entre las dos.
+2. **Etiquetas para compartir duplicadas:** el grupo del importador va primero (miniatura, `og:description`, `twitter:*`) y detrás hay otro de **Avada** (opción «Description And Open Graph Meta Tags» en On, imagen genérica de 501×500, sin descripción). Apagar la opción afecta a todo el sitio. Se desconoce cuál usarán WhatsApp y Telegram: **solo la prueba real en producción lo dirá**.
+3. Las taxonomías `categoria_musica` y `categoria_viacrucis` sí salían en `wp-sitemap.xml` (corregido en la v1.1, sin probar).
+4. Las categorías «Espíritu Santo» y «Navidad» ya existían antes del importador y las reutilizó; «Todas» se borró (duplicaba la pestaña «All» de Avada).
+5. «Con Jesús hacia la Cruz» tiene **1 vídeo no listado que no se importa**. ¿Es una estación que falta? Sin mirar todavía en YouTube. (La otra playlist de Vía Crucis muestra 15 en YouTube frente a 14 importados: el mismo caso.)
+6. Los 2 vídeos no listados de «Tiritaito Music» no se importan: Música no incluye ocultos.
+
+### 17.4 Construcción en Avada (Álvaro, 11 de noviembre; sin capturas de la revisión final)
+
+**Decisión de estructura:** no se siguió el boceto `boceto-tiritaito-music-listas.html` (un tipo `lista_musica` con casillas `lm_` y `mus_`): choca con lo decidido (una ficha por canción, listas = taxonomía, datos del importador). Se construyó sobre `cancion` y `categoria_musica`. No se tocó nada del importador ni de sus casillas.
+
+| Pieza | Qué es |
+|---|---|
+| Post Card **«TT — Música — Canción»** | Fila de 3 columnas (foto · título + lista · tres puntos). La foto es la imagen de fondo de la columna leída de `vid_miniatura_url`; el subtítulo son los *Post Terms* de `categoria_musica`; foto y título llevan a la ficha; los tres puntos abren el panel de compartir |
+| Layout **«TT — Música — Ficha»** | Botón «‹ Todas las canciones», portada, título, categoría y la **fila de la pista**, cuyo enlace abre el vídeo en **Lightbox** (según Álvaro; falta confirmarlo en móvil real) |
+| Off-Canvas **«TT — Música — Compartir»** | Popup con *Social Sharing* (WhatsApp, Telegram, Email, Copiar enlace), con título y enlace dinámicos de la entrada |
+| Páginas | «Tiritaito Music» (portada: título, botón «Escuchar todas las canciones», «Últimas canciones» con 5, tarjetas de listas a mano), «Todas las canciones» (Post Cards con *Show Filters* y *Load More*) y una página por lista (hecha «Virgen María»; se duplica y se cambia la categoría en *Include Categorías De Música*) |
+
+**Ficha de canción rediseñada al estilo Apple Music (11 nov, mediodía):** portada centrada con esquinas de 15 px (ancho máximo 280 px) · título en negrita, tamaño fluido · «Tiritaito» escrito a mano como artista · categoría · fondo Color 2 · fila de pista con número y título que abren el Lightbox. Se mantiene la identidad: fondo claro, nunca modo oscuro. Botones «Reproducir», aleatorio y «+» aplazados.
+
+**Diferencias con el boceto, aceptadas:** sin reproductor fijo, cola, barra de progreso, ecualizador, columnas «#» y «Tipo», recuento «N canciones» ni artista por canción; las canciones abren la ficha (no un reproductor); «Escuchar todas» es un enlace, no una cadena; las listas son páginas normales (no se probó la condición de Layout por taxonomía); el carrusel de listas son tarjetas hechas a mano.
+
+**Hallazgos técnicos:** Post Cards filtra por categoría de una taxonomía (*Include Categorías De Música*) · *Show Filters = Yes* da «All» + una pestaña por categoría · *Post Terms* funciona en el molde y en el Layout (si la canción no tiene lista, el subtítulo sale vacío) · una imagen de fondo de columna con *Custom Field* sirve de foto de la fila y de la ficha · **el editor de Avada Live muestra vacío o con texto de relleno lo dinámico: solo vale lo que se ve en la web pública** · en *Social Sharing*, «Sharing Link» venía en «Site URL» y el enlace compartido llevaba a la portada; con el dato dinámico de la entrada se arregla (⚠️ falta confirmar que «Copiar enlace» abre la ficha de la canción pulsada y no el listado).
+
+**Limitaciones de la ficha nueva:** la portada cuadrada 1:1 no es la miniatura (16:9); si el elemento Imagen no recorta, haría falta un traspaso a Proyecto 11 · el año en la línea de categoría pide una casilla `vid_anio` que escriba el importador (opcional, no hecha) · no hay color de fondo adaptado a cada portada ni se confirmó el desenfoque de fondo (*Backdrop Filters*).
+
+### 17.5 Qué queda tras el cierre
+
+| # | Pendiente | Quién |
+|---|---|---|
+| 1 | Confirmar en Música la v1.2 (títulos limpios y `vid_autora`) y el snippet de tipos v1.3 | Álvaro |
+| 2 | **A8:** servidor de producción (`wp-config.php`, `wp-cron.php`, Salud del sitio, llamada a YouTube desde el servidor) | Álvaro o Carlitos |
+| 3 | Mirar en YouTube el vídeo no listado de «Con Jesús hacia la Cruz» y el de la otra playlist de Vía Crucis | Carlitos |
+| 4 | **Vista previa real al compartir** (WhatsApp, Telegram) y qué bloque `og:` usan; solo en producción | Álvaro / Carlitos |
+| 5 | **Decidir el prefijo de la taxonomía** (hoy `/categoria_musica/…`, quizá `/musica/`) **antes de lanzar**: cambiarlo después rompe enlaces compartidos | Carlitos |
+| 6 | Revisar en móvil y tablet: portada, «Todas las canciones», una lista y la ficha; confirmar el Lightbox en móvil real | Álvaro |
+| 7 | Aprobación visual de la ficha rediseñada; decidir si el título usa la fuente de marca o la negrita del cuerpo; mostrar la autora (`vid_autora`) en lugar del «Tiritaito» escrito a mano | Carlota y Carlitos |
+| 8 | Las 8 listas reales (nombre, frase y portada) | Álvaro / Carlitos |
+| 9 | Crear el área de **Lenguas** (fila de ajustes + tipo y taxonomía) | Álvaro |
+| 10 | Menú: añadir «Tiritaito Music» | Álvaro |
+| 11 | **Semáforo del importador en la app de Creators**, con `GET /tiritaito/v1/videos/estado` (el semáforo ya se probó en la pantalla de Estado, M24) | Proyecto 5 |
+| 12 | Producción: LiteSpeed puede guardar en caché las fichas | Álvaro |
+| 13 | Opcionales: casilla `vid_anio` en el importador, recorte 1:1 de la portada (Proyecto 11), reproductor fijo y reproducción continua (fase D) | Más adelante |
+| 14 | Corregir `CATALOGO_ELEMENTOS_AVADA.md`, `GUIA_AVADA_LOCAL.md` y `HOMBRES_DE_DIOS_ESTRUCTURA.md` (documento de cambios del repositorio) | Proyecto 2 |
 
 ---
 
