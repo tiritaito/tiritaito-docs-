@@ -218,7 +218,7 @@ Descubiertos al construir. Cuando maduren, se trasladan a `CATALOGO_ELEMENTOS_AV
 | 3 | En un molde sobre un repetidor, "ACF Text" no lee subcasillas y "ACF Repeater Single Value" con Index vacío repite siempre la fila 1. Lo que funciona es **"ACF Repeater Sub Field"** (Post Cards) / "ACF Repeater Subfield" (Toggles) | Álvaro, 2 oct | ☑ |
 | 4 | Un Toggles se alimenta de un repetidor sin Post Cards: Select Dynamic Data → ACF Repeater; un hijo = plantilla repetida por fila | Álvaro, 2 oct | ☑ |
 | 5 | El Title de un Toggle admite **un solo** dato dinámico (por eso el año va dentro del título) | Álvaro, 2 oct | ☑ |
-| 6 | El elemento **Título** no admite Dynamic Data: usar Text Block para texto que cambia por santo (el Título sigue valiendo para texto fijo) | Álvaro, 2 oct | ☑ |
+6. **Corregido el 27 oct 2026:** en Avada 7.16.3 el elemento **Title SÍ admite contenido dinámico** (probado en Local con Post Title). El Text Block sigue valiendo. Si alguna ficha de santo usó Text Block solo por esta razón, no hace falta cambiarla.
 | 7 | Dos marcas dinámicas dentro del mismo Text Block se pintan juntas en la web real; el editor las muestra como texto crudo | Álvaro, 2 oct | ☑ |
 | 8 | Casilla de imagen ACF en el elemento Imagen: funciona. Editor enriquecido (WYSIWYG) en un Text Block: funciona, con párrafos y negrita | Álvaro, 2 oct | ☑ |
 | 9 | Área de texto: con "Nuevas líneas" = "Añadir párrafos automáticamente" se conservan los párrafos; con "Sin formato" se pierden | Álvaro, 1 oct | ☑ |
