@@ -199,25 +199,24 @@ Tres apartados jerarquizados por importancia:
 **Grupo de alabanza y Día de familias:** contenido informativo, sin funcionalidad
 adicional confirmada por ahora.
 
-### D. Conecta cada día
+### D. Dios te habla
+
+1. Generador de citas aleatorias: Concepto de producto ya fijado: pensado para evangelización, fácil de compartir por QR o URL; al compartirse debe verse atractivo
+2. Promesas de Dios/tip: imagen que si pulsas en ella te carga el tip o la promesa del dia dependiendo de si se ha subido ese dia una u otra desde la app V2.
+
+### E. Conecta cada día
 
 | Elemento | Estado |
 |---|---|
 | Hora de la brisa | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
 | Mensaje de la Virgen de hoy | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
-| Misa | ✅ Definido — 🔲 probablemente absorbe el Salmo del día (ver abajo) |
+| Misa | ✅ Definido |
 | Lenguas | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
-| Salmo del día | 🔲 Se está evaluando integrarlo dentro de Misa (porque el salmo se lee en la misa de ese día) en vez de mantenerlo como apartado independiente |
-| Habla por la palabra (cita bíblica aleatoria) | 🔲 Sin resolver dónde vive. Concepto de producto ya fijado: pensado para evangelización, fácil de compartir por QR o URL; al compartirse debe verse atractivo, y al clicar debe llevar a la sección propia de Conecta cada día donde está el generador. Pendiente confirmar si se construye así |
+| Salmo del día |✅ Definido - Sección propia que presenta el salmo del dia según la liturgia, extrayéndolo del podcast de salmos y automatizado por un codigo php |
+| Ejército | ✅ Definido — Corresponde al material con el que el ejército de intercesores reza cada dia: un cpt del ejército, y y un postcard que lee la entrada del día actual: lleva una imagen con un botón de play. Si clickas se abre el vídeo de Youtube correspondiente a las lenguas de ese día del ejército. Debajo las intenciones de ese día y por último la oración final |
 | Elige tu santo | 🔲 Sin resolver dónde vive |
 
-**❌ Tip — eliminado (26 julio 2026).** Ya no existe como apartado independiente de Conecta
-cada día ni como clave separada. Ese contenido se sube ahora directamente como Novedades
-(ver Sección B). ⚠️ Todavía construido en la app real (confirmado revisando
-`apps/v2/tiritaito-creators-v2-01.html`) — pendiente de que Proyecto 5 lo retire de verdad
-en la siguiente actualización.
-
-### E. Tiritaito
+### F. Tiritaito
 
 Página contenedora de 4 entradas propias, cada una su propio post: **Tiritaito Music ·
 Rincón de Nico · Charlas de la Biblia · Ejército de Intercesores** (detalle en F).
@@ -236,7 +235,7 @@ están dirigidas al mismo tipo de público general de Tiritaito. Contrasta con p
 Qué Hacemos, donde los tres apartados están más unidos entre sí. Ver Sección 6, pregunta
 #8, sobre si esto se convierte en regla formal.
 
-### F. Ejército de Intercesores
+### G. Ejército de Intercesores
 
 Estructura confirmada en esta sesión:
 
@@ -253,7 +252,7 @@ Estructura confirmada en esta sesión:
 que no apareció en el repaso de esta sesión. ¿Se mantiene, se descarta o se integra en
 otro apartado?
 
-### G. Biblioteca
+### H. Biblioteca
 
 Tres apartados, presentación visual distinta cada uno:
 
