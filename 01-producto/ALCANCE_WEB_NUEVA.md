@@ -74,12 +74,17 @@ PÁGINA DE INICIO
 │     ├── 2. Grupo de alabanza   — informativo
 │     └── 3. Día de familias     — informativo
 │
+├── Dios te habla
+│     ├── 1. Generador de citas          
+│     ├── 2. Promesa/tip   
+│
 ├── CONECTA CADA DÍA (página)
 │     ├── Hora de la brisa
 │     ├── Mensaje de la Virgen de hoy
-│     ├── Misa                     🔲 probablemente absorbe el Salmo del día
+│     ├── Misa                     
 │     ├── Lenguas
-│     ├── 🔲 Habla por la palabra (cita aleatoria) — ubicación sin decidir
+│     ├── Salmo del día
+│     ├── Ejército
 │     └── 🔲 Elige tu santo — ubicación sin decidir
 │
 ├── TIRITAITO (página) — 4 entradas propias
