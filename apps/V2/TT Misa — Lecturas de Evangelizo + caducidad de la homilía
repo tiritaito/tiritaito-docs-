@@ -1,16 +1,40 @@
 <?php
-// TT Misa — Lecturas de Evangelizo + homilía (caducidad y espejo a la página).
-// Snippet PHP, "Run everywhere".
-// Las lecturas viven en campos de la PÁGINA «Conecta cada día» (las condiciones de
-// Avada no leen la Options Page). La homilía la sigue escribiendo la app en la
-// Options Page; aquí se COPIA a la página (cd_homilia_*).
+/**
+ * TT Misa — Lecturas de Evangelizo + homilía (caducidad y copia a la entrada)
+ * Versión: 1.0 · 14 noviembre 2026
+ * Ruta en el repositorio: apps/v2/tt-misa-lecturas.php
+ * Code Snippets: tipo PHP, alcance «Run everywhere» (pegar SIN la línea <?php).
+ *
+ * Qué hace:
+ *  - Cada hora (WP-Cron) comprueba si las lecturas guardadas son las de hoy
+ *    (hora de Madrid) y, si no, las pide a Evangelizo y las guarda.
+ *  - Copia la homilía que escribe la app (Options Page) a campos de la entrada
+ *    «Conecta cada Día», porque las condiciones de Avada no leen Options Pages.
+ *  - Vacía la homilía si lleva 48 h o más sin renovarse.
+ *
+ * Requisitos:
+ *  - Opción tt_conecta_page_id con el ID de la entrada «Conecta cada Día»:
+ *      wp option update tt_conecta_page_id 123
+ *  - Grupo ACF «Misa — Lecturas» (misa_fecha, misa_primera, misa_primera_cita,
+ *    misa_salmo, misa_salmo_cita, misa_segunda, misa_segunda_cita,
+ *    misa_evangelio, misa_evangelio_cita) con regla de ubicación en esa entrada.
+ *  - Grupo ACF «Conecta — Homilía» (cd_homilia_texto, cd_homilia_audio), misma regla.
+ *  - Campos homilia_texto y homilia_audio en la Options Page (ya existen).
+ *
+ * Pruebas manuales (solo administradores, en /wp-admin/):
+ *   ?tt_misa_ahora=1                      → sincroniza hoy
+ *   ?tt_misa_ahora=1&tt_fecha=20261122    → sincroniza esa fecha
+ *   ?tt_misa_tick=1                       → ejecuta el tick completo
+ * Registro: opción tt_misa_log (wp option get tt_misa_log).
+ */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /* ---------- Utilidades ---------- */
 
+// Siempre hora de Madrid, sin depender de los ajustes de WordPress.
 function tt_misa_tz() { return new DateTimeZone( 'Europe/Madrid' ); }
 
-// ID de la página «Conecta cada día». Se fija una vez con:
+// ID de la entrada «Conecta cada Día». Se fija una vez con:
 //   wp option update tt_conecta_page_id 123
 function tt_misa_pagina_id() { return (int) get_option( 'tt_conecta_page_id', 0 ); }
 
@@ -136,7 +160,7 @@ function tt_misa_sincronizar( $fecha_ymd = null ) {
 
 /* ---------- Homilía ---------- */
 
-// Copia la homilía de la Options Page (donde escribe la app) a la página,
+// Copia la homilía de la Options Page (donde escribe la app) a la entrada,
 // para que Avada pueda condicionar. Solo escribe si hay diferencia.
 function tt_homilia_espejo() {
 	$pid = tt_misa_pagina_id();
@@ -151,7 +175,7 @@ function tt_homilia_espejo() {
 
 // Al guardar la homilía en la Options Page: se apunta el momento SOLO si el valor
 // es distinto del anterior (reenviar el mismo valor no reinicia las 48 h) y se
-// copia a la página.
+// copia a la entrada.
 function tt_homilia_al_guardar( $value, $post_id, $field ) {
 	if ( ! in_array( $post_id, array( 'options', 'option' ), true ) ) return $value;
 	if ( is_string( $value ) && '' !== trim( $value ) ) {
@@ -168,7 +192,7 @@ function tt_homilia_al_guardar( $value, $post_id, $field ) {
 add_filter( 'acf/update_value/name=homilia_texto', 'tt_homilia_al_guardar', 10, 3 );
 add_filter( 'acf/update_value/name=homilia_audio', 'tt_homilia_al_guardar', 10, 3 );
 
-// Si la homilía lleva 48 horas o más sin renovarse, se vacía (Options Page y página).
+// Si la homilía lleva 48 horas o más sin renovarse, se vacía (Options Page y entrada).
 function tt_homilia_caducar() {
 	$txt = (string) get_field( 'homilia_texto', 'option', false );
 	$aud = (string) get_field( 'homilia_audio', 'option', false );
@@ -200,11 +224,8 @@ add_action( 'init', function () {
 	}
 } );
 
-/* ---------- Pruebas manuales (solo administradores) ----------
-   /wp-admin/?tt_misa_ahora=1                      → sincroniza hoy
-   /wp-admin/?tt_misa_ahora=1&tt_fecha=20261116    → sincroniza esa fecha
-   /wp-admin/?tt_misa_tick=1                       → tick completo
-*/
+/* ---------- Pruebas manuales (solo administradores) ---------- */
+
 add_action( 'admin_init', function () {
 	if ( ! current_user_can( 'manage_options' ) ) return;
 	if ( isset( $_GET['tt_misa_ahora'] ) ) {
