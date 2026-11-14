@@ -3,7 +3,7 @@
    Este archivo MANDA. Lo de Avada → Options → Custom CSS es la copia
    desplegada: debe ser idéntica, empezando por esta misma línea de sello.
 
-   TT-CSS · v013 · 2026-10-20 · Avada 7.16.1
+   TT-CSS · v017 · 2026-11-13 · Avada 7.16.1
    ════════════════════════════════════════════════════════════════
 
    CÓMO SE USA ESTE ARCHIVO (léelo antes de tocar nada)
@@ -293,42 +293,65 @@
 
 
 /* ══════════════════════════════════════════════════════════════
-   TT-MEJORA · Tabs en píldoras con pestaña activa oscura
+   TT-MEJORA · Tabs en píldoras compactas con pestaña activa en rojo
    Cómo se usa:  VARIANTE — pon la clase  tt-profundiza-tabs  en el
                  campo "CSS Class" del elemento Tabs (el padre, no una
-                 pestaña hija). Diseño base: "Clean", con alineación
-                 centrada, padding 9/18, borde 1px, radio 50 y colores
-                 de pestaña inactiva ya puestos en el propio panel de
-                 Avada.
+                 pestaña hija). Diseño base: "Clean", con radio 50 y
+                 fuente Poppins 600 en mayúsculas ya puestos en el
+                 propio panel de Avada.
    Qué hace:     coloca las pestañas en una fila centrada, cada una del
-                 tamaño de su texto y con 8px de separación entre ellas,
-                 y pinta la pestaña ACTIVA con fondo oscuro y texto
-                 blanco. La inactiva se queda como la deja el panel.
-                 Avada no ofrece separación entre pestañas ni color de
-                 fondo/texto de la pestaña activa (solo el color del
-                 borde de acento), y añade la clase nav-justified a la
-                 lista aunque Justify Tabs esté en No, lo que las
-                 estira a todo el ancho.
-   Ajustable:    separación (hoy 4px de margen a cada lado de cada
-                 pestaña = 8px entre ellas), color oscuro de la activa
-                 (hoy #1d1d1f), color del texto activo (hoy #fff).
-                 El color del borde de las pestañas NO se controla
-                 aquí: se cambia en el panel del elemento Tabs.
+                 tamaño de su texto y con 8px de separación entre ellas.
+                 Cada píldora mide 40px de alto y el texto queda
+                 centrado justo en horizontal y vertical (también se
+                 compensa el espacio que el espaciado entre letras deja
+                 tras la última letra, que si no la desplaza a la
+                 izquierda). La inactiva es blanca con un borde fino
+                 rojizo; al pasar el ratón se tiñe de rosa muy suave; la
+                 ACTIVA se rellena de rojo Tiritaito con texto blanco y
+                 una sombra suave. Los cambios se animan en 0,25 s. La letra de los nombres de las
+                 pestañas y de los textos de dentro de cada pestaña se
+                 fuerza a Poppins; el título grande en rojo no se toca.
+                 Avada no ofrece separación entre pestañas ni fondo/texto
+                 de la pestaña activa, añade la clase nav-justified
+                 (que las estira a todo el ancho aunque Justify Tabs
+                 esté en No) y mete un relleno inferior de 25px
+                 (--awb-title-padding-bottom) que las hacía muy altas.
+   Ajustable:    alto de la píldora (hoy 40px; 36px en móvil), relleno
+                 lateral (hoy 22px), tamaño de letra (hoy 13px; 12px en
+                 móvil), espaciado de letras (hoy 0.12em: si lo cambias,
+                 cambia también el margen negativo del mismo valor en
+                 .fusion-tab-heading), separación (4px de margen a cada
+                 lado de cada pestaña = 8px entre ellas), rojo de la
+                 activa (hoy #A33B3B), borde de la inactiva (hoy
+                 rgba(163,59,59,0.35)), hover (hoy #FBF0F0). Todo son
+                 números directos, sin variables.
    Depende de:   clases internas de Avada .fusion-tabs, .nav-tabs,
-                 .nav-justified, li.active, .tab-link y
+                 .nav-justified, li.active, a.tab-link y
                  .fusion-tab-heading (no son API pública). En modo
                  mobile-carousel Avada pone la lista en flex con
-                 desplazamiento lateral: este bloque lo respeta, pero
-                 sin verlo aún a anchos de escritorio (ver "Probado").
+                 desplazamiento lateral: este bloque lo respeta. Anula
+                 el relleno (padding) y el borde que Avada pone en cada
+                 pestaña desde el panel, por eso lleva !important: si
+                 se cambian en el panel (Title Padding, Border Color),
+                 no se notará. Fuente y mayúsculas siguen viniendo del
+                 panel.
    Usado en:     Página Ejército de Intercesores — sección
-                 "Profundiza más".
-   Probado con:  Avada 7.16.1 · 28/09/2026 · móvil (463px): margen y
-                 pestaña activa OK · escritorio y tablet: pendiente de
-                 confirmar tras la v003.
+                 "Profundiza más" (pestañas Brisa / Virgen / Misa /
+                 Salmo / Lenguas).
+   Probado con:  Avada 7.16.1 · 28/09/2026 · v003 en móvil (463px) OK ·
+                 v014 (30/10/2026) vista en móvil por Álvaro (píldoras
+                 OK, textos con otra letra) · v015 sin probar todavía
+                 (pendiente: escritorio, tablet y móvil).
    Origen:       boceto de Carlota (ejercito-intercesores-v2.html,
-                 zona .extra-tabs). Creado el 28/09/2026; ajustado en
-                 v003 (lista en flex centrada, pestañas de ancho
-                 automático).
+                 zona .extra-tabs). Creado el 28/09/2026; v003: lista en
+                 flex centrada, pestañas de ancho automático; v014
+                 (30/10/2026): píldoras de 40px con texto centrado
+                 (se anula el relleno inferior de 25px), activa en rojo
+                 sólido (la ficha anterior decía #1d1d1f pero el código
+                 usaba un rojo translúcido), hover y transición; v015
+                 (30/10/2026): letra Poppins en nombres de pestañas y
+                 textos interiores (los textos salían con una letra con
+                 serifa), sin tocar el título rojo.
    ══════════════════════════════════════════════════════════════ */
 
 /* Lista de pestañas: fila flexible, centrada. "safe center" evita que,
@@ -337,6 +360,7 @@
 .fusion-tabs.tt-profundiza-tabs .nav-tabs {
   display: flex;
   justify-content: safe center;
+  align-items: center;
 }
 
 /* Cada pestaña: tamaño de su texto (anula el reparto a partes iguales
@@ -348,14 +372,74 @@
   margin: 0 4px;
 }
 
-.fusion-tabs.tt-profundiza-tabs .nav-tabs li.active .tab-link {
-  background-color: rgba(163,59,59,0.8);
-  border-color: #1d1d1f;
+/* La píldora: caja fija de 40px de alto, sin relleno arriba/abajo (aquí
+   estaba el espacio de sobra) y con el contenido centrado en los dos ejes */
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li a.tab-link {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 40px;
+  min-height: 0 !important;
+  margin: 0;
+  padding: 0 22px !important;
+  background-color: #ffffff;
+  border: 1px solid rgba(163,59,59,0.35) !important;
+  border-radius: 999px;
+  box-shadow: none;
+  transition: background-color .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+
+/* El texto: sin márgenes ni interlineado propios (el h4 de Avada los
+   trae) y con el margen derecho negativo igual al espaciado de letras,
+   para que el hueco que queda tras la última letra no lo descentre */
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li a.tab-link .fusion-tab-heading {
+  margin: 0 -0.12em 0 0 !important;
+  padding: 0 !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+
+/* Hover (solo en las inactivas): rosa muy suave y borde algo más marcado */
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li:not(.active) a.tab-link:hover {
+  background-color: #FBF0F0;
+  border-color: rgba(163,59,59,0.7) !important;
+}
+
+/* Activa: rojo Tiritaito sólido, texto blanco y sombra suave */
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li.active a.tab-link {
+  background-color: #A33B3B;
+  border-color: #A33B3B !important;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(163,59,59,0.25);
+}
+
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li.active a.tab-link .fusion-tab-heading {
   color: #ffffff;
 }
 
-.fusion-tabs.tt-profundiza-tabs .nav-tabs li.active .tab-link .fusion-tab-heading {
-  color: #ffffff;
+/* Móvil (≤480px): un poco más compactas */
+@media (max-width: 480px) {
+  .fusion-tabs.tt-profundiza-tabs .nav-tabs li a.tab-link {
+    height: 36px;
+    padding: 0 16px !important;
+  }
+  .fusion-tabs.tt-profundiza-tabs .nav-tabs li a.tab-link .fusion-tab-heading {
+    font-size: 12px !important;
+    letter-spacing: 0.1em;
+    margin: 0 -0.1em 0 0 !important;
+  }
+}
+
+/* Letra: Poppins en los nombres de las pestañas y en los textos de dentro
+   de cada pestaña. El título grande en rojo (h2 de Avada, no es un
+   .fusion-text) NO se toca: conserva su propia tipografía. */
+.fusion-tabs.tt-profundiza-tabs .nav-tabs li a.tab-link .fusion-tab-heading,
+.fusion-tabs.tt-profundiza-tabs .tab-content .fusion-text,
+.fusion-tabs.tt-profundiza-tabs .tab-content .fusion-text p {
+  font-family: 'Poppins', sans-serif;
 }
 
 
@@ -365,12 +449,15 @@
                  campo "CSS Class" (pestaña Extras) del elemento
                  Post Cards que lleva los filtros.
    Qué hace:     convierte cada botón del filtro (All, Sagrada
-                 Familia, Santos...) en un chip de 108×80px con una
+                 Familia, Santos...) en un chip de 80px de alto con una
                  imagen de fondo (la misma para todos), esquinas
                  redondeadas, sombra suave y texto centrado. El chip
-                 activo lleva un borde de 2px. En ordenador y tablet
-                 los chips van en fila y, si no caben, bajan a otra
-                 línea. En móvil (hasta 480px) forman una sola fila
+                 mide como mínimo 108px de ancho y CRECE si su texto es
+                 más largo (p. ej. «CARISMÁTICOS»), con 16px de aire a
+                 cada lado del texto, para que el texto nunca se salga.
+                 El chip activo lleva un borde de 2px. En ordenador y
+                 tablet los chips van en fila y, si no caben, bajan a
+                 otra línea. En móvil (hasta 480px) forman una sola fila
                  que se desliza con el dedo en vez de apilarse.
                  Avada no ofrece fondo, tamaño ni radio por filtro,
                  ni deslizamiento horizontal.
@@ -382,8 +469,10 @@
                  var(--awb-color3), el mismo color que ya usa el borde
                  nativo del activo). La imagen se cambia en la línea
                  background-image de .fusion-filter (abajo). El radio
-                 sale de --tt-r-web (15px). Tamaño 108×80, separación
-                 12px y sombra se cambian en las reglas de abajo.
+                 sale de --tt-r-web (15px). Ancho mínimo 108px
+                 (min-width), alto 80px (height), aire lateral del
+                 texto 16px (padding del enlace), separación 12px y
+                 sombra se cambian en las reglas de abajo.
                  La fuente, las mayúsculas y los colores del texto se
                  siguen controlando en Design del Post Cards.
    Depende de:   clases internas de Avada .fusion-post-cards,
@@ -403,13 +492,20 @@
                  este bloque con prioridad. La alineación de la fila
                  la sigue decidiendo el ajuste nativo de alineación
                  de filtros.
+                 NOTA (13/11/2026): este bloque solo da ASPECTO a los
+                 filtros. Cuántas tarjetas de libros se cargan de golpe
+                 NO se controla con CSS: es el ajuste nativo del Post
+                 Cards (Number of Posts / Pagination Type).
    Usado en:     Página Biblioteca · Libros — barra de filtros.
                  Se ven también chips con este diseño en una página
                  de películas (filtros ALL / SANTOS / VALORES): sin
                  confirmar en este documento si lleva la misma clase.
    Probado con:  Avada 7.16.1 · 08/10/2026 · ordenador y móvil OK
                  según Álvaro; iPad fallaba (apilado) antes de la
-                 v007 · pendiente de confirmar el iPad tras la v007.
+                 v007 · pendiente de confirmar el iPad tras la v007 ·
+                 v017 (13/11/2026) sin probar todavía (pendiente:
+                 ordenador, tablet y móvil; mirar que «CARISMÁTICOS»
+                 ya cabe y que la fila móvil sigue deslizándose).
    Origen:       boceto de Carlota (Biblioteca — Libros, clases
                  .chips y .chip). Creado el 05/10/2026 (v004);
                  v005: regla de móvil con !important contra el
@@ -417,7 +513,11 @@
                  por imagen de la biblioteca de medios; v007: el
                  display:flex !important pasa a valer hasta 1024px
                  (la regla de Avada llega hasta ahí, no hasta 480px),
-                 y el deslizamiento horizontal se queda en ≤480px.
+                 y el deslizamiento horizontal se queda en ≤480px;
+                 v017 (13/11/2026): el chip ya no tiene ancho fijo de
+                 108px, sino mínimo 108px y crece con el texto (el
+                 texto de «CARISMÁTICOS» se salía de la tarjeta); el
+                 aire lateral del texto sube de 8px a 16px.
    ══════════════════════════════════════════════════════════════ */
 
 .tt-biblioteca-chips {
@@ -437,13 +537,15 @@
   list-style: none;
 }
 
-/* El chip: caja fija 108×80, imagen de fondo, radio, sombra. Lleva un borde
-   de 2px transparente para que el activo solo cambie de color, sin mover
-   nada. El color de reserva se ve si la imagen aún no ha cargado. */
+/* El chip: alto fijo de 80px y ancho MÍNIMO de 108px (crece si el texto es
+   más largo), imagen de fondo, radio, sombra. Lleva un borde de 2px
+   transparente para que el activo solo cambie de color, sin mover nada.
+   El color de reserva se ve si la imagen aún no ha cargado. */
 .tt-biblioteca-chips .fusion-filters .fusion-filter {
   box-sizing: border-box;
-  flex: 0 0 108px;
-  width: 108px;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 108px;
   height: 80px;
   margin: 0;
   padding: 0;
@@ -459,7 +561,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* El enlace llena todo el chip y centra el texto */
+/* El enlace llena todo el chip y centra el texto; el aire lateral (16px)
+   es lo que hace que el chip crezca con palabras largas */
 .tt-biblioteca-chips .fusion-filters .fusion-filter > a {
   display: flex;
   align-items: center;
@@ -468,7 +571,7 @@
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 0 8px;
+  padding: 0 16px;
   border: 0;
   line-height: 1.2;
   text-align: center;
@@ -598,14 +701,149 @@
 
 
 /* ══════════════════════════════════════════════════════════════
-   FIN DEL ARCHIVO — 6 mejoras registradas · v013 · 2026-10-20
+   TT-MEJORA · Ficha del episodio — botón para alternar vídeo / audio
+   Cómo se usa:  VARIANTE con 4 clases, cada una en el campo "CSS Class"
+                 (pestaña Extras) de su elemento, dentro del Layout
+                 «TT — Podcast — Episodio»:
+                   tt-ep-modo-video  → Container A «Modo vídeo»
+                   tt-ep-modo-audio  → Container B «Modo audio»
+                   tt-ep-ir-audio    → botón «Cambiar a audio» (en A)
+                   tt-ep-ir-video    → botón «Cambiar a vídeo» (en B)
+                 ⚠️ HTML/JS obligatorio: este bloque NO funciona solo con
+                 las clases. Dentro del Container A tiene que haber un
+                 elemento Code Block con el script de abajo (copia de
+                 respaldo al final de esta ficha). Como el Container A
+                 solo existe si el episodio tiene ep_youtube_url
+                 (Conditional Rendering), el script también desaparece en
+                 los episodios sin vídeo y no hace nada.
+   Qué hace:     el visitante ve primero el modo vídeo (A) y B queda
+                 oculto. El botón de A oculta A y muestra B, y el botón
+                 de B hace lo contrario, sin recargar la página. Al pasar
+                 a audio se pausa el vídeo de YouTube; al pasar a vídeo
+                 se pausa el audio. Tras cambiar, el foco del teclado
+                 salta al botón del modo nuevo. Si el episodio no tiene
+                 vídeo, B se ve normal y sin botones. Si el JavaScript no
+                 se ejecuta, se ven A y B a la vez (nunca en blanco); si
+                 falla a medias, el script se deshace y pasa lo mismo.
+                 Sin parpadeo: el script lleva dentro de A, así que se
+                 ejecuta antes de que el navegador pinte B.
+                 Avada no tiene ningún elemento que alterne dos bloques
+                 con un botón (Tabs descartado por decisión de equipo).
+                 La forma de los botones (pastilla oscura, icono ♫ / ▶)
+                 NO se hace aquí: se hace con las opciones nativas del
+                 elemento Botón de Avada.
+   Ajustable:    nada de números en el CSS: son solo dos reglas de
+                 mostrar/ocultar. Los textos de los botones tienen que
+                 ser exactamente «Cambiar a audio» y «Cambiar a vídeo»
+                 (el script les pone esos mismos nombres para lectores
+                 de pantalla; si se cambia el texto, cambiarlo también
+                 en el script).
+   Depende de:   Container A y Container B HERMANOS y con A ANTES que B
+                 (el CSS usa el selector de hermano ~; visto en el HTML
+                 real del 12/11/2026: ambos cuelgan de .post-content).
+                 Vídeo de YouTube con Video Facade activo y con
+                 enablejsapi=1 (viene en el atributo params del
+                 <lite-youtube>; sin él, el vídeo no se puede pausar).
+                 Elemento Audio de Avada con etiqueta <audio>. Botones
+                 de Avada con el campo Link en «#». Clase del body
+                 fusion-builder-live (el script no actúa dentro del
+                 editor Live, para que B no desaparezca al editar).
+                 Clases internas de Avada: no son API pública, revisar
+                 con prioridad tras una actualización.
+                 LiteSpeed: el script debe quedar excluido de minificar,
+                 combinar, aplazar y retrasar JS (excluir el texto
+                 tt-ep-js); si no, el ocultado puede llegar tarde.
+   Usado en:     Ficha del episodio del podcast — Layout «TT — Podcast —
+                 Episodio» (tipo de contenido episodio).
+   Probado con:  Avada 7.16.1 · v016 sin probar todavía (pendiente:
+                 ordenador, tablet y móvil, episodio con vídeo y sin
+                 vídeo, con LiteSpeed activo, y con teclado).
+   Origen:       traspaso T1 de Álvaro, 12/11/2026 (sin boceto formal;
+                 referencia: dos capturas de botones de Spotify). Creado
+                 en v016. Carlitos autorizó seguir pese al aviso de
+                 tamaño del archivo (12/11/2026).
+
+   COPIA DE RESPALDO DEL JAVASCRIPT (el que manda es el del Code Block;
+   esta copia es para poder recrearlo si se pierde el Layout):
+
+   <script>
+   (function () {
+     var d = document, h = d.documentElement;
+     try {
+       if (d.body && d.body.classList.contains('fusion-builder-live')) { return; }
+       h.classList.add('tt-ep-js');
+       var btn = function (sel) {
+         var c = d.querySelector(sel);
+         return c ? (c.matches('a, button') ? c : c.querySelector('a, button')) : null;
+       };
+       var preparar = function () {
+         [['.tt-ep-ir-audio', 'Cambiar a audio'], ['.tt-ep-ir-video', 'Cambiar a vídeo']].forEach(function (p) {
+           var b = btn(p[0]);
+           if (b) { b.setAttribute('role', 'button'); b.setAttribute('aria-label', p[1]); }
+         });
+       };
+       var cambiar = function (aAudio) {
+         h.classList.toggle('tt-ep-ver-audio', aAudio);
+         if (aAudio) {
+           d.querySelectorAll('.tt-ep-modo-video iframe').forEach(function (f) {
+             try { f.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*'); } catch (e) {}
+           });
+         } else {
+           d.querySelectorAll('.tt-ep-modo-audio audio').forEach(function (a) {
+             try { a.pause(); } catch (e) {}
+           });
+         }
+         var destino = btn(aAudio ? '.tt-ep-ir-video' : '.tt-ep-ir-audio');
+         if (destino) { destino.focus(); }
+       };
+       var busca = function (e) {
+         return e.target.closest ? e.target.closest('.tt-ep-ir-audio, .tt-ep-ir-video') : null;
+       };
+       d.addEventListener('click', function (e) {
+         var t = busca(e);
+         if (!t) { return; }
+         e.preventDefault();
+         cambiar(t.classList.contains('tt-ep-ir-audio'));
+       });
+       d.addEventListener('keydown', function (e) {
+         if (e.key !== ' ' && e.key !== 'Spacebar') { return; }
+         if (!busca(e)) { return; }
+         e.preventDefault();
+         e.target.click();
+       });
+       preparar();
+       d.addEventListener('DOMContentLoaded', preparar);
+     } catch (err) {
+       h.classList.remove('tt-ep-js');
+       h.classList.remove('tt-ep-ver-audio');
+     }
+   })();
+   </script>
+   ══════════════════════════════════════════════════════════════ */
+
+/* Con el script en marcha (clase tt-ep-js en <html>) y en modo vídeo:
+   B se oculta SOLO si existe un Container A antes que él. Sin A (episodio
+   sin vídeo) o sin JavaScript, esta regla no se aplica y B se ve. */
+html.tt-ep-js:not(.tt-ep-ver-audio) .tt-ep-modo-video ~ .tt-ep-modo-audio {
+  display: none;
+}
+
+/* Modo audio (el botón pone tt-ep-ver-audio en <html>): se oculta A y B
+   vuelve a verse con su propia visualización de Avada */
+html.tt-ep-js.tt-ep-ver-audio .tt-ep-modo-video {
+  display: none;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   FIN DEL ARCHIVO — 7 mejoras registradas · v017 · 2026-11-13
 
    NOTA IMPORTANTE SOBRE LOS BLOQUES HEREDADOS (v001):
    Los selectores #tt-conecta-tabs y #tt-toggle-intro de arriba son
    IDs, heredados del CSS anterior al 24/09/2026. La regla nueva del
    equipo (24/09/2026) es que el gancho SIEMPRE es una CLASE, nunca un
    ID — ver INSTRUCCIONES del Proyecto 11. Se han dejado tal cual en
-   esta v013 porque el encargo era trasladar el CSS "sin arreglos", y
+   esta v017 porque el encargo era trasladar el CSS "sin arreglos", y
    cambiar el selector aquí sin cambiar a la vez el campo real en Avada
    rompería las 2 mejoras. La primera vez que la cuenta de Código
    trabaje sobre "Conecta cada día" o el "Toggle de introducción" (los
