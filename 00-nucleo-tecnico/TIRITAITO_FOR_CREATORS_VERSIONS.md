@@ -235,6 +235,7 @@ Tres observaciones al revisar el PHP real y completo (26 julio 2026), comparánd
 6. ✅ Snippet PHP real y completo obtenido y subido a `apps/v2/snippet-tt-creators-endpoint-central.php` (26 julio 2026) — la primera versión compartida ese mismo día era de la web vieja, no de esta; ya corregido
 7. Confirmar con Hno A los tres avisos de la Sección 7.1 (rate limit, validación de subidas, Biblioteca/entradas ausentes)
 8. Dar acceso de lectura a Proyecto 5 sobre `apps/v2/snippet-tt-creators-endpoint-central.php` (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 2.2) para que pueda verificar el contrato real antes de escribir cada fetch nuevo
+9. Proyecto 5: pintar en la app el **semáforo del importador de vídeos** (verde / amarillo a 10 días / rojo a 20) leyendo `GET /tiritaito/v1/videos/estado` con el token (`00_CORE.md` Secciones 3.6 y 4). El semáforo ya funciona en la pantalla de Estado del importador (`TIRITAITO_MUSIC_WEB_NUEVA.md` §6.6 y §17). Los generadores de YouTube de la app (Música, Vía Crucis, Seminarios) y la lista de playlists del navegador quedan obsoletos: retirarlos cuando las tres áreas estén en producción, no antes
 
 **Preguntas abiertas:**
 
@@ -244,6 +245,7 @@ Tres observaciones al revisar el PHP real y completo (26 julio 2026), comparánd
 | 2 | ¿Qué otras funcionalidades nuevas llevará V2, además de Novedades y Devocional? | El equipo aún no lo ha determinado — no asumir nada hasta que se confirme aquí |
 | 3 | ¿`01_CREATORS_APP.md` tenía contenido real en el repositorio de GitHub que no llegó a este Proyecto de Investigación? | Antes de confirmar que su fusión aquí (Sección 0) no perdió nada, verificar contra el archivo real en GitHub |
 | 4 | ¿Rate limit, validación de subidas, y Biblioteca/entradas ausentes (Sección 7.1) — deliberado o pendiente de reconstruir? | Determina si hace falta una sesión de Proyecto 3 para restaurarlas, o si el sistema se queda así a propósito |
+
 
 ---
 
