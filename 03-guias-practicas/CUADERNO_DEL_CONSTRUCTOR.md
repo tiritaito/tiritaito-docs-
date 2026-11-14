@@ -54,6 +54,23 @@ No son pasos de un proceso — cualquiera puede darse en cualquier momento:
 
 ---
 
+### Biblioteca · Libros — filtros de Post Cards (14 noviembre 2026)
+*Origen: consulta de Álvaro a Apoyo de Investigación (Proyecto de apoyo técnico rápido), sobre el Post Cards de Biblioteca · Libros con Show Filters.*
+
+#### 🔲→✅ Se investigó y esto lo resuelve
+
+| # | Hallazgo | Estado | Fecha |
+|---|---|---|---|
+| B1 | Post Cards con Show Filters + Infinite Scroll (o Load More) muestra filtros incompletos, porque el filtro solo actúa sobre las tarjetas ya cargadas (ej. con 10 cargadas, CARISMÁTICOS o SANTOS enseñan solo los que caen en esos 10). Solución nativa, sin código: **Number of Posts = `-1`** (trae todos) y **Pagination = None**. Ya probado antes con Música y Seminarios (ver `CATALOGO_ELEMENTOS_AVADA.md` Sección 4, apartado de rejilla de canciones/vídeos); aplicado ahora a Biblioteca · Libros. Descartado el script en Code Block que fuerza la carga por tandas: depende del funcionamiento interno de Avada y puede romperse con una actualización sin dar error, y contradice el principio de mínimo código. Rendimiento: sin problema con unas pocas decenas o hasta ~100 libros (Lazy Load y Optimize Offscreen Rendering ya activos); vigilar que la portada de la tarjeta use un tamaño mediano y no el original, y replantear (p. ej. una página por categoría) si el catálogo supera ~200-300 libros. | ✅ Confirmado para Música/Seminarios · 🔲 Pendiente de que Álvaro lo pruebe con Libros en Local | 14 noviembre 2026 |
+
+#### ✅ Esto funciona así
+
+| # | Hallazgo | Contexto | Fecha |
+|---|---|---|---|
+| B2 | Los chips de categorías de Biblioteca · Libros hacen scroll horizontal en una sola fila en todas las pantallas (CSS, v018 de `avada-custom-css.css`). | Hecho por la cuenta de Código; pendiente comprobar visualmente en móvil que se nota que hay más chips al deslizar (p. ej. que el último asome cortado). | 14 noviembre 2026 |
+
+---
+
 # Anotaciones para CUADERNO_DEL_CONSTRUCTOR.md — 2 de septiembre de 2026
 Caso: Novedades no se veía en Post Cards — sesión de diagnóstico y cierre
 
