@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Oraciones y Novenas: estructura
 **Registro vivo: qué es la sección Oraciones, cómo están montadas las novenas (cinco formatos, recetas, convención de nombres), las fichas de cada novena, lo contrastado entre los prompts y las fichas, y lo que queda pendiente**
-*Para el repositorio: `03-guias-practicas/ORACIONES_ESTRUCTURA.md` · Redactado por Proyecto 2 (Hno C) el 10 de octubre de 2026 · Modelo: `HOMBRES_DE_DIOS_ESTRUCTURA.md` y `PODCAST_ESTRUCTURA.md` · **Documento abierto: se sella cuando lleguen las fichas que faltan (Sección 1)** · Actualizado 30 de octubre de 2026 con las decisiones de vídeos (Tiritaito Music, importador, novenas)*
+*Para el repositorio: `03-guias-practicas/ORACIONES_ESTRUCTURA.md` · Redactado por Proyecto 2 (Hno C) el 10 de octubre de 2026 · Modelo: `HOMBRES_DE_DIOS_ESTRUCTURA.md` y `PODCAST_ESTRUCTURA.md` · **Documento abierto: se sella cuando lleguen las fichas que faltan (Sección 1)** · Actualizado 30 de octubre de 2026 con las decisiones de vídeos (Tiritaito Music, importador, novenas)* **Actualizado 14 de noviembre de 2026 con las fichas de Espíritu Santo y Sagrados Corazones**
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -33,7 +33,7 @@ Responde: **¿cómo está montada la sección Oraciones de la web nueva, y en co
 
 - **Estructura y decisiones de las novenas: cerradas** (Sección 3.2), salvo las abiertas que se listan.
 - **Construcción:** Carlitos indica (10 oct) que **las novenas ya están construidas**. **Los resultados no han llegado:** las dos fichas recibidas (Oración única y Inmaculada) llegaron **con todos sus campos de estado y de pruebas sin rellenar** («[RELLENAR]»). Por eso **todo lo construido consta aquí como ☑ «declarado» y todas las pruebas como 🔲 hasta que llegue el resultado de Álvaro**.
-- **Fichas recibidas:** Oración única (San José y Lourdes) e Inmaculada. **Fichas que faltan:** Espíritu Santo, Sagrados Corazones y Pentecostés. Se añadirán cuando lleguen («esta tarde», según Carlitos).
+- **Fichas recibidas:** Oración única (San José y Lourdes), Inmaculada, **Sagrados Corazones y Espíritu Santo** (estas dos construidas en Local el 9 oct 2026, ☑ funcionando según Álvaro, sin captura revisada en Proyecto 2). **Fichas que faltan:** Pentecostés. Las de Oración única e Inmaculada llegaron sin resultados rellenados.
 - **Oraciones, el portal y la arquitectura general (O2 u O3):** sin cerrar (Sección 2.2).
 - **Conecta cada día** no forma parte de este documento: se estudia aparte.
 
@@ -77,8 +77,8 @@ Cada novena es una página. Hay **cinco formatos, que funcionan como recetas**: 
 
 | Novena | Formato | Estado de la ficha |
 |---|---|---|
-| Espíritu Santo (Elena Guerra) | **Días de texto** (carrusel de 9 días); vídeos del día en una playlist de YouTube, pegados a mano (22 oct); canción fija pendiente | 🔲 ficha pendiente de llegar |
-| Sagrados Corazones de Jesús, María y José | **Días de texto**; la canción de cierre es la misma los 9 días (`Rwh6N8Q7D1s`), vídeo fijo a mano | 🔲 ficha pendiente de llegar |
+| Espíritu Santo (Elena Guerra) | **Días de texto** (carrusel de 9 días); vídeo del día en `nes_video`, pegado a mano | ☑ construida (ficha en 3.5) |
+| Sagrados Corazones de Jesús, María y José | **Días de texto**; vídeo del día en `nsc_video` | ☑ construida (ficha en 3.5) |
 | San José | **Oración única** | ✅ ficha recibida (sin resultados) |
 | Lourdes | **Oración única** (misma plantilla, duplicando la página) | ✅ ficha recibida |
 | Santa Teresita | **Podcast**: es la **temporada 1 del feed de Santa Teresita** (el canal del santo) | ☑ según Carlitos |
@@ -149,7 +149,7 @@ La entrada «Novenas» de Oraciones es una página con las tarjetas de las 8 nov
 
 | Qué | Convención |
 |---|---|
-| Tipo de contenido (uno por novena de días) | `novena_<tema>` (`novena_espiritu_santo`, `novena_sagrados_corazones`, `novena_inmaculada`). Público, sin archivo |
+| Tipo de contenido (uno por novena de días) | `novena_<tema corto>`, **máximo 20 caracteres** (límite de WordPress). Claves reales: `novena_espiritu`, `novena_corazones`, `novena_inmaculada`. Público, sin archivo |
 | Prefijo de casillas | Tres letras y guion bajo: `nes_` (Espíritu Santo), `nsc_` (Sagrados Corazones), `nin_` (Inmaculada) |
 | Casilla | `<prefijo>_<apartado>_<campo>`, en singular, minúsculas, sin tildes ni eñes. El número del día: `<prefijo>_dia`. El vídeo: `<prefijo>_video` |
 | Dirección de YouTube | Casilla de tipo **texto** |
@@ -161,8 +161,8 @@ La entrada «Novenas» de Oraciones es una página con las tarjetas de las 8 nov
 
 | Novena | Casillas por día |
 |---|---|
-| Espíritu Santo (`nes_`) | `nes_dia`, `nes_video`, `nes_meditacion_titulo`, `nes_meditacion_texto`, `nes_momento_personal` |
-| Sagrados Corazones (`nsc_`) | `nsc_dia`, `nsc_video`, `nsc_palabra_texto`, `nsc_palabra_cita`, `nsc_bloque_etiqueta`, `nsc_bloque_texto`, `nsc_bloque_autor` |
+| Espíritu Santo (`nes_`) | `nes_dia`, `nes_video`, `nes_meditacion_texto`, `nes_cita_texto`, `nes_cita_autor` |
+| Sagrados Corazones (`nsc_`) | `nsc_dia`, `nsc_video`, `nsc_cita_texto`, `nsc_cita_referencia`, `nsc_palabra_texto` |
 | Inmaculada (`nin_`) | `nin_dia` (creada); a la espera de decisión: `nin_imagen`, `nin_video`, casilla de texto opcional |
 
 ### 3.5 Fichas
@@ -238,11 +238,36 @@ FICHA DE NOVENA — INMACULADA (novena de días, un vídeo/foto por día)
   3. Radio 15px o 25px
 - Pendiente de decidir (depende de Tiritaito Music): el vídeo de cada día, que ocuparía el lugar de la foto con nin_video
 ```
+#### Ficha — Espíritu Santo (construida en Local, 9 oct 2026, Avada 7.16.2, ☑ según Álvaro)
 
+- Tipo: `novena_espiritu` (la clave del boceto, `novena_espiritu_santo`, tiene 21 caracteres y WordPress admite 20). Público, sin archivo, slug `novena-espiritu`, solo Título. Prefijo: `nes_`
+- Grupo ACF: «TT — Novena Espíritu Santo — Día». Molde: «TT — Novena Espíritu Santo — Día»
+- Portada: página «Novena al Espíritu Santo» (en borrador), con Container con foto y capa oscura, título, introducción de relleno y Post Cards en carrusel
+- Casillas: `nes_dia` (Número 1–9, obligatoria, ordena y escribe «DÍA N») · `nes_video` (Texto, URL de YouTube) · `nes_meditacion_texto` (Área de texto, obligatoria) · `nes_cita_texto` (Área de texto) · `nes_cita_autor` (Texto). Las escribe una persona
+- Desaparece si está vacío: vídeo si falta `nes_video` · cita entera si falta `nes_cita_texto` · autor si falta `nes_cita_autor` (esta última por confirmar)
+- Orden de rezo del molde: vídeo · apartado fijo 1 · meditación del día · cita · apartado fijo 2
+- Carrusel: Post Cards · Posts · `novena_espiritu` · Order By = `nes_dia` numérico ascendente · 1 tarjeta visible · flechas y puntos · sin autoplay
+- Resultado: carrusel, orden numérico y scroll interno funcionan. El resto, sin detallar. Textos de las oraciones sin cargar (solo relleno en dos días de prueba)
+- Diferencias con el boceto: esquinas del vídeo rectas · punto activo solo por color · radio 15 px (Carlota decide) · sin desvanecido final ni aviso «↓ sigue el texto» · sin contador «Día N de 9»
+- Abierto: flechas junto a los puntos (¿nativo o traspaso a Proyecto 11?)
+
+#### Ficha — Sagrados Corazones (construida en Local, 9 oct 2026, Avada 7.16.1, ☑ según Álvaro)
+
+- Tipo: `novena_corazones` (la clave de la ficha, `novena_sagrados_corazones`, tiene 25 caracteres). Público, sin archivo, solo Título. Prefijo: `nsc_`
+- Grupo ACF: «TT — Novena Sagrados Corazones — Día». Molde: «TT — Novena Sagrados Corazones — Día»
+- Portada: página con un Container único (foto, capa oscura, título provisional «Novena a los Sagrados Corazones», introducción y Post Cards)
+- Casillas, todas obligatorias y escritas por una persona: `nsc_dia` (Número 1–9) · `nsc_video` (Texto, URL de YouTube) · `nsc_cita_texto` (Área de texto) · `nsc_cita_referencia` (Texto) · `nsc_palabra_texto` (Área de texto)
+- Desaparece si está vacío: nada
+- Orden de rezo del molde: vídeo · cita bíblica · Palabra de Jesús (2 columnas con línea roja) · oración de la novena (fija) · canción (fija) · oración final (fija)
+- Carrusel: Post Cards · Posts · `novena_corazones` · Order By = `nsc_dia` numérico ascendente · 1 tarjeta visible · sin autoplay · flechas y puntos
+- Resultado: carrusel y scroll interno con cabecera fija funcionan. El resto, sin completar
+- Aviso: en la columna con scroll, Content Alignment debe ir en *Flex Start*; en *Center* el contenido se desborda por arriba y queda inalcanzable
+- Diferencias con el boceto: radio 15 px (Carlota decide) · esquinas del vídeo rectas · punto activo solo por color · reproductor de audio nativo gris claro · sin contador «Día N de 9» · desvanecido final por decidir
+- Pendiente: textos reales de las oraciones y de la canción · borrar los días de prueba
+
+  
 #### Fichas pendientes de llegar
 
-- **Espíritu Santo** (`novena_espiritu_santo` · `nes_`): portada con introducción de Elena Guerra y León XIII; 10 apartados por día (inventario de la Sección 3.6).
-- **Sagrados Corazones** (`novena_sagrados_corazones` · `nsc_`): portada sin introducción; 11 apartados por día.
 - **Pentecostés** (vídeo): página con un vídeo y su texto.
 
 ### 3.6 Qué lleva cada día (inventario de los textos de la web vieja)
@@ -299,6 +324,7 @@ FICHA DE NOVENA — INMACULADA (novena de días, un vídeo/foto por día)
 | 9 | Nombre del registro | Los prompts anuncian un `NOVENAS_ESTRUCTURA.md` | Sustituido por este documento (incluye también Oraciones) |
 | 10 | Tipo de las fichas | La ficha de Oración única añade campos que el formato no tiene («Estado de construcción», «Container guardado») | Se conservan: son útiles; se proponen para el formato (Sección 5) |
 | 11 | Pruebas P3 y P5 (vídeo y cita) | Ninguna de las dos fichas recibidas las usa | Se evaluarán con las fichas del Espíritu Santo y de los Sagrados Corazones |
+| 12 | Casillas reales frente al inventario de 3.6 | Espíritu Santo trae `nes_cita_*` (no estaba en el inventario) y no tiene casilla para el título de la meditación ni para el «momento personal». Sagrados Corazones trae una sola «Palabra de Jesús», sin la etiqueta variable del inventario | ☑ Se documenta lo construido; pendiente confirmar si es simplificación decidida (Sección 4) |
 
 ### 3.8 Contenido por revisar antes de cargarlo (lo corrige el equipo editorial, no Álvaro)
 
@@ -332,9 +358,10 @@ FICHA DE NOVENA — INMACULADA (novena de días, un vídeo/foto por día)
 | 5 | Pentecostés: ¿qué vídeo lleva y hay algo más? | Su ficha |
 | 6 | ¿Qué se ve si alguien abre la dirección de un día suelto? (P6) | Decisión de equipo |
 | 7 | Inmaculada: ¿la foto es la misma los 9 días o cambia (`nin_imagen`)? ¿El texto opcional es fijo o con casilla? | Su molde |
-| 8 | ~~Sagrados Corazones: ¿la canción es la misma los 9 días y sigue como tarjeta de Tiritaito Music?~~ **Resuelta (22 oct 2026):** sí, la misma los 9 días (`Rwh6N8Q7D1s`); vídeo fijo a mano | Su ficha |
-| 9 | Resultados de Álvaro: estado de cada novena y resultado de P1–P6, Filtros de Fondo y Desktop / Medium / Small | **Sellar este documento** |
-| 10 | Oraciones: arquitectura (O2 u O3), portal, Rosario (¿juntas o separadas?) y Adoraciones (vídeo aparte) | Toda la sección Oraciones |
+| 8 | Espíritu Santo: ¿dónde van el título de la meditación y el «momento para la meditación personal»? ¿Y qué son «apartado fijo 1 y 2»? | Su molde |
+| 9 | Sagrados Corazones: ¿la etiqueta del bloque del día es siempre «Palabra de Jesús» o cambia? ¿Qué es el «audio a ancho completo» de la ficha? ¿Sigue la canción fija `Rwh6N8Q7D1s` en el molde? | Su molde |
+| 10 | Resultados de Álvaro de las novenas que siguen sin detallar (Inmaculada, Pentecostés) | Sellar este documento |
+| 11 | Oraciones: arquitectura (O2 u O3), portal, Rosario (¿juntas o separadas?) y Adoraciones (vídeo aparte) | Toda la sección Oraciones |
 
 ---
 
