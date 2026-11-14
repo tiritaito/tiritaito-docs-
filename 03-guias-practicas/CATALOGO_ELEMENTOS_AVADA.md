@@ -342,17 +342,7 @@ de Avada, sin código. Para el caso excepcional en que no baste:
   extremo.
 - ✅ Ordena de forma nativa por Custom Field ACF (ej. fecha) — confirmado en el piloto de
   Novedades (22-23 julio 2026).
-- ⚠️ **En duda si de verdad "no filtra de forma nativa por valor de campo".** Esta entrada
-  decía ❌ desde julio, con el hook `fusion_post_cards_shortcode_query_override` como única
-  vía. Dos investigaciones independientes (16 de septiembre de 2026, sobre Tiritaito Music y
-  sobre Seminarios) revisaron la documentación oficial del elemento y encontraron, en su
-  pestaña General, tres campos que dicen lo contrario: `Custom Field - Name`,
-  `Custom Field - Value Comparison` y `Custom Field - Value`, sin restricción a productos.
-  No sube a ✅ sin una prueba real en Local — pueden ser campos añadidos después de julio, o
-  no comportarse como su nombre sugiere — pero deja de ser un ❌ tranquilo: bloquea el
-  listado de Novedades sin filtrar por `activo`, el de "Seminarios pasados", y ahora también
-  el filtro por tipo de seminario de la nueva entrada de vídeos. Prueba de 15 minutos
-  pendiente. **Novedades ya no depende de este filtro (4 nov 2026):** ocultar = borrador, ver las dos entradas nuevas de abajo.
+- ✅ **Post Cards SÍ filtra por valor de casilla de forma nativa** (*Posts By* = Custom Field). Probado en Local con Avada 7.16.3 (26-27 oct 2026): con `vid_kids` = `no` salen 8 de 10 fichas, en el orden configurado. **Ya no hace falta el hook `fusion_post_cards_shortcode_query_override`** para filtrar por valor de casilla. *Show Filters* también funciona con una taxonomía propia (ver el apartado siguiente).
 - 🔲 Sin confirmar todavía si Post Cards cubre bien el listado de "Seminarios pasados" y la
   portada de "Hombres de Dios" — depende directamente del punto anterior
   (`GUIA_AVADA_LOCAL.md` Sección 19, pregunta abierta #2).
@@ -520,9 +510,24 @@ Hombres de Dios**
 
 - ✅ **Comprobado en Local (29-30 septiembre 2026):** un Layout con la condición "All" de un tipo de contenido propio se aplica a todas sus entradas; Text Block con ACF Text y Post Cards con Content Source = ACF Repeater leen los campos de la entrada actual; un Container con Conditional Rendering (ACF Field "no igual a" vacío para un campo sencillo, ACF Repeater Count "mayor que" 0 para una lista) desaparece entero cuando está vacío — en el código fuente de la página no queda rastro.
 - ⚠️ **Construido y probado por Álvaro, sin captura revisada (1-3 octubre 2026)** en las secciones Su vida, Discursos, Sus palabras y Vídeos de Hombres de Dios: Toggles alimentado por un Repetidor, carrusel con autoplay sobre un Repetidor, fondo con la imagen destacada dinámica, parte opcional dentro de una tarjeta (Conditional Rendering dentro del molde), elemento YouTube y Lightbox desde campos, recorte "Ver más" sobre Post Cards.
-- ⚠️ **Trampas ya vividas:** (1) si el nombre de una casilla en la plantilla no coincide exactamente con el de ACF, Avada no avisa y el bloque sale vacío — en el interruptor "mostrar solo si" hay que poner el nombre técnico, no la etiqueta; (2) en un molde sobre un Repetidor, "ACF Text" no lee subcampos y "ACF Repeater Single Value" repite la fila 1: hay que usar "ACF Repeater Sub Field"; (3) el molde de fábrica de Post Cards no lee subcampos: hace falta uno propio; (4) el elemento Título no admite Dynamic Data: usar Text Block.
+- ⚠️ **Trampas ya vividas:** (1) si el nombre de una casilla en la plantilla no coincide exactamente con el de ACF, Avada no avisa y el bloque sale vacío — en el interruptor "mostrar solo si" hay que poner el nombre técnico, no la etiqueta; (2) en un molde sobre un Repetidor, "ACF Text" no lee subcampos y "ACF Repeater Single Value" repite la fila 1: hay que usar "ACF Repeater Sub Field"; (3) el molde de fábrica de Post Cards no lee subcampos: hace falta uno propio; (4) ~~el elemento Título no admite Dynamic Data~~: **corregido el 27 oct 2026 — en Avada 7.16.3 el elemento Title SÍ admite contenido dinámico** (probado con Post Title); el Text Block también sirve.
 - ❌ **Límites conocidos:** el elemento YouTube no tiene Border Radius propio; en el carrusel de Post Cards el punto activo solo se distingue por color.
 - Detalle completo — fichas de cada sección, nombres de casilla y pendientes — en `03-guias-practicas/HOMBRES_DE_DIOS_ESTRUCTURA.md`.
+
+### Necesito una rejilla de canciones o de vídeos de YouTube (probado en Local, 26-27 oct y 11 nov 2026, Avada 7.16.3)
+
+→ **Elementos:** Post Cards sobre un tipo propio + Show Filters + Image con contenido dinámico + Column/Button con Lightbox. Detalle en `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` Secciones 13.3 y 17.
+
+- ✅ **Orden:** *Order By* = Menu Order ordena en numérico (2 antes que 10).
+- ✅ **Show Filters** con una taxonomía propia funciona en **rejilla** con *Number of Posts* = `-1`. Avada añade su pestaña «All» (en inglés; si además se crea una categoría «Todas», salen duplicadas); las pestañas salen en **orden alfabético**, sin ajuste de orden ni de pestaña inicial; «Yes without All» quita «All» pero entonces la página abre en la primera categoría. Con *Load More* el filtro solo ve lo ya cargado. Con Layout *Carousel* **no hay filtros**.
+- ✅ **Miniatura desde una casilla URL:** elemento **Image** con contenido dinámico «ACF Image». *Post Card Image* no ofrece leer una URL.
+- ✅ **Lightbox:** *Link Target* = Lightbox existe en **Columna** y **Botón** (probado con vídeo en Columna: abre, suena y se para al cerrar). **Image y Post Card Image no lo ofrecen.**
+- ⚠️ **Off-Canvas con YouTube:** abre y trae el vídeo de la entrada pulsada, pero **no detiene el vídeo al cerrar**; un enlace puesto en la Columna del molde impide que *Link Off Canvas* abra el panel (hay que usar un botón dentro de la tarjeta). Sirve para «Compartir», no para vídeo.
+- ⚠️ **Vídeo vivo dentro de un carrusel:** pueden sonar varios a la vez y sigue sonando al deslizar. Usar miniatura + Lightbox.
+- ✅ **Modal** con YouTube Element: abre, suena y se para al cerrar (probado con un ID fijo; con ID dinámico, sin probar).
+- ✅ **Error 153 de YouTube:** no apareció en ninguno de los seis bloques de prueba; sin `Referrer-Policy` en Local ni en producción.
+- **El editor de Avada Live muestra vacío o con texto de relleno lo dinámico:** solo vale lo que se ve en la web pública.
+- ⚠️ **Etiquetas `og:` duplicadas:** Avada (opción «Description And Open Graph Meta Tags») añade su bloque además del del importador. Qué usan WhatsApp y Telegram solo se sabe en producción.
 
 ---
 
@@ -1211,6 +1216,7 @@ Sección 19 (#5), ahora resuelta**
   (coherente con la decisión ya tomada de no depender de Google Fonts) · Privacy Consent
   Tools activado con antelación, mientras el sitio aún no tiene scripts de terceros — más
   fácil activarlo ahora que más adelante.
+- ⚠️ **Revisado el 27 oct 2026 en Local:** *Privacy Consent Tools* está en **Off**, la barra de consentimiento en Off y *Google & Font Awesome Fonts Mode* en **CDN**. Es distinto de lo que dice la viñeta anterior: confirmar cuál es el valor que se quiere (y si el export de Global Options lo refleja).
 - ✅ **Conexión técnica confirmada con Advanced/Code Fields:** el sistema de scripts de
   tracking solo se bloquea hasta que el usuario consiente si "Privacy Consent Tools" está On
   — ya lo está, así que cuando se añada cualquier script de seguimiento, el mecanismo ya
