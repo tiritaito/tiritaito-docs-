@@ -1,6 +1,6 @@
 # TIRITAITO.COM — Contexto Maestro
 *Reemplaza: ENTORNO_TÉCNICO · GUÍA_DE_ESTILO_VISUAL · tiritaito-guia-diseno-visual.md · secciones 2,9-14 de protocolo-tiritaito-creators-2.md*
-*Leer siempre junto con: 01_CREATORS_APP.md (si trabajas en la PWA) · 02_REF_PODCAST.md (si trabajas en el podcast) · TIRITAITO_FOR_CREATORS_VERSIONS.md (si trabajas en V1/V2 de la app)*
+*Leer siempre junto con: `04_ENTORNO_LOCAL.md` (constantes del entorno Local) · `TIRITAITO_FOR_CREATORS_VERSIONS.md` (si trabajas en la PWA, V1/V2) · `02_REF_PODCAST.md` (solo web vieja, V1) · `TIPOGRAFIA_AVADA.md` (si tocas fuentes o tamaños en Avada)*
 *Corregido contra el HTML real de la app (auth, endpoints) y contra el backend reconstruido en Local — 26 julio 2026 · Ampliado con hallazgos de la ronda de Global Options y el catálogo de elementos Avada — 11 agosto 2026 · Ampliado 10 de octubre de 2026 con el mapa de datos del podcast y la convención de las novenas · Ampliado 30 de octubre de 2026 con el importador de vídeos de YouTube · Ampliado 4 de noviembre de 2026 con molde, categoría y ocultar de verdad en Novedades*
 
 ---
@@ -105,7 +105,7 @@ a un Custom Post Type (CPT) propio con ACF. El resto de claves se queda en `wp_o
 | `brisa` | Texto largo | `tt_brisa` | Diaria |
 | `brisa_autor` | Texto (campo propio, separado del texto) | `tt_brisa_autor` | Diaria |
 | `homilia_audio` | URL Media Library | `tt_homilia_audio` | Diaria |
-| `homilia_texto` | Texto largo — ⚠️ debería dejar de llevar fecha (decisión de Carlitos, 26 julio 2026: siempre es la fecha de publicación); la app en v2-05 todavía la pide y la pega al final del texto — pendiente de corregir | `tt_homilia_texto` | Diaria |
+| `homilia_texto` | Texto largo — ✅ **nunca lleva fecha** (decisión de Carlitos, 26 julio 2026; confirmada el 14 nov 2026). Según el informe de Proyecto 5 (4 nov), la app dejó de pedirla en v2-06 (sin verificar contra el HTML) | `tt_homilia_texto` | Diaria |
 | `lenguas_url` | URL Media Library | `tt_lenguas_url` | Diaria |
 
 ⚠️ **Nombre de campo ACF ≠ clave de la API.** El campo dentro de ACF no lleva el prefijo
@@ -120,10 +120,7 @@ interno (`options_` + nombre del campo). Confirmado en el piloto del 22-23 julio
 🔲 Pendiente sin decidir: si conviene desactivar el autoload de los campos de texto largo
 (`virgen`, `brisa`, `homilia_texto`) — no verificado, sin datos reales que lo justifiquen.
 
-**`tt_tip_1` / `tt_tip_2` — eliminados por decisión (26 julio 2026), pero ⚠️ todavía
-presentes en el código de la app (confirmado en v2-05).** El concepto de "Tip del día" ya
-no debe existir: ese contenido se sube ahora directamente como Novedades (ver 3.3). Falta
-que Proyecto 5 retire la UI real.
+**`tt_tip_1` / `tt_tip_2` — reabierto el 14 noviembre 2026.** El «Tip del día» se había eliminado el 26 julio 2026; Carlitos lo reabre ahora **junto con la promesa del día**: se sube desde la app de Creators y se muestra en la Home («Dios te habla»), junto al generador de citas bíblicas (`ALCANCE_WEB_NUEVA.md` §4.D). 🔲 Diseño de datos sin decidir (dónde se guarda, en qué formato, qué se ve si ese día no se subió nada) y UI de la app por reponer: hasta entonces no dar nada por construido (Proyecto 5 la retiró en v2-06, sin verificar contra el HTML).
 
 ### 3.2 wp_options — lo que se queda igual
 
@@ -273,25 +270,19 @@ Local del 26 de julio — preguntar a Hno A antes de asumir cualquiera de las do
 }
 ```
 
-🔲 **Pendiente de formalizar (añadido 11 agosto 2026, sin resolver todavía):** en la ronda de
-configuración de Avada Global Options, apareció un segundo valor de radio, `10px`, decidido
-por Hna C de forma independiente en dos elementos distintos — Toggles y campos de
-Formulario — sin relación aparente entre ambas decisiones más que la persona que las tomó.
-Es un candidato razonable a cuarto token (ej. `--tt-r-int: 10px` para elementos interactivos
-pequeños, dejando `--tt-r: 25px` para contenedores y superficies grandes), pero **no se
-añade aquí todavía** porque no hay confirmación explícita de que sea una regla deliberada y
-no dos coincidencias. Ver `GUIA_AVADA_LOCAL.md` Sección 13 y `CATALOGO_ELEMENTOS_AVADA.md`
-Sección 13.1 para la evidencia completa. Mientras no se resuelva, no uses `10px` en ningún
-elemento nuevo fuera de Toggles/Forms sin confirmarlo antes.
-
+✅ **Resuelto el 24 septiembre 2026:** dentro de Avada (web nueva) la norma de radio es **`--tt-r-web: 15px`** (definida al principio de `avada-custom-css.css`; ver `CATALOGO_ELEMENTOS_AVADA.md` §13.1). No es un cuarto token de los de arriba: `25px / 14px / 8px` (`--tt-r`, `--tt-r-sm`, `--tt-r-xs`) siguen siendo los de la web vieja, los snippets ya construidos y la app. El `10px` de Toggles y Forms está pendiente de alinearse a 15 px (aplicación sin verificar a 14 nov 2026).
 ---
 
 ## 6. TIPOGRAFÍA
 
-| Uso | Fuente | Notas |
+Hay dos sistemas, según dónde viva la pieza:
+
+| Uso | Web vieja, snippets y app | Web nueva en Avada |
 |---|---|---|
-| Títulos | **"Yeah! Papa"** | woff2 en Media Library: `uploads/2026/04/YeahPapa.woff2` |
-| Cuerpo | **"Helvetica Neue"** | Sistema iOS, sin descarga |
+| Títulos | **"Yeah! Papa"** | **Yeah Papa** (sets Headings y Subheadings) |
+| Texto | **"Helvetica Neue"** (sistema iOS, sin descarga) | **Poppins** (sets Lead, Body, Medium y Small), subida como fuente propia en Custom Fonts, igual que Yeah Papa. Decisión de Carlitos, 23 octubre 2026 |
+
+✅ **En Avada** el tipo de letra y su tamaño se deciden en el global (6 sets de Global Typography, H1-H6 y Body) y los elementos heredan; el tamaño es fluido (`clamp`). **Valores, reglas, procedimiento de configuración y problemas abiertos: `TIPOGRAFIA_AVADA.md`** (única fuente; no se copian aquí). **Fuera de Avada** (snippets y app) sigue valiendo lo de abajo.
 
 ```css
 @font-face {
@@ -303,17 +294,9 @@ body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 h1,h2,h3,h4 { font-family: 'Yeah Papa', 'Helvetica Neue', sans-serif; font-weight: normal; }
 ```
 
-Jerarquía: `.tt-h1` 32px / `.tt-h2` 24px / `.tt-h3` 20px / `.tt-body` 15px / `.tt-caption` 12px / `.tt-label` 11px uppercase
+Jerarquía en snippets y app: `.tt-h1` 32px / `.tt-h2` 24px / `.tt-h3` 20px / `.tt-body` 15px / `.tt-caption` 12px / `.tt-label` 11px uppercase
 
-✅ **Calibración de tamaño, confirmada de forma independiente 3 veces (última: 11 agosto
-2026, durante la ronda de Global Options):** "Yeah Papa" necesita un tamaño en `px`
-notablemente mayor que "Helvetica Neue" para lograr el mismo peso visual — la fuente "ocupa
-menos" espacio dentro de su misma caja de diseño que una tipografía de palo seco estándar.
-No es un defecto de la fuente ni un error de configuración — es una característica del
-propio diseño de "Yeah Papa" que hay que tener en cuenta desde el principio al calibrar
-cualquier título nuevo, en vez de descubrirlo cada vez por ensayo y error. Ejemplo real ya
-aplicado en Avada: el título de Toggles se ajustó de 16px a 30px para lograr el peso visual
-esperado.
+✅ **Calibración de tamaño, confirmada de forma independiente 3 veces:** "Yeah Papa" necesita un tamaño en `px` notablemente mayor que una tipografía de palo seco estándar para lograr el mismo peso visual — la fuente "ocupa menos" espacio dentro de su misma caja de diseño. No es un defecto ni un error de configuración: hay que tenerlo en cuenta al calibrar cualquier título nuevo. Ejemplo real en Avada: el título de Toggles pasó de 16 px fijos a una escala fluida de 22 → 30 px (set Subheadings).
 
 ---
 
