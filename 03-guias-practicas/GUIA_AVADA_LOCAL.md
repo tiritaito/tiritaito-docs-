@@ -353,10 +353,9 @@ Una vez completado, Hna C puede seleccionar "Color 1" en cualquier botón de Ava
 
 ### 4.2 Tipografía (Avada → Global Options → Typography)
 
-- Fuente primaria (cuerpo): **Helvetica Neue** — fuente de sistema iOS, sin descarga.
-- Fuente de encabezados: **Yeah Papa** — ya cargada como `.woff2` en Media Library (`uploads/2026/04/YeahPapa.woff2`). Confirmar que está asignada aquí, no solo declarada en CSS.
-- Tamaños/pesos/interlineado configurables por tipo de elemento, con valores responsive distintos en móvil/escritorio, sin CSS.
-- **Ninguna fuente de Google Fonts debería aparecer** — su presencia en el sitio actual (vía `@import` en el CSS del podcast) es deuda técnica a no replicar.
+- **Fuentes de la web nueva (decisión de Carlitos, 23 octubre 2026):** títulos en **Yeah Papa** (sets Headings y Subheadings) y texto en **Poppins** (sets Lead, Body, Medium y Small), ambas como fuentes propias en Custom Fonts. Helvetica Neue sigue en la web vieja y en la app.
+- **Tamaños:** escala fluida (`clamp`) en 6 sets, H1-H6, título de entrada y Page Title Bar, cada set con su interlineado y espaciado. **Valores, reglas de herencia y procedimiento de configuración: solo en `TIPOGRAFIA_AVADA.md`** (no se copian aquí).
+- **Ninguna fuente de Google Fonts debería aparecer** — su presencia en el sitio actual (vía `@import` en el CSS del podcast) es deuda técnica a no replicar. ⚠️ Poppins ya está subida como fuente propia (3 nov), pero Network seguía mostrando una petición a `fonts.gstatic.com`: pendiente de comprobar (`TIPOGRAFIA_AVADA.md` §4.3).
 
 ✅ **Confirmado contra el código real del snippet (16 de septiembre de 2026):** el `@import`
 de Google Fonts que este apartado señalaba como deuda técnica existe literalmente en el CSS
@@ -613,7 +612,7 @@ Responsive:
 
 Si un texto se ve desbordado o cortado en móvil, esto es lo primero a revisar — puede ser un
 problema de este ajuste global, no del Container o Columna concretos.
-✅ **Valor real confirmado (14 agosto 2026), contra `03-guias-practicas/exports/avada-global-options.json`:**
+✅ **Valor actual (23 octubre 2026): `typography_sensitivity = 0.00`** (antes 0.30, según el export del 14 de agosto; `typography_factor` sigue en `1.50`). Con la sensibilidad en 0 el texto ya no se reduce solo en móvil: el tamaño lo resuelven las fórmulas fluidas (`clamp`) de los sets, así que un texto con px fijo ya no baja en pantallas pequeñas. Ver `TIPOGRAFIA_AVADA.md` §3.7.
 `typography_sensitivity = 0.30` (no está en 0 — el texto SÍ se reduce de forma
 automática en pantallas pequeñas). Deja de ser un valor desconocido: si algún
 texto se ve desbordado en móvil, la pregunta ya no es "¿está activo este
@@ -984,6 +983,7 @@ if (document.getElementById('mi-modulo-root')) {
 - **13 julio 2026: un bloque con contenido sin terminar (imagen sin cargar, texto placeholder) pasó desapercibido hasta revisar en Desktop — confirma la necesidad del paso explícito de revisión en las 3 vistas antes de cerrar cualquier sección.**
 - **14 julio 2026: sesión de equipo sobre la home confirma dos criterios de trabajo nuevos, sin verificación técnica en Local todavía (son decisiones de equipo, no hallazgos de Avada): altura de sección acotada por defecto, y previsualización con bocetos antes de construir (Sección 8.4-bis).**
 - **22-23 julio 2026: piloto de ACF Options Page + CPT Novedades confirma que Dynamic Content lee campos de Options Page vía el prefijo `awb_acfop_`, pero solo si se escriben con `update_field()` — no con `update_option()` directo, que guarda en una fila distinta que Avada nunca consulta (el nombre real de la fila lleva el prefijo `options_`, no el nombre plano del campo). Confirma también que Post Cards ordena de forma nativa por Custom Field, pero no filtra por valor de campo (necesita snippet con el hook `fusion_post_cards_shortcode_query_override` — decisión de equipo, 26 julio: no se construye ese hook para Novedades, ver Sección 9; **superado el 4 de noviembre de 2026:** ocultar = borrador, sin hook).**
+-  **Además, superado el 26-27 de octubre de 2026 (Avada 7.16.3): Post Cards sí filtra por valor de casilla de forma nativa (*Posts By* = Custom Field); el hook ya no hace falta (ver Sección 9).**
 - **26 julio 2026: backend de Novedades reconstruido en Local desde cero (el entorno se había perdido por completo) — CPT `novedades` + ACF (6 campos) + endpoint propio `tiritaito/v1/novedades`, confirmado funcionando de extremo a extremo desde la app real.**
 - **26 julio 2026: Devocional (Virgen, Brisa, Homilía, Lenguas) migrado parcialmente a ACF Options Page "Devocional — Contenido Diario" — 7 de 12 claves antiguas de `wp_options`.**
 - **26 julio 2026: confirmado el header real de autenticación de la app — `X-TT-Token`, no `Authorization: Bearer`.**
@@ -1003,9 +1003,8 @@ if (document.getElementById('mi-modulo-root')) {
 - Si "Yeah Papa" se registra correctamente en Avada → Typography → Custom Fonts, o si hace falta volver a subir el `.woff2` ahí específicamente.
 - Si la barra negra superior del header "Studio" es una fila del Header Builder o el Top Bar legacy de Global Options.
 - Si el título "Studio" del header es el Site Title de WordPress o un elemento de Título suelto.
-- Qué valor tiene actualmente "Responsive Typography Sensitivity" (Sección 8.4).
 - **El patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro) — pendiente de que Carlitos comparta la referencia visual correcta con Hno C (Sección 8.4-bis; la primera captura compartida en esta sesión era del hero/slider, no del bloque de noticias, y no se usó como referencia).**
-- Si Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios" — el listado + orden por fecha sí funciona nativo (piloto 22-23 julio), pero si esas dos secciones necesitan filtrar de verdad (a diferencia de Novedades, que decidió no filtrar), esa pieza sigue sin construir.
+- **Resuelto en parte (26-27 oct 2026):** Post Cards filtra por valor de casilla de forma nativa y ya pinta el catálogo de vídeos de Seminarios y de Música. Sigue 🔲 sin probar la portada o rotación de Hombres de Dios (Post Slider o Post Cards).
 - **Si el Off-Canvas "Menu Movil" ya creado en Local está diseñado por dentro y probado, más allá de existir como entrada con Conditions desactivadas (Sección 9.1).**
 - ~~Si 10px sustituye a 25px como radio estándar...~~ **Resuelto 24 de septiembre de 2026** — `--tt-r-web` = 15px es la norma para Avada, distinta de los tokens de la web vieja (Sección 13, `CATALOGO_ELEMENTOS_AVADA.md` Sección 13.1). Pendiente solo la aplicación en Toggles, Forms y el botón.
 - **Si la versión de Avada instalada en el Local incluye ya la función de Filtros de Fondo (Backdrop Filters, `CATALOGO_ELEMENTOS_AVADA.md` Sección 5 bis) — es una función reciente de Avada, confirmar antes de que Carlota cuente con ella en un boceto.**
@@ -1017,7 +1016,7 @@ if (document.getElementById('mi-modulo-root')) {
 ⚠️ **Nota añadida 17 de septiembre de 2026, confirmada de forma independiente en dos
 sesiones el día anterior:** buena parte de las URLs `avada.com/documentation/...` de esta
 lista redirigen hoy a `classic.avada.com`, con un aviso de que ese es el nuevo hogar de la
-documentación de **Avada Classic** (la línea 7.15/7.16 que usa Tiritaito). Según el blog
+documentación de **Avada Classic** (la línea 7.16.x que usa Tiritaito; versión confirmada en Local: 7.16.3). Según el blog
 oficial de ThemeFusion, Avada Classic sigue recibiendo mantenimiento y correcciones de
 seguridad sin plan de discontinuarse — **no cambia nada operativo hoy** — pero las páginas
 de `classic.avada.com` llevan `meta-robots: noindex, nofollow`, así que con el tiempo pueden
@@ -1062,7 +1061,7 @@ golpe; se actualizan la próxima vez que se verifique cada una.
 2. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
 3. ✅ **Resuelto (14 agosto 2026):** Portafolio confirmado desactivado contra el export real — no hace falta decidirlo, ya está aplicado.
 4. Hno A: actualizar la URL configurada en la app Tiritaito for Creators de `.../blog/wp-json` a `https://tiritaito-real.local/wp-json`
-5. ✅ **Resuelto (14 agosto 2026):** Responsive Typography Sensitivity confirmado en 0.30 contra el export real (no en 0).
+5. ✅ **Resuelto (14 agosto 2026):** Responsive Typography Sensitivity confirmado en 0.30 contra el export real. **Actualizado el 23 octubre 2026: 0.00** (`TIPOGRAFIA_AVADA.md`).
 6. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de noticias, no el hero/slider) para que Hno C se la muestre a Claude al construir la home (Sección 8.4-bis)
 7. Cuando se llegue a construir el menú: confirmar con el equipo si lleva submenús desplegables, y si el Off-Canvas "Menu Movil" ya existente se termina de diseñar y se publica (Sección 9.1)
 8. ~~Hna C / equipo: decidir si 10px sustituye a 25px...~~ **Resuelto 24 de septiembre de 2026** — `--tt-r-web` = 15px es la norma para Avada (Sección 13)
@@ -1077,7 +1076,7 @@ golpe; se actualizan la próxima vez que se verifique cada una.
 | # | Pregunta | Por qué importa |
 |---|---|---|
 | 1 | ¿El menú de la web nueva va a tener submenús desplegables? | Determina si el Off Canvas Builder (Sección 9.1) es suficiente o hace falta un workaround adicional |
-| 2 | ¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"? **Parcialmente aclarada (10 oct 2026):** Post Cards **sí** lista desde una casilla de relación (podcast). Filtrar por **valor** de campo sigue sin probarse. | Solo se puede confirmar probando en Local — pendiente de sesión práctica. A diferencia de Novedades, si estas dos necesitan filtrar de verdad, sí haría falta el hook de la Sección 9 |
+| 2 | ~~¿Post Cards cubre el listado de "Seminarios pasados" y la portada de "Hombres de Dios"?~~ **Resuelto en parte (26-27 oct 2026):** Post Cards sí filtra por valor de casilla de forma nativa y ya se usa en Música, Seminarios y Biblioteca. Queda la portada o rotación de Hombres de Dios, sin probar | Ya no hace falta el hook de la Sección 9 para filtrar |
 | 3 | ~~¿Se desactiva "Portafolio"?~~ **Resuelto 14 agosto 2026** — confirmado desactivado contra el export real, ver Sección 4.0.1. | — |
 | 4 | ~~¿10px sustituye a 25px...?~~ **Resuelto 24 de septiembre de 2026** — `--tt-r-web` = 15px, referencia propia de Avada, distinta de los tokens de la web vieja (Sección 13) | Pendiente aplicar en el border-radius de Tabs, Testimonials y Audio, hoy en 0px |
 | 5 | ¿Se confirma que la copia de `GUIA_AVADA_LOCAL.md` que maneja cada cuenta/Proyecto está al día? | La Sección 4.0.3 se añadió porque una sesión de trabajo citó un pasaje sobre "Default Page Template" que no se localizó en la versión disponible en ese momento — puede ser síntoma de una sincronización desactualizada en algún Proyecto |
