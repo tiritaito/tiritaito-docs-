@@ -74,6 +74,9 @@ cuatro marcadores, nunca mezclados sin explicación:
 | ⚠️ | **Aplicado o decidido, pero con algo sin cerrar del todo** — un matiz, un detalle sin reconfirmar, o una pregunta de producto todavía abierta |
 | 🔲 | **Solo documentado por Avada (oficial o por investigación general), sin probar con contenido real de Tiritaito** — sabemos que existe y cómo se supone que funciona, pero no se ha verificado en `tiritaito-real.local` |
 | ❌ | **Confirmado que NO hace algo, o decisión explícita de no construirlo** — una limitación real, o un "no" ya decidido por el equipo |
+| ☑ | **Confirmado por Álvaro en su informe de pruebas en Local**, sin captura revisada por Proyecto 2 |
+| ◐ | **Funciona en parte**, o queda un punto sin comprobar (se dice cuál en la propia entrada) |
+| 📖 | **Dato tomado de la documentación oficial de Avada**, sin probar en Local (equivale a 🔲) |
 
 Si un informe dice "sin revisar", la entrada se queda en 🔲 — nunca se sube a ✅ por mi
 cuenta. Cuando dos informes confirman lo mismo de forma independiente, se dice explícitamente
@@ -1212,18 +1215,9 @@ Sección 19 (#5), ahora resuelta**
 
 → **Panel:** Global Options → Privacy & Consent
 
-- ✅ Configurado por Cuenta 3: Google & Font Awesome Fonts Mode cambiado de CDN a **Local**
-  (coherente con la decisión ya tomada de no depender de Google Fonts) · Privacy Consent
-  Tools activado con antelación, mientras el sitio aún no tiene scripts de terceros — más
-  fácil activarlo ahora que más adelante.
-- ⚠️ **Revisado el 27 oct 2026 en Local:** *Privacy Consent Tools* está en **Off**, la barra de consentimiento en Off y *Google & Font Awesome Fonts Mode* en **CDN**. Es distinto de lo que dice la viñeta anterior: confirmar cuál es el valor que se quiere (y si el export de Global Options lo refleja).
-- ✅ **Conexión técnica confirmada con Advanced/Code Fields:** el sistema de scripts de
-  tracking solo se bloquea hasta que el usuario consiente si "Privacy Consent Tools" está On
-  — ya lo está, así que cuando se añada cualquier script de seguimiento, el mecanismo ya
-  está listo detrás.
-- 🔲 **Sigue apagado, correctamente:** la barra visible de consentimiento de cookies —
-  necesita dos respuestas que nadie ha dado todavía: ¿qué herramientas de seguimiento tendrá
-  el sitio? y ¿existe ya un texto legal de Política de Privacidad?
+- ✅ **Estado real (export del 14 nov 2026):** *Google & Font Awesome Fonts Mode* = **CDN**; *Privacy Consent Tools* (`privacy_embeds`) y la barra de consentimiento (`privacy_bar`) = **Off**. Lo que se había configurado en septiembre (modo Local y herramientas de consentimiento activas) no está en vigor.
+- 🔲 **Decisión pendiente antes del lanzamiento:** pasar las fuentes a modo Local y activar el consentimiento si se usan scripts de seguimiento o vídeos incrustados de terceros (YouTube). La barra visible necesita dos respuestas que nadie ha dado: qué herramientas de seguimiento tendrá el sitio y si existe ya un texto legal de Política de Privacidad.
+- ℹ️ Con *Privacy Consent Tools* en On, el sistema de scripts de seguimiento (Advanced/Code Fields) queda bloqueado hasta que el usuario consienta; hoy, con Off, no bloquea nada.
 
 ---
 
@@ -1436,7 +1430,7 @@ Proyecto 2 los tenga también:
 
 | # | Acción | Urgencia | Sección |
 |---|---|---|---|
-| 1 | 🚨 Vaciar la dirección de ejemplo de Brooklyn en el mapa de Contact Template | Alta — riesgo de vergüenza pública si se activa la plantilla por error | 6 |
+| 1 | 🚨 Vaciar la dirección de ejemplo de Brooklyn en el mapa de Contact Template — **sigue puesta en el export del 14 nov 2026** (es un campo, medio minuto) | Alta — riesgo de vergüenza pública si se activa la plantilla por error | 6 |
 | 2 | `WordPress → Ajustes → Comentarios` → desmarcar envío de comentarios nuevos | Media | 4 |
 | 3 | `WordPress → Ajustes → Generales → Idioma del sitio` → confirmar que está en español | Media — afecta formatos de fecha en varios sitios | 4 |
 | 4 | Renombrar "Rojo Director" a "Rojo Principal" en el panel de Colors | Baja | 8.1 |
