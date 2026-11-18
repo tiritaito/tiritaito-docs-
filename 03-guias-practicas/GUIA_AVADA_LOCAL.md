@@ -1058,7 +1058,7 @@ golpe; se actualizan la próxima vez que se verifique cada una.
 ## 19. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. Hno A: registrar "Yeah Papa" en Typography → Custom Fonts y confirmar si el `.woff2` ya subido sirve o hay que resubirlo
+1. ✅ **Hecho:** Yeah Papa y Poppins están en Custom Fonts (export del 14 nov 2026).
 2. Hno A: abrir el header "Studio" en Local para resolver los 4 pendientes de la tabla de la Sección 4.0.1 (barra negra, buscador/iconos, fondo acuarela, tipografía del título)
 3. ✅ **Resuelto (14 agosto 2026):** Portafolio confirmado desactivado contra el export real — no hace falta decidirlo, ya está aplicado.
 4. Hno A: actualizar la URL configurada en la app Tiritaito for Creators de `.../blog/wp-json` a `https://tiritaito-real.local/wp-json`
