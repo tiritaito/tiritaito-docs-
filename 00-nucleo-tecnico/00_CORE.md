@@ -366,9 +366,9 @@ if (document.getElementById('mi-modulo-root')) {
 
 ## 9. CHECKLIST NUEVO COMPONENTE
 
-- [ ] `border-radius: var(--tt-r)` en cards y botones — ver nota pendiente de la Sección 5 sobre `10px` antes de introducir un radio distinto
+- [ ] `border-radius: var(--tt-r)` en cards y botones de snippets y app; dentro de Avada, `--tt-r-web` (15 px) — ver nota de la Sección 5
 - [ ] Fondo `var(--tt-bg)` — blanco puro, sin modo oscuro
-- [ ] Títulos en 'Yeah Papa' (calibrar el tamaño en `px` más alto de lo que parece necesario a simple vista, ver Sección 6), cuerpo en 'Helvetica Neue'
+- [ ] Títulos en 'Yeah Papa' (calibrar el tamaño en `px` más alto de lo que parece necesario a simple vista, ver Sección 6); cuerpo en 'Helvetica Neue' en snippets y app, Poppins en Avada (`TIPOGRAFIA_AVADA.md`)
 - [ ] Colores siempre vía `var(--tt-*)`, nunca hex sueltos
 - [ ] Breakpoints en 1024 / 768 / 480px
 - [ ] JS en IIFE, condicional fuera, lógica dentro
