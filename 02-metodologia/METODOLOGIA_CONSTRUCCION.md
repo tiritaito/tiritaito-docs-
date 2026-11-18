@@ -1,7 +1,7 @@
 # TIRITAITO.COM — Metodología de Construcción
 **Diagnóstico heredado, inventario de consolidación y aplicación práctica a cada sección real de la web nueva**
 *Actualizado tras la sesión de alcance de julio 2026 (`ALCANCE_WEB_NUEVA.md`) — sustituye la aplicación práctica sección-por-sección y la decisión de Hombres de Dios de la versión anterior · Actualizado 26 julio 2026 con la migración de Novedades y Devocional a ACF · Actualizado 11 agosto 2026 con la referencia a `CATALOGO_ELEMENTOS_AVADA.md` · Actualizado 17 de septiembre de 2026 con las decisiones de vídeos de Seminarios y el cierre de la evaluación de Tiritaito Music · Actualizado 3 de octubre de 2026 con la nueva decisión de Hombres de Dios (Sección 4) · Actualizado 10 de octubre de 2026 con el sistema del podcast y con las novenas · Actualizado 30 de octubre de 2026 con la decisión de Tiritaito Music y el importador de vídeos de YouTube*
-*Audiencia: Hno A (aplicación técnica) · Hna C (para entender el porqué de cada decisión)*
+*Actualizado 14 de noviembre de 2026: Tip reabierto, Habla por la palabra en la home, Libros y Películas nativos, Ejército y Misa en estudio*
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
@@ -95,7 +95,7 @@ para identificar rápido qué elemento nativo aplica en cada caso.**
 | Carrusel Swiper (`unpkg.com`) | — | Varias páginas | Sustituir por Image Carousel / Avada Slider nativo |
 | "Grupo de alabanza" | Sin confirmar | Home (web vieja) | ⚠️ **Actualizado:** en la web nueva ya no es widget de home — pasa a ser un apartado informativo dentro de **Qué hacemos** (`ALCANCE_WEB_NUEVA.md` Sección 4.C). Sigue sin auditar a nivel de código |
 | Teaser de "Ejército de Intercesores" | — | Home (web vieja) | 🔲 **Revisar con Hna C:** la home nueva ya no tiene necesariamente un teaser propio de Ejército de Intercesores — ahora vive dentro del acceso general a la página **Tiritaito**. Confirmar si el teaser individual se mantiene o desaparece |
-| "Tip del día" | `tt_tip_1` / `tt_tip_2` en `wp_options` | Devocional (web vieja y primera versión de la web nueva) | ❌ **Eliminado por decisión (26 julio 2026).** Ese contenido se sube ahora directamente como Novedades — ver la fila de Novedades más abajo. ⚠️ Todavía construido en la app (confirmado en `apps/v2/tiritaito-creators-v2-01.html`), pendiente de que Proyecto 5 lo retire |
+| "Tip del día" | `tt_tip_1` / `tt_tip_2` en `wp_options` | Devocional (web vieja y primera versión de la web nueva) | 🔄 **Reabierto el 14 nov 2026** junto con la promesa del día: se sube desde la app y va en «Dios te habla» (home). 🔲 Diseño de datos y UI de la app por decidir (`ALCANCE_WEB_NUEVA.md` §4.D) |
 
 ---
 
@@ -110,7 +110,7 @@ ya decidida.
 | Pieza | Dónde vive | Nota |
 |---|---|---|
 | Página de inicio — estructura | Fusion Builder puro | Accesos a las cinco páginas contenedoras + apartado Novedades arriba de todo |
-| Novedades | CPT `novedades` + ACF (10 campos, incluidos `categoria` y `molde`) + Post Cards de Avada con Dynamic Content — backend confirmado y probado de extremo a extremo (26 julio 2026), falta el montaje visual en Avada | No es página ni entrada aparte (`ALCANCE_WEB_NUEVA.md` Sección 4.B) — vive dentro del Layout de la home. Ocultar una novedad la pasa a borrador y deja de salir (4 nov 2026, revierte la decisión del 26 julio); cada novedad lleva un molde y la tarjeta tiene un bloque por molde (`GUIA_ANADIR_MOLDE_NOVEDADES.md`). El snippet PHP antiguo `[tt_novedades]` que se llegó a construir por error se descartó, no llegó a activarse. El contenido que antes era "Tip del día" se sube ahora directamente aquí |
+| Novedades | CPT `novedades` + ACF (10 campos, incluidos `categoria` y `molde`) + Post Cards de Avada con Dynamic Content — backend confirmado y probado de extremo a extremo (26 julio 2026), falta el montaje visual en Avada | No es página ni entrada aparte (`ALCANCE_WEB_NUEVA.md` Sección 4.B) — vive dentro del Layout de la home. Ocultar una novedad la pasa a borrador y deja de salir (4 nov 2026, revierte la decisión del 26 julio); cada novedad lleva un molde y la tarjeta tiene un bloque por molde (`GUIA_ANADIR_MOLDE_NOVEDADES.md`). El snippet PHP antiguo `[tt_novedades]` que se llegó a construir por error se descartó, no llegó a activarse. El Tip del día se reabrió el 14 nov 2026 y va en «Dios te habla», no aquí|
 
 ### Qué hacemos
 
@@ -121,19 +121,20 @@ ya decidida.
 | Seminarios — "Vídeos de los Seminarios" (nueva entrada, catálogo completo) | **Datos listos, página sin construir.** El importador (`tt-video-importador.php` v1.2) lee la playlist de Seminarios de la API de YouTube y crea una ficha por vídeo en el tipo `video_seminario` (29 fichas, título «Mes Año»); el tipo de cada vídeo es una categoría de `categoria_seminario`, asignada por `tt-sem-tipo-automatico.php`. Desde ahí Avada pinta todo de forma nativa: Post Cards con *Show Filters* sobre `categoria_seminario` para la página, y Post Cards filtrado por un tipo (2 vídeos, Menu Order ascendente) para el panel «Más información» | ✅ Decisión de arquitectura (17 sept 2026) — ✅ El mismo importador sirve a Música, Vía Crucis y Seminarios (decidido 22-30 oct) — ✅ Datos en Local (6-12 nov). 🔲 Falta probar el Lightbox dentro de un Modal y construir la página con el diseño de Carlota (`TIRITAITO_MUSIC_WEB_NUEVA.md` §17). El código del módulo de vídeos de la web vieja se ha perdido; no se considera necesario recuperarlo |
 | Grupo de alabanza | Fusion Builder puro | Contenido informativo, sin snippets |
 | Día de familias | Fusion Builder puro | Contenido informativo, sin snippets — sección nueva, sin precedente técnico en la web vieja |
+| Habla por la palabra | Snippet PHP nuevo de Carlitos (generador de citas bíblicas con compartir) | Opción C (5 nov 2026): vista previa genérica + compartir como imagen, con enlace propio por cita y QR. Carlitos infraestructura, Carlota diseña libre, Álvaro construye |
+| Promesa / Tip del día | 🔲 Por decidir (reabierto el 14 nov 2026) | Se sube desde la app de Creators. Falta decidir dónde se guarda, en qué formato y qué se ve si ese día no se subió nada |
 
 ### Conecta cada día
 
 | Pieza | Dónde vive | Nota |
 |---|---|---|
 | Hora de la brisa, Mensaje de la Virgen, Lenguas | ACF Options Page "Devocional — Contenido Diario" + Dynamic Content en Avada (26 julio 2026, reemplaza al snippet/shortcode) | Backend confirmado; falta montar visualmente con Dynamic Content en Fusion Builder. Virgen y Brisa ahora tienen fecha/autor en campos propios (`virgen_fecha`, `brisa_autor`) — separados del texto, para poder darles estilo distinto en Avada. `virgen_fecha` es obligatoria en la app desde v2-05 |
-| Misa | Snippet de lecturas DOCX ya existente | 🔲 Si absorbe el Salmo del día, revisar si el snippet necesita ampliarse o si el salmo se monta aparte dentro del mismo Layout |
-| Habla por la palabra (cita aleatoria) | Lógica PHP server-side ya existente (generador de citas) | 🔲 Sin ubicación decidida — falta definir el mecanismo de compartir por QR/URL descrito en `ALCANCE_WEB_NUEVA.md` Sección 4.D |
+| Misa | Hoy: snippet de lecturas con DOCX semanal. En estudio (nov 2026): automatizar las lecturas cada día, quizá con Evangelizo, y subir la homilía (audio y texto, sin fecha) desde la app | 🔲 Pendiente de la explicación de Carlitos y del estudio aparte. El Salmo del día **no** va dentro de Misa |
+| Salmo del día | Sección propia de Conecta cada día: título que cambia solo cada día y reproductor; imagen única de Carlota; automatizado | Fuente de datos: Evangelizo (validada el 12 nov 2026). 🔲 Falta decidir si el audio sale del canal de podcast Salmos (importador) o del vídeo de YouTube |
+| ~~Habla por la palabra~~ | Pasa a la home («Dios te habla»), ver más arriba | — |
 | Elige tu santo | — | 🔲 Sin ubicación decidida |
 
-**❌ Tip — eliminado (26 julio 2026).** Ya no existe como apartado independiente de Conecta
-cada día ni como clave separada de `wp_options`. Ese contenido se sube ahora directamente
-como Novedades (ver arriba).
+**🔄 Tip — reabierto (14 nov 2026).** Eliminado el 26 de julio, vuelve junto con la promesa del día en «Dios te habla» (home), no en Conecta cada día.
 
 ### Tiritaito
 
@@ -149,6 +150,8 @@ como Novedades (ver arriba).
 | Ejército de Intercesores — Claves de intercesión | Fusion Builder puro | Contenido estático |
 | Ejército de Intercesores — Testimonios | 🔲 Post Cards si son muchos, contenido estático si son pocos | Volumen sin confirmar |
 
+🔲 **14 nov 2026:** la página del Ejército de Intercesores necesita un estudio nuevo antes de construirse. Las filas «Ejército de Intercesores» de la tabla de arriba son ideas previas, no decisiones.
+
 **Principio de unidad de podcast** (`ALCANCE_WEB_NUEVA.md` Sección 5): Rincón de Nico y Charlas de la Biblia pueden tener tono y estilo propios, pero usan los mismos moldes y el mismo patrón (`PODCAST_ESTRUCTURA.md`). El `[tt_podcast]` queda solo para la web vieja (V1).
 
 🔲 **Nota añadida 11 agosto 2026:** para "rotar entre los santos" (sección de Hombres de
@@ -161,9 +164,9 @@ Dios, más abajo) y para cualquier necesidad futura de rotar entre varias entrad
 
 | Pieza | Dónde vive | Nota |
 |---|---|---|
-| Libros | 🔲 Pendiente aclarar qué es la PWA de biblioteca de libros mencionada en la sesión de alcance (`ALCANCE_WEB_NUEVA.md` pregunta abierta #5) antes de definir el Layout | No documentar el método hasta que se resuelva esa pregunta |
-| Películas | 🔲 Plantilla compartida con Libros — depende de lo anterior | — |
-| Oraciones | Página-portal con siete tipos: Adoraciones, Rosario, Salmos y Novenas llevan podcast; Lenguas y Vía Crucis dependen de Tiritaito Music; Posesión mariana es una entrada sencilla | Ver `ORACIONES_ESTRUCTURA.md`. Sin decidir: arquitectura (entrada por tipo o tipo único) y portal |
+| Libros | CPT propio + Post Card que imita el diseño de la PWA original, con filtros por categoría (*Show Filters*) | ✅ Funciona (14 nov 2026). 🔲 Falta registrar los campos y cómo se cargan los libros |
+| Películas | CPT propio y molde de Post Card propio (dos moldes distintos, no una plantilla compartida) | ✅ Funciona (14 nov 2026) |
+| Oraciones | Página-portal con siete tipos: Adoraciones, Rosario, Salmos y Novenas llevan podcast; Lenguas y Vía Crucis dependen de Tiritaito Music; Posesión mariana es una entrada sencilla | Ver `ORACIONES_ESTRUCTURA.md`. Sin decidir: arquitectura (entrada por tipo o tipo único) y portal | 
 | Novenas | Ocho, en cinco formatos: **días de texto** (tipo de contenido propio + grupo de casillas + molde de tarjeta + página portada con Post Cards en carrusel), **oración única** (página normal), **podcast** (temporada de un canal), **lista de YouTube** y **vídeo** | Ver `ORACIONES_ESTRUCTURA.md` §3. ☑ construidas; pendientes de resultados y de tres fichas |
 
 ### Menú y Próximos eventos
@@ -220,7 +223,7 @@ Un **tipo de contenido propio** (CPT `hombres_de_dios`) con **campos ACF**, y **
 - [ ] ¿Se ha probado en consola del navegador que no hay errores de elementos inexistentes?
 - [ ] Si toca `wp_options`, ACF o el contrato de datos de la PWA Creators: ¿se ha coordinado con el equipo antes? (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 6)
 - [ ] Si el contenido lo va a gestionar el equipo desde Tiritaito for Creators: ¿se preparó el prompt completo para el Proyecto 5?
-- [ ] **¿Esto lo va a necesitar también la app (WPMobile.app) algún día? (añadido 11 agosto 2026)** — si es probable, cuanto más estructurado esté ahora (Posts, CPT) más fácil será que aparezca bien en la app más adelante (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7.2)
+- [ ] **¿Esto lo va a necesitar también la app (WPMobile.app) algún día? (añadido 11 agosto 2026)** — si es probable, cuanto más estructurado esté ahora (Posts, CPT) más fácil será que aparezca bien en la app más adelante (`ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7.2) (`GUIA_AVADA_LOCAL.md` Sección 8 y `00_CORE.md` Sección 3)
 
 ### Antes de marcar un snippet "Run everywhere"
 
@@ -235,7 +238,7 @@ Un **tipo de contenido propio** (CPT `hombres_de_dios`) con **campos ACF**, y **
 **Próximos pasos:**
 1. Hno A: validar en Local, en este orden — Off Canvas Builder (menú) → Toggles (Introducción del Ejército) → Layout único + ACF para Hombres de Dios (en construcción, ver `HOMBRES_DE_DIOS_ESTRUCTURA.md`) → Dynamic Content para Novedades y Devocional → Post Slider para Hombres de Dios y Novedades (nuevo, 11 agosto) → snippets nuevos de "Batalla de cada día/semana" del Ejército de Intercesores (evaluando primero si ACF+nativo lo resuelve, ver Sección 3)
 2. Coordinar con el equipo antes de crear las claves nuevas de `wp_options` o campos ACF que probablemente necesite la Batalla de cada día/semana del Ejército de Intercesores
-3. Proyecto 5: retirar la UI de "Tip del día" de la app (ver Sección 2) — pendiente confirmado el 26 de julio 2026
+3. ~~Proyecto 5: retirar la UI de «Tip del día»~~ **Cancelado:** el Tip vuelve (14 nov 2026); falta decidir su diseño de datos (`ALCANCE_WEB_NUEVA.md` §4.D)
 4. Cuando se resuelvan las preguntas abiertas de `ALCANCE_WEB_NUEVA.md` sobre Biblioteca (PWA de libros, estructura de Oraciones), completar las filas correspondientes de la Sección 3 de este documento
 5. Confirmar en Local si el Off-Canvas "Menu Movil" ya existente está diseñado y probado por dentro, o solo registrado como borrador (Sección 3, "Menú y Próximos eventos")
 6. Probar en Local si el Lightbox de Avada funciona anidado dentro de un Modal (necesario para el panel de "Más información" de Seminarios, Sección 3) y definir la estructura (CPT, campos ACF) de la nueva entrada "Vídeos de los Seminarios"
@@ -251,9 +254,7 @@ Un **tipo de contenido propio** (CPT `hombres_de_dios`) con **campos ACF**, y **
 | 3 | ¿Testimonios de intercesión: volumen aproximado, para decidir Post Cards vs contenido estático? | Sección 3, Tiritaito |
 | 4 | ~~¿Estructura exacta de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador sirve también a Tiritaito Music y Vía Crucis?~~ **Respondida (12 nov 2026):** sí, un mismo importador sirve a los tres. Seminarios: tipo `video_seminario`, casillas `sem_anio` y `sem_mes`, y categoría `categoria_seminario` para el tipo | Sección 3, Qué hacemos |
 
-**Heredadas de `ALCANCE_WEB_NUEVA.md` (no se repiten aquí en detalle, solo se enlazan):**
-Salmo del día dentro de Misa, ubicación de "Habla por la palabra" y "Elige tu santo",
-"Canción del Ejército", naturaleza de la PWA de libros, estructura de Oraciones.
+**Heredadas de `ALCANCE_WEB_NUEVA.md` (no se repiten aquí en detalle, solo se enlazan):** siguen abiertas la ubicación de «Elige tu santo», «Canción del Ejército» y la estructura de Oraciones (una entrada por tipo o un tipo único). Resueltas: Salmo del día (sección propia), Habla por la palabra (home, «Dios te habla») y la PWA de libros (CPT nativos).
 
 **Resuelto en esta revisión (26 julio 2026):** Novedades migrado a CPT+ACF, backend
 confirmado y probado · Devocional migrado parcialmente a ACF Options Page · Tip eliminado
