@@ -217,14 +217,14 @@ adicional confirmada por ahora.
 | Mensaje de la Virgen de hoy | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
 | Misa | ✅ Definido |
 | Lenguas | ✅ Definido — ahora vía ACF Options Page (26 julio 2026), pendiente Dynamic Content en Avada |
-| Salmo del día |✅ Definido - Sección propia que presenta el salmo del dia según la liturgia, extrayéndolo del podcast de salmos y automatizado por un codigo php |
-| Ejército | ✅ Definido — Corresponde al material con el que el ejército de intercesores reza cada dia: un cpt del ejército, y y un postcard que lee la entrada del día actual: lleva una imagen con un botón de play. Si clickas se abre el vídeo de Youtube correspondiente a las lenguas de ese día del ejército. Debajo las intenciones de ese día y por último la oración final |
+| Salmo del día | ✅ Sección propia (no dentro de Misa): título que cambia solo cada día («Salmo del día: Salmo nn») y debajo el reproductor; imagen única de Carlota con un botón de play, no la miniatura de YouTube; totalmente automatizado. Fuente de datos: Evangelizo (validada el 12 nov). 🔲 Falta decidir si el audio sale del canal de podcast Salmos (ya importado) o del vídeo de YouTube |
+| Ejército | 🔲 Estudio nuevo pendiente (14 nov 2026). Idea previa: un CPT del Ejército y una Post Card que lee la entrada del día: imagen con botón de play que abre el vídeo de YouTube de las lenguas de ese día, y debajo las intenciones del día y la oración final |
 | Elige tu santo | 🔲 Sin resolver dónde vive |
 
 ### F. Tiritaito
 
 Página contenedora de 4 entradas propias, cada una su propio post: **Tiritaito Music ·
-Rincón de Nico · Charlas de la Biblia · Ejército de Intercesores** (detalle en F).
+Rincón de Nico · Charlas de la Biblia · Ejército de Intercesores** (detalle en G).
 
 **Tiritaito Music** (decidido 22-28 octubre 2026; construido en Local el 11 noviembre): **una ficha por canción, con página propia compartible**, y presentación «escaparate nativo» primero y reproductor con cola después (A y luego D). Las canciones las crea y mantiene un importador de servidor que lee las playlists de YouTube (`apps/v2/tt-video-importador.php` v1.2, probado en Local el 6 noviembre); los títulos de Música van sin «Tiritaito Music» ni la autora. Páginas y fichas construidas en Avada (portada, «Todas las canciones», una página por lista, ficha de canción y panel de compartir). Detalle en `02-metodologia/investigaciones/TIRITAITO_MUSIC_WEB_NUEVA.md` Secciones 6.8 y 17.
 
@@ -244,6 +244,10 @@ Qué Hacemos, donde los tres apartados están más unidos entre sí. Ver Secció
 
 Estructura confirmada en esta sesión:
 
+🔲 **14 nov 2026: la página del Ejército necesita un estudio nuevo antes de construirse.** Lo de abajo es el punto de partida, no una estructura cerrada.
+
+Estructura confirmada en la sesión de julio:
+
 1. Introducción
 2. **La batalla de cada día** — lo más importante, lo que verán a diario los
    intercesores para rezar: vídeo de las intenciones del día, intenciones del día
@@ -261,16 +265,9 @@ otro apartado?
 
 Tres apartados, presentación visual distinta cada uno:
 
-**Libros:** ya existe una aplicación PWA propia, bien desarrollada, que funciona como
-sistema de biblioteca de libros. Se migra su lógica a formato de entrada de WordPress.
+**Libros:** CPT propio y una Post Card que pinta cada libro imitando el diseño de la PWA original de libros, con filtros por categoría (Post Cards con *Show Filters*). ✅ Funciona (14 nov 2026). 🔲 Los nombres de los campos y cómo se cargan los libros no están registrados todavía: pendiente de un registro breve.
 
-🔲 **Pieza nueva, sin documentar todavía:** esta PWA no aparece en ningún documento de
-`tiritaito-docs` hasta ahora. No doy por hecho que sea Tiritaito for Creators — pendiente
-que Hno A confirme si es la misma app, un módulo suyo, o un proyecto aparte, para
-documentarla donde corresponda.
-
-**Películas:** reutiliza el mismo sistema/plantilla que Libros — probablemente un Layout
-compartido entre ambos.
+**Películas:** CPT propio y molde de Post Card propio (dos moldes distintos, no una plantilla compartida). ✅ Funciona (14 nov 2026).
 
 **Oraciones:** una página-portal que lleva a siete tipos de contenido. Detalle y estado en `ORACIONES_ESTRUCTURA.md`.
 
@@ -289,7 +286,7 @@ compartido entre ambos.
 
 ### H. Hombres de Dios
 
-Hoy son **9 santos, y llegarán más**. La web actual tiene 9 entradas (Papa Francisco, Papa León, Juan Pablo II, Maximiliano Kolbe, Emiliano Tardif, Padre Pío, San Serafín de Sarov, Teresita, Ana Catalina), a las que se suman las nuevas hasta los 12 de hoy.
+Hoy son **9 santos, y llegarán más**. La web vieja tenía 9 entradas (Papa Francisco, Papa León, Juan Pablo II, Maximiliano Kolbe, Emiliano Tardif, Padre Pío, San Serafín de Sarov, Teresita, Ana Catalina), a las que se sumarán nuevas..
 
 ✅ **Método técnico decidido el 3 de octubre de 2026 — reemplaza la decisión anterior (Layout + Elementos Guardados):** un tipo de contenido propio (CPT `hombres_de_dios`) con campos ACF y un único Layout de Avada que sirve de plantilla para todos los santos. Cada sección es un bloque del Layout que lee los campos del santo que se esté viendo y desaparece entero si ese campo está vacío (Conditional Rendering Logic) — así cada santo muestra solo las secciones que usa (unos llevan audio, otros discursos, otros solo biografía), y un cambio de diseño en un bloque llega a todos a la vez.
 
@@ -297,9 +294,7 @@ Hoy son **9 santos, y llegarán más**. La web actual tiene 9 entradas (Papa Fra
 
 ### I. Próximos eventos
 
-Sin resolver. Candidato: la feature "Eventos" de Avada, ya activada en el Setup Wizard del
-7 de julio (`GUIA_AVADA_LOCAL.md` Sección 4.0.1). Sin decidir si se usa tal cual o se
-personaliza.
+✅ **Resuelto (11 agosto 2026):** se usa la feature «Eventos» de Avada tal cual (`CATALOGO_ELEMENTOS_AVADA.md` §4). 🔲 Queda decidir si cada tarjeta lleva texto de contexto (*Events Text Display*).
 
 ---
 
@@ -355,26 +350,26 @@ mantenimiento.
 **Próximos pasos:**
 1. Confirmar si este Alcance sustituye ya el stub de `01-producto/ALCANCE_WEB_NUEVA.md`,
    o si falta una vuelta más con Hna C
-2. Una vez cerrado: ~~actualizar `METODOLOGIA_CONSTRUCCION.md` Sección 4 (Hombres de Dios, Dynamic Content → Guardados)~~ **hecho el 3 de octubre de 2026 (Hombres de Dios pasa a Layout único + ACF)**, y actualizar su Sección     (Ejército de Intercesores ya no es sección
+2. Una vez cerrado: ~~actualizar `METODOLOGIA_CONSTRUCCION.md` Sección 4 (Hombres de Dios, Dynamic Content → Guardados)~~ **hecho el 3 de octubre de 2026 (Hombres de Dios pasa a Layout único + ACF)**, y actualizar su Sección 3     (Ejército de Intercesores ya no es sección
    suelta; Biblioteca entra en v1; Charlas de la Biblia vive bajo Tiritaito, no Biblioteca)
 3. Revisar si `MIGRACION_CONTENIDO.md` necesita el mismo ajuste en su checklist de
    migración por sección
 4. Carlitos: compartir con Hno C la referencia visual correcta de Novedades (bloque de
    noticias, no el hero/slider) para cerrar la Sección 4.B / 5.1
-5. Proyecto 5: retirar la UI de "Tip del día" que sigue en la app real (Sección 4.D)
+5. ~~Proyecto 5: retirar la UI de «Tip del día»~~ **Cancelado:** el Tip vuelve (14 nov). Falta decidir su diseño de datos (Sección 4.D).
 
 **Preguntas abiertas** (ninguna bloquea empezar a construir Qué hacemos y Conecta cada
 día, que ya tienen lo esencial definido):
 
 | # | Pregunta | Sección |
 |---|---|---|
-| 1 | ¿Salmo del día vive dentro de Misa, o mantiene apartado propio? | D |
-| 2 | ¿Dónde viven "Habla por la palabra" y "Elige tu santo"? | D |
+| 1 | ~~¿Salmo del día vive dentro de Misa, o mantiene apartado propio?~~ **Resuelto (12 nov 2026):** apartado propio | E |
+| 2 | ~~¿Dónde vive «Habla por la palabra»?~~ **Resuelto:** en la home, en «Dios te habla». Sigue abierta la ubicación de «Elige tu santo» | D, E |
 | 3 | ~~¿Cómo se integra el sistema de vídeos de seminarios pasados con el nuevo formato de carteles?~~ **Resuelto en parte (17 septiembre 2026)** — ver Sección 4.C: los 2 vídeos del panel de "Más información" ya están decididos. Sigue abierta la arquitectura exacta de la nueva entrada con el catálogo completo (pregunta #10) | C |
 | 4 | ¿"Canción del Ejército" se mantiene? | F |
-| 5 | ¿La PWA de biblioteca de libros es Tiritaito for Creators, un módulo suyo, u otra cosa? | G |
+| 5 | ~~¿La PWA de libros es Tiritaito for Creators, un módulo suyo, u otra cosa?~~ **Resuelto (14 nov 2026):** Libros y Películas se construyen de forma nativa (un CPT cada uno + Post Card que imita la PWA) y ya funcionan. 🔲 Queda decidir qué pasa con la PWA original al lanzar | H |
 | 6 | ~~¿Oraciones es una entrada única densa o necesita estructura distinta?~~ **Resuelto en parte (10 oct 2026):** es una página-portal con una entrada por tipo; falta decidir si cada tipo es una entrada o un tipo de contenido con plantilla única (`ORACIONES_ESTRUCTURA.md` §2.2) | G |
-| 7 | ¿Se usa la feature Eventos de Avada tal cual, o se personaliza? | I |
+| 7 | ~~¿Se usa la feature Eventos de Avada tal cual, o se personaliza?~~ **Resuelto:** tal cual (`CATALOGO` §4); queda el texto de contexto de la tarjeta | I |
 | 8 | ¿Se fija como regla formal el criterio "sección = 1 página si todo su contenido cabe en un solo lugar y está muy relacionado y dirigido a un mismo público; sección = varias entradas si cada apartado tiene personalidad propia" (ej. Tiritaito y Qué Hacemos ya siguen este patrón de facto)? Carlitos necesita pensarlo con el equipo antes de fijarlo — no aplicar como regla formal todavía | 5.0, E |
 | 9 | ¿Cuál es el patrón visual exacto de Novedades (destacada + rejilla, solo rejilla, u otro)? Pendiente de referencia visual correcta compartida por Carlitos | B, 5.1 |
 | 10 | ~~¿Cuál es la estructura exacta de la nueva entrada "Vídeos de los Seminarios"? ¿El mismo snippet importador puede servir también a Tiritaito Music y a Vía Crucis?~~ **Respondida y construida (12 noviembre 2026):** un mismo importador sirve para Música, Vía Crucis y Seminarios. Seminarios: tipo `video_seminario` (29 fichas, título «Mes Año»), casillas `sem_anio` y `sem_mes`, y el tipo como categoría `categoria_seminario`; ver `TIRITAITO_MUSIC_WEB_NUEVA.md` §17 | C |
