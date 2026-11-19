@@ -50,7 +50,7 @@ Responde cinco preguntas, para tres públicos:
 | **Medium** *(nuevo, v1.2)* | Texto secundario: descripciones de tarjeta, etc. | Poppins | 12,5 → 14 px |
 | **Small** | Fechas, pies de foto, etiquetas | Poppins | 11,5 → 12,5 px |
 
-⚠️ Los **nombres y el orden** de los cinco primeros son los de Avada. Los **usos y los tamaños son una propuesta nuestra**, pendiente de que Hna C la valide mirándola en pantalla. El set Medium se crea a mano con *Add New Typography Set*; Avada lo guardará como `typography6` (contador fijo: si se borra y se vuelve a crear, otro set heredaría ese nombre interno).
+⚠️ Los **nombres y el orden** de los cinco primeros son los de Avada. Los **usos y los tamaños son una propuesta nuestra**, pendiente de que Hna C la valide mirándola en pantalla. El set Medium se crea a mano con *Add New Typography Set*; Avada lo guardó como **`custom_typography_1`** (export del 14 nov 2026; `typography6` era una suposición de este documento). El contador es fijo: si se borra y se vuelve a crear, otro set heredaría ese nombre interno.
 
 ✅ **Decisión de Carlitos (23 oct 2026):** el texto (Lead, Body, Medium, Small) va en **Poppins** y los títulos (Headings, Subheadings) en **Yeah Papa**. Es la norma de la **web nueva en Avada**; la web vieja y la app siguen como estaban (Parte 4.3).
 
@@ -251,7 +251,7 @@ Dos cosas a mirar con atención:
 | Text Transform | none |
 
 4. Guarda. **Reset Avada Caches**, purga la caché del navegador y recarga.
-5. **Comprueba:** en la página de pruebas, pon un Text Block con el set **Medium** (selector de set del campo, nunca escribiendo la variable a mano). Inspeccionar → Computed → `font-size`: debe dar **12,5 px a 375**, ~13 a 768 y **14 a 1440**. Y en `<html>` → Styles, debe existir `--awb-typography6-font-size`.
+5. **Comprueba:** en la página de pruebas, pon un Text Block con el set **Medium** (selector de set del campo, nunca escribiendo la variable a mano). Inspeccionar → Computed → `font-size`: debe dar **12,5 px a 375**, ~13 a 768 y **14 a 1440**. Y en `<html>` → Styles, debe existir la variable del set Medium (el export lo llama `custom_typography_1`; el nombre exacto de la variable no está confirmado: míralo ahí).
 6. Exporta y sanea "después". Saldrán **claves nuevas** `typography_sets.typography6.*`: es lo esperado, se aceptan y se sube el `claves_conocidas.json` nuevo (`GUIA_AVADA_LOCAL.md` §2.2).
 
 **Si Avada no deja crear el set 6 o no lo guarda:** no insistas. Pon la misma fórmula directamente en el campo Typography de cada elemento que deba ir en tamaño mediano, y anota cada uso en el registro de excepciones (Parte 6). Avisa a Carlitos.
@@ -405,7 +405,7 @@ Documentos que cambian (cuando se cierre la versión 2): `00_CORE.md` §6 (para 
 
 1. **Ver cuáles son:** en el export saneado, busca `tipograf`. Cada resultado es un campo roto (Body, H1-H6, título de entrada, botón, menú, menú móvil, footer, FAQ).
 2. **Cambiar el idioma de tu usuario a inglés:** Usuarios → Tu perfil → Idioma → English. Recarga el panel.
-3. **Volver a elegir la ficha (set) en cada campo roto** y guardar. El número del nombre roto te dice qué ficha era: `tipografía1` = Headings, `2` = Subheadings, `3` = Lead, `4` = Body, `5` = Small, `6` = Medium (v1.2) (por ejemplo, `tipografía4-línea-altura` = el interlineado del set Body). Empieza por **Body → Line Height**.
+3. **Volver a elegir la ficha (set) en cada campo roto** y guardar. El número del nombre roto te dice qué ficha era: `tipografía1` = Headings, `2` = Subheadings, `3` = Lead, `4` = Body, `5` = Small; Medium se guarda como `custom_typography_1`, así que su nombre roto, si lo hubiera, no sería `tipografía6` (por ejemplo, `tipografía4-línea-altura` = el interlineado del set Body). Empieza por **Body → Line Height**.
 4. **Comprobar el primero:** el campo deja de estar en rojo y, en DevTools, `<body>` pasa a medir 1,72 de interlineado. Si es así, repite con los otros 13. **Si no funciona**, escribe el valor directamente en esos campos (por ejemplo el interlineado como número): funciona igual y no depende de la ficha.
 5. **Al terminar:** vuelve a exportar y sanear, y busca `tipograf`: no debe salir nada. Puedes volver el idioma a español.
 
@@ -449,6 +449,8 @@ Si R3, queda una vía más: un reemplazo controlado en la base de datos (herrami
 | Poppins como fuente propia | ✅ Subida durante esta tarea |
 | Petición a `fonts.gstatic.com` | ⚠️ Sigue saliendo un archivo de Poppins (v24) desde Google. Falta ver qué set o elemento lo pide (pregunta abierta 6). No afecta al set Medium |
 | Lead | Interlineado 1,2 y respaldo «Arial, Helvetica, sans-serif» (ya estaba así; ver registro de excepciones) |
+| H1-H6, título de entrada, enlaces e iconos al pasar el ratón | Color 6 (Rojo Hover) en vez del color de texto | Decisión de Carlitos (14 nov): se deja así | Carlitos |
+| Márgenes de H1-H6 | `0,6em` / `0,55em` / `0,5em` con coma decimal (CSS inválido, el navegador lo ignora) | 🔲 Escribir con punto (`0.6em`) cuando se toque | Álvaro |
 
 Se da el cambio por cerrado: Medium funciona y mide lo previsto. Las dos casillas sin responder y la petición a Google son comprobaciones menores, no bloqueantes.
 
@@ -590,11 +592,11 @@ Solo recoge lo que se encontró en la prueba. **No hace falta anotar las nuevas*
 
 **Imprescindible (poco trabajo):**
 
-1. **Álvaro:** subir Poppins como fuente propia (Custom Fonts), volver a elegirla en los sets, el botón y donde se use, y comprobar en Network que no hay peticiones a Google (4.3).
+1. ✅ **Poppins subida como fuente propia** (confirmado en el export del 14 nov: 400, 500, 600 y 700). 🔲 Falta comprobar en Network que ya no se pide a Google; sin urgencia, mejor antes del lanzamiento.
 2. **Álvaro:** reparar las variables en español con la receta rápida (4.4): 30-60 minutos.
-3. **Álvaro:** fijar en el global el color por defecto del texto: Color 7 · Texto secundario en Body y Heading Typography (4.5), y mirar la home.
+3. ✅ **Hecho (export del 14 nov):** color por defecto del texto en Color 7 en Body. Titulares y enlaces en Color 6: decisión de Carlitos (14 nov).
 4. ✅ **Hecho (3 nov):** set Medium creado y medido (4.6). Quedan dos casillas del informe sin rellenar (variable `--awb-typography6` y campos en rojo): no bloquean.
-4-bis. **Álvaro (v1.4):** bajar los tamaños de Body, Medium y Small a los valores de la 4.7 (tres sets + Body Typography), medir y avisar.
+4-bis. ✅ **Hecho (export del 14 nov):** sets Body, Medium y Small y Body Typography en los valores de la 4.7.
 5. **Carlitos:** decirle a Carlota que el texto ahora es Poppins y que hay **cuatro** niveles de texto (Lead, Body, Medium, Small), y pegar los bloques del grupo A de `CAMBIOS_REPOSITORIO_2026-10-23.md`.
 6. **Carlitos:** mirar la home en su móvil. El problema original era el móvil: es la prueba que de verdad importa.
 7. **Hno C:** con 1, 2, 3 y 4 hechos, cerrar este documento como versión 2 y actualizar `00_CORE.md`, el catálogo y la guía.
