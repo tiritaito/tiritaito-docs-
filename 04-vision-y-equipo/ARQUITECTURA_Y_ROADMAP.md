@@ -42,7 +42,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | F1 | Entorno local profesional (Local by Flywheel) | Live Link, Blueprints, múltiples sitios en paralelo, SSL local idéntico a producción — detalle completo en `GUIA_AVADA_LOCAL.md` Sección 2 |
 | F2 | Equipo complementario | Los roles se complementan bien (ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 1) — Hna C hace de puente entre criterio de producto y capacidad técnica, sin que ninguno de los dos falte |
 | F3 | Base técnica existente | El sistema REST API, los snippets de podcast, el sistema `--tt-*`, el contrato de `wp_options`/ACF — código probado que se migra limpio, no se reinventa |
-| F4 | Avada 7.15.5 es maduro | Header Builder, Footer Builder y Layouts completamente funcionales — la inversión en aprenderlo da retorno en años |
+| F4 | Avada es maduro (7.16.3 en Local) |
 | F5 | Decisión de no heredar deuda | Empezar desde cero en local, sin presión de producción, permite hacerlo bien — es raro y valioso |
 
 ### 2.2 Debilidades
@@ -52,7 +52,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 | D1 | Curva de aprendizaje de Avada | Demasiadas opciones sin un mapa claro de qué ignorar — mitigado por `GUIA_AVADA_LOCAL.md` |
 | D2 | Riesgo de replicar los mismos errores | Si no se formaliza la arquitectura antes de construir, la web nueva acumulará la misma deuda, solo que más rápido |
 | D3 | La web vieja necesita mantenimiento mínimo | Durante el desarrollo de la nueva, la vieja puede empeorar si no se define bien qué no se toca (Sección 3) |
-| D4 | Migración de contenido | Ver `MIGRACION_CONTENIDO.md` para el framework completo |
+| D4 | Migración y despliegue | Decisión de contenido cerrada (julio 2026): solo SEO 301 + reconectar Creators; el resto se recrea (`MIGRACION_CONTENIDO.md`). Falta el plan de despliegue Local → producción (investigación pendiente) |
 | D5 | WPMobile.app — terreno casi inexplorado | Licencia comprada, poco más — ver `ORGANIZACION_EQUIPO_Y_HERRAMIENTAS.md` Sección 7 |
 | D6 | El entorno Local puede perderse por completo | Ya ocurrió una vez (26 julio 2026) — sin causa documentada. Ver `GUIA_AVADA_LOCAL.md` Sección 2 para la recomendación de Blueprint como red de seguridad |
 | D7 | Trabajar con dos ordenadores multiplica el riesgo de D2/D6 | Local no sincroniza nada entre ordenadores por sí solo — sin el procedimiento acordado (`GUIA_AVADA_LOCAL.md` Sección 2.1), es fácil terminar con un WordPress vacío en el segundo ordenador, o perder trabajo real al no poder fusionar dos copias divergentes |
@@ -102,7 +102,7 @@ Responde: **¿por qué se está haciendo la web nueva, cuáles son los riesgos y
 - Actualización del endpoint REST si es crítico (comunicando al equipo)
 - Actualización de WordPress core (seguridad) — siempre con backup previo
 
-**Respecto a Tiritaito for Creators:** no es parte de la web vieja ni de la nueva — proyecto independiente que continúa en paralelo sin interferir con ninguna de las dos.
+**Respecto a Tiritaito for Creators:** tiene dos versiones — V1 (web vieja, solo mantenimiento, se retira con ella) y V2 (web nueva, desarrollo activo). Ver `TIRITAITO_FOR_CREATORS_VERSIONS.md` §1.
 
 ⚠️ **Fecha de caducidad conocida (decisión de Carlitos, 26 julio 2026): la web vieja (V1)
 desaparece por completo en cuanto la Web Nueva sea oficial.** El modo supervivencia de
@@ -128,9 +128,9 @@ Checklist completo y verificado en `GUIA_AVADA_LOCAL.md` Sección 15 — no se r
 
 **Esta fase sigue el orden de prioridad de `ALCANCE_WEB_NUEVA.md`** — ese documento es la fuente de verdad de qué se construye primero, no este.
 
-### Fase 3 — Migración de contenido
+### Fase 3 — Migración de contenido y despliegue
 
-Framework completo en `MIGRACION_CONTENIDO.md`. Resumen de responsabilidad: se define sección por sección según ese documento, no en bloque.
+Decisión cerrada en `MIGRACION_CONTENIDO.md` (julio 2026): solo se migran las redirecciones 301 y la conexión de Tiritaito for Creators; el resto se recrea. 🔲 Falta documentar el despliegue de la web nueva de Local a producción (investigación pendiente, 14 nov 2026).
 
 ### Fase 4 — QA y velocidad
 
