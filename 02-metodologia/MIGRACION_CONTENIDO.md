@@ -4,6 +4,12 @@
 
 *Ad maiorem Dei gloriam et Mariae Virginis honorem*
 
+> ⚠️ **Superado en parte — revisión del 14 de noviembre de 2026.** La decisión de alcance (solo se migran el SEO con redirecciones 301 y la conexión de Tiritaito for Creators; todo lo demás se recrea) **sigue vigente**. Lo que ha quedado anticuado:
+> - **§3 (Hombres de Dios):** habla de «elementos Guardados». Desde el 3 oct 2026 el método es Layout único + CPT `hombres_de_dios` + ACF (`HOMBRES_DE_DIOS_ESTRUCTURA.md`). La conclusión (recrear a mano) se mantiene; cambia el motivo.
+> - **§2.B (lista de claves):** Devocional (`virgen`, `brisa`, `homilia_*`, `lenguas_url`) ya vive en una ACF Options Page; Novedades es un CPT; el podcast y los vídeos de YouTube entran por importadores; `tt_tip_*` se eliminaron el 26 jul y se **reabren el 14 nov** como «tip/promesa del día» (diseño pendiente); faltan `tt_viacrucis_json_url` y `tt_fiesta_dias`. La lista correcta está en `00_CORE.md` §3.
+> - **§4:** la premisa «no hay `post_content` que mover» vale para web vieja → web nueva. 🔲 Para llevar la web nueva de Local a producción sí se mueve `post_content` (con los Code Blocks en Base64, `00_CORE.md` §1): hipótesis por verificar.
+> - **Falta el plan de despliegue Local → producción** (raíz o `/blog/`, URLs nuevas y 301, licencia y versión de Avada, importadores, tokens, cron, caché, vuelta atrás, retirada de V1). Investigación pendiente. Hasta entonces, este documento se lee solo como «qué se recrea y qué se migra de la web vieja».
+
 ---
 
 ## 0. Qué es este documento
