@@ -128,8 +128,8 @@ Builder → Page Title Bar Builder (por grupo de páginas)
   Title Bar Builder".
 - Valor de respaldo cerrado: Show Bar and Content · Breadcrumbs · Height 300px/240px móvil
   · Background = Color 2 (`--tt-surf2`, ver Sección 8.1 para el mapeo confirmado) ·
-  Heading Font Size **54px** · Text Alignment Center.
-- ⚠️ El tamaño 54px del titular no es arbitrario — está calibrado teniendo en cuenta que
+  Heading Font Size fluido `clamp(32px, 24.25px + 2.07vw, 54px)` (`TIPOGRAFIA_AVADA.md` Anexo A; 🔲 sin medir en pantalla) · Text Alignment Center.
+- ⚠️ El **máximo** de 54px del titular no es arbitrario — está calibrado teniendo en cuenta que
   "Yeah Papa" necesita más tamaño en px que Helvetica Neue para el mismo peso visual (ver
   Sección 8.2 y Sección 13.4, hallazgo confirmado 3 veces).
 - 🔲 **Pendiente, y de quién depende:** construir los Layouts condicionales por grupo de
@@ -543,8 +543,7 @@ Hombres de Dios**
 - ✅ Ya en uso para el patrón "¿Qué es X?" (Ejército de Intercesores, Rincón de Nico —
   `METODOLOGIA_CONSTRUCCION.md` Sección 2). Configuración completa verificada con capturas
   reales por Cuenta 1: Boxed Mode On · fondo Superficie secundaria · Padding 24px ·
-  Título Yeah Papa 30px (ajustado desde 16px por el efecto de calibración de tamaño, ver
-  Sección 8.2) color Rojo · Contenido Helvetica Neue 16px · Icono 20px con caja propia.
+ Título Yeah Papa, fluido 22 → 30px (set Subheadings; era 16px fijo antes de calibrar, ver Sección 8) color Rojo · Contenido: Helvetica Nueva peso 200 a 16px fijo ⚠️ *(valor antiguo: por vincular al set Body, `TIPOGRAFIA_AVADA.md` §4.3)* · Icono 20px con caja propia.
 - ⚠️ **Border-radius resuelto a 10px vía CSS** (el elemento no lo expone nativamente en su
   panel), verificado funcionando visualmente — pendiente de subir a 15px, la norma general
   decidida el 24/09/2026 para Avada; ver Sección 5 ter y Sección 13.1 (ya resuelta).
@@ -767,6 +766,7 @@ Post Cards Element; documentada de forma genérica también para Container/Colum
 - 🔲 Border Size 0, por lo que Border Color/Hover Color no tienen efecto real. Bevel Color sin
   efecto porque Button Type está en "Flat", no "3D" — mencionado solo para que no se pierda
   tiempo ajustando campos sin efecto visible.
+  ⚠️ **Actualizado el 23 oct 2026:** el botón va ahora en **Poppins** (`TIPOGRAFIA_AVADA.md` §4.3); su tamaño estaba atado a una variable rota (reparación en 4.4).
 
 ### Necesito que las imágenes tengan un estilo consistente
 
@@ -1117,27 +1117,16 @@ que Álvaro los lleve, uno por uno, a Proyecto 11 como una tarea normal.
   — no es un pendiente urgente, pero conviene saber que a fecha de esta ronda de informes
   seguían sin estar.
 
-### Necesito que Yeah Papa y Helvetica Neue estén activas en todo el sitio
+### Necesito que Yeah Papa y Poppins estén activas en todo el sitio
 
 → **Panel:** Global Options → Typography
 
-- ✅ Confirmado por Cuenta 1: Yeah Papa (títulos) y Helvetica Neue (cuerpo) en Custom Fonts,
-  sin fuentes de Google Fonts detectadas. Los 6 tamaños de heading (50/43/37/31/25/20px)
-  confirmados como ya verificados con Hna C en sesión previa.
-- ⚠️ **Hallazgo confirmado 3 veces de forma independiente: Yeah Papa necesita un tamaño en
-  px notablemente mayor que Helvetica Neue para el mismo peso visual** — la fuente "ocupa
-  menos" espacio dentro de la misma caja de diseño. Confirmado por Cuenta 1 y de forma
-  cruzada por Cuenta 3 (cuyo Page Title Bar usa 54px de Heading Font Size, consistente con
-  esta calibración, aunque el detalle exacto de esa nota interna no está en el texto
-  disponible para este catálogo). **Recomendación de Cuenta 1, sin aplicar todavía:**
-  incorporar esta nota a `00_CORE.md` Sección 6, para que cualquier título nuevo en Yeah Papa
-se calibre con esto en mente desde el principio. Ver Sección 13.4.
-- 🔲 **Comprobar (16 septiembre 2026):** el export real usa tres grafías distintas para el
-  mismo par de fuentes — `custom_fonts.name` registra `"Helvetica Nueva"` y `"YEAH-PAPA"`,
-  mientras `h1_typography.font-family` usa `"Yeah-Papa"` y `body_typography.font-family` usa
-  `"Helvetica Neue"`. Puede ser irrelevante (Avada normaliza internamente) o puede explicar
-  que alguna fuente no cargue en algún sitio concreto. Merece una comprobación visual rápida
-  en Local, no una corrección de este documento todavía.
+- ✅ **Decisión de Carlitos (23 oct 2026):** títulos en Yeah Papa (sets Headings y Subheadings) y texto en Poppins (sets Lead, Body, Medium y Small) en la web nueva; Helvetica Neue queda para la web vieja y la app. Evidencia: informe de Álvaro del 23 oct y `TIPOGRAFIA_AVADA.md`.
+- ✅ Los tamaños ya no son fijos: escala fluida (`clamp`) en 6 sets, H1-H6, título de entrada y Page Title Bar. **Valores y reglas: solo en `TIPOGRAFIA_AVADA.md`** (Anexo A); esta entrada no los copia. Los 6 tamaños fijos de heading (50/43/37/31/25/20px) que figuraban aquí quedan superados.
+- ✅ **Hallazgo confirmado 3 veces de forma independiente:** Yeah Papa necesita más px que una tipografía sans estándar para el mismo peso visual; los máximos de la escala lo tienen en cuenta.
+- ✅ **Comprobado en el export del 14 nov 2026:** 6 sets (Medium se guarda como `custom_typography_1`), Poppins subida a Custom Fonts (400, 500, 600 y 700), tamaños v1.5 y color por defecto del texto en Color 7. Titulares (H1-H6, título de entrada) y enlaces en Color 6 (Rojo Hover): decisión de Carlitos del 14 nov, se deja así.
+- ⚠️ **Pendientes sin urgencia (`TIPOGRAFIA_AVADA.md` Parte 6):** 24 campos con variable en español (receta 4.4, con el idioma del usuario en inglés); Google Fonts sigue en `cdn` (comprobar en Network antes del lanzamiento si aún se pide a Google); contenido del acordeón aún en Helvetica Nueva; márgenes de H1-H6 con coma decimal (`0,6em`).
+- 🔲 **Comprobar:** el export usa varias grafías para el mismo par de fuentes (`Yeah-Papa` / `YEAH-PAPA`, `Helvetica Neue` / `Helvetica Nueva`). Al elegir fuente en un set, usar la entrada de Custom Fonts que ya usa H1 (`TIPOGRAFIA_AVADA.md`, Paso 1).
 
 ### Necesito el logo en el header, en sticky y en móvil
 
