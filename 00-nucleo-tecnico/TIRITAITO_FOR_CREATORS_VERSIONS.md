@@ -4,7 +4,7 @@
 **Audiencia**: Hno A · Carlitos (coordinación de GitHub)
 **Propósito**: Diferencia entre V1 y V2 de la app, dónde vive cada archivo en GitHub, formato de changelog, y alcance confirmado de funcionalidades nuevas por versión
 **Versión**: (controlada por Git)
-**Última actualización**: 2026-11-04
+**Última actualización**: 2026-11-14
 
 ---
 
@@ -131,11 +131,11 @@ Cada entrada nueva, arriba de las anteriores:
 
 ## 5. V2 — alcance confirmado hasta ahora
 
-| Módulo | Estado (26 julio 2026) |
+| Módulo | Estado (revisado 14 nov 2026) |
 |---|---|
 | Novedades | ✅ Backend probado en Local (4 nov 2026, Proyecto 3): CPT `novedades` + ACF (10 campos) + endpoint `tiritaito/v1/novedades`. **Ocultar una novedad la pasa a borrador y desaparece de la web** (revierte la decisión del 26 julio). Cada novedad tiene un **molde** (diseño) y una **categoría**, y las opciones de ambos se leen de ACF (ver Sección 6). App v2-07 con desplegables de molde y categoría. ⚠️ **La app v2-07 no se ha visto funcionar en el navegador** (solo verificada por sintaxis y pruebas simuladas), la purga de LiteSpeed no está probada y falta la instalación en producción. Pendiente en Avada: Álvaro y Carlota diseñan los moldes (Post Cards) |
 | Devocional (Virgen, Brisa, Homilía, Lenguas) | 🔄 En migración parcial — 7 de 12 claves antiguas de `wp_options` migradas a ACF Options Page "Devocional — Contenido Diario" (ver Sección 7). Virgen y Brisa ya separan fecha/autor en campos propios en la app (v2-05); `virgen_fecha` es obligatoria antes de publicar. Homilía — texto: según el informe de Proyecto 5 (4 nov 2026), la petición de fecha se retiró en v2-06 (sin verificar contra el HTML) |
-| Tip del día | ❌ Eliminado por completo (decisión 26 julio 2026). Según el informe de Proyecto 5 (4 nov 2026), retirado de la app en v2-06 (sin verificar contra el HTML) |
+| Tip del día | 🔄 **Reabierto el 14 nov 2026:** vuelve junto con la **promesa del día**; se sube desde la app de Creators y se muestra en la Home («Dios te habla»), junto al generador de citas. Eliminado el 26 julio y retirado de la app en v2-06 (según Proyecto 5, sin verificar contra el HTML). 🔲 Diseño de datos y UI de la app por decidir: no dar nada por construido |
 | Cualquier otro módulo nuevo | 🔲 Sin decidir — no dar nada por hecho hasta que se confirme aquí |
 
 ---
@@ -201,7 +201,7 @@ Cada entrada nueva, arriba de las anteriores:
 | `brisa` | Texto largo | `tt_brisa` |
 | `brisa_autor` | Texto | `tt_brisa_autor` |
 | `homilia_audio` | URL Media Library | `tt_homilia_audio` |
-| `homilia_texto` | Texto largo | `tt_homilia_texto` — ⚠️ debería dejar de llevar fecha (decisión 26 julio: siempre es la fecha de publicación), pendiente de aplicar en la app |
+| `homilia_texto` | Texto largo | `tt_homilia_texto` — ✅ **nunca lleva fecha** (decisión 26 julio 2026, confirmada el 14 nov). Según Proyecto 5 la app dejó de pedirla en v2-06 (sin verificar contra el HTML) |
 | `lenguas_url` | URL Media Library | `tt_lenguas_url` |
 
 ⚠️ **Nota de nomenclatura, para no confundir campo ACF con clave de API:** el nombre del campo dentro de ACF no lleva el prefijo `tt_` (ej. `virgen_fecha`), pero la clave que la app manda y recibe en el JSON de `/tiritaito/v1/datos` sí lo lleva (`tt_virgen_fecha`). El snippet PHP hace la traducción entre una forma y otra (`tt_mapa_campos_devocional()`). Si en algún momento se escribe código nuevo contra este endpoint, usar la clave con `tt_`, no el nombre interno de ACF.
@@ -227,7 +227,7 @@ Tres observaciones al revisar el PHP real y completo (26 julio 2026), comparánd
 ## 8. Próximos pasos y preguntas abiertas
 
 **Próximos pasos:**
-1. ✅ Según el informe de Proyecto 5 (4 nov 2026), resueltos en v2-06 y sin verificar contra el HTML: input de `titulo` en Novedades, retirada de la fecha de Homilía-texto y retirada de la UI de «Tip del día»
+1. ✅ Según el informe de Proyecto 5 (4 nov 2026), resueltos en v2-06 y sin verificar contra el HTML: input de `titulo` en Novedades, retirada de la fecha de Homilía-texto y retirada de la UI de «Tip del día» (⚠️ el Tip vuelve el 14 nov junto con la promesa del día: ver §5)
 2. Subir v2-07 a GitHub (HTML + PHP + changelog) y pulsar «Sync now»
 3. Probar la app v2-07 en el navegador y llevar Novedades a producción (ver Sección 6, «Pendiente»)
 4. Al subir cualquiera de esos cambios: seguir el paso a paso de la Sección 4 — nombre de archivo fijo para V2, número real solo en el footer y en el changelog
