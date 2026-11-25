@@ -111,11 +111,22 @@ Tiene dos partes que funcionan distinto.
 
 **Homilía (la sube el equipo):** texto y audio, desde la app. Se **vacía sola a las 48 horas** si no se renueva (si se reenvía exactamente lo mismo, la cuenta no se reinicia). Sin fecha, por decisión.
 
-**Detalles que conviene tener presentes:**
+*Detalles que conviene tener presentes:**
 - Las lecturas se guardan en la entrada **«Conecta cada Día»**. El programa la encuentra por su número (en Local es el 3572; **en producción será otro**, hay que indicárselo, ver 5.2).
 - Las casillas están en dos grupos: «Misa — Lecturas» y «Conecta — Homilía». Sus reglas de ubicación deben apuntar a «Conecta cada Día». En una revisión de Álvaro, el grupo de lecturas estaba asignado a otra entrada («¿Qué hacemos?») y el editor enseñaba las casillas vacías aunque la web mostraba datos viejos. Se da por resuelto, pero al pasar a producción hay que comprobar que el grupo está asignado a la entrada correcta y que tras la primera sincronización se ve la fecha de hoy.
 - Para probar a mano (solo administradores, en `/wp-admin/`): `?tt_misa_ahora=1` sincroniza hoy y `?tt_misa_tick=1` ejecuta el ciclo completo. El registro queda en la opción `tt_misa_log`.
 - Las lecturas llegan de Evangelizo: hay que confirmar con ellos que el uso está permitido.
+
+**Actualizado el 25 de noviembre de 2026**
+
+- Las lecturas (primera, salmo, segunda y evangelio) y sus citas las trae un solo snippet, `tt-misa-lecturas.php` (**v1.1**, en `apps/v2/`), desde el Reader de Evangelizo. Lo hace una vez al día (hora de Madrid) y lo guarda en la entrada «Conecta cada Día».
+- **Novedad v1.1:** el snippet guarda también el pie de fuente del texto bíblico («Extraído de la Biblia…») en la casilla `misa_fuente` (tipo Texto, grupo ACF «Misa — Lecturas»). La casilla es opcional: si no existe, todo sigue funcionando y se anota un aviso en `tt_misa_log`.
+- **Crédito en la web:** bajo las lecturas hay un texto «Lecturas: Evangelizo.org» con enlace a `https://evangelizo.org`. Debajo, un segundo texto lee `misa_fuente` mediante Dynamic Content (ACF Text) y se oculta si está vacío (Conditional Rendering: `misa_fuente` no igual a vacío).
+- **Permiso de Evangelizo:** decidido el 25 de noviembre de 2026 que no hace falta pedirlo ni enviar correo de cortesía. El Reader es un servicio público que Evangelizo documenta para incorporar sus lecturas en otras webs, y no hay condiciones de uso propias publicadas. Los derechos de la traducción bíblica pertenecen a su editor, no a Evangelizo.
+- **Límites del Reader:** la fecha no puede superar los 30 días desde hoy (el snippet no pide más de 7). Se llama por `http://` desde el servidor, no desde el navegador del visitante.
+- 🔲 **Pendiente:** Álvaro monta y prueba en Local la casilla `misa_fuente` y el crédito visible.
+
+**En la lista de pendientes de producción:** quitar «permiso de Evangelizo».
 
 ### 3.4 Salmo del día
 
