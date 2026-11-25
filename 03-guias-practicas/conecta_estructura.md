@@ -115,8 +115,8 @@ Tiene dos partes que funcionan distinto.
 - Las lecturas se guardan en la entrada **«Conecta cada Día»**. El programa la encuentra por su número (en Local es el 3572; **en producción será otro**, hay que indicárselo, ver 5.2).
 - Las casillas están en dos grupos: «Misa — Lecturas» y «Conecta — Homilía». Sus reglas de ubicación deben apuntar a «Conecta cada Día». En una revisión de Álvaro, el grupo de lecturas estaba asignado a otra entrada («¿Qué hacemos?») y el editor enseñaba las casillas vacías aunque la web mostraba datos viejos. Se da por resuelto, pero al pasar a producción hay que comprobar que el grupo está asignado a la entrada correcta y que tras la primera sincronización se ve la fecha de hoy.
 - Para probar a mano (solo administradores, en `/wp-admin/`): `?tt_misa_ahora=1` sincroniza hoy y `?tt_misa_tick=1` ejecuta el ciclo completo. El registro queda en la opción `tt_misa_log`.
-- Las lecturas llegan de Evangelizo: hay que confirmar con ellos que el uso está permitido.
-
+- Las lecturas llegan de Evangelizo.
+  
 **Actualizado el 25 de noviembre de 2026**
 
 - Las lecturas (primera, salmo, segunda y evangelio) y sus citas las trae un solo snippet, `tt-misa-lecturas.php` (**v1.1**, en `apps/v2/`), desde el Reader de Evangelizo. Lo hace una vez al día (hora de Madrid) y lo guarda en la entrada «Conecta cada Día».
@@ -216,7 +216,6 @@ El selector se apoya en nombres internos de Avada que no son oficiales (`fusion-
 | ¿La web nueva va en la raíz o en `/blog/`? (afecta a todas las direcciones) | Carlitos |
 | Tareas programadas en Raiola (¿bloquea `wp-cron.php`?) | Carlitos |
 | Audio del Salmo en Safari / iPhone | Álvaro y Carlitos |
-| Permiso de Evangelizo para usar lecturas y número del salmo | Carlitos |
 | Que la caché no deje el día anterior | Carlitos |
 | Borrar el tipo de contenido antiguo del Ejército y el CSS de pestañas viejo | Álvaro, cuando se confirme |
 | Tamaño del archivo de CSS maestro (supera las 600 líneas; se planteó dividirlo) | Carlitos |
