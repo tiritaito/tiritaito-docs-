@@ -1,0 +1,276 @@
+<?php
+/**
+ * TT Misa — Lecturas de Evangelizo + homilía (caducidad y copia a la entrada)
+ * Versión: 1.1 · 25 noviembre 2026
+ * Ruta en el repositorio: apps/v2/tt-misa-lecturas.php
+ * Code Snippets: tipo PHP, alcance «Run everywhere» (pegar SIN la línea <?php).
+ *
+ * Novedad v1.1: se guarda también la fuente del texto bíblico (el pie
+ * «Extraído de la Biblia…» que Evangelizo añade a cada lectura) en la casilla
+ * misa_fuente, para poder mostrarla como crédito en la web.
+ *
+ * Qué hace:
+ *  - Cada hora (WP-Cron) comprueba si las lecturas guardadas son las de hoy
+ *    (hora de Madrid) y, si no, las pide a Evangelizo y las guarda.
+ *  - Copia la homilía que escribe la app (Options Page) a campos de la entrada
+ *    «Conecta cada Día», porque las condiciones de Avada no leen Options Pages.
+ *  - Vacía la homilía si lleva 48 h o más sin renovarse.
+ *
+ * Requisitos:
+ *  - Opción tt_conecta_page_id con el ID de la entrada «Conecta cada Día»:
+ *      wp option update tt_conecta_page_id 123
+ *  - Grupo ACF «Misa — Lecturas» (misa_fecha, misa_primera, misa_primera_cita,
+ *    misa_salmo, misa_salmo_cita, misa_segunda, misa_segunda_cita,
+ *    misa_evangelio, misa_evangelio_cita, misa_fuente) con regla de ubicación
+ *    en esa entrada. misa_fuente es OPCIONAL: si no existe, el snippet funciona
+ *    igual y deja un aviso en el registro.
+ *  - Grupo ACF «Conecta — Homilía» (cd_homilia_texto, cd_homilia_audio), misma regla.
+ *  - Campos homilia_texto y homilia_audio en la Options Page (ya existen).
+ *
+ * Pruebas manuales (solo administradores, en /wp-admin/):
+ *   ?tt_misa_ahora=1                      → sincroniza hoy
+ *   ?tt_misa_ahora=1&tt_fecha=20261122    → sincroniza esa fecha
+ *   ?tt_misa_tick=1                       → ejecuta el tick completo
+ * Registro: opción tt_misa_log (wp option get tt_misa_log).
+ */
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+/* ---------- Utilidades ---------- */
+
+// Siempre hora de Madrid, sin depender de los ajustes de WordPress.
+function tt_misa_tz() { return new DateTimeZone( 'Europe/Madrid' ); }
+
+// ID de la entrada «Conecta cada Día». Se fija una vez con:
+//   wp option update tt_conecta_page_id 123
+function tt_misa_pagina_id() { return (int) get_option( 'tt_conecta_page_id', 0 ); }
+
+function tt_misa_log( $msg ) {
+	$log = get_option( 'tt_misa_log', array() );
+	array_unshift( $log, wp_date( 'Y-m-d H:i', null, tt_misa_tz() ) . ' ' . $msg );
+	update_option( 'tt_misa_log', array_slice( $log, 0, 30 ), false );
+}
+
+// Vacía la caché de página de LiteSpeed si está activo (no se puede probar en Local).
+function tt_misa_purgar() { do_action( 'litespeed_purge_all' ); }
+
+// Escribe un campo ACF buscando su clave por nombre (cambia entre Local y producción).
+// $destino: ID de entrada/página, o 'option' para la Options Page.
+function tt_misa_guardar( $nombre, $valor, $destino ) {
+	$campo = function_exists( 'acf_get_field' ) ? acf_get_field( $nombre ) : false;
+	if ( ! $campo || empty( $campo['key'] ) ) return false;
+	update_field( $campo['key'], $valor, $destino );
+	return true;
+}
+
+/* ---------- Evangelizo ---------- */
+
+function tt_misa_mapa() {
+	return array(
+		'primera'   => array( 'code' => 'FR',  'obligatoria' => true ),
+		'salmo'     => array( 'code' => 'PS',  'obligatoria' => true ),
+		'segunda'   => array( 'code' => 'SR',  'obligatoria' => false ),
+		'evangelio' => array( 'code' => 'GSP', 'obligatoria' => true ),
+	);
+}
+
+// Los errores de Evangelizo llegan con HTTP 200 y una página HTML completa:
+// se detectan por el contenido.
+function tt_misa_pedir( $fecha, $tipo, $code ) {
+	$url = add_query_arg(
+		array( 'date' => $fecha, 'type' => $tipo, 'lang' => 'SP', 'content' => $code ),
+		'http://feed.evangelizo.org/v2/reader.php'
+	);
+	$r = wp_remote_get( $url, array( 'timeout' => 10 ) );
+	if ( is_wp_error( $r ) || 200 !== (int) wp_remote_retrieve_response_code( $r ) ) return false;
+	$b = (string) wp_remote_retrieve_body( $r );
+	if ( stripos( $b, '<!DOCTYPE' ) !== false || stripos( $b, '<html' ) !== false ) return false;
+	if ( ! seems_utf8( $b ) ) $b = mb_convert_encoding( $b, 'UTF-8', 'ISO-8859-1' );
+	return $b;
+}
+
+// Quita el pie («Extraído de la Biblia…») y el anuncio, y sanea.
+function tt_misa_limpiar( $html ) {
+	if ( preg_match( '/Extra.{1,4}do d[ea]/is', $html, $m, PREG_OFFSET_CAPTURE ) ) {
+		$html = substr( $html, 0, $m[0][1] );
+	} elseif ( preg_match( '/<a[^>]*evangeliodeldia[^>]*>/i', $html, $m, PREG_OFFSET_CAPTURE ) ) {
+		$html = substr( $html, 0, $m[0][1] ); // red de seguridad
+	}
+	$html = preg_replace( '#(\s|<br\s*/?>|&nbsp;)+$#i', '', $html );
+	$html = wp_kses( trim( $html ), array(
+		'br' => array(), 'p' => array(), 'em' => array(), 'strong' => array(),
+	) );
+	return trim( $html );
+}
+
+// NUEVO v1.1 — Saca el pie de crédito de Evangelizo («Extraído de la Biblia…») como texto limpio.
+// Corta antes del anuncio de su app. Si no hay pie, devuelve ''.
+function tt_misa_fuente( $html ) {
+	if ( ! preg_match( '/Extra.{1,4}do d[ea]/is', $html, $m, PREG_OFFSET_CAPTURE ) ) return '';
+	$resto = substr( $html, $m[0][1] );
+	if ( preg_match( '/<a[^>]*evangeliodeldia[^>]*>/i', $resto, $a, PREG_OFFSET_CAPTURE ) ) {
+		$resto = substr( $resto, 0, $a[0][1] ); // fuera el anuncio
+	}
+	$t = html_entity_decode( wp_strip_all_tags( $resto ), ENT_QUOTES, 'UTF-8' );
+	$t = trim( preg_replace( '/\s+/u', ' ', $t ) );
+	return mb_substr( sanitize_text_field( $t ), 0, 300 );
+}
+
+// Cita corta: sin etiquetas, sin entidades, sin punto final, sin prefijo «PS:».
+function tt_misa_cita( $html ) {
+	$t = html_entity_decode( wp_strip_all_tags( (string) $html ), ENT_QUOTES, 'UTF-8' );
+	$t = preg_replace( '/^\s*(FR|PS|SR|GSP)\s*:\s*/', '', $t );
+	$t = str_replace( '_', ' ', $t ); // «2_Jn» → «2 Jn»
+	$t = preg_replace( '/\s+/', ' ', $t );
+	return rtrim( sanitize_text_field( $t ), '. ' );
+}
+
+// Todo o nada: si algo falla, NO se escribe nada y se conserva lo anterior.
+function tt_misa_sincronizar( $fecha_ymd = null ) {
+	$pid = tt_misa_pagina_id();
+	if ( ! $pid ) { tt_misa_log( 'ERROR: falta la opción tt_conecta_page_id' ); return false; }
+	if ( get_transient( 'tt_misa_lock' ) ) return false;
+	set_transient( 'tt_misa_lock', 1, 5 * MINUTE_IN_SECONDS );
+
+	$fecha_ymd = $fecha_ymd ? preg_replace( '/\D/', '', $fecha_ymd ) : wp_date( 'Ymd', null, tt_misa_tz() );
+	$datos  = array();
+	$fallos = array();
+
+	foreach ( tt_misa_mapa() as $clave => $cfg ) {
+		$cuerpo = tt_misa_pedir( $fecha_ymd, 'reading', $cfg['code'] );
+		$cita   = tt_misa_pedir( $fecha_ymd, 'reading_st', $cfg['code'] );
+		if ( false === $cuerpo ) { $fallos[] = $clave; continue; }
+		$texto = tt_misa_limpiar( $cuerpo );
+		if ( '' === trim( wp_strip_all_tags( $texto ) ) ) $texto = ''; // p. ej. sin 2.ª lectura
+		if ( '' === $texto && $cfg['obligatoria'] ) { $fallos[] = $clave . '(vacía)'; continue; }
+		$datos[ $clave ] = array(
+			'texto'  => $texto,
+			'cita'   => ( '' !== $texto && false !== $cita ) ? tt_misa_cita( $cita ) : '',
+			'fuente' => ( '' !== $texto ) ? tt_misa_fuente( $cuerpo ) : '', // NUEVO v1.1
+		);
+	}
+
+	if ( $fallos ) {
+		tt_misa_log( 'ERROR ' . $fecha_ymd . ': ' . implode( ',', $fallos ) . ' — no se escribió nada' );
+		delete_transient( 'tt_misa_lock' );
+		return false;
+	}
+
+	// Comprobar que existen TODAS las casillas antes de escribir ninguna.
+	// (misa_fuente NO está aquí a propósito: es opcional y no bloquea la sincronización.)
+	$nombres = array( 'misa_fecha' );
+	foreach ( array_keys( $datos ) as $k ) { $nombres[] = 'misa_' . $k; $nombres[] = 'misa_' . $k . '_cita'; }
+	foreach ( $nombres as $n ) {
+		if ( ! acf_get_field( $n ) ) {
+			tt_misa_log( 'ERROR: falta la casilla ACF ' . $n . ' — no se escribió nada' );
+			delete_transient( 'tt_misa_lock' );
+			return false;
+		}
+	}
+
+	foreach ( $datos as $clave => $d ) {
+		tt_misa_guardar( 'misa_' . $clave, $d['texto'], $pid );
+		tt_misa_guardar( 'misa_' . $clave . '_cita', $d['cita'], $pid );
+	}
+
+	// NUEVO v1.1 — Fuente del texto bíblico: la primera que venga rellena.
+	$fuente = '';
+	foreach ( array( 'evangelio', 'primera', 'salmo', 'segunda' ) as $k ) {
+		if ( ! empty( $datos[ $k ]['fuente'] ) ) { $fuente = $datos[ $k ]['fuente']; break; }
+	}
+	if ( acf_get_field( 'misa_fuente' ) ) {
+		tt_misa_guardar( 'misa_fuente', $fuente, $pid );
+	} else {
+		tt_misa_log( 'AVISO: falta la casilla ACF misa_fuente (no se guardó la fuente)' );
+	}
+
+	$f = substr( $fecha_ymd, 0, 4 ) . '-' . substr( $fecha_ymd, 4, 2 ) . '-' . substr( $fecha_ymd, 6, 2 );
+	tt_misa_guardar( 'misa_fecha', $f, $pid );
+	tt_misa_log( 'OK ' . $f . ( '' === $fuente ? ' (sin fuente)' : '' ) );
+	tt_misa_purgar();
+	delete_transient( 'tt_misa_lock' );
+	return true;
+}
+
+/* ---------- Homilía ---------- */
+
+// Copia la homilía de la Options Page (donde escribe la app) a la entrada,
+// para que Avada pueda condicionar. Solo escribe si hay diferencia.
+function tt_homilia_espejo() {
+	$pid = tt_misa_pagina_id();
+	if ( ! $pid ) return;
+	$pares = array( 'homilia_texto' => 'cd_homilia_texto', 'homilia_audio' => 'cd_homilia_audio' );
+	foreach ( $pares as $origen => $copia ) {
+		$v = (string) get_field( $origen, 'option', false );
+		$c = (string) get_field( $copia, $pid, false );
+		if ( $v !== $c ) tt_misa_guardar( $copia, $v, $pid );
+	}
+}
+
+// Al guardar la homilía en la Options Page: se apunta el momento SOLO si el valor
+// es distinto del anterior (reenviar el mismo valor no reinicia las 48 h) y se
+// copia a la entrada.
+function tt_homilia_al_guardar( $value, $post_id, $field ) {
+	if ( ! in_array( $post_id, array( 'options', 'option' ), true ) ) return $value;
+	if ( is_string( $value ) && '' !== trim( $value ) ) {
+		$antes = get_field( $field['name'], 'option', false );
+		if ( (string) $antes !== (string) $value ) {
+			update_option( 'tt_homilia_publicada', time(), false );
+			tt_misa_purgar();
+		}
+	}
+	$pid = tt_misa_pagina_id();
+	if ( $pid ) tt_misa_guardar( 'cd_' . $field['name'], (string) $value, $pid );
+	return $value;
+}
+add_filter( 'acf/update_value/name=homilia_texto', 'tt_homilia_al_guardar', 10, 3 );
+add_filter( 'acf/update_value/name=homilia_audio', 'tt_homilia_al_guardar', 10, 3 );
+
+// Si la homilía lleva 48 horas o más sin renovarse, se vacía (Options Page y entrada).
+function tt_homilia_caducar() {
+	$txt = (string) get_field( 'homilia_texto', 'option', false );
+	$aud = (string) get_field( 'homilia_audio', 'option', false );
+	if ( '' === trim( $txt ) && '' === trim( $aud ) ) { delete_option( 'tt_homilia_publicada' ); return; }
+	$pub = (int) get_option( 'tt_homilia_publicada', 0 );
+	if ( ! $pub ) { update_option( 'tt_homilia_publicada', time(), false ); return; } // la cuenta empieza ahora
+	if ( ( time() - $pub ) >= 48 * HOUR_IN_SECONDS ) {
+		tt_misa_guardar( 'homilia_texto', '', 'option' );
+		tt_misa_guardar( 'homilia_audio', '', 'option' );
+		delete_option( 'tt_homilia_publicada' );
+		tt_misa_log( 'Homilía caducada (48 h sin renovarse)' );
+		tt_misa_purgar();
+	}
+}
+
+/* ---------- Programación: un tick cada hora ---------- */
+
+add_action( 'tt_misa_tick', function () {
+	tt_homilia_caducar();
+	tt_homilia_espejo();
+	$pid = tt_misa_pagina_id();
+	if ( ! $pid ) return;
+	$hoy = wp_date( 'Y-m-d', null, tt_misa_tz() );
+	if ( (string) get_field( 'misa_fecha', $pid, false ) !== $hoy ) tt_misa_sincronizar();
+} );
+add_action( 'init', function () {
+	if ( ! wp_next_scheduled( 'tt_misa_tick' ) ) {
+		wp_schedule_event( time() + 60, 'hourly', 'tt_misa_tick' );
+	}
+} );
+
+/* ---------- Pruebas manuales (solo administradores) ---------- */
+
+add_action( 'admin_init', function () {
+	if ( ! current_user_can( 'manage_options' ) ) return;
+	if ( isset( $_GET['tt_misa_ahora'] ) ) {
+		$f  = isset( $_GET['tt_fecha'] ) ? sanitize_text_field( wp_unslash( $_GET['tt_fecha'] ) ) : null;
+		$ok = tt_misa_sincronizar( $f );
+		wp_die( $ok ? 'Misa: sincronizado.' : 'Misa: fallo. Mira la opción tt_misa_log.' );
+	}
+	if ( isset( $_GET['tt_misa_tick'] ) ) {
+		$pid     = tt_misa_pagina_id();
+		$antes   = $pid ? (string) get_field( 'misa_fecha', $pid, false ) : '(sin página)';
+		do_action( 'tt_misa_tick' );
+		$despues = $pid ? (string) get_field( 'misa_fecha', $pid, false ) : '(sin página)';
+		wp_die( 'Misa: tick ejecutado. misa_fecha antes: ' . esc_html( $antes ) . ' · después: ' . esc_html( $despues ) );
+	}
+} );
