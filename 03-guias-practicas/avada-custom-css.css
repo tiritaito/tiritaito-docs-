@@ -1,9 +1,10 @@
 /* ════════════════════════════════════════════════════════════════
+/* ════════════════════════════════════════════════════════════════
    TIRITAITO.COM — Custom CSS de Avada (archivo maestro)
    Este archivo MANDA. Lo de Avada → Options → Custom CSS es la copia
    desplegada: debe ser idéntica, empezando por esta misma línea de sello.
 
-   TT-CSS · v017 · 2026-11-13 · Avada 7.16.1
+   TT-CSS · v019 · 2026-11-28 · Avada 7.16.4
    ════════════════════════════════════════════════════════════════
 
    CÓMO SE USA ESTE ARCHIVO (léelo antes de tocar nada)
@@ -709,7 +710,7 @@
                    tt-ep-modo-audio  → Container B «Modo audio»
                    tt-ep-ir-audio    → botón «Cambiar a audio» (en A)
                    tt-ep-ir-video    → botón «Cambiar a vídeo» (en B)
-                 ⚠️ HTML/JS obligatorio: este bloque NO funciona solo con
+                  HTML/JS obligatorio: este bloque NO funciona solo con
                  las clases. Dentro del Container A tiene que haber un
                  elemento Code Block con el script de abajo (copia de
                  respaldo al final de esta ficha). Como el Container A
@@ -836,14 +837,349 @@ html.tt-ep-js.tt-ep-ver-audio .tt-ep-modo-video {
 
 
 /* ══════════════════════════════════════════════════════════════
-   FIN DEL ARCHIVO — 7 mejoras registradas · v017 · 2026-11-13
+   TT-MEJORA · Título largo en una línea con difuminado y desplazamiento
+   Cómo se usa:  VARIANTE — pon la clase  tt-titulo-marquesina  en el
+                 campo "CSS Class" (pestaña Extras) del elemento TEXTO
+                 de Avada que lleva el título (el  div.fusion-text  que
+                 contiene el <p> con el título; en la tarjeta del
+                 podcast es el «fusion-text-21»). Sirve para cualquier
+                 lista de entradas: se pone la clase donde se quiera
+                 el efecto. En cada página que lo use hace falta,
+                 además, el Code Block con el script de abajo (ver
+                 «HTML/JS obligatorio»).
+   Qué hace:     el título se queda en UNA sola línea. Si cabe entero,
+                 no se mueve. Si no cabe, el final se difumina y el
+                 texto se desliza despacio hasta mostrar el final, hace
+                 una pausa, vuelve y repite (al estilo Apple Music).
+                 Funciona sin hover, también en móvil. Con «reducir
+                 movimiento» activado en el sistema, no se desliza:
+                 queda cortado y difuminado, y al pasar el ratón por
+                 encima el título completo sale como ayuda del
+                 navegador. Si el script no está en la página (o no se
+                 ejecuta), el título sigue en una línea pero cortado
+                 con «…», sin difuminado ni movimiento.
+                 Avada solo deja limitar el ancho o el tamaño del texto:
+                 no ofrece una línea con difuminado ni desplazamiento.
+   HTML/JS obligatorio: este bloque NO mueve nada solo con la clase.
+                 El script (copia de respaldo al final de esta ficha)
+                 va en un elemento Code Block de Avada, guardado como
+                 CONTAINER GLOBAL en la Biblioteca de Avada y colocado
+                 en cada página donde haya listas con esta clase. El
+                 script no hace nada si no encuentra títulos con la
+                 clase, y vigila la página: también actúa sobre las
+                 tarjetas que se cargan después (filtros, paginación,
+                 «cargar más»).
+   Ajustable:    velocidad (en el script, «PX_POR_SEG» = 30; más bajo =
+                 más lento), pausa en los extremos (en el script,
+                 «PAUSA» = 0.15, es la fracción del recorrido que se
+                 queda quieto en cada extremo), anchura del difuminado
+                 (hoy 28px en las dos líneas de mask-image de abajo; si
+                 se cambia, cambiar también «FADE» = 28 del script).
+                 Todo son números directos, sin variables.
+   Depende de:   que el título sea un <p> dentro del Texto de Avada con
+                 la clase (visto en el HTML real del 19/11/2026:
+                 div.fusion-text > p). Si el título no es un <p>, no
+                 funciona. El script crea dentro del <p> un <span
+                 class="tt-marq__texto"> (no hay que escribirlo a mano).
+                 Soporte del navegador: mask-image (con prefijo
+                 -webkit-), Web Animations API y ResizeObserver; si
+                 faltan, el título queda en una línea con «…».
+                 Los padres de Avada (columna y fila de la tarjeta)
+                 deben dejar encoger al título: si en alguna vista la
+                 línea larga ensancha la columna en vez de cortarse,
+                 hay que añadir min-width:0 a ese padre (se vería con
+                 Inspeccionar). Clases internas de Avada (.fusion-text):
+                 no son API pública, revisar con prioridad tras una
+                 actualización.
+                 LiteSpeed: excluir el texto tt-marq-js de minificar,
+                 combinar, aplazar y retrasar JS (como el de v016); si
+                 no, el efecto puede llegar tarde.
+                 El script no actúa dentro del editor Live (clase del
+                 body fusion-builder-live).
+                 Nota de estilo: no se usan variables CSS ni :has()
+                 en este bloque (ver el aviso de la ficha del carrusel).
+   Usado en:     Tarjeta de episodio del podcast (título junto a la
+                 miniatura) y otras listas de entradas donde se ponga
+                 la clase. Sin confirmar en qué páginas se coloca el
+                 Code Block global.
+   Probado con:  Avada 7.16.1 · v018 sin probar todavía (pendiente:
+                 ordenador, tablet y móvil; título largo, título corto,
+                 altura de las filas en las 3 vistas, «reducir
+                 movimiento», tarjetas cargadas por filtro/paginación).
+   Origen:       traspaso de Álvaro, 19/11/2026 (sin boceto de Carlota;
+                 referencia: captura de Apple Music, donde el título se
+                 corta con «…»; aquí se pide difuminado y movimiento).
+                 Creado en v018 el 20/11/2026. Decisiones de Álvaro: la
+                 clase es reutilizable y el JavaScript va en un Code
+                 Block como contenedor global, no en un archivo de JS
+                 aparte. Archivo ya por encima de ~600 líneas: avisar a
+                 Carlitos para valorar dividirlo.
+
+   COPIA DE RESPALDO DEL JAVASCRIPT (el que manda es el del Code Block;
+   esta copia es para poder recrearlo si se pierde el contenedor global):
+
+   <script>
+   (function () {
+     var d = document, w = window;
+     var SEL = '.tt-titulo-marquesina p';
+     var PX_POR_SEG = 30, PAUSA = 0.15, FADE = 28; // tt-marq-js
+     try {
+       if (d.body && d.body.classList.contains('fusion-builder-live')) { return; }
+       if (!Element.prototype.animate) { return; }
+       var mov = w.matchMedia ? w.matchMedia('(prefers-reduced-motion: reduce)') : null;
+       var ro = ('ResizeObserver' in w) ? new ResizeObserver(function (ents) {
+         ents.forEach(function (en) { medir(en.target); });
+       }) : null;
+       var medir = function (p) {
+         var s = p.firstElementChild;
+         if (!s || !s.classList.contains('tt-marq__texto')) { return; }
+         var sobra = Math.ceil(s.getBoundingClientRect().width - p.clientWidth);
+         if (s.tt_anim) { s.tt_anim.cancel(); s.tt_anim = null; }
+         if (sobra > 1) {
+           p.classList.add('tt-marq-largo');
+           p.setAttribute('title', s.textContent.trim());
+           if (mov && mov.matches) { return; }
+           var dist = sobra + FADE;
+           var dur = Math.max(4000, (dist / PX_POR_SEG) * 1000 / (1 - 2 * PAUSA));
+           s.tt_anim = s.animate([
+             { transform: 'translateX(0)', offset: 0 },
+             { transform: 'translateX(0)', offset: PAUSA },
+             { transform: 'translateX(-' + dist + 'px)', offset: 1 - PAUSA },
+             { transform: 'translateX(-' + dist + 'px)', offset: 1 }
+           ], { duration: dur, iterations: Infinity, direction: 'alternate', easing: 'ease-in-out' });
+         } else {
+           p.classList.remove('tt-marq-largo');
+           p.removeAttribute('title');
+         }
+       };
+       var preparar = function () {
+         d.querySelectorAll(SEL).forEach(function (p) {
+           if (!p.firstElementChild || !p.firstElementChild.classList.contains('tt-marq__texto')) {
+             var s = d.createElement('span');
+             s.className = 'tt-marq__texto';
+             while (p.firstChild) { s.appendChild(p.firstChild); }
+             p.appendChild(s);
+             if (ro) { ro.observe(p); }
+           }
+           medir(p);
+         });
+       };
+       var pend = false;
+       var luego = function () {
+         if (pend) { return; }
+         pend = true;
+         w.requestAnimationFrame(function () { pend = false; preparar(); });
+       };
+       new MutationObserver(luego).observe(d.body, { childList: true, subtree: true });
+       if (mov && mov.addEventListener) { mov.addEventListener('change', preparar); }
+       w.addEventListener('resize', luego);
+       w.addEventListener('load', luego);
+       if (d.fonts && d.fonts.ready) { d.fonts.ready.then(luego); }
+       preparar();
+     } catch (err) {}
+   })();
+   </script>
+   ══════════════════════════════════════════════════════════════ */
+
+/* Una sola línea. Sin script: se corta con «…». */
+.tt-titulo-marquesina {
+  min-width: 0;
+  max-width: 100%;
+}
+.tt-titulo-marquesina p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Con el script y solo si el título NO cabe: sin «…», final difuminado y
+   el texto (el span que crea el script) preparado para desplazarse */
+.tt-titulo-marquesina p.tt-marq-largo {
+  text-overflow: clip;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+}
+.tt-titulo-marquesina p.tt-marq-largo .tt-marq__texto {
+  display: inline-block;
+  will-change: transform;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   TT-MEJORA · «Elige tu santo» — santo al azar y descarga
+   Cómo se usa:  VARIANTE con 2 clases, en el campo "CSS Class" de cada
+                 elemento, dentro del Off-Canvas «Elige tu santo»:
+                   tt-santo-imagen   → elemento Image
+                   tt-santo-guardar  → botón «Guardar imagen» (Link: #)
+                 AVISO, HTML/JS obligatorio: este bloque NO funciona solo
+                 con las clases. Dentro del Off-Canvas, debajo del botón,
+                 va un elemento Code Block con el script de abajo.
+   Qué hace:     la ventana muestra un santo al azar; al pulsar la imagen
+                 (o con Intro / Espacio) sale otro distinto del anterior.
+                 «Guardar imagen» descarga el que se está viendo. Al
+                 cerrar la ventana se prepara otro para la próxima vez. Si
+                 una imagen no carga, sale un mensaje amable y el botón de
+                 guardar queda apagado. Avada no cambia imágenes al azar
+                 ni enlaza la descarga de la imagen visible.
+   Ajustable:    en el script, CARPETA (ruta de las imágenes) y TOTAL
+                 (cuántas hay; hoy 3, unas 80 más adelante). Archivos:
+                 santo-001.webp, santo-002.webp... sin saltarse números.
+                 En el CSS, color del borde de foco y del aviso (#A33B3B).
+   Depende de:   HTML real del 28/11/2026: span.fusion-imageframe con la
+                 clase y un <img> dentro; a.fusion-button con la clase.
+                 Image sin enlace ni Lightbox. Un solo elemento de cada
+                 clase por página. Clase del body fusion-builder-live (el
+                 script no actúa en el editor Live). Clases internas de
+                 Avada: no son API pública. LiteSpeed: excluir el texto
+                 tt-santo-js de minificar, combinar, aplazar y retrasar JS.
+   Usado en:     Página «Prueba — Elige tu santo» — Off-Canvas tipo Popup
+                 «Elige tu santo».
+   Probado con:  Avada 7.16.4 · v019 sin probar todavía en la web
+                 (pendiente: ordenador, tablet y móvil).
+   Origen:       traspaso de Álvaro y boceto de Carlota, 28/11/2026.
+
+   COPIA DE RESPALDO DEL JAVASCRIPT (el que manda es el del Code Block):
+
+<script>
+(function () {
+  // ===== LO ÚNICO QUE HAY QUE CAMBIAR =====
+  var CARPETA = '/wp-content/uploads/santos/'; // ruta sin dominio, con / al final
+  var TOTAL = 3;                               // cuántos santos hay (santo-001 ... )
+  // ========================================
+  var d = document; // tt-santo-js
+
+  function arrancar() {
+    if (d.body.classList.contains('fusion-builder-live')) { return; }
+    var caja = d.querySelector('.tt-santo-imagen');
+    var boton = d.querySelector('a.tt-santo-guardar');
+    if (!caja || !boton || caja.getAttribute('data-tt-santo')) { return; }
+    var img = caja.querySelector('img');
+    if (!img) { return; }
+    caja.setAttribute('data-tt-santo', '1');
+
+    var actual = 0;
+    var aviso = d.createElement('span');
+    aviso.className = 'tt-santo-aviso';
+    aviso.setAttribute('role', 'status');
+    caja.appendChild(aviso);
+
+    // Que la carga diferida de Avada o LiteSpeed no pise la imagen
+    ['srcset', 'sizes', 'data-src', 'data-srcset', 'data-sizes', 'data-orig-src', 'loading'].forEach(function (a) {
+      img.removeAttribute(a);
+    });
+    img.classList.remove('lazyload', 'lazyloading');
+    img.setAttribute('data-no-lazy', '1');
+
+    caja.setAttribute('role', 'button');
+    caja.setAttribute('tabindex', '0');
+
+    function otro() {
+      var n;
+      if (TOTAL < 2) {
+        n = 1;
+      } else if (!actual) {
+        n = 1 + Math.floor(Math.random() * TOTAL);
+      } else {
+        n = 1 + Math.floor(Math.random() * (TOTAL - 1));
+        if (n >= actual) { n++; } // así nunca repite el anterior
+      }
+      mostrar(n);
+    }
+
+    function mostrar(n) {
+      actual = n;
+      var archivo = 'santo-' + ('00' + n).slice(-Math.max(3, String(n).length)) + '.webp';
+      var ruta = CARPETA + archivo;
+      caja.classList.remove('tt-santo-fallo');
+      aviso.textContent = '';
+      caja.setAttribute('aria-label', 'Santo número ' + n + '. Pulsa para sacar otro santo');
+      img.alt = 'Santo número ' + n;
+      img.src = ruta;
+      boton.classList.remove('tt-santo-sin');
+      boton.setAttribute('href', ruta);
+      boton.setAttribute('download', archivo);
+    }
+
+    img.addEventListener('error', function () {
+      caja.classList.add('tt-santo-fallo');
+      aviso.textContent = 'Este santo no ha podido cargarse. Pulsa aquí para sacar otro.';
+      caja.setAttribute('aria-label', aviso.textContent);
+      boton.classList.add('tt-santo-sin');
+      boton.removeAttribute('href');
+      boton.removeAttribute('download');
+    });
+
+    caja.addEventListener('click', function (e) {
+      e.preventDefault();
+      otro();
+    });
+    caja.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') { return; }
+      e.preventDefault();
+      if (!e.repeat) { otro(); }
+    });
+
+    otro();
+
+    // Al cerrar la ventana se prepara otro santo para la próxima vez
+    var seVeia = false;
+    window.setInterval(function () {
+      var seVe = caja.getClientRects().length > 0 &&
+        window.getComputedStyle(caja).visibility !== 'hidden';
+      if (seVeia && !seVe) { otro(); }
+      seVeia = seVe;
+    }, 400);
+  }
+
+  if (d.readyState === 'loading') {
+    d.addEventListener('DOMContentLoaded', arrancar);
+  } else {
+    arrancar();
+  }
+})();
+</script>
+   ══════════════════════════════════════════════════════════════ */
+
+.tt-santo-imagen {
+  display: block;
+  cursor: pointer;
+  text-align: center;
+}
+.tt-santo-imagen img {
+  margin-left: auto;
+  margin-right: auto;
+}
+.tt-santo-imagen:focus-visible {
+  outline: 3px solid #A33B3B;
+  outline-offset: 4px;
+}
+.tt-santo-imagen.tt-santo-fallo img {
+  display: none;
+}
+.tt-santo-imagen .tt-santo-aviso {
+  display: none;
+}
+.tt-santo-imagen.tt-santo-fallo .tt-santo-aviso {
+  display: block;
+  padding: 40px 20px;
+  border: 1px dashed #A33B3B;
+  border-radius: 15px;
+}
+.fusion-button.tt-santo-guardar.tt-santo-sin {
+  opacity: 0.5;
+  cursor: default;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   FIN DEL ARCHIVO — 9 mejoras registradas · v019 · 2026-11-28
 
    NOTA IMPORTANTE SOBRE LOS BLOQUES HEREDADOS (v001):
    Los selectores #tt-conecta-tabs y #tt-toggle-intro de arriba son
    IDs, heredados del CSS anterior al 24/09/2026. La regla nueva del
    equipo (24/09/2026) es que el gancho SIEMPRE es una CLASE, nunca un
    ID — ver INSTRUCCIONES del Proyecto 11. Se han dejado tal cual en
-   esta v017 porque el encargo era trasladar el CSS "sin arreglos", y
+   esta v019 porque el encargo era trasladar el CSS "sin arreglos", y
    cambiar el selector aquí sin cambiar a la vez el campo real en Avada
    rompería las 2 mejoras. La primera vez que la cuenta de Código
    trabaje sobre "Conecta cada día" o el "Toggle de introducción" (los
